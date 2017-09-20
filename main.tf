@@ -87,7 +87,7 @@ resource "google_compute_firewall" "default-hc" {
   count         = "${length(var.backend_params)}"
   name          = "${var.name}-hc-${count.index}"
   network       = "${var.network}"
-  source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
+  source_ranges = ["130.211.0.0/22", "35.191.0.0/16", "209.85.152.0/22", "209.85.204.0/22"]
   target_tags   = ["${var.target_tags}"]
 
   allow {
