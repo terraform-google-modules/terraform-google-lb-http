@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 resource "google_compute_global_forwarding_rule" "http" {
+  project    = "${var.project}"
   name       = "${var.name}"
   target     = "${google_compute_target_http_proxy.default.self_link}"
   ip_address = "${google_compute_global_address.default.address}"
@@ -23,6 +24,7 @@ resource "google_compute_global_forwarding_rule" "http" {
 }
 
 resource "google_compute_global_forwarding_rule" "https" {
+  project    = "${var.project}"
   count      = "${var.ssl ? 1 : 0}"
   name       = "${var.name}-https"
   target     = "${google_compute_target_https_proxy.default.self_link}"
@@ -32,17 +34,20 @@ resource "google_compute_global_forwarding_rule" "https" {
 }
 
 resource "google_compute_global_address" "default" {
-  name = "${var.name}-address"
+  project = "${var.project}"
+  name    = "${var.name}-address"
 }
 
 # HTTP proxy when ssl is false
 resource "google_compute_target_http_proxy" "default" {
+  project = "${var.project}"
   name    = "${var.name}-http-proxy"
   url_map = "${element(compact(concat(list(var.url_map), google_compute_url_map.default.*.self_link)), 0)}"
 }
 
 # HTTPS proxy  when ssl is true
 resource "google_compute_target_https_proxy" "default" {
+  project          = "${var.project}"
   count            = "${var.ssl ? 1 : 0}"
   name             = "${var.name}-https-proxy"
   url_map          = "${element(compact(concat(list(var.url_map), google_compute_url_map.default.*.self_link)), 0)}"
@@ -50,6 +55,7 @@ resource "google_compute_target_https_proxy" "default" {
 }
 
 resource "google_compute_ssl_certificate" "default" {
+  project     = "${var.project}"
   count       = "${var.ssl ? 1 : 0}"
   name        = "${var.name}-certificate"
   private_key = "${var.private_key}"
