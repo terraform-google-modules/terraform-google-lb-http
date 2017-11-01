@@ -25,7 +25,7 @@ Open URL of load balancer in browser:
 
 ```
 EXTERNAL_IP=$(terraform output -module gce-lb-http | grep external_ip | cut -d = -f2 | xargs echo -n)
-open https://${EXTERNAL_IP}/
+(until curl -sf -o /dev/null http://${EXTERNAL_IP}; do echo "Waiting for Load Balancer... "; sleep 5 ; done) && open http://${EXTERNAL_IP}
 ```
 
 You should see the GCP logo and instance details from the group closest to your geographical region.

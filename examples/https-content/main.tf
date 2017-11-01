@@ -27,11 +27,11 @@ resource "random_id" "assets-bucket" {
   byte_length = 2
 }
 
-module "gce-lb-http" {
+module "gce-lb-https" {
   source         = "../../"
-  name           = "group-http-lb"
+  name           = "group-https-lb"
   target_tags    = ["${module.mig1.target_tags}", "${module.mig2.target_tags}", "${module.mig3.target_tags}"]
-  url_map        = "${google_compute_url_map.my-url-map.self_link}"
+  url_map        = "${google_compute_url_map.https-content.self_link}"
   create_url_map = false
   ssl            = true
   private_key    = "${tls_private_key.example.private_key_pem}"
@@ -79,10 +79,10 @@ module "gce-lb-http" {
   ]
 }
 
-resource "google_compute_url_map" "my-url-map" {
+resource "google_compute_url_map" "https-content" {
   // note that this is the name of the load balancer
-  name            = "my-url-map"
-  default_service = "${module.gce-lb-http.backend_services[0]}"
+  name            = "https-content"
+  default_service = "${module.gce-lb-https.backend_services[0]}"
 
   host_rule = {
     hosts        = ["*"]
@@ -91,21 +91,21 @@ resource "google_compute_url_map" "my-url-map" {
 
   path_matcher = {
     name            = "allpaths"
-    default_service = "${module.gce-lb-http.backend_services[0]}"
+    default_service = "${module.gce-lb-https.backend_services[0]}"
 
     path_rule {
       paths   = ["/group1", "/group1/*"]
-      service = "${module.gce-lb-http.backend_services[1]}"
+      service = "${module.gce-lb-https.backend_services[1]}"
     }
 
     path_rule {
       paths   = ["/group2", "/group2/*"]
-      service = "${module.gce-lb-http.backend_services[2]}"
+      service = "${module.gce-lb-https.backend_services[2]}"
     }
 
     path_rule {
       paths   = ["/group3", "/group3/*"]
-      service = "${module.gce-lb-http.backend_services[3]}"
+      service = "${module.gce-lb-https.backend_services[3]}"
     }
 
     path_rule {
