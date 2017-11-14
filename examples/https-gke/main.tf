@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 variable service_port {
   default = "30000"
 }
@@ -42,11 +42,12 @@ provider google {
 }
 
 module "gce-lb-http" {
-  source        = "github.com/GoogleCloudPlatform/terraform-google-lb-http"
-  name          = "group-http-lb"
-  ssl           = true
-  private_key   = "${tls_private_key.example.private_key_pem}"
-  certificate   = "${tls_self_signed_cert.example.cert_pem}"
+  // source        = "github.com/GoogleCloudPlatform/terraform-google-lb-http"
+  source      = "../../"
+  name        = "group-http-lb"
+  ssl         = true
+  private_key = "${tls_private_key.example.private_key_pem}"
+  certificate = "${tls_self_signed_cert.example.cert_pem}"
 
   // Make sure when you create the cluster that you provide the `--tags` argument to add the appropriate `target_tags` referenced in the http module. 
   target_tags = ["${var.target_tags}"]
