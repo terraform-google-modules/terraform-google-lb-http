@@ -24,8 +24,8 @@ terraform apply
 Open URL of load balancer in browser:
 
 ```
-EXTERNAL_IP=$(terraform output -module gce-lb-http | grep external_ip | cut -d = -f2 | xargs echo -n)
-(until curl -sf -o /dev/null http://${EXTERNAL_IP}; do echo "Waiting for Load Balancer... "; sleep 5 ; done) && open http://${EXTERNAL_IP}
+EXTERNAL_IP=$(terraform output -module gce-lb-https | grep external_ip | cut -d = -f2 | xargs echo -n)
+(until curl -k -sf -o /dev/null https://${EXTERNAL_IP}; do echo "Waiting for Load Balancer... "; sleep 5 ; done) && open https://${EXTERNAL_IP}
 ```
 
 You should see the GCP logo and instance details from the group closest to your geographical region.
