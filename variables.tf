@@ -24,9 +24,10 @@ variable region {
   default     = "us-central1"
 }
 
-variable network {
-  description = "Name of the network to create resources in"
-  default     = "default"
+variable firewall_networks {
+  description = "Name of the networks to create firewall rules in"
+  type        = "list"
+  default     = ["default"]
 }
 
 variable name {

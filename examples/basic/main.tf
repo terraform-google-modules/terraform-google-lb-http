@@ -18,10 +18,6 @@ variable region {
   default = "us-central1"
 }
 
-variable network {
-  default = "default"
-}
-
 provider google {
   region = "${var.region}"
 }
@@ -30,7 +26,6 @@ module "gce-lb-http" {
   source      = "../../"
   name        = "group-http-lb"
   target_tags = ["${module.mig1.target_tags}", "${module.mig2.target_tags}"]
-  network     = "${var.network}"
 
   backends = {
     "0" = [
