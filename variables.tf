@@ -60,16 +60,26 @@ variable url_map {
 }
 
 variable ssl {
-  description = "Set to `true` to enable SSL support, requires variables `private_key` and `certificate`."
+  description = "Set to `true` to enable SSL support, requires variables `private_key` and `certificate`, or `use_existing_certificate` and `certificate_link`."
   default     = false
 }
 
 variable private_key {
-  description = "Content of the private SSL key. Required if ssl is `true`."
+  description = "Content of the private SSL key. Required if `ssl` is `true` and `use_existing_certificate` is `false`."
   default     = ""
 }
 
 variable certificate {
-  description = "Content of the SSL certificate. Required if ssl is `true`."
+  description = "Content of the SSL certificate. Required if `ssl` is `true` and `use_existing_certificate` is `false`."
+  default     = ""
+}
+
+variable use_existing_certificate {
+  description = "Use a certificate that has already been created.  Requires `certificate_link`."
+  default     = true
+}
+
+variable certificate_link {
+  description = "self_link for an existing certificate to use in this load balancer."
   default     = ""
 }
