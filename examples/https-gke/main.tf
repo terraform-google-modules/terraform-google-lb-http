@@ -81,7 +81,7 @@ module "gce-lb-https" {
   // replace `INSTANCE_GROUP_NAME` with the name of your GKE cluster's instance group and `NAME` and `PORT` with the values of `service_port_name` and `service_port` respectively.
   backend_params = [
     // health check path, port name, port number, timeout seconds.
-    "/,${var.service_port_name},${var.service_port},10",
+    "/,${var.service_port_name},${var.service_port},60,10",
   ]
 }
 
