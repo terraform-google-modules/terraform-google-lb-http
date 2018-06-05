@@ -25,8 +25,8 @@ variable region {
 }
 
 variable ip_version {
-  description = "IP version for the Globad address (IPv4 or v6)"
-  default     = "IPV4"
+  description = "IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4"
+  default     = ""
 }
 
 variable firewall_networks {
