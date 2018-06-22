@@ -24,6 +24,11 @@ variable region {
   default     = "us-central1"
 }
 
+variable ip_version {
+  description = "IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4"
+  default     = ""
+}
+
 variable firewall_networks {
   description = "Name of the networks to create firewall rules in"
   type        = "list"

@@ -34,8 +34,9 @@ resource "google_compute_global_forwarding_rule" "https" {
 }
 
 resource "google_compute_global_address" "default" {
-  project = "${var.project}"
-  name    = "${var.name}-address"
+  project    = "${var.project}"
+  name       = "${var.name}-address"
+  ip_version = "${var.ip_version}"
 }
 
 # HTTP proxy when ssl is false
