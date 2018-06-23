@@ -65,16 +65,27 @@ variable url_map {
 }
 
 variable ssl {
-  description = "Set to `true` to enable SSL support, requires variables `private_key` and `certificate`."
+  description = "Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self_link certs"
   default     = false
 }
 
 variable private_key {
-  description = "Content of the private SSL key. Required if ssl is `true`."
+  description = "Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty."
   default     = ""
 }
 
 variable certificate {
-  description = "Content of the SSL certificate. Required if ssl is `true`."
+  description = "Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty."
   default     = ""
+}
+
+variable use_ssl_certificates {
+  description = "If true, use the certificates provided by `ssl_certificates`, otherwise, create cert from `private_key` and `certificate`"
+  default     = false
+}
+
+variable ssl_certificates {
+  type        = "list"
+  description = "SSL cert self_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided."
+  default     = []
 }
