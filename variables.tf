@@ -64,6 +64,11 @@ variable url_map {
   default     = ""
 }
 
+variable http_forward {
+  description = "Set to `false` to disable HTTP port 80 forward"
+  default     = true
+}
+
 variable ssl {
   description = "Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self_link certs"
   default     = false
