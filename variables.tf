@@ -96,7 +96,6 @@ variable ssl_certificates {
 }
 
 variable security_policy {
-  type        = "string"
   description = "The resource URL for the security policy to associate with the backend service"
   default     = ""
 }
