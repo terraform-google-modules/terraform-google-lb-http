@@ -84,6 +84,7 @@ resource "google_compute_backend_service" "default" {
   timeout_sec   = "${element(split(",", element(var.backend_params, count.index)), 3)}"
   backend       = ["${var.backends["${count.index}"]}"]
   health_checks = ["${element(google_compute_http_health_check.default.*.self_link, count.index)}"]
+  security_policy = "${var.security_policy}"
 }
 
 resource "google_compute_http_health_check" "default" {
