@@ -94,3 +94,8 @@ variable ssl_certificates {
   description = "SSL cert self_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided."
   default     = []
 }
+
+variable security_policy {
+  description = "The resource URL for the security policy to associate with the backend service"
+  default     = ""
+}
