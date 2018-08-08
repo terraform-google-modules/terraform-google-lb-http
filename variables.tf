@@ -99,3 +99,8 @@ variable security_policy {
   description = "The resource URL for the security policy to associate with the backend service"
   default     = ""
 }
+
+variable cdn {
+  description = "Set to `true` to enable cdn on backend."
+  default     = "false"
+}
