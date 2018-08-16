@@ -31,7 +31,8 @@ data "template_file" "group-startup-script" {
 }
 
 module "mig1" {
-  source            = "github.com/GoogleCloudPlatform/terraform-google-managed-instance-group"
+  source            = "GoogleCloudPlatform/managed-instance-group/google"
+  version           = "1.1.13"
   region            = "us-west1"
   zone              = "us-west1-b"
   network           = "${var.network}"
@@ -44,7 +45,8 @@ module "mig1" {
 }
 
 module "mig2" {
-  source            = "github.com/GoogleCloudPlatform/terraform-google-managed-instance-group"
+  source            = "GoogleCloudPlatform/managed-instance-group/google"
+  version           = "1.1.13"
   region            = "us-east1"
   zone              = "us-east1-b"
   network           = "${var.network}"

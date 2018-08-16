@@ -1,7 +1,7 @@
 #!/bin/bash -xe
 
 apt-get update
-apt-get install -y apache2 php5
+apt-get install -y apache2 libapache2-mod-php
 
 cat > /var/www/html/index.php <<'EOF'
 <?php

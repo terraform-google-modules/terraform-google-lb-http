@@ -64,7 +64,7 @@ terraform apply
 Open URL of load balancer in browser:
 
 ```
-EXTERNAL_IP=$(terraform output -module gce-lb-http | grep external_ip | cut -d = -f2 | xargs echo -n)
+EXTERNAL_IP=$(terraform output -module gce-lb-http external_ip)
 (until curl -sf -o /dev/null https://${EXTERNAL_IP}; do echo "Waiting for Load Balancer... "; sleep 5 ; done) && open https://${EXTERNAL_IP}
 ```
 

@@ -39,7 +39,8 @@ data "template_file" "group3-east-startup-script" {
 }
 
 module "mig1" {
-  source            = "github.com/GoogleCloudPlatform/terraform-google-managed-instance-group"
+  source            = "GoogleCloudPlatform/managed-instance-group/google"
+  version           = "1.1.13"
   region            = "us-west1"
   zone              = "us-west1-b"
   name              = "group1-west"
@@ -51,7 +52,8 @@ module "mig1" {
 }
 
 module "mig2" {
-  source            = "github.com/GoogleCloudPlatform/terraform-google-managed-instance-group"
+  source            = "GoogleCloudPlatform/managed-instance-group/google"
+  version           = "1.1.13"
   region            = "us-central1"
   zone              = "us-central1-b"
   name              = "group2-central"
@@ -63,7 +65,8 @@ module "mig2" {
 }
 
 module "mig3" {
-  source            = "github.com/GoogleCloudPlatform/terraform-google-managed-instance-group"
+  source            = "GoogleCloudPlatform/managed-instance-group/google"
+  version           = "1.1.13"
   region            = "us-east1"
   zone              = "us-east1-b"
   name              = "group3-east"
