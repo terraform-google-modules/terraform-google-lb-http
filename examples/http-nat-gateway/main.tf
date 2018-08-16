@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-variable region {
+variable "region" {
   default = "us-west1"
 }
 
-provider google {
+provider "google" {
   region = "${var.region}"
 }
 
 data "template_file" "group1-startup-script" {
-  template = "${file("${format("%s/../scripts/gceme.sh.tpl", path.module)}")}"
+  template = "${file("${format("%s/gceme.sh.tpl", path.module)}")}"
 
   vars {
     PROXY_PATH = ""
