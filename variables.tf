@@ -54,6 +54,11 @@ variable backend_params {
   type        = "list"
 }
 
+variable backend_protocol {
+  description = "The protocol with which to talk to the backend service"
+  default     = "HTTP"
+}
+
 variable create_url_map {
   description = "Set to `false` if url_map variable is provided."
   default     = true
