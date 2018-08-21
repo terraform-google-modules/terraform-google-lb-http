@@ -30,13 +30,13 @@ variable ip_version {
 }
 
 variable firewall_networks {
-  description = "Name of the networks to create firewall rules in"
+  description = "Names of the networks to create firewall rules in"
   type        = "list"
   default     = ["default"]
 }
 
 variable firewall_projects {
-  description = "Name of the networks to projects to firewall rules in"
+  description = "Names of the projects to create firewall rules in"
   type        = "list"
   default     = ["default"]
 }
