@@ -43,3 +43,7 @@ module "gce-lb-http" {
     "/,http,80,10",
   ]
 }
+
+output "load-balancer-ip" {
+  value = "${module.gce-lb-http.external_ip}"
+}

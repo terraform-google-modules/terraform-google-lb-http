@@ -1,15 +1,46 @@
 # HTTP Load Balancer Example
 
+[![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&page=editor&tutorial=examples/basic/README.md)
+
+<a href="https://concourse-tf.gcp.solutions/teams/main/pipelines/tf-examples-lb-http-basic" target="_blank">
+<img src="https://concourse-tf.gcp.solutions/api/v1/teams/main/pipelines/tf-examples-lb-http-basic/badge" /></a>
+
 This example creates a global HTTP forwarding rule to forward traffic to instance groups in the us-west1 and us-east1 regions.
 
 **Figure 1.** *diagram of Google Cloud resources*
 
-![architecture diagram](./diagram.png)
+![architecture diagram](https://raw.githubusercontent.com/GoogleCloudPlatform/terraform-google-lb-http/master/examples/basic/diagram.png)
+
+## Install Terraform
+
+1. Install Terraform if it is not already installed (visit [terraform.io](https://terraform.io) for other distributions):
+
+```
+./terraform-install.sh
+```
+
+## Change to the example directory
+
+```
+cd examples/basic/
+```
 
 ## Set up the environment
 
+1. Set the project, replace `YOUR_PROJECT` with your project ID:
+
 ```
-gcloud auth application-default login
+PROJECT=YOUR_PROJECT
+```
+
+```
+gcloud config set project ${PROJECT}
+```
+
+2. Configure the environment for Terraform:
+
+```
+[[ $CLOUD_SHELL ]] || gcloud auth application-default login
 export GOOGLE_PROJECT=$(gcloud config get-value project)
 ```
 
@@ -17,48 +48,52 @@ export GOOGLE_PROJECT=$(gcloud config get-value project)
 
 ```
 terraform init
-terraform plan
 terraform apply
 ```
 
-Open URL of load balancer in browser:
+## Testing
+
+1. Wait for the load balancer to be provisioned:
 
 ```
-EXTERNAL_IP=$(terraform output -module gce-lb-http external_ip)
-(until curl -sf -o /dev/null http://${EXTERNAL_IP}; do echo "Waiting for Load Balancer... "; sleep 5 ; done) && open http://${EXTERNAL_IP}
+./test.sh
 ```
 
-> Wait for all instance to become healthy per output of: `gcloud compute backend-services get-health group-http-lb-backend-0 --global`
+2. Open the URL of the load balancer in your browser:
+
+```
+echo http://$(terraform output load-balancer-ip)
+```
 
 You should see the instance details from the region closest to you.
 
-### Test balancing to other region
+## Test balancing to other region
 
 Resize the instance group of your closest region to cause traffic to flow to the other group.
 
-If you are getting traffic from `group1` (us-west1) from `http://${EXTERNAL_IP}`, scale group 1 to 0 instances:
+1. If you are getting traffic from `group1` (us-west1) from `http://${EXTERNAL_IP}`, scale group 1 to 0 instances:
 
 ```
 TF_VAR_group1_size=0 terraform apply
 ```
 
-Otherwise scale group 2 (us-east1) to 0 instances:
+2. Otherwise scale group 2 (us-east1) to 0 instances:
 
 ```
 TF_VAR_group2_size=0 terraform apply
 ```
 
-Open the external IP again and verify you see traffic from the other group:
+3. Open the external IP again and verify you see traffic from the other group:
 
 ```
-open http://${EXTERNAL_IP}
+echo http://${EXTERNAL_IP}
 ```
 
 > It may take several minutes for the global load balancer to be created and the backends to register.
 
 ## Cleanup
 
-Remove all resources created by terraform:
+1. Remove all resources created by terraform:
 
 ```
 terraform destroy
