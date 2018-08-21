@@ -35,6 +35,12 @@ variable firewall_networks {
   default     = ["default"]
 }
 
+variable firewall_projects {
+  description = "Name of the networks to projects to firewall rules in"
+  type        = "list"
+  default     = ["default"]
+}
+
 variable name {
   description = "Name for the forwarding rule and prefix for supporting resources"
 }
