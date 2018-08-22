@@ -1,0 +1,263 @@
+# Copyright 2017 Google Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+ 
+jobs:
+
+###
+# run-example-lb-http-basic-pr
+###
+- name: run-example-lb-http-basic-pr
+  serial: true
+  plan:
+  - get: git
+    trigger: false
+  
+  - get: git-pull-requests
+    trigger: true
+    version: every
+  
+  - put: git-pull-requests
+    params:
+      path: git-pull-requests
+      status: pending
+
+  - task: run-example-upgrade
+    params:
+      git_src: git
+      git_target: git-pull-requests
+      service_account_json: ((pr-project.service_account_json))
+      project_id: ((pr-project.project_id))
+      backend_bucket: {{backend_bucket}}
+      backend_prefix: terraform-google-lb-http/
+      env_name: tf-ci-lb-http-basic-pr
+      example_dir: examples/basic
+      region: us-west1
+      zone: us-west1-b
+      TF_VAR_network_name: tf-ci-lb-http-basic-pr
+      TF_VAR_region: us-west1
+      TF_VAR_zone: us-west1-b
+    on_failure:
+      put: git-pull-requests
+      params:
+        path: git-pull-requests
+        status: failure
+    file: git/tests/tasks/run-example.yaml
+
+  - task: run-example-clean-apply
+    params:
+      git_src: git-pull-requests
+      git_target: git-pull-requests
+      service_account_json: ((pr-project.service_account_json))
+      project_id: ((pr-project.project_id))
+      backend_bucket: {{backend_bucket}}
+      backend_prefix: terraform-google-lb-http/
+      env_name: tf-ci-lb-http-basic-pr
+      example_dir: examples/basic
+      region: us-west1
+      zone: us-west1-b
+      TF_VAR_network_name: tf-ci-lb-http-basic-pr
+      TF_VAR_region: us-west1
+      TF_VAR_zone: us-west1-b
+    on_failure:
+      put: git-pull-requests
+      params:
+        path: git-pull-requests
+        status: failure
+    file: git/tests/tasks/run-example.yaml
+
+###
+# run-example-lb-http-nat-gw-pr
+###
+- name: run-example-lb-http-nat-gw-pr
+  serial: true
+  plan:
+  - get: git
+    trigger: false
+  
+  - get: git-pull-requests
+    trigger: true
+    version: every
+  
+  - put: git-pull-requests
+    params:
+      path: git-pull-requests
+      status: pending
+
+  - task: run-example-upgrade
+    params:
+      git_src: git
+      git_target: git-pull-requests
+      service_account_json: ((pr-project.service_account_json))
+      project_id: ((pr-project.project_id))
+      backend_bucket: {{backend_bucket}}
+      backend_prefix: terraform-google-lb-http/
+      env_name: tf-ci-lb-http-nat-gw-pr
+      example_dir: examples/http-nat-gateway
+      region: us-central1
+      zone: us-central1-b
+      TF_VAR_network_name: tf-ci-lb-http-nat-gw-pr
+      TF_VAR_region: us-central1
+      TF_VAR_zone: us-central1-b
+    on_failure:
+      put: git-pull-requests
+      params:
+        path: git-pull-requests
+        status: failure
+    file: git/tests/tasks/run-example.yaml
+
+  - task: run-example-clean-apply
+    params:
+      git_src: git-pull-requests
+      git_target: git-pull-requests
+      service_account_json: ((pr-project.service_account_json))
+      project_id: ((pr-project.project_id))
+      backend_bucket: {{backend_bucket}}
+      backend_prefix: terraform-google-lb-http/
+      env_name: tf-ci-lb-http-nat-gw-pr
+      example_dir: examples/http-nat-gateway
+      region: us-central1
+      zone: us-central1-b
+      TF_VAR_network_name: tf-ci-lb-http-nat-gw-pr
+      TF_VAR_region: us-central1
+      TF_VAR_zone: us-central1-b
+    on_failure:
+      put: git-pull-requests
+      params:
+        path: git-pull-requests
+        status: failure
+    file: git/tests/tasks/run-example.yaml
+
+###
+# run-example-lb-https-content-pr
+###
+- name: run-example-lb-https-content-pr
+  serial: true
+  plan:
+  - get: git
+    trigger: false
+  
+  - get: git-pull-requests
+    trigger: true
+    version: every
+  
+  - put: git-pull-requests
+    params:
+      path: git-pull-requests
+      status: pending
+
+  - task: run-example-upgrade
+    params:
+      git_src: git
+      git_target: git-pull-requests
+      service_account_json: ((pr-project.service_account_json))
+      project_id: ((pr-project.project_id))
+      backend_bucket: {{backend_bucket}}
+      backend_prefix: terraform-google-lb-http/
+      env_name: tf-ci-lb-https-content-pr
+      example_dir: examples/https-content
+      region: us-central1
+      zone: us-central1-b
+      TF_VAR_network_name: tf-ci-lb-https-content-pr
+      TF_VAR_region: us-central1
+      TF_VAR_zone: us-central1-b
+      TF_VAR_group1_region: us-west1
+      TF_VAR_grpup1_zone: us-west1-b
+      TF_VAR_group2_region: us-central1
+      TF_VAR_grpup2_zone: us-central1-b
+      TF_VAR_group3_region: us-east1
+      TF_VAR_grpup3_zone: us-east1-b
+    on_failure:
+      put: git-pull-requests
+      params:
+        path: git-pull-requests
+        status: failure
+    file: git/tests/tasks/run-example.yaml
+
+  - task: run-example-clean-apply
+    params:
+      git_src: git-pull-requests
+      git_target: git-pull-requests
+      service_account_json: ((pr-project.service_account_json))
+      project_id: ((pr-project.project_id))
+      backend_bucket: {{backend_bucket}}
+      backend_prefix: terraform-google-lb-http/
+      env_name: tf-ci-lb-https-content-pr
+      example_dir: examples/http-nat-gateway
+      region: us-central1
+      zone: us-central1-b
+      TF_VAR_network_name: tf-ci-lb-https-content-pr
+      TF_VAR_region: us-central1
+      TF_VAR_zone: us-central1-b
+      TF_VAR_group1_region: us-west1
+      TF_VAR_grpup1_zone: us-west1-b
+      TF_VAR_group2_region: us-central1
+      TF_VAR_grpup2_zone: us-central1-b
+      TF_VAR_group3_region: us-east1
+      TF_VAR_grpup3_zone: us-east1-b
+    on_failure:
+      put: git-pull-requests
+      params:
+        path: git-pull-requests
+        status: failure
+    file: git/tests/tasks/run-example.yaml
+
+###
+# Updates PR with Passed state if all jobs pass
+###
+- name: update-pr-passed
+  plan:
+  - get: git-pull-requests
+    passed:
+    - run-example-lb-http-basic-pr
+    - run-example-lb-http-nat-gw-pr
+    - run-example-lb-https-content-pr
+    trigger: true
+    version: every
+
+  - put: git-pull-requests
+    params:
+      path: git-pull-requests
+      status: success
+
+###
+# Resource types
+###
+resource_types:
+- name: git
+  type: docker-image
+  source:
+    repository: concourse/git-resource
+
+- name: pull-request
+  type: docker-image
+  source:
+    repository: jtarchie/pr
+
+###
+# Resources
+###
+resources:
+- name: git
+  type: git
+  source:
+    uri: ((uri))
+    branch: ((branch))
+
+- name: git-pull-requests
+  type: pull-request
+  source:
+    access_token: ((common.github_access_token))
+    repo:         ((github_owner))/((github_repo))
+    base:         ((branch))
+    label:        ok-to-test
