@@ -291,6 +291,94 @@ jobs:
       run: {path: /opt/run-example.sh}
 
 ###
+# run-example-lb-https-gke-pr
+###
+- name: run-example-lb-https-gke-pr
+  serial: true
+  plan:
+  - get: git
+    trigger: false
+  
+  - get: git-pull-requests
+    trigger: true
+    version: every
+  
+  - put: git-pull-requests
+    params:
+      path: git-pull-requests
+      status: pending
+
+  - task: run-example-upgrade
+    params:
+      git_src: git
+      git_target: git-pull-requests
+      service_account_json: ((pr-project.service_account_json))
+      project_id: ((pr-project.project_id))
+      backend_bucket: {{backend_bucket}}
+      backend_prefix: terraform-google-lb-http/
+      env_name: tf-ci-lb-https-gke-pr
+      example_dir: examples/https-gke
+      region: us-central1
+      zone: us-central1-f
+      TF_VAR_network_name: tf-ci-lb-https-gke-pr
+      TF_VAR_region: us-central1
+      TF_VAR_zone: us-central1-f
+    on_failure:
+      put: git-pull-requests
+      params:
+        path: git-pull-requests
+        status: failure
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: gcr.io/cloud-solutions-group/tf-run-example
+          tag: latest
+      inputs:
+      - name: git
+      - name: git-pull-requests
+        optional: true
+      outputs:
+      - name: email
+      run: {path: /opt/run-example.sh}
+
+  - task: run-example-clean-apply
+    params:
+      git_src: git-pull-requests
+      git_target: git-pull-requests
+      service_account_json: ((pr-project.service_account_json))
+      project_id: ((pr-project.project_id))
+      backend_bucket: {{backend_bucket}}
+      backend_prefix: terraform-google-lb-http/
+      env_name: tf-ci-lb-https-gke-pr
+      example_dir: examples/http-nat-gateway
+      region: us-central1
+      zone: us-central1-f
+      TF_VAR_network_name: tf-ci-lb-https-gke-pr
+      TF_VAR_region: us-central1
+      TF_VAR_zone: us-central1-f
+    on_failure:
+      put: git-pull-requests
+      params:
+        path: git-pull-requests
+        status: failure
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: gcr.io/cloud-solutions-group/tf-run-example
+          tag: latest
+      inputs:
+      - name: git
+      - name: git-pull-requests
+        optional: true
+      outputs:
+      - name: email
+      run: {path: /opt/run-example.sh}
+
+###
 # Updates PR with Passed state if all jobs pass
 ###
 - name: update-pr-passed
@@ -300,6 +388,7 @@ jobs:
     - run-example-lb-http-basic-pr
     - run-example-lb-http-nat-gw-pr
     - run-example-lb-https-content-pr
+    - run-example-lb-https-gke-pr
     trigger: true
     version: every
 
