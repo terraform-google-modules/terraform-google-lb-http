@@ -14,40 +14,49 @@
  * limitations under the License.
  */
 
-variable service_port {
+variable "name" {
+  default = "tf-lb-https-gke"
+}
+
+variable "service_port" {
   default = "30000"
 }
 
-variable service_port_name {
+variable "service_port_name" {
   default = "http"
 }
 
-variable target_tags {
+variable "target_tags" {
   default = "gke-dev"
 }
 
-variable backend {}
+variable "backend" {}
 
-resource "random_id" "assets-bucket" {
-  prefix      = "terraform-static-content-"
-  byte_length = 2
-}
+data "google_client_config" "current" {}
 
-variable region {
+variable "region" {
   default = "us-central1"
 }
 
-provider google {
+variable "zone" {
+  default = "us-central1-f"
+}
+
+variable "network_name" {
+  default = "default"
+}
+
+provider "google" {
   region = "${var.region}"
 }
 
-module "gce-lb-http" {
-  // source        = "github.com/GoogleCloudPlatform/terraform-google-lb-http"
-  source      = "../../"
-  name        = "group-http-lb"
-  ssl         = true
-  private_key = "${tls_private_key.example.private_key_pem}"
-  certificate = "${tls_self_signed_cert.example.cert_pem}"
+module "gce-lb-https" {
+  source            = "../../"
+  name              = "${var.name}"
+  ssl               = true
+  private_key       = "${tls_private_key.example.private_key_pem}"
+  certificate       = "${tls_self_signed_cert.example.cert_pem}"
+  firewall_networks = ["${var.network_name}"]
 
   // Make sure when you create the cluster that you provide the `--tags` argument to add the appropriate `target_tags` referenced in the http module. 
   target_tags = ["${var.target_tags}"]
@@ -78,8 +87,8 @@ module "gce-lb-http" {
 
 resource "google_compute_url_map" "my-url-map" {
   // note that this is the name of the load balancer
-  name            = "my-url-map"
-  default_service = "${module.gce-lb-http.backend_services[0]}"
+  name            = "${var.name}"
+  default_service = "${module.gce-lb-https.backend_services[0]}"
 
   host_rule = {
     hosts        = ["*"]
@@ -88,13 +97,18 @@ resource "google_compute_url_map" "my-url-map" {
 
   path_matcher = {
     name            = "allpaths"
-    default_service = "${module.gce-lb-http.backend_services[0]}"
+    default_service = "${module.gce-lb-https.backend_services[0]}"
 
     path_rule {
       paths   = ["/assets", "/assets/*"]
       service = "${google_compute_backend_bucket.assets.self_link}"
     }
   }
+}
+
+resource "random_id" "assets-bucket" {
+  prefix      = "${data.google_client_config.current.project}-lb-assets-"
+  byte_length = 2
 }
 
 resource "google_compute_backend_bucket" "assets" {
@@ -126,4 +140,8 @@ resource "google_storage_object_acl" "image-acl" {
   bucket         = "${google_storage_bucket.assets.name}"
   object         = "${google_storage_bucket_object.image.name}"
   predefined_acl = "publicread"
+}
+
+output "load-balancer-ip" {
+  value = "${module.gce-lb-https.external_ip}"
 }

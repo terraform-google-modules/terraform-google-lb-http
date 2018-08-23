@@ -14,9 +14,9 @@
 
 jobs:
 ###
-# run-example-lb-https-content
+# run-example-lb-https-gke
 ###
-- name: run-example-lb-https-content
+- name: run-example-lb-https-gke
   serial: true
   plan:
   - get: once-a-day
@@ -25,7 +25,7 @@ jobs:
   - get: git
     trigger: false
 
-  - task: run-example-lb-https-content
+  - task: run-example-lb-https-gke
     params:
       git_src: git
       git_target: git
@@ -33,17 +33,24 @@ jobs:
       project_id: ((regression-project.project_id))
       backend_bucket: {{backend_bucket}}
       backend_prefix: terraform-google-lb-http/
-      env_name: tf-ci-lb-https-content
-      example_dir: examples/https-content
-      region: us-west1
-      zone: us-west1-b
-      TF_VAR_network_name: tf-ci-lb-https-content
-      TF_VAR_group1_region: us-west1
-      TF_VAR_grpup1_zone: us-west1-b
-      TF_VAR_group2_region: us-central1
-      TF_VAR_grpup2_zone: us-central1-b
-      TF_VAR_group3_region: us-east1
-      TF_VAR_grpup3_zone: us-east1-b
+      env_name: tf-ci-lb-https-gke
+      example_dir: examples/https-gke
+      infra_dir: git/examples/https-gke/gke-node-port
+      region: us-central1
+      zone: us-central1-b
+      TF_VAR_network_name: tf-ci-lb-https-gke
+      TF_VAR_region: us-central1
+      TF_VAR_zone: us-central1-b
+      init_script: |
+        # Export Terraform vars from infra state
+        cd gke-node-port
+        cat > ../terraform.tfvars <<EOF
+        backend      = "$(terraform output instance_group)"
+        target_tags  = "$(terraform output node_tag)"
+        network_name = "$(terraform output network_name)"
+        EOF
+        cat ../terraform.tfvars
+        
     on_failure:
       put: send-an-email
       params:

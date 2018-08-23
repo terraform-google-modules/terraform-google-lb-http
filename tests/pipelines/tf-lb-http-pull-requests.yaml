@@ -52,7 +52,20 @@ jobs:
       params:
         path: git-pull-requests
         status: failure
-    file: git/tests/tasks/run-example.yaml
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: gcr.io/cloud-solutions-group/tf-run-example
+          tag: latest
+      inputs:
+      - name: git
+      - name: git-pull-requests
+        optional: true
+      outputs:
+      - name: email
+      run: {path: /opt/run-example.sh}
 
   - task: run-example-clean-apply
     params:
@@ -74,7 +87,20 @@ jobs:
       params:
         path: git-pull-requests
         status: failure
-    file: git/tests/tasks/run-example.yaml
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: gcr.io/cloud-solutions-group/tf-run-example
+          tag: latest
+      inputs:
+      - name: git
+      - name: git-pull-requests
+        optional: true
+      outputs:
+      - name: email
+      run: {path: /opt/run-example.sh}
 
 ###
 # run-example-lb-http-nat-gw-pr
@@ -114,7 +140,20 @@ jobs:
       params:
         path: git-pull-requests
         status: failure
-    file: git/tests/tasks/run-example.yaml
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: gcr.io/cloud-solutions-group/tf-run-example
+          tag: latest
+      inputs:
+      - name: git
+      - name: git-pull-requests
+        optional: true
+      outputs:
+      - name: email
+      run: {path: /opt/run-example.sh}
 
   - task: run-example-clean-apply
     params:
@@ -136,7 +175,20 @@ jobs:
       params:
         path: git-pull-requests
         status: failure
-    file: git/tests/tasks/run-example.yaml
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: gcr.io/cloud-solutions-group/tf-run-example
+          tag: latest
+      inputs:
+      - name: git
+      - name: git-pull-requests
+        optional: true
+      outputs:
+      - name: email
+      run: {path: /opt/run-example.sh}
 
 ###
 # run-example-lb-https-content-pr
@@ -182,7 +234,20 @@ jobs:
       params:
         path: git-pull-requests
         status: failure
-    file: git/tests/tasks/run-example.yaml
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: gcr.io/cloud-solutions-group/tf-run-example
+          tag: latest
+      inputs:
+      - name: git
+      - name: git-pull-requests
+        optional: true
+      outputs:
+      - name: email
+      run: {path: /opt/run-example.sh}
 
   - task: run-example-clean-apply
     params:
@@ -210,7 +275,20 @@ jobs:
       params:
         path: git-pull-requests
         status: failure
-    file: git/tests/tasks/run-example.yaml
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: gcr.io/cloud-solutions-group/tf-run-example
+          tag: latest
+      inputs:
+      - name: git
+      - name: git-pull-requests
+        optional: true
+      outputs:
+      - name: email
+      run: {path: /opt/run-example.sh}
 
 ###
 # Updates PR with Passed state if all jobs pass
