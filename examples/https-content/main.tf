@@ -124,11 +124,11 @@ module "gce-lb-https" {
   }
 
   backend_params = [
-    // health check path, port name, port number, timeout seconds.
-    "/,${module.mig1.service_port_name},${module.mig1.service_port},60,10",
-    "/,${module.mig1.service_port_name},${module.mig1.service_port},60,10",
-    "/,${module.mig2.service_port_name},${module.mig2.service_port},60,10",
-    "/,${module.mig3.service_port_name},${module.mig3.service_port},60,10",
+    // health check path, port name, port number, timeout seconds, interval seconds.
+    "/,${module.mig1.service_port_name},${module.mig1.service_port},10,60",
+    "/,${module.mig1.service_port_name},${module.mig1.service_port},10,60",
+    "/,${module.mig2.service_port_name},${module.mig2.service_port},10,60",
+    "/,${module.mig3.service_port_name},${module.mig3.service_port},10,60",
   ]
 }
 

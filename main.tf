@@ -95,8 +95,8 @@ resource "google_compute_http_health_check" "default" {
   name               = "${var.name}-backend-${count.index}"
   request_path       = "${element(split(",", element(var.backend_params, count.index)), 0)}"
   port               = "${element(split(",", element(var.backend_params, count.index)), 2)}"
-  timeout_sec        = "${element(split(",", element(var.backend_params, count.index)), 4)}"
-  check_interval_sec = "${element(split(",", element(var.backend_params, count.index)), 3)}"
+  timeout_sec        = "${element(split(",", element(var.backend_params, count.index)), 3)}"
+  check_interval_sec = "${length(split(",", element(var.backend_params, count.index))) < 5 ? 60 : element(split(",", element(var.backend_params, count.index)), 4)}"
 }
 
 # Create firewall rule for each backend in each network specified, uses mod behavior of element().
