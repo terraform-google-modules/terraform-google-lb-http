@@ -34,7 +34,7 @@ jobs:
       backend_bucket: {{backend_bucket}}
       backend_prefix: terraform-google-lb-http/
       env_name: tf-ci-lb-https-multi-cert
-      example_dir: examples/https-multiple-certs
+      example_dir: examples/multiple-certs
       region: us-central1
       zone: us-central1-c
       TF_VAR_network_name: tf-ci-lb-https-multi-cert

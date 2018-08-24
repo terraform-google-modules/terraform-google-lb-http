@@ -401,9 +401,9 @@ jobs:
       run: {path: /opt/run-example.sh}
 
 ###
-# run-example-lb-https-content-pr
+# run-example-lb-https-multi-cert-pr
 ###
-- name: run-example-lb-https-content-pr
+- name: run-example-lb-https-multi-cert-pr
   serial: true
   plan:
   - get: git
@@ -426,11 +426,11 @@ jobs:
       project_id: ((pr-project.project_id))
       backend_bucket: {{backend_bucket}}
       backend_prefix: terraform-google-lb-http/
-      env_name: tf-ci-lb-https-content-pr
-      example_dir: examples/https-content
+      env_name: tf-ci-lb-https-multi-cert-pr
+      example_dir: examples/multiple-certs
       region: us-central1
       zone: us-central1-b
-      TF_VAR_network_name: tf-ci-lb-https-content-pr
+      TF_VAR_network_name: tf-ci-lb-https-multi-cert-pr
       TF_VAR_region: us-central1
       TF_VAR_zone: us-central1-b
       TF_VAR_group1_region: us-west1
@@ -467,11 +467,11 @@ jobs:
       project_id: ((pr-project.project_id))
       backend_bucket: {{backend_bucket}}
       backend_prefix: terraform-google-lb-http/
-      env_name: tf-ci-lb-https-content-pr
-      example_dir: examples/http-nat-gateway
+      env_name: tf-ci-lb-https-multi-cert-pr
+      example_dir: examples/multiple-certs
       region: us-central1
       zone: us-central1-b
-      TF_VAR_network_name: tf-ci-lb-https-content-pr
+      TF_VAR_network_name: tf-ci-lb-https-multi-cert-pr
       TF_VAR_region: us-central1
       TF_VAR_zone: us-central1-b
       TF_VAR_group1_region: us-west1
@@ -511,7 +511,7 @@ jobs:
     - run-example-lb-http-nat-gw-pr
     - run-example-lb-https-content-pr
     - run-example-lb-https-gke-pr
-    - run-example-lb-https-multi-cert
+    - run-example-lb-https-multi-cert-pr
     trigger: true
     version: every
 
