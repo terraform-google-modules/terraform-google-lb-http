@@ -258,7 +258,7 @@ jobs:
       backend_bucket: {{backend_bucket}}
       backend_prefix: terraform-google-lb-http/
       env_name: tf-ci-lb-https-con-pr
-      example_dir: examples/http-nat-gateway
+      example_dir: examples/https-content
       region: us-central1
       zone: us-central1-b
       TF_VAR_network_name: tf-ci-lb-https-con-pr
@@ -364,7 +364,7 @@ jobs:
       backend_bucket: {{backend_bucket}}
       backend_prefix: terraform-google-lb-http/
       env_name: tf-ci-lb-https-gke-pr
-      example_dir: examples/http-nat-gateway
+      example_dir: examples/https-gke
       infra_dir: git/examples/https-gke/gke-node-port
       region: us-central1
       zone: us-central1-f
