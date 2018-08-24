@@ -26,7 +26,7 @@ variable "service_port_name" {
   default = "http"
 }
 
-variable "target_tag" {
+variable "target_tags" {
   default = "tf-lb-https-gke"
 }
 

@@ -47,7 +47,7 @@ jobs:
         cd gke-node-port
         cat > ../terraform.tfvars <<EOF
         backend      = "$(terraform output instance_group)"
-        target_tag   = "$(terraform output node_tag)"
+        target_tags  = "$(terraform output node_tag)"
         network_name = "$(terraform output network_name)"
         EOF
         cat ../terraform.tfvars
