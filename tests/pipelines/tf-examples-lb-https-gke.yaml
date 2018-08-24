@@ -35,7 +35,7 @@ jobs:
       backend_prefix: terraform-google-lb-http/
       env_name: tf-ci-lb-https-gke
       example_dir: examples/https-gke
-      infra_dir: git/examples/https-gke/gke-node-port
+      infra_dir: examples/https-gke/gke-node-port
       region: us-central1
       zone: us-central1-b
       TF_VAR_network_name: tf-ci-lb-https-gke
@@ -45,10 +45,14 @@ jobs:
       init_script: |
         # Export Terraform vars from infra state
         cd gke-node-port
+        MIG=$(terraform output instance_group)
+        NODE_TAG=$(terraform output node_tag)
+        NETWORK_NAME=$(terraform output network_name)
+        
         cat > ../terraform.tfvars <<EOF
-        backend      = "$(terraform output instance_group)"
-        target_tags  = "$(terraform output node_tag)"
-        network_name = "$(terraform output network_name)"
+        backend      = "${MIG}"
+        target_tags  = "${NODE_TAG}"
+        network_name = "${NETWORK_NAME}"
         EOF
         cat ../terraform.tfvars
         
