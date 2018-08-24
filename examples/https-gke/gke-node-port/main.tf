@@ -47,6 +47,10 @@ resource "google_container_cluster" "default" {
 
   // Use ABAC until official Kubernetes plugin supports RBAC.
   enable_legacy_abac = true
+
+  node_config = {
+    tags = ["${var.node_tag}"]
+  }
 }
 
 provider "kubernetes" {

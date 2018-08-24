@@ -26,8 +26,8 @@ variable "service_port_name" {
   default = "http"
 }
 
-variable "target_tags" {
-  default = "gke-dev"
+variable "target_tag" {
+  default = "tf-lb-https-gke"
 }
 
 variable "backend" {}
