@@ -191,9 +191,9 @@ jobs:
       run: {path: /opt/run-example.sh}
 
 ###
-# run-example-lb-https-content-pr
+# run-example-lb-https-con-pr
 ###
-- name: run-example-lb-https-content-pr
+- name: run-example-lb-https-con-pr
   serial: true
   plan:
   - get: git
@@ -216,11 +216,11 @@ jobs:
       project_id: ((pr-project.project_id))
       backend_bucket: {{backend_bucket}}
       backend_prefix: terraform-google-lb-http/
-      env_name: tf-ci-lb-https-content-pr
+      env_name: tf-ci-lb-https-con-pr
       example_dir: examples/https-content
       region: us-central1
       zone: us-central1-b
-      TF_VAR_network_name: tf-ci-lb-https-content-pr
+      TF_VAR_network_name: tf-ci-lb-https-con-pr
       TF_VAR_region: us-central1
       TF_VAR_zone: us-central1-b
       TF_VAR_group1_region: us-west1
@@ -257,11 +257,11 @@ jobs:
       project_id: ((pr-project.project_id))
       backend_bucket: {{backend_bucket}}
       backend_prefix: terraform-google-lb-http/
-      env_name: tf-ci-lb-https-content-pr
+      env_name: tf-ci-lb-https-con-pr
       example_dir: examples/http-nat-gateway
       region: us-central1
       zone: us-central1-b
-      TF_VAR_network_name: tf-ci-lb-https-content-pr
+      TF_VAR_network_name: tf-ci-lb-https-con-pr
       TF_VAR_region: us-central1
       TF_VAR_zone: us-central1-b
       TF_VAR_group1_region: us-west1
@@ -318,6 +318,7 @@ jobs:
       backend_prefix: terraform-google-lb-http/
       env_name: tf-ci-lb-https-gke-pr
       example_dir: examples/https-gke
+      infra_dir: git/examples/https-gke/gke-node-port
       region: us-central1
       zone: us-central1-f
       TF_VAR_network_name: tf-ci-lb-https-gke-pr
@@ -364,6 +365,7 @@ jobs:
       backend_prefix: terraform-google-lb-http/
       env_name: tf-ci-lb-https-gke-pr
       example_dir: examples/http-nat-gateway
+      infra_dir: git/examples/https-gke/gke-node-port
       region: us-central1
       zone: us-central1-f
       TF_VAR_network_name: tf-ci-lb-https-gke-pr
@@ -509,7 +511,7 @@ jobs:
     passed:
     - run-example-lb-http-basic-pr
     - run-example-lb-http-nat-gw-pr
-    - run-example-lb-https-content-pr
+    - run-example-lb-https-con-pr
     - run-example-lb-https-gke-pr
     - run-example-lb-https-multi-cert-pr
     trigger: true
