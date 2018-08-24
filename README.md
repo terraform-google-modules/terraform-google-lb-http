@@ -1,5 +1,8 @@
 # Global HTTP Load Balancer Terraform Module
 
+<a href="https://concourse-tf.gcp.solutions/teams/main/pipelines/tf-lb-http-regression" target="_blank">
+<img src="https://concourse-tf.gcp.solutions/api/v1/teams/main/pipelines/tf-lb-http-regression/badge" /></a>
+
 Modular Global HTTP Load Balancer for GCE using forwarding rules.
 
 ## Usage
