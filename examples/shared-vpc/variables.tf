@@ -39,10 +39,7 @@ variable subnetwork {
   description = "ID of subnetwork to launch instances on"
 }
 
-variable group1_size {
-  default = "2"
-}
-
-variable group2_size {
-  default = "2"
+variable group_size {
+  default     = "2"
+  description = "Size of managed instance group to create"
 }

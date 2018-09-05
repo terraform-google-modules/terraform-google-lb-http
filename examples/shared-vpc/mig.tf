@@ -31,9 +31,9 @@ module "mig1" {
   project               = "${var.service_project}"
   subnetwork_project    = "${var.host_project}"
   service_account_email = "${var.service_account_email}"
-  name                  = "group1"
-  size                  = "${var.group1_size}"
-  target_tags           = ["allow-group1"]
+  name                  = "shared-vpc-mig"
+  size                  = "${var.group_size}"
+  target_tags           = ["allow-shared-vpc-mig"]
   service_port          = 80
   service_port_name     = "http"
   startup_script        = "${data.template_file.group-startup-script.rendered}"
