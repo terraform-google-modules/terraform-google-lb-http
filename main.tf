@@ -99,7 +99,7 @@ resource "google_compute_http_health_check" "default" {
 
 resource "google_compute_firewall" "default-hc" {
   count         = "${length(var.firewall_networks)}"
-  project       = "${var.project}"
+  project       = "${var.firewall_projects[0] == "default" ? var.project : element(var.firewall_projects, count.index)}"
   count         = "${length(var.backend_params)}"
   name          = "${var.name}-hc-${count.index}"
   network       = "${element(var.firewall_networks, count.index)}"
