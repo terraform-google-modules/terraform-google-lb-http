@@ -18,6 +18,7 @@ jobs:
 ###
 - name: run-example-lb-https-multi-cert
   serial: true
+  build_logs_to_retain: 30
   plan:
   - get: once-a-day
     trigger: true

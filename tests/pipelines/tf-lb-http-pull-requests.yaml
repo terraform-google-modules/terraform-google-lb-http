@@ -19,6 +19,7 @@ jobs:
 ###
 - name: run-example-lb-http-basic-pr
   serial: true
+  build_logs_to_retain: 30
   plan:
   - get: git
     trigger: false
