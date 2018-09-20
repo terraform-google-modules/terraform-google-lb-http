@@ -18,6 +18,7 @@ jobs:
 ###
 - name: pipeline-lb-http-basic
   serial: true
+  build_logs_to_retain: 10
   plan:
   - get: every-10m
     trigger: true
@@ -39,6 +40,7 @@ jobs:
 ###
 - name: pipeline-lb-http-nat-gw
   serial: true
+  build_logs_to_retain: 10
   plan:
   - get: every-10m
     trigger: true
@@ -60,6 +62,7 @@ jobs:
 ###
 - name: pipeline-lb-https-content
   serial: true
+  build_logs_to_retain: 10
   plan:
   - get: every-10m
     trigger: true
@@ -81,6 +84,7 @@ jobs:
 ###
 - name: pipeline-lb-https-gke
   serial: true
+  build_logs_to_retain: 10
   plan:
   - get: every-10m
     trigger: true
@@ -102,6 +106,7 @@ jobs:
 ###
 - name: pipeline-lb-https-multi-cert
   serial: true
+  build_logs_to_retain: 10
   plan:
   - get: every-10m
     trigger: true
