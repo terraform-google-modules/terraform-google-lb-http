@@ -40,7 +40,7 @@ data "template_file" "group3-startup-script" {
 
 module "mig1" {
   source            = "GoogleCloudPlatform/managed-instance-group/google"
-  version           = "1.1.13"
+  version           = "1.1.14"
   region            = "${var.group1_region}"
   zone              = "${var.group1_zone}"
   name              = "${var.network_name}-group1"
@@ -55,7 +55,7 @@ module "mig1" {
 
 module "mig2" {
   source            = "GoogleCloudPlatform/managed-instance-group/google"
-  version           = "1.1.13"
+  version           = "1.1.14"
   region            = "${var.group2_region}"
   zone              = "${var.group2_zone}"
   name              = "${var.network_name}-group2"
@@ -70,7 +70,7 @@ module "mig2" {
 
 module "mig3" {
   source            = "GoogleCloudPlatform/managed-instance-group/google"
-  version           = "1.1.13"
+  version           = "1.1.14"
   region            = "${var.group3_region}"
   zone              = "${var.group3_zone}"
   name              = "${var.network_name}-group3"

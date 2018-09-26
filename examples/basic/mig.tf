@@ -24,7 +24,7 @@ data "template_file" "group-startup-script" {
 
 module "mig1" {
   source            = "GoogleCloudPlatform/managed-instance-group/google"
-  version           = "1.1.13"
+  version           = "1.1.14"
   zonal             = false
   region            = "${var.group1_region}"
   name              = "${var.network_name}-group1"
@@ -39,7 +39,7 @@ module "mig1" {
 
 module "mig2" {
   source            = "GoogleCloudPlatform/managed-instance-group/google"
-  version           = "1.1.13"
+  version           = "1.1.14"
   zonal             = false
   region            = "${var.group2_region}"
   name              = "${var.network_name}-group2"

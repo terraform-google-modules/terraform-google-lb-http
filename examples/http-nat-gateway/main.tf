@@ -53,7 +53,7 @@ data "template_file" "group1-startup-script" {
 
 module "mig1" {
   source            = "GoogleCloudPlatform/managed-instance-group/google"
-  version           = "1.1.13"
+  version           = "1.1.14"
   region            = "${var.region}"
   zone              = "${var.zone}"
   name              = "${var.network_name}"
