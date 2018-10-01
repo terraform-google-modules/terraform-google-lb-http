@@ -60,6 +60,12 @@ variable backend_params {
   type        = "list"
 }
 
+variable host {
+  description = "HTTP header containing the host to reach for the http check, leave blank to use default value"
+  type       = "string"
+  default    = ""
+}
+
 variable backend_protocol {
   description = "The protocol with which to talk to the backend service"
   default     = "HTTP"
