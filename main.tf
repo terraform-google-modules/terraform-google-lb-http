@@ -95,6 +95,7 @@ resource "google_compute_http_health_check" "default" {
   name         = "${var.name}-backend-${count.index}"
   request_path = "${element(split(",", element(var.backend_params, count.index)), 0)}"
   port         = "${element(split(",", element(var.backend_params, count.index)), 2)}"
+  host         = "${var.host}"
 }
 
 # Create firewall rule for each backend in each network specified, uses mod behavior of element().
