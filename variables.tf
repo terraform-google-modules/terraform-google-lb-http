@@ -106,6 +106,11 @@ variable ssl_certificates {
   default     = []
 }
 
+variable ssl_policy {
+  description = "A reference to the SslPolicy resource that will be associated with the TargetHttpsProxy resource"
+  default     = ""
+}
+
 variable security_policy {
   description = "The resource URL for the security policy to associate with the backend service"
   default     = ""

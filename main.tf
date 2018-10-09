@@ -55,6 +55,7 @@ resource "google_compute_target_https_proxy" "default" {
   name             = "${var.name}-https-proxy"
   url_map          = "${element(compact(concat(list(var.url_map), google_compute_url_map.default.*.self_link)), 0)}"
   ssl_certificates = ["${compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default.*.self_link))}"]
+  ssl_policy       = "${var.ssl_policy}"
 }
 
 resource "google_compute_ssl_certificate" "default" {
