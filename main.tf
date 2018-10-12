@@ -38,7 +38,7 @@ resource "google_compute_global_address" "default" {
   ip_version = var.ip_version
 }
 
-# HTTP proxy when ssl is false
+# HTTP proxy when http forwarding is true
 resource "google_compute_target_http_proxy" "default" {
   project = var.project
   count   = var.http_forward ? 1 : 0
@@ -49,7 +49,7 @@ resource "google_compute_target_http_proxy" "default" {
   )[0]
 }
 
-# HTTPS proxy  when ssl is true
+# HTTPS proxy when ssl is true
 resource "google_compute_target_https_proxy" "default" {
   project          = var.project
   count            = var.ssl ? 1 : 0
@@ -87,27 +87,37 @@ resource "google_compute_backend_service" "default" {
   dynamic "backend" {
     for_each = var.backends[count.index]
     content {
-      balancing_mode               = lookup(backend.value, "balancing_mode")
-      capacity_scaler              = lookup(backend.value, "capacity_scaler")
-      description                  = lookup(backend.value, "description")
-      group                        = lookup(backend.value, "group")
-      max_connections              = lookup(backend.value, "max_connections")
-      max_connections_per_instance = lookup(backend.value, "max_connections_per_instance")
-      max_rate                     = lookup(backend.value, "max_rate")
-      max_rate_per_instance        = lookup(backend.value, "max_rate_per_instance")
-      max_utilization              = lookup(backend.value, "max_utilization")
+      balancing_mode               = lookup(backend.value, "balancing_mode", null)
+      capacity_scaler              = lookup(backend.value, "capacity_scaler", null)
+      description                  = lookup(backend.value, "description", null)
+      group                        = lookup(backend.value, "group", null)
+      max_connections              = lookup(backend.value, "max_connections", null)
+      max_connections_per_instance = lookup(backend.value, "max_connections_per_instance", null)
+      max_rate                     = lookup(backend.value, "max_rate", null)
+      max_rate_per_instance        = lookup(backend.value, "max_rate_per_instance", null)
+      max_utilization              = lookup(backend.value, "max_utilization", null)
     }
   }
-  health_checks = [
-    google_compute_http_health_check.default[count.index].self_link
+  health_checks   = [
+    element(compact(concat(google_compute_http_health_check.default.*.self_link, google_compute_https_health_check.default.*.self_link)), count.index)
   ]
   security_policy = var.security_policy
   enable_cdn      = var.cdn
 }
 
+# HTTP health check with backend_protocol is not "HTTPS"
 resource "google_compute_http_health_check" "default" {
   project      = var.project
-  count        = length(var.backend_params)
+  count        = var.backend_protocol == "HTTPS" ? 0 : length(var.backend_params)
+  name         = "${var.name}-backend-${count.index}"
+  request_path = split(",", var.backend_params[count.index])[0]
+  port         = split(",", var.backend_params[count.index])[2]
+}
+
+# HTTPS health check with backend_protocol is "HTTPS"
+resource "google_compute_https_health_check" "default" {
+  project      = var.project
+  count        = var.backend_protocol == "HTTPS" ? length(var.backend_params) : 0
   name         = "${var.name}-backend-${count.index}"
   request_path = split(",", var.backend_params[count.index])[0]
   port         = split(",", var.backend_params[count.index])[2]
