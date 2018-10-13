@@ -56,14 +56,8 @@ variable backends {
 }
 
 variable backend_params {
-  description = "Comma-separated encoded list of parameters in order: health check path, service port name, service port, backend timeout seconds"
+  description = "Comma-separated encoded list of parameters in order: health check path, service port name, service port, backend timeout seconds, header host"
   type        = "list"
-}
-
-variable host {
-  description = "HTTP header containing the host to reach for the http check, leave blank to use default value"
-  type       = "string"
-  default    = ""
 }
 
 variable backend_protocol {
