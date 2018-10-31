@@ -35,17 +35,27 @@ function checkPattern() {
   return 1
 }
 
+function checkFile() {
+  local URL=$1
+  local count=0
+  while [[ $count -lt 120 ]]; do
+    echo "INFO: Checking ${URL}..."
+    status=$(curl -sfk -m 5 -o /dev/null -w "%{http_code}" "${URL}" || true)
+    if [[ $status -eq 200 ]]; then
+      echo "INFO: PASS"
+      return 0
+    fi
+    ((count=count+1))
+    sleep 5
+  done
+  echo "ERROR: FAILED"
+  return 1
+}
+
 checkPattern ${URL}/group1 "$(terraform output group1_region)"
 checkPattern ${URL}/group2 "$(terraform output group2_region)"
 checkPattern ${URL}/group3 "$(terraform output group3_region)"
 
-status=0
-status=$(curl -sfk -m 5 -o /dev/null -w "%{http_code}" "$(terraform output asset-url)" || true)
-if [[ $status -eq 200 ]]; then
-  echo "INFO: PASS. Assets served from GCS bucket."
-else
-  echo "ERROR: Failed, could not get asset from bucket."
-  exit 1
-fi
+checkURL "$(terraform output asset-url)"
 
 echo "INFO: PASS"
