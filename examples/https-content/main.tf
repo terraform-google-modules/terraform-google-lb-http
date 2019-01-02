@@ -15,11 +15,11 @@
  */
 
 variable "group1_region" {
-  default = "us-west1"
+  default = "europe-west1"
 }
 
 variable "group1_zone" {
-  default = "us-west1-a"
+  default = "europe-west1-b"
 }
 
 variable "group2_region" {
