@@ -60,7 +60,7 @@ resource "google_compute_subnetwork" "group2" {
 }
 
 module "gce-lb-http" {
-  source            = "../../"
+  source            = "GoogleCloudPlatform/lb-http/google"
   name              = "${var.network_name}"
   target_tags       = ["${module.mig1.target_tags}", "${module.mig2.target_tags}"]
   firewall_networks = ["${google_compute_network.default.name}"]
