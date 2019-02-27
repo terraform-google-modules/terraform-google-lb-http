@@ -115,3 +115,14 @@ variable cdn {
   description = "Set to `true` to enable cdn on backend."
   default     = "false"
 }
+
+variable create_ip_address {
+  description = "Set to `true` to create a ip address"
+  default     =  true
+}
+
+variable "ip_address" {
+  description = "Use on existing ip address"
+  default = ""
+}
+
