@@ -19,7 +19,7 @@ resource "google_compute_global_forwarding_rule" "http" {
   count      = "${var.http_forward ? 1 : 0}"
   name       = "${var.name}"
   target     = "${google_compute_target_http_proxy.default.self_link}"
-  ip_address = "${var.ip_address}"
+  ip_address = "${var.create_ip_address ?  google_compute_global_address.default.address : var.ip_address}"
   port_range = "80"
   depends_on = ["google_compute_global_address.default"]
 }
