@@ -21,5 +21,5 @@ output backend_services {
 
 output external_ip {
   description = "The external IP assigned to the global fowarding rule."
-  value       = "${var.ip_address}"
+  value       = "${var.ip_address_name}"
 }

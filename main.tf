@@ -19,7 +19,7 @@ resource "google_compute_global_forwarding_rule" "http" {
   count      = "${var.http_forward ? 1 : 0}"
   name       = "${var.name}"
   target     = "${google_compute_target_http_proxy.default.self_link}"
-  ip_address = "${var.create_ip_address ?  google_compute_global_address.default.address : var.ip_address}"
+  ip_address = "${element(concat(google_compute_address.default.*.address, data.google_compute_address.default.*.address, list("")), 0)}"
   port_range = "80"
   depends_on = ["google_compute_global_address.default"]
 }
@@ -29,7 +29,7 @@ resource "google_compute_global_forwarding_rule" "https" {
   count      = "${var.ssl ? 1 : 0}"
   name       = "${var.name}-https"
   target     = "${google_compute_target_https_proxy.default.self_link}"
-  ip_address = "${var.create_ip_address ?  google_compute_global_address.default.address : var.ip_address}"
+  ip_address = "${element(concat(google_compute_address.default.*.address, data.google_compute_address.default.*.address, list("")), 0)}"
   port_range = "443"
   depends_on = ["google_compute_global_address.default"]
 }
@@ -55,7 +55,7 @@ resource "google_compute_target_https_proxy" "default" {
   count            = "${var.ssl ? 1 : 0}"
   name             = "${var.name}-https-proxy"
   url_map          = "${element(compact(concat(list(var.url_map), google_compute_url_map.default.*.self_link)), 0)}"
-  ssl_certificates = ["${compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default.*.self_link))}"]
+  ssl_certificates = ["${var.certificate}"]
 }
 
 resource "google_compute_ssl_certificate" "default" {
@@ -64,7 +64,6 @@ resource "google_compute_ssl_certificate" "default" {
   name_prefix = "${var.name}-certificate-"
   private_key = "${var.private_key}"
   certificate = "${var.certificate}"
-
   lifecycle = {
     create_before_destroy = true
   }
@@ -111,4 +110,18 @@ resource "google_compute_firewall" "default-hc" {
     protocol = "tcp"
     ports    = ["${element(split(",", element(split("|", join("", list(join("|", var.backend_params), replace(format("%*s", length(var.backend_params), ""), " ", "|")))), count.index)), 2)}"]
   }
+}
+
+resource "google_compute_address" "default" {
+  count   = "${var.module_enabled && var.ip_address_name == "" ? 1 : 0}"
+  name    = "${local.zonal_tag}"
+  project = "${var.project}"
+  region  = "${var.region}"
+}
+
+data "google_compute_address" "default" {
+  count   = "${var.ip_address_name == "" ? 0 : 1}"
+  name    = "${var.ip_address_name}"
+  project = "${var.network_project == "" ? var.project : var.network_project}"
+  region  = "${var.region}"
 }

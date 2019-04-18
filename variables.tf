@@ -121,8 +121,17 @@ variable create_ip_address {
   default     =  true
 }
 
-variable "ip_address" {
-  description = "Use on existing ip address"
-  default = ""
+variable ip_address_name {
+  description = "Name of an existing reserved external address to use."
+  default     = ""
 }
 
+variable network_project {
+  description = "Name of the project for the network. Useful for shared VPC. Default is var.project."
+  default     = ""
+}
+
+variable module_enabled {
+  description = "To disable this module, set this to false"
+  default     = true
+}
