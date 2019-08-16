@@ -35,43 +35,43 @@ variable "network_name" {
 }
 
 provider "google" {
-  region = "${var.group1_region}"
+  region = var.group1_region
 }
 
 resource "google_compute_network" "default" {
-  name                    = "${var.network_name}"
+  name                    = var.network_name
   auto_create_subnetworks = "false"
 }
 
 resource "google_compute_subnetwork" "group1" {
-  name                     = "${var.network_name}"
+  name                     = var.network_name
   ip_cidr_range            = "10.126.0.0/20"
-  network                  = "${google_compute_network.default.self_link}"
-  region                   = "${var.group1_region}"
+  network                  = google_compute_network.default.self_link
+  region                   = var.group1_region
   private_ip_google_access = true
 }
 
 resource "google_compute_subnetwork" "group2" {
-  name                     = "${var.network_name}"
+  name                     = var.network_name
   ip_cidr_range            = "10.127.0.0/20"
-  network                  = "${google_compute_network.default.self_link}"
-  region                   = "${var.group2_region}"
+  network                  = google_compute_network.default.self_link
+  region                   = var.group2_region
   private_ip_google_access = true
 }
 
 module "gce-lb-http" {
   source            = "../../"
-  name              = "${var.network_name}"
-  target_tags       = ["${module.mig1.target_tags}", "${module.mig2.target_tags}"]
-  firewall_networks = ["${google_compute_network.default.name}"]
+  name              = var.network_name
+  target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
+  firewall_networks = [google_compute_network.default.name]
 
   backends = {
     "0" = [
       {
-        group = "${module.mig1.region_instance_group}"
+        group = module.mig1.region_instance_group
       },
       {
-        group = "${module.mig2.region_instance_group}"
+        group = module.mig2.region_instance_group
       },
     ]
   }
@@ -83,5 +83,5 @@ module "gce-lb-http" {
 }
 
 output "load-balancer-ip" {
-  value = "${module.gce-lb-http.external_ip}"
+  value = module.gce-lb-http.external_ip
 }

@@ -43,35 +43,35 @@ variable "network_name" {
 }
 
 provider "google" {
-  region = "${var.group1_region}"
+  region = var.group1_region
 }
 
 resource "google_compute_network" "default" {
-  name                    = "${var.network_name}"
+  name                    = var.network_name
   auto_create_subnetworks = "false"
 }
 
 resource "google_compute_subnetwork" "group1" {
-  name                     = "${var.network_name}"
+  name                     = var.network_name
   ip_cidr_range            = "10.125.0.0/20"
-  network                  = "${google_compute_network.default.self_link}"
-  region                   = "${var.group1_region}"
+  network                  = google_compute_network.default.self_link
+  region                   = var.group1_region
   private_ip_google_access = true
 }
 
 resource "google_compute_subnetwork" "group2" {
-  name                     = "${var.network_name}"
+  name                     = var.network_name
   ip_cidr_range            = "10.126.0.0/20"
-  network                  = "${google_compute_network.default.self_link}"
-  region                   = "${var.group2_region}"
+  network                  = google_compute_network.default.self_link
+  region                   = var.group2_region
   private_ip_google_access = true
 }
 
 resource "google_compute_subnetwork" "group3" {
-  name                     = "${var.network_name}"
+  name                     = var.network_name
   ip_cidr_range            = "10.127.0.0/20"
-  network                  = "${google_compute_network.default.self_link}"
-  region                   = "${var.group3_region}"
+  network                  = google_compute_network.default.self_link
+  region                   = var.group3_region
   private_ip_google_access = true
 }
 
@@ -82,43 +82,43 @@ resource "random_id" "assets-bucket" {
 
 module "gce-lb-https" {
   source            = "../../"
-  name              = "${var.network_name}"
-  target_tags       = ["${module.mig1.target_tags}", "${module.mig2.target_tags}", "${module.mig3.target_tags}"]
-  firewall_networks = ["${google_compute_network.default.name}"]
-  url_map           = "${google_compute_url_map.https-content.self_link}"
+  name              = var.network_name
+  target_tags       = [module.mig1.target_tags, module.mig2.target_tags, module.mig3.target_tags]
+  firewall_networks = [google_compute_network.default.name]
+  url_map           = google_compute_url_map.https-content.self_link
   create_url_map    = false
   ssl               = true
-  private_key       = "${tls_private_key.example.private_key_pem}"
-  certificate       = "${tls_self_signed_cert.example.cert_pem}"
+  private_key       = tls_private_key.example.private_key_pem
+  certificate       = tls_self_signed_cert.example.cert_pem
 
   backends = {
     "0" = [
       {
-        group = "${module.mig1.instance_group}"
+        group = module.mig1.instance_group
       },
       {
-        group = "${module.mig2.instance_group}"
+        group = module.mig2.instance_group
       },
       {
-        group = "${module.mig3.instance_group}"
+        group = module.mig3.instance_group
       },
     ]
 
     "1" = [
       {
-        group = "${module.mig1.instance_group}"
+        group = module.mig1.instance_group
       },
     ]
 
     "2" = [
       {
-        group = "${module.mig2.instance_group}"
+        group = module.mig2.instance_group
       },
     ]
 
     "3" = [
       {
-        group = "${module.mig3.instance_group}"
+        group = module.mig3.instance_group
       },
     ]
   }
@@ -135,8 +135,8 @@ module "gce-lb-https" {
 
 resource "google_compute_url_map" "https-content" {
   // note that this is the name of the load balancer
-  name            = "${var.network_name}"
-  default_service = "${module.gce-lb-https.backend_services[0]}"
+  name            = var.network_name
+  default_service = module.gce-lb-https.backend_services[0]
 
   host_rule = {
     hosts        = ["*"]
@@ -145,7 +145,7 @@ resource "google_compute_url_map" "https-content" {
 
   path_matcher = {
     name            = "allpaths"
-    default_service = "${module.gce-lb-https.backend_services[0]}"
+    default_service = module.gce-lb-https.backend_services[0]
 
     path_rule {
       paths   = ["/group1", "/group1/*"]
@@ -170,14 +170,14 @@ resource "google_compute_url_map" "https-content" {
 }
 
 resource "google_compute_backend_bucket" "assets" {
-  name        = "${random_id.assets-bucket.hex}"
+  name        = random_id.assets-bucket.hex
   description = "Contains static resources for example app"
-  bucket_name = "${google_storage_bucket.assets.name}"
+  bucket_name = google_storage_bucket.assets.name
   enable_cdn  = true
 }
 
 resource "google_storage_bucket" "assets" {
-  name     = "${random_id.assets-bucket.hex}"
+  name     = random_id.assets-bucket.hex
   location = "US"
 
   // delete bucket and contents on destroy.
@@ -188,32 +188,32 @@ resource "google_storage_bucket" "assets" {
 // Note that the path in the bucket matches the paths in the url map path rule above.
 resource "google_storage_bucket_object" "image" {
   name         = "assets/gcp-logo.svg"
-  content      = "${file("gcp-logo.svg")}"
+  content      = file("gcp-logo.svg")
   content_type = "image/svg+xml"
-  bucket       = "${google_storage_bucket.assets.name}"
+  bucket       = google_storage_bucket.assets.name
 }
 
 // Make object public readable.
 resource "google_storage_object_acl" "image-acl" {
-  bucket         = "${google_storage_bucket.assets.name}"
-  object         = "${google_storage_bucket_object.image.name}"
+  bucket         = google_storage_bucket.assets.name
+  object         = google_storage_bucket_object.image.name
   predefined_acl = "publicread"
 }
 
 output "group1_region" {
-  value = "${var.group1_region}"
+  value = var.group1_region
 }
 
 output "group2_region" {
-  value = "${var.group2_region}"
+  value = var.group2_region
 }
 
 output "group3_region" {
-  value = "${var.group3_region}"
+  value = var.group3_region
 }
 
 output "load-balancer-ip" {
-  value = "${module.gce-lb-https.external_ip}"
+  value = module.gce-lb-https.external_ip
 }
 
 output "asset-url" {

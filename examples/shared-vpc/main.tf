@@ -15,22 +15,22 @@
  */
 
 provider google {
-  region  = "${var.region}"
-  project = "${var.service_project}"
+  region  = var.region
+  project = var.service_project
 }
 
 module "gce-lb-http" {
   source            = "../../"
   name              = "group-http-lb"
-  project           = "${var.service_project}"
-  target_tags       = ["${module.mig1.target_tags}"]
-  firewall_projects = ["${var.host_project}"]
-  firewall_networks = ["${var.network}"]
+  project           = var.service_project
+  target_tags       = [module.mig1.target_tags]
+  firewall_projects = [var.host_project]
+  firewall_networks = [var.network]
 
   backends = {
     "0" = [
       {
-        group = "${module.mig1.instance_group}"
+        group = module.mig1.instance_group
       },
     ]
   }

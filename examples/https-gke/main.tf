@@ -47,22 +47,22 @@ variable "network_name" {
 }
 
 provider "google" {
-  region = "${var.region}"
+  region = var.region
 }
 
 module "gce-lb-https" {
   source            = "../../"
-  name              = "${var.name}"
+  name              = var.name
   ssl               = true
-  private_key       = "${tls_private_key.example.private_key_pem}"
-  certificate       = "${tls_self_signed_cert.example.cert_pem}"
-  firewall_networks = ["${var.network_name}"]
+  private_key       = tls_private_key.example.private_key_pem
+  certificate       = tls_self_signed_cert.example.cert_pem
+  firewall_networks = [var.network_name]
 
-  // Make sure when you create the cluster that you provide the `--tags` argument to add the appropriate `target_tags` referenced in the http module. 
-  target_tags = ["${var.target_tags}"]
+  // Make sure when you create the cluster that you provide the `--tags` argument to add the appropriate `target_tags` referenced in the http module.
+  target_tags = [var.target_tags]
 
   // Use custom url map.
-  url_map        = "${google_compute_url_map.my-url-map.self_link}"
+  url_map        = google_compute_url_map.my-url-map.self_link
   create_url_map = false
 
   // Get selfLink URLs for the actual instance groups (not the manager) of the existing GKE cluster:
@@ -71,7 +71,7 @@ module "gce-lb-https" {
     "0" = [
       {
         # Each node pool instance group should be added to the backend.
-        group = "${var.backend}"
+        group = var.backend
       },
     ]
   }
@@ -87,8 +87,8 @@ module "gce-lb-https" {
 
 resource "google_compute_url_map" "my-url-map" {
   // note that this is the name of the load balancer
-  name            = "${var.name}"
-  default_service = "${module.gce-lb-https.backend_services[0]}"
+  name            = var.name
+  default_service = module.gce-lb-https.backend_services[0]
 
   host_rule = {
     hosts        = ["*"]
@@ -97,7 +97,7 @@ resource "google_compute_url_map" "my-url-map" {
 
   path_matcher = {
     name            = "allpaths"
-    default_service = "${module.gce-lb-https.backend_services[0]}"
+    default_service = module.gce-lb-https.backend_services[0]
 
     path_rule {
       paths   = ["/assets", "/assets/*"]
@@ -112,14 +112,14 @@ resource "random_id" "assets-bucket" {
 }
 
 resource "google_compute_backend_bucket" "assets" {
-  name        = "${random_id.assets-bucket.hex}"
+  name        = random_id.assets-bucket.hex
   description = "Contains static resources for example app"
-  bucket_name = "${google_storage_bucket.assets.name}"
+  bucket_name = google_storage_bucket.assets.name
   enable_cdn  = true
 }
 
 resource "google_storage_bucket" "assets" {
-  name     = "${random_id.assets-bucket.hex}"
+  name     = random_id.assets-bucket.hex
   location = "US"
 
   // delete bucket and contents on destroy.
@@ -130,18 +130,18 @@ resource "google_storage_bucket" "assets" {
 // Note that the path in the bucket matches the paths in the url map path rule above.
 resource "google_storage_bucket_object" "image" {
   name         = "assets/gcp-logo.svg"
-  content      = "${file("gcp-logo.svg")}"
+  content      = file("gcp-logo.svg")
   content_type = "image/svg+xml"
-  bucket       = "${google_storage_bucket.assets.name}"
+  bucket       = google_storage_bucket.assets.name
 }
 
 // Make object public readable.
 resource "google_storage_object_acl" "image-acl" {
-  bucket         = "${google_storage_bucket.assets.name}"
-  object         = "${google_storage_bucket_object.image.name}"
+  bucket         = google_storage_bucket.assets.name
+  object         = google_storage_bucket_object.image.name
   predefined_acl = "publicread"
 }
 
 output "load-balancer-ip" {
-  value = "${module.gce-lb-https.external_ip}"
+  value = module.gce-lb-https.external_ip
 }

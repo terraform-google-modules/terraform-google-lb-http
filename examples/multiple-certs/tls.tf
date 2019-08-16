@@ -22,8 +22,8 @@ resource "tls_private_key" "example" {
 
 resource "tls_self_signed_cert" "example" {
   count           = 3
-  key_algorithm   = "${element(tls_private_key.example.*.algorithm, count.index)}"
-  private_key_pem = "${element(tls_private_key.example.*.private_key_pem, count.index)}"
+  key_algorithm   = tls_private_key.example.*.algorithm[count.index]
+  private_key_pem = tls_private_key.example.*.private_key_pem[count.index]
 
   # Certificate expires after 12 hours.
   validity_period_hours = 12
@@ -50,6 +50,6 @@ resource "tls_self_signed_cert" "example" {
 resource "google_compute_ssl_certificate" "example" {
   count       = 3
   name        = "${var.network_name}-cert-${count.index + 1}"
-  private_key = "${element(tls_private_key.example.*.private_key_pem, count.index)}"
-  certificate = "${element(tls_self_signed_cert.example.*.cert_pem, count.index)}"
+  private_key = tls_private_key.example.*.private_key_pem[count.index]
+  certificate = tls_self_signed_cert.example.*.cert_pem[count.index]
 }
