@@ -14,40 +14,76 @@
  * limitations under the License.
  */
 
+provider "google" {
+  project = var.project
+  version = "~> 2.7.0"
+}
+
+provider "google-beta" {
+  project = var.project
+  version = "~> 2.7.0"
+}
+
 data "template_file" "group-startup-script" {
   template = file(format("%s/gceme.sh.tpl", path.module))
 
-  vars {
+  vars = {
     PROXY_PATH = ""
   }
 }
 
+module "mig1_template" {
+  source          = "terraform-google-modules/vm/google//modules/instance_template"
+  version         = "1.0.0"
+  network         = google_compute_network.default.self_link
+  subnetwork      = google_compute_subnetwork.group1.self_link
+  service_account = var.service_account
+  name_prefix     = "${var.network_prefix}-group1"
+  startup_script  = data.template_file.group-startup-script.rendered
+  tags            = [
+    "${var.network_prefix}-group1"]
+}
+
 module "mig1" {
-  source            = "GoogleCloudPlatform/managed-instance-group/google"
-  version           = "1.1.14"
-  zonal             = false
+  source            = "terraform-google-modules/vm/google//modules/mig"
+  version           = "1.0.0"
+  instance_template = module.mig1_template.self_link
   region            = var.group1_region
-  name              = "${var.network_name}-group1"
-  size              = var.group1_size
-  target_tags       = ["${var.network_name}-group1"]
-  service_port      = 80
-  service_port_name = "http"
-  startup_script    = data.template_file.group-startup-script.rendered
-  network           = google_compute_subnetwork.group1.name
-  subnetwork        = google_compute_subnetwork.group1.name
+  hostname          = "${var.network_prefix}-group1"
+  target_size       = var.target_size
+  named_ports       = [
+    {
+      name = "http",
+      port = 80
+    }]
+  network           = google_compute_network.default.self_link
+  subnetwork        = google_compute_subnetwork.group1.self_link
+}
+
+module "mig2_template" {
+  source          = "terraform-google-modules/vm/google//modules/instance_template"
+  version         = "1.0.0"
+  network         = google_compute_network.default.self_link
+  subnetwork      = google_compute_subnetwork.group2.self_link
+  service_account = var.service_account
+  name_prefix     = "${var.network_prefix}-group2"
+  startup_script  = data.template_file.group-startup-script.rendered
+  tags            = [
+    "${var.network_prefix}-group2"]
 }
 
 module "mig2" {
-  source            = "GoogleCloudPlatform/managed-instance-group/google"
-  version           = "1.1.14"
-  zonal             = false
+  source            = "terraform-google-modules/vm/google//modules/mig"
+  version           = "1.0.0"
+  instance_template = module.mig2_template.self_link
   region            = var.group2_region
-  name              = "${var.network_name}-group2"
-  size              = var.group2_size
-  target_tags       = ["${var.network_name}-group2"]
-  service_port      = 80
-  service_port_name = "http"
-  startup_script    = data.template_file.group-startup-script.rendered
-  network           = google_compute_subnetwork.group2.name
-  subnetwork        = google_compute_subnetwork.group2.name
+  hostname          = "${var.network_prefix}-group2"
+  target_size       = var.target_size
+  named_ports       = [
+    {
+      name = "http",
+      port = 80
+    }]
+  network           = google_compute_network.default.self_link
+  subnetwork        = google_compute_subnetwork.group2.self_link
 }
