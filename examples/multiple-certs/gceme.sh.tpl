@@ -1,17 +1,27 @@
 #!/bin/bash -xe
 
-apt-get update
-apt-get install -y apache2 libapache2-mod-php
+# introducing sleep so network interfaces and routes can get ready before fetching software
+sleep 10
+
+RPM_INSTALL_ARGS="install -y httpd php php-common"
+
+if [ -f "/etc/redhat-release" ]; then
+  yum update -y || dnf update -y
+  yum $RPM_INSTALL_ARGS || dnf $RPM_INSTALL_ARGS
+else
+  apt-get update
+  apt-get install -y apache2 libapache2-mod-php
+fi
 
 cat > /var/www/html/index.php <<'EOF'
 <?php
 function metadata_value($value) {
-    $opts = [
-        "http" => [
+    $opts = array(
+        "http" => array(
             "method" => "GET",
             "header" => "Metadata-Flavor: Google"
-        ]
-    ];
+        )
+    );
     $context = stream_context_create($opts);
     $content = file_get_contents("http://metadata/computeMetadata/v1/$value", false, $context);
     return $content;
@@ -108,9 +118,10 @@ if ($_SERVER['HTTP_X_FORWARDED_PROTO'] == "http") {
 </div>
 </html>
 EOF
-sudo mv /var/www/html/index.html /var/www/html/index.html.old
+
+mv /var/www/html/index.html /var/www/html/index.html.old || echo "Old index doesn't exist"
 
 [[ -n "${PROXY_PATH}" ]] && mkdir -p /var/www/html/${PROXY_PATH} && cp /var/www/html/index.php /var/www/html/${PROXY_PATH}/index.php
 
-systemctl enable apache2
-systemctl restart apache2
+chkconfig httpd on || systemctl enable httpd || systemctl enable apache2
+service httpd restart || systemctl restart httpd || systemctl restart apache2

@@ -120,10 +120,10 @@ resource "google_compute_http_health_check" "default" {
 
 # Create firewall rule for each backend in each network specified, uses mod behavior of element().
 resource "google_compute_firewall" "default-hc" {
-  count         = length(var.firewall_networks) * length(var.backend_params)
-  project       = var.firewall_projects[count.index] == "default" ? var.project : var.firewall_projects[count.index]
+  count         = length(var.firewall_networks) == 1 ? length(var.firewall_networks) * length(distinct(var.backend_params)) : length(var.firewall_networks) * length(var.backend_params)
+  project       = length(var.firewall_networks) == 1 ? var.project : var.firewall_projects[count.index]
   name          = "${var.name}-hc-${count.index}"
-  network       = var.firewall_networks[count.index]
+  network       = length(var.firewall_networks) == 1 ? var.firewall_networks[0] : var.firewall_networks[count.index]
   source_ranges = [
     "130.211.0.0/22",
     "35.191.0.0/16",
@@ -131,9 +131,12 @@ resource "google_compute_firewall" "default-hc" {
     "209.85.204.0/22"]
   target_tags   = var.target_tags
 
-  allow {
-    protocol = "tcp"
-    ports    = [
-      split(",", var.backend_params[count.index])[2]]
+  dynamic "allow" {
+    for_each = distinct(var.backend_params)
+    content {
+      protocol = "tcp"
+      ports    = [
+        split(",", allow.value)[2]]
+    }
   }
 }

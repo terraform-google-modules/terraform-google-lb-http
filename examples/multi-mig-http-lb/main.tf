@@ -27,6 +27,22 @@ resource "google_compute_subnetwork" "group1" {
   private_ip_google_access = true
 }
 
+# Router and Cloud NAT are required for installing packages from repos (apache, php etc)
+resource "google_compute_router" "group1" {
+  name    = "${var.network_prefix}-gw-group1"
+  network = google_compute_network.default.self_link
+  region  = var.group1_region
+}
+
+module "cloud-nat-group1" {
+  source     = "terraform-google-modules/cloud-nat/google"
+  version    = "1.0.0"
+  router     = google_compute_router.group1.name
+  project_id = var.project
+  region     = var.group1_region
+  name       = "${var.network_prefix}-cloud-nat-group1"
+}
+
 resource "google_compute_subnetwork" "group2" {
   name                     = "${var.network_prefix}-group2"
   ip_cidr_range            = "10.127.0.0/20"
@@ -35,21 +51,31 @@ resource "google_compute_subnetwork" "group2" {
   private_ip_google_access = true
 }
 
-resource "google_compute_subnetwork" "lb" {
-  name                     = "${var.network_prefix}-lb"
-  ip_cidr_range            = "10.128.0.0/20"
-  network                  = google_compute_network.default.self_link
-  region                   = google_compute_subnetwork.group1.region
-  private_ip_google_access = true
+# Router and Cloud NAT are required for installing packages from repos (apache, php etc)
+resource "google_compute_router" "group2" {
+  name    = "${var.network_prefix}-gw-group2"
+  network = google_compute_network.default.self_link
+  region  = var.group2_region
+}
+
+module "cloud-nat-group2" {
+  source     = "terraform-google-modules/cloud-nat/google"
+  version    = "1.0.0"
+  router     = google_compute_router.group2.name
+  project_id = var.project
+  region     = var.group2_region
+  name       = "${var.network_prefix}-cloud-nat-group2"
 }
 
 module "gce-lb-http" {
   source            = "../../"
-  name              = "${var.network_prefix}-lb"
+  name              = var.network_prefix
   project           = var.project
   target_tags       = [
-    module.mig1_template.name,
-    module.mig2_template.name]
+    "${var.network_prefix}-group1",
+    module.cloud-nat-group1.router_name,
+    "${var.network_prefix}-group2",
+    module.cloud-nat-group2.router_name]
   firewall_networks = [
     google_compute_network.default.name]
 

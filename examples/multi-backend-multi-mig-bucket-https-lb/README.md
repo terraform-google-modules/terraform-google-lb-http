@@ -9,12 +9,12 @@ This example creates an HTTPS load balancer to forward traffic to a custom URL m
 
 **Figure 1.** *diagram of Google Cloud resources*
 
-![architecture diagram](https://raw.githubusercontent.com/GoogleCloudPlatform/terraform-google-lb-http/master/examples/https-content/diagram.png)
+![architecture diagram](https://raw.githubusercontent.com/GoogleCloudPlatform/terraform-google-lb-http/master/examples/multi-back-multi-mig-bucket-https-lb/diagram.png)
 
 ## Change to the example directory
 
 ```
-[[ `basename $PWD` != https-content ]] && cd examples/https-content
+[[ `basename $PWD` != multi-backend-multi-mig-bucket-https-lb ]] && cd examples/multi-backend-multi-mig-bucket-https-lb/
 ```
 
 ## Install Terraform

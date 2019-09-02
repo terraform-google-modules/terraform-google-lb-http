@@ -56,6 +56,6 @@ checkPattern ${URL}/group1 "$(terraform output group1_region)"
 checkPattern ${URL}/group2 "$(terraform output group2_region)"
 checkPattern ${URL}/group3 "$(terraform output group3_region)"
 
-checkURL "$(terraform output asset-url)"
+checkFile "$(terraform output asset-url)"
 
 echo "INFO: PASS"

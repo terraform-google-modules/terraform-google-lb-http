@@ -9,12 +9,12 @@ This example creates a global HTTP forwarding rule to forward traffic to instanc
 
 **Figure 1.** *diagram of Google Cloud resources*
 
-![architecture diagram](https://raw.githubusercontent.com/GoogleCloudPlatform/terraform-google-lb-http/master/examples/basic/diagram.png)
+![architecture diagram](https://raw.githubusercontent.com/GoogleCloudPlatform/terraform-google-lb-http/master/examples/multi-mig-http-lb/diagram.png)
 
 ## Change to the example directory
 
 ```
-[[ `basename $PWD` != basic ]] && cd examples/basic
+[[ `basename $PWD` != multi-mig-http-lb ]] && cd examples/multi-mig-http-lb
 ```
 
 ## Install Terraform

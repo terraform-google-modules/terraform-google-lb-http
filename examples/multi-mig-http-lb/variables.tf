@@ -34,7 +34,7 @@ variable "group2_region" {
 
 variable "network_prefix" {
   type    = string
-  default = "mig-basic"
+  default = "multi-mig-lb-http"
 }
 
 variable "service_account" {
