@@ -43,3 +43,15 @@ variable group_size {
   default     = "2"
   description = "Size of managed instance group to create"
 }
+
+variable "service_account" {
+  type    = object({
+    email  = string,
+    scopes = list(string)
+  })
+  default = {
+    email  = ""
+    scopes = [
+      "cloud-platform"]
+  }
+}
