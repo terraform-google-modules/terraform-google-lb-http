@@ -16,7 +16,7 @@
 
 output "backend_services" {
   description = "The backend service resources."
-  value       = [for k in keys(var.backends): google_compute_backend_service.default[k].self_link]
+  value       = google_compute_backend_service.default.*.self_link
 }
 
 output "external_ip" {

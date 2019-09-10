@@ -14,16 +14,6 @@
  * limitations under the License.
  */
 
-locals {
-  bp_maps = [for bp in var.backend_params: {
-    path      = split(",", bp)[0],
-    port_name = split(",", bp)[1],
-    port      = split(",", bp)[2],
-    timeout   = split(",", bp)[3],
-    substr_hashed_path = substr(md5(split(",", bp)[0]), 0, 8)
-  }]
-}
-
 resource "google_compute_global_forwarding_rule" "http" {
   project    = var.project
   count      = var.http_forward ? 1 : 0
@@ -90,23 +80,18 @@ resource "google_compute_url_map" "default" {
   project         = var.project
   count           = var.create_url_map ? 1 : 0
   name            = "${var.name}-url-map"
-  default_service = google_compute_backend_service.default[keys(var.backends)[0]].self_link
+  default_service = google_compute_backend_service.default[0].self_link
 }
 
 resource "google_compute_backend_service" "default" {
-  for_each = toset(keys(var.backends))
-
-  project     = var.project
-  #  name        = "${var.name}-backend-${split(",", each.value)[1]}-${split(",", each.value)[2]}"
-  name        = "${var.name}-backend-${each.value}"
-
-  port_name   = local.bp_maps[tonumber(each.value)]["port_name"]
-  protocol    = var.backend_protocol
-  timeout_sec = local.bp_maps[tonumber(each.value)]["timeout"]
-
+  project         = var.project
+  count           = length(var.backend_params)
+  name            = "${var.name}-backend-${count.index}"
+  port_name       = split(",", var.backend_params[count.index])[1]
+  protocol        = var.backend_protocol
+  timeout_sec     = split(",", var.backend_params[count.index])[3]
   dynamic "backend" {
-    # keeping the old interface(var.backends) looks like overkill here
-    for_each = var.backends[each.value]
+    for_each = var.backends[count.index]
     content {
       balancing_mode               = lookup(backend.value, "balancing_mode", null)
       capacity_scaler              = lookup(backend.value, "capacity_scaler", null)
@@ -119,44 +104,26 @@ resource "google_compute_backend_service" "default" {
       max_utilization              = lookup(backend.value, "max_utilization", null)
     }
   }
-
-  health_checks = [
-    google_compute_health_check.default[tonumber(each.value)].self_link]
-
+  health_checks   = [
+    google_compute_http_health_check.default.*.self_link[count.index]]
   security_policy = var.security_policy
   enable_cdn      = var.cdn
 }
 
-resource "google_compute_health_check" "default" {
-  # Note:
-  #  - tf supports only sets of stings, so options below don't work
-  #     for_each = local.bp_maps # - not supported type
-  #     for_each = toset(range(length(local.bp_maps))) # - not supported type
-  #     for_each = toset(keys(var.backends)) # requires calling type conversion function
-  #  - keeping the old interface(var.backed_params) is a bit too expensive
-  # without changing the itnerface count.index works better than for_each
-  count = length(local.bp_maps)
-  name = "${var.name}-${local.bp_maps[count.index]["port_name"]}-${local.bp_maps[count.index]["port"]}-${local.bp_maps[count.index]["substr_hashed_path"]}"
-  timeout_sec = local.bp_maps[count.index]["timeout"]
-  check_interval_sec = local.bp_maps[count.index]["timeout"] + local.bp_maps[count.index]["timeout"] / 2
-  project     = var.project
-
-  http_health_check {
-    request_path = local.bp_maps[count.index]["path"]
-    port         = local.bp_maps[count.index]["port"]
-  }
+resource "google_compute_http_health_check" "default" {
+  project      = var.project
+  count        = length(var.backend_params)
+  name         = "${var.name}-backend-${count.index}"
+  request_path = split(",", var.backend_params[count.index])[0]
+  port         = split(",", var.backend_params[count.index])[2]
 }
 
-# Create firewall rule for each backend in each network specified
-resource "google_compute_firewall" "default" {
-  for_each = toset(var.firewall_networks)
-
-  name          = "${var.name}-${each.value}-hc"
-  # as the cross-project reference broken in https://github.com/terraform-google-modules/terraform-google-vm/issues/29
-  # and as there are some level of uncertenity that support for more than one is cross-referenced project ever worked
-  # we're limiting cross-referenced project to only one replacing list with string
-  project       = var.firewall_projects != null ? var.firewall_projects : var.project
-  network       = each.value
+# Create firewall rule for each backend in each network specified, uses mod behavior of element().
+resource "google_compute_firewall" "default-hc" {
+  count         = length(var.firewall_networks) == 1 ? length(var.firewall_networks) * length(distinct(var.backend_params)) : length(var.firewall_networks) * length(var.backend_params)
+  project       = length(var.firewall_networks) == 1 && var.firewall_projects == ["default"] ? var.project : var.firewall_projects[count.index]
+  name          = "${var.name}-hc-${count.index}"
+  network       = length(var.firewall_networks) == 1 ? var.firewall_networks[0] : var.firewall_networks[count.index]
   source_ranges = [
     "130.211.0.0/22",
     "35.191.0.0/16",

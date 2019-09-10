@@ -31,13 +31,13 @@ variable "ip_version" {
 variable "firewall_networks" {
   description = "Names of the networks to create firewall rules in"
   type        = list(string)
-  default     = null
+  default     = ["default"]
 }
 
 variable "firewall_projects" {
   description = "Names of the projects to create firewall rules in"
-  type        = string
-  default     = null
+  type        = list(string)
+  default     = ["default"]
 }
 
 variable "name" {
@@ -54,7 +54,6 @@ variable "backends" {
   type        = map
 }
 
-# we should consider moving these to backends map or switching to an to object here as keeping this interface introduces overhead for maintanance
 variable "backend_params" {
   description = "Comma-separated encoded list of parameters in order: health check path, service port name, service port, backend timeout seconds"
   type        = list(string)

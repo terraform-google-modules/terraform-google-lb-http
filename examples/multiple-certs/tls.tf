@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-locals {
-  counter = toset(range(3))
-}
-
 resource "tls_private_key" "example" {
-  for_each = local.counter
-
+  count     = 3
   algorithm = "RSA"
   rsa_bits  = 2048
 }
 
 resource "tls_self_signed_cert" "example" {
-  for_each = local.counter
-
-  key_algorithm   = tls_private_key.example[each.value].algorithm
-  private_key_pem = tls_private_key.example[each.value].private_key_pem
+  count           = 3
+  key_algorithm   = tls_private_key.example[count.index].algorithm
+  private_key_pem = tls_private_key.example[count.index].private_key_pem
 
   # Certificate expires after 12 hours.
   validity_period_hours = 12
@@ -45,18 +39,17 @@ resource "tls_self_signed_cert" "example" {
     "server_auth",
   ]
 
-  dns_names = ["example-${each.value + 1}.com"]
+  dns_names = ["example-${count.index + 1}.com"]
 
   subject {
-    common_name  = "example-${each.value + 1}.com"
+    common_name  = "example-${count.index + 1}.com"
     organization = "ACME Examples, Inc"
   }
 }
 
 resource "google_compute_ssl_certificate" "example" {
-  for_each = local.counter
-
-  name        = "${var.network_name}-cert-${each.value + 1}"
-  private_key = tls_private_key.example[each.value].private_key_pem
-  certificate = tls_self_signed_cert.example[each.value].cert_pem
+  count       = 3
+  name        = "${var.network_name}-cert-${count.index + 1}"
+  private_key = tls_private_key.example[count.index].private_key_pem
+  certificate = tls_self_signed_cert.example[count.index].cert_pem
 }
