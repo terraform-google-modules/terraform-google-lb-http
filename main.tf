@@ -105,7 +105,7 @@ resource "google_compute_backend_service" "default" {
     }
   }
   health_checks   = [
-    google_compute_http_health_check.default.*.self_link[count.index]]
+    google_compute_http_health_check.default[count.index].self_link]
   security_policy = var.security_policy
   enable_cdn      = var.cdn
 }
@@ -121,7 +121,7 @@ resource "google_compute_http_health_check" "default" {
 # Create firewall rule for each backend in each network specified, uses mod behavior of element().
 resource "google_compute_firewall" "default-hc" {
   count         = length(var.firewall_networks) == 1 ? length(var.firewall_networks) * length(distinct(var.backend_params)) : length(var.firewall_networks) * length(var.backend_params)
-  project       = length(var.firewall_networks) == 1 && var.firewall_projects == ["default"] ? var.project : var.firewall_projects[count.index]
+  project       = length(var.firewall_networks) == 1 && var.firewall_projects[0] == "default" ? var.project : var.firewall_projects[count.index]
   name          = "${var.name}-hc-${count.index}"
   network       = length(var.firewall_networks) == 1 ? var.firewall_networks[0] : var.firewall_networks[count.index]
   source_ranges = [
