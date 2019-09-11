@@ -46,20 +46,45 @@ variable "network_name" {
   default = "default"
 }
 
+variable "service_account" {
+  type    = object({
+    email  = string,
+    scopes = list(string)
+  })
+  default = {
+    email  = ""
+    scopes = [
+      "cloud-platform"]
+  }
+}
+
+variable "project" {
+  type = string
+}
+
 provider "google" {
-  region = var.region
+  project = var.project
+  version = "~> 2.7.0"
+}
+
+provider "google-beta" {
+  project = var.project
+  version = "~> 2.7.0"
 }
 
 module "gce-lb-https" {
+  project           = var.project
   source            = "../../"
   name              = var.name
   ssl               = true
   private_key       = tls_private_key.example.private_key_pem
   certificate       = tls_self_signed_cert.example.cert_pem
-  firewall_networks = [var.network_name]
+  firewall_networks = [
+    var.network_name]
 
   // Make sure when you create the cluster that you provide the `--tags` argument to add the appropriate `target_tags` referenced in the http module.
-  target_tags = [var.target_tags]
+  target_tags = [
+    var.target_tags]
 
   // Use custom url map.
   url_map        = google_compute_url_map.my-url-map.self_link
@@ -90,18 +115,21 @@ resource "google_compute_url_map" "my-url-map" {
   name            = var.name
   default_service = module.gce-lb-https.backend_services[0]
 
-  host_rule = {
-    hosts        = ["*"]
+  host_rule {
+    hosts        = [
+      "*"]
     path_matcher = "allpaths"
   }
 
-  path_matcher = {
+  path_matcher {
     name            = "allpaths"
     default_service = module.gce-lb-https.backend_services[0]
 
     path_rule {
-      paths   = ["/assets", "/assets/*"]
-      service = "${google_compute_backend_bucket.assets.self_link}"
+      paths   = [
+        "/assets",
+        "/assets/*"]
+      service = google_compute_backend_bucket.assets.self_link
     }
   }
 }
@@ -139,7 +167,7 @@ resource "google_storage_bucket_object" "image" {
 resource "google_storage_object_acl" "image-acl" {
   bucket         = google_storage_bucket.assets.name
   object         = google_storage_bucket_object.image.name
-  predefined_acl = "publicread"
+  predefined_acl = "publicRead"
 }
 
 output "load-balancer-ip" {

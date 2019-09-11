@@ -15,7 +15,7 @@
  */
 
 provider "google" {
-  region = var.region
+  region  = var.region
 }
 
 data "google_client_config" "current" {}
@@ -34,12 +34,12 @@ resource "google_compute_subnetwork" "default" {
 }
 
 data "google_container_engine_versions" "default" {
-  zone = var.zone
+  location = var.zone
 }
 
 resource "google_container_cluster" "default" {
   name               = var.network_name
-  zone               = var.zone
+  location           = var.zone
   initial_node_count = 3
   min_master_version = data.google_container_engine_versions.default.latest_master_version
   network            = google_compute_subnetwork.default.name
@@ -48,8 +48,9 @@ resource "google_container_cluster" "default" {
   // Use ABAC until official Kubernetes plugin supports RBAC.
   enable_legacy_abac = true
 
-  node_config = {
-    tags = [var.node_tag]
+  node_config {
+    tags = [
+      var.node_tag]
   }
 }
 
@@ -62,6 +63,7 @@ provider "kubernetes" {
 }
 
 module "named-port" {
+  # this module is not migrated to HCL2 / TF 0.12 syntax
   source         = "github.com/danisla/terraform-google-named-ports"
   instance_group = google_container_cluster.default.instance_group_urls[0]
   name           = var.port_name
@@ -69,19 +71,19 @@ module "named-port" {
 }
 
 resource "kubernetes_service" "nginx" {
-  metadata = {
+  metadata {
     namespace = "default"
     name      = "nginx"
   }
 
-  spec = {
+  spec {
     selector = {
       run = "nginx"
     }
 
     session_affinity = "ClientIP"
 
-    port = {
+    port {
       protocol    = "TCP"
       port        = 80
       target_port = 80
@@ -93,7 +95,7 @@ resource "kubernetes_service" "nginx" {
 }
 
 resource "kubernetes_replication_controller" "nginx" {
-  metadata = {
+  metadata {
     name      = "nginx"
     namespace = "default"
 
@@ -102,25 +104,31 @@ resource "kubernetes_replication_controller" "nginx" {
     }
   }
 
-  spec = {
+  spec {
     selector = {
       run = "nginx"
     }
+    template {
+      metadata {
+        labels = {
+          run = "nginx"
+        }
+      }
+      spec {
+        container {
+          image = "nginx:latest"
+          name  = "nginx"
 
-    template = {
-      container = {
-        image = "nginx:latest"
-        name  = "nginx"
+          resources {
+            limits {
+              cpu    = "0.5"
+              memory = "512Mi"
+            }
 
-        resources = {
-          limits = {
-            cpu    = "0.5"
-            memory = "512Mi"
-          }
-
-          requests = {
-            cpu    = "250m"
-            memory = "50Mi"
+            requests {
+              cpu    = "250m"
+              memory = "50Mi"
+            }
           }
         }
       }

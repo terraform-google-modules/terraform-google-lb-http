@@ -27,6 +27,7 @@ variable "region" {
 }
 
 variable "zone" {
+  # this variable is deprecated in resources, new name for it is `location`
   default = "us-central1-f"
 }
 
@@ -37,3 +38,4 @@ variable "node_port" {
 variable "port_name" {
   default = "http"
 }
+
