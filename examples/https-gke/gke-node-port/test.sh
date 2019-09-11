@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -x 
+set -x
 set -e
 
 EXP_NAME=$(terraform output port_name)

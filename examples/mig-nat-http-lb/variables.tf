@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,30 @@
  * limitations under the License.
  */
 
-output "backend_services" {
-  description = "The backend service resources."
-  value       = google_compute_backend_service.default[*].self_link
+variable "region" {
+  default = "us-west1"
 }
 
-output "external_ip" {
-  description = "The external IP assigned to the global fowarding rule."
-  value       = google_compute_global_address.default.address
+variable "zone" {
+  default = "us-west1-b"
 }
 
+variable "network_name" {
+  default = "tf-lb-http-mig-nat"
+}
+
+variable "service_account" {
+  type    = object({
+    email  = string,
+    scopes = list(string)
+  })
+  default = {
+    email  = ""
+    scopes = [
+      "cloud-platform"]
+  }
+}
+
+variable "project" {
+  type    = string
+}

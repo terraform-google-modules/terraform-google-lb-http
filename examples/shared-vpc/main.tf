@@ -16,13 +16,11 @@
 
 provider "google" {
   project = var.service_project
-  version = "~> 2.7.0"
   region  = var.region
 }
 
 provider "google-beta" {
   project = var.service_project
-  version = "~> 2.7.0"
   region  = var.region
 }
 
@@ -40,7 +38,15 @@ module "gce-lb-http" {
   backends = {
     "0" = [
       {
-        group = module.mig.instance_group
+        group                        = module.mig.instance_group
+        balancing_mode               = null
+        capacity_scaler              = null
+        description                  = null
+        max_connections              = null
+        max_connections_per_instance = null
+        max_rate                     = null
+        max_rate_per_instance        = null
+        max_utilization              = null
       },
     ]
   }

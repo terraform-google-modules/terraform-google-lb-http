@@ -11,11 +11,11 @@ function terraform-install() {
   if [[ -z $(grep 'export PATH=${HOME}/bin:${PATH}' ~/.bashrc 2>/dev/null) ]]; then
   	echo 'export PATH=${HOME}/bin:${PATH}' >> ~/.bashrc
   fi
-  
+
   echo "Installed: `${HOME}/bin/terraform version`"
-  
-  cat - << EOF 
- 
+
+  cat - << EOF
+
 Run the following to reload your PATH with terraform:
 
   source ~/.bashrc

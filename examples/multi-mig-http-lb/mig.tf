@@ -16,12 +16,10 @@
 
 provider "google" {
   project = var.project
-  version = "~> 2.7.0"
 }
 
 provider "google-beta" {
   project = var.project
-  version = "~> 2.7.0"
 }
 
 data "template_file" "group-startup-script" {

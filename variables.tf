@@ -57,7 +57,17 @@ variable "target_tags" {
 
 variable "backends" {
   description = "Map backend indices to list of backend maps."
-  type        = map(list(map(string)))
+  type        = map(list(object({
+    group                        = string
+    balancing_mode               = string
+    capacity_scaler              = string
+    description                  = string
+    max_connections              = number
+    max_connections_per_instance = number
+    max_rate                     = number
+    max_rate_per_instance        = number
+    max_utilization              = number
+  })))
 }
 
 variable "backend_params" {

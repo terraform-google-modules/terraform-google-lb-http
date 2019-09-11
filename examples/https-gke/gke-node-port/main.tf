@@ -34,12 +34,12 @@ resource "google_compute_subnetwork" "default" {
 }
 
 data "google_container_engine_versions" "default" {
-  location = var.zone
+  location = var.location
 }
 
 resource "google_container_cluster" "default" {
   name               = var.network_name
-  location           = var.zone
+  location           = var.location
   initial_node_count = 3
   min_master_version = data.google_container_engine_versions.default.latest_master_version
   network            = google_compute_subnetwork.default.name
@@ -62,12 +62,11 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(google_container_cluster.default.master_auth.0.cluster_ca_certificate)
 }
 
-module "named-port" {
-  # this module is not migrated to HCL2 / TF 0.12 syntax
-  source         = "github.com/danisla/terraform-google-named-ports"
-  instance_group = google_container_cluster.default.instance_group_urls[0]
-  name           = var.port_name
-  port           = var.node_port
+resource "null_resource" "default" {
+
+  provisioner "local-exec" {
+    command = "gcloud compute instance-groups set-named-ports ${google_container_cluster.default.instance_group_urls[0]} --named-ports=${var.port_name}:${var.node_port} --format=json"
+  }
 }
 
 resource "kubernetes_service" "nginx" {

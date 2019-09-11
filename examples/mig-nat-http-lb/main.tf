@@ -14,47 +14,17 @@
  * limitations under the License.
  */
 
-variable "region" {
-  default = "us-west1"
-}
-
-variable "zone" {
-  default = "us-west1-b"
-}
-
-variable "network_name" {
-  default = "tf-lb-http-mig-nat"
-}
-
-variable "service_account" {
-  type    = object({
-    email  = string,
-    scopes = list(string)
-  })
-  default = {
-    email  = ""
-    scopes = [
-      "cloud-platform"]
-  }
-}
-
-variable "project" {
-  type    = string
-}
-
 provider "google" {
   project = var.project
-  version = "~> 2.7.0"
 }
 
 provider "google-beta" {
   project = var.project
-  version = "~> 2.7.0"
 }
 
 resource "google_compute_network" "default" {
   name                    = var.network_name
-  auto_create_subnetworks = "false"
+  auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "default" {
@@ -89,14 +59,14 @@ data "template_file" "group-startup-script" {
 }
 
 module "mig_template" {
-  source               = "terraform-google-modules/vm/google//modules/instance_template"
-  version              = "1.0.0"
-  network              = google_compute_network.default.self_link
-  subnetwork           = google_compute_subnetwork.default.self_link
-  service_account      = var.service_account
-  name_prefix          = var.network_name
-  startup_script       = data.template_file.group-startup-script.rendered
-  tags                 = [
+  source          = "terraform-google-modules/vm/google//modules/instance_template"
+  version         = "1.0.0"
+  network         = google_compute_network.default.self_link
+  subnetwork      = google_compute_subnetwork.default.self_link
+  service_account = var.service_account
+  name_prefix     = var.network_name
+  startup_script  = data.template_file.group-startup-script.rendered
+  tags            = [
     var.network_name,
     module.cloud-nat.router_name]
 }
@@ -129,7 +99,15 @@ module "gce-lb-http" {
   backends = {
     "0" = [
       {
-        group = module.mig.instance_group
+        group                        = module.mig.instance_group
+        balancing_mode               = null
+        capacity_scaler              = null
+        description                  = null
+        max_connections              = null
+        max_connections_per_instance = null
+        max_rate                     = null
+        max_rate_per_instance        = null
+        max_utilization              = null
       },
     ]
   }
@@ -138,8 +116,4 @@ module "gce-lb-http" {
     // health check path, port name, port number, timeout seconds.
     "/,http,80,10",
   ]
-}
-
-output "load-balancer-ip" {
-  value = module.gce-lb-http.external_ip
 }

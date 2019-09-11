@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-output "backend_services" {
-  description = "The backend service resources."
-  value       = google_compute_backend_service.default[*].self_link
+output "group1_region" {
+  value = var.group1_region
 }
 
-output "external_ip" {
-  description = "The external IP assigned to the global fowarding rule."
-  value       = google_compute_global_address.default.address
+output "group2_region" {
+  value = var.group2_region
 }
 
+output "group3_region" {
+  value = var.group3_region
+}
+
+output "load-balancer-ip" {
+  value = module.gce-lb-https.external_ip
+}
+
+output "asset-url" {
+  value = "https://${module.gce-lb-https.external_ip}/assets/gcp-logo.svg"
+}

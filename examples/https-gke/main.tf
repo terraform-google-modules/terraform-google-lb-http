@@ -14,63 +14,15 @@
  * limitations under the License.
  */
 
-variable "name" {
-  default = "tf-lb-https-gke"
-}
-
-variable "service_port" {
-  default = "30000"
-}
-
-variable "service_port_name" {
-  default = "http"
-}
-
-variable "target_tags" {
-  default = "tf-lb-https-gke"
-}
-
-variable "backend" {}
-
-data "google_client_config" "current" {}
-
-variable "region" {
-  default = "us-central1"
-}
-
-variable "zone" {
-  default = "us-central1-f"
-}
-
-variable "network_name" {
-  default = "default"
-}
-
-variable "service_account" {
-  type    = object({
-    email  = string,
-    scopes = list(string)
-  })
-  default = {
-    email  = ""
-    scopes = [
-      "cloud-platform"]
-  }
-}
-
-variable "project" {
-  type = string
-}
-
 provider "google" {
   project = var.project
-  version = "~> 2.7.0"
 }
 
 provider "google-beta" {
   project = var.project
-  version = "~> 2.7.0"
 }
+
+data "google_client_config" "current" {}
 
 module "gce-lb-https" {
   project           = var.project
@@ -96,7 +48,15 @@ module "gce-lb-https" {
     "0" = [
       {
         # Each node pool instance group should be added to the backend.
-        group = var.backend
+        group                        = var.backend
+        balancing_mode               = null
+        capacity_scaler              = null
+        description                  = null
+        max_connections              = null
+        max_connections_per_instance = null
+        max_rate                     = null
+        max_rate_per_instance        = null
+        max_utilization              = null
       },
     ]
   }
@@ -168,8 +128,4 @@ resource "google_storage_object_acl" "image-acl" {
   bucket         = google_storage_bucket.assets.name
   object         = google_storage_bucket_object.image.name
   predefined_acl = "publicRead"
-}
-
-output "load-balancer-ip" {
-  value = module.gce-lb-https.external_ip
 }
