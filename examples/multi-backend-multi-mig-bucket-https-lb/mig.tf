@@ -127,4 +127,3 @@ module "mig3" {
   network           = google_compute_network.default.self_link
   subnetwork        = google_compute_subnetwork.group3.self_link
 }
-

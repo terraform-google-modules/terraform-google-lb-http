@@ -105,23 +105,23 @@ resource "random_id" "assets-bucket" {
 }
 
 module "gce-lb-https" {
-  source               = "../../"
-  name                 = var.network_name
-  project              = var.project
-  target_tags          = [
+  source            = "../../"
+  name              = var.network_name
+  project           = var.project
+  target_tags       = [
     "${var.network_name}-group1",
     module.cloud-nat-group1.router_name,
     "${var.network_name}-group2",
     module.cloud-nat-group2.router_name,
     "${var.network_name}-group3",
     module.cloud-nat-group3.router_name]
-  firewall_networks    = [
+  firewall_networks = [
     google_compute_network.default.self_link]
-  url_map              = google_compute_url_map.https-multi-cert.self_link
-  create_url_map       = false
-  ssl                  = true
-  ssl_certificates     = google_compute_ssl_certificate.example.*.self_link
-  use_ssl_certificates = true
+  url_map           = google_compute_url_map.ml-bkd-ml-mig-bckt-s-lb.self_link
+  create_url_map    = false
+  ssl               = true
+  private_key       = tls_private_key.example.private_key_pem
+  certificate       = tls_self_signed_cert.example.cert_pem
 
   backends = {
     "0" = [
@@ -212,7 +212,7 @@ module "gce-lb-https" {
   ]
 }
 
-resource "google_compute_url_map" "https-multi-cert" {
+resource "google_compute_url_map" "ml-bkd-ml-mig-bckt-s-lb" {
   // note that this is the name of the load balancer
   name            = var.network_name
   default_service = module.gce-lb-https.backend_services[0]

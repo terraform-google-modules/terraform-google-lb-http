@@ -14,23 +14,39 @@
  * limitations under the License.
  */
 
-provider google {
-  region  = "${var.region}"
-  project = "${var.service_project}"
+provider "google" {
+  project = var.service_project
+  region  = var.region
+}
+
+provider "google-beta" {
+  project = var.service_project
+  region  = var.region
 }
 
 module "gce-lb-http" {
   source            = "../../"
   name              = "group-http-lb"
-  project           = "${var.service_project}"
-  target_tags       = ["${module.mig1.target_tags}"]
-  firewall_projects = ["${var.host_project}"]
-  firewall_networks = ["${var.network}"]
+  project           = var.service_project
+  target_tags       = [
+    "allow-shared-vpc-mig"]
+  firewall_projects = [
+    var.host_project]
+  firewall_networks = [
+    var.network]
 
   backends = {
     "0" = [
       {
-        group = "${module.mig1.instance_group}"
+        group                        = module.mig.instance_group
+        balancing_mode               = null
+        capacity_scaler              = null
+        description                  = null
+        max_connections              = null
+        max_connections_per_instance = null
+        max_rate                     = null
+        max_rate_per_instance        = null
+        max_utilization              = null
       },
     ]
   }

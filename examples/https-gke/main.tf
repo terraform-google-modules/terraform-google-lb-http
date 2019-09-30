@@ -14,55 +14,32 @@
  * limitations under the License.
  */
 
-variable "name" {
-  default = "tf-lb-https-gke"
+provider "google" {
+  project = var.project
 }
 
-variable "service_port" {
-  default = "30000"
+provider "google-beta" {
+  project = var.project
 }
-
-variable "service_port_name" {
-  default = "http"
-}
-
-variable "target_tags" {
-  default = "tf-lb-https-gke"
-}
-
-variable "backend" {}
 
 data "google_client_config" "current" {}
 
-variable "region" {
-  default = "us-central1"
-}
-
-variable "zone" {
-  default = "us-central1-f"
-}
-
-variable "network_name" {
-  default = "default"
-}
-
-provider "google" {
-  region = "${var.region}"
-}
-
 module "gce-lb-https" {
+  project           = var.project
   source            = "../../"
-  name              = "${var.name}"
+  name              = var.name
   ssl               = true
-  private_key       = "${tls_private_key.example.private_key_pem}"
-  certificate       = "${tls_self_signed_cert.example.cert_pem}"
-  firewall_networks = ["${var.network_name}"]
+  private_key       = tls_private_key.example.private_key_pem
+  certificate       = tls_self_signed_cert.example.cert_pem
+  firewall_networks = [
+    var.network_name]
 
-  // Make sure when you create the cluster that you provide the `--tags` argument to add the appropriate `target_tags` referenced in the http module. 
-  target_tags = ["${var.target_tags}"]
+  // Make sure when you create the cluster that you provide the `--tags` argument to add the appropriate `target_tags` referenced in the http module.
+  target_tags = [
+    var.target_tags]
 
   // Use custom url map.
-  url_map        = "${google_compute_url_map.my-url-map.self_link}"
+  url_map        = google_compute_url_map.my-url-map.self_link
   create_url_map = false
 
   // Get selfLink URLs for the actual instance groups (not the manager) of the existing GKE cluster:
@@ -71,7 +48,15 @@ module "gce-lb-https" {
     "0" = [
       {
         # Each node pool instance group should be added to the backend.
-        group = "${var.backend}"
+        group                        = var.backend
+        balancing_mode               = null
+        capacity_scaler              = null
+        description                  = null
+        max_connections              = null
+        max_connections_per_instance = null
+        max_rate                     = null
+        max_rate_per_instance        = null
+        max_utilization              = null
       },
     ]
   }
@@ -87,21 +72,24 @@ module "gce-lb-https" {
 
 resource "google_compute_url_map" "my-url-map" {
   // note that this is the name of the load balancer
-  name            = "${var.name}"
-  default_service = "${module.gce-lb-https.backend_services[0]}"
+  name            = var.name
+  default_service = module.gce-lb-https.backend_services[0]
 
-  host_rule = {
-    hosts        = ["*"]
+  host_rule {
+    hosts        = [
+      "*"]
     path_matcher = "allpaths"
   }
 
-  path_matcher = {
+  path_matcher {
     name            = "allpaths"
-    default_service = "${module.gce-lb-https.backend_services[0]}"
+    default_service = module.gce-lb-https.backend_services[0]
 
     path_rule {
-      paths   = ["/assets", "/assets/*"]
-      service = "${google_compute_backend_bucket.assets.self_link}"
+      paths   = [
+        "/assets",
+        "/assets/*"]
+      service = google_compute_backend_bucket.assets.self_link
     }
   }
 }
@@ -112,14 +100,14 @@ resource "random_id" "assets-bucket" {
 }
 
 resource "google_compute_backend_bucket" "assets" {
-  name        = "${random_id.assets-bucket.hex}"
+  name        = random_id.assets-bucket.hex
   description = "Contains static resources for example app"
-  bucket_name = "${google_storage_bucket.assets.name}"
+  bucket_name = google_storage_bucket.assets.name
   enable_cdn  = true
 }
 
 resource "google_storage_bucket" "assets" {
-  name     = "${random_id.assets-bucket.hex}"
+  name     = random_id.assets-bucket.hex
   location = "US"
 
   // delete bucket and contents on destroy.
@@ -130,18 +118,14 @@ resource "google_storage_bucket" "assets" {
 // Note that the path in the bucket matches the paths in the url map path rule above.
 resource "google_storage_bucket_object" "image" {
   name         = "assets/gcp-logo.svg"
-  content      = "${file("gcp-logo.svg")}"
+  content      = file("gcp-logo.svg")
   content_type = "image/svg+xml"
-  bucket       = "${google_storage_bucket.assets.name}"
+  bucket       = google_storage_bucket.assets.name
 }
 
 // Make object public readable.
 resource "google_storage_object_acl" "image-acl" {
-  bucket         = "${google_storage_bucket.assets.name}"
-  object         = "${google_storage_bucket_object.image.name}"
-  predefined_acl = "publicread"
-}
-
-output "load-balancer-ip" {
-  value = "${module.gce-lb-https.external_ip}"
+  bucket         = google_storage_bucket.assets.name
+  object         = google_storage_bucket_object.image.name
+  predefined_acl = "publicRead"
 }

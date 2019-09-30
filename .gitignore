@@ -4,3 +4,4 @@
 **/terraform.tfvars
 **/values-*.yaml
 **/*.tfplan
+**/credentials.json

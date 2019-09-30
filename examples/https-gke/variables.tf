@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,49 @@
  * limitations under the License.
  */
 
-variable "network_name" {
+
+variable "name" {
   default = "tf-lb-https-gke"
 }
 
-variable "node_tag" {
+variable "service_port" {
+  default = "30000"
+}
+
+variable "service_port_name" {
+  default = "http"
+}
+
+variable "target_tags" {
   default = "tf-lb-https-gke"
 }
+
+variable "backend" {}
 
 variable "region" {
   default = "us-central1"
 }
 
-variable "location" {
+variable "zone" {
   default = "us-central1-f"
 }
 
-variable "node_port" {
-  default = "30000"
+variable "network_name" {
+  default = "default"
 }
 
-variable "port_name" {
-  default = "http"
+variable "service_account" {
+  type    = object({
+    email  = string,
+    scopes = list(string)
+  })
+  default = {
+    email  = ""
+    scopes = [
+      "cloud-platform"]
+  }
 }
 
+variable "project" {
+  type = string
+}

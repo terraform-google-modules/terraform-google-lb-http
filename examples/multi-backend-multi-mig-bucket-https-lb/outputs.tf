@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,22 @@
  * limitations under the License.
  */
 
-output "cluster_name" {
-  value = google_container_cluster.default.name
+output "group1_region" {
+  value = var.group1_region
 }
 
-output "network_name" {
-  value = var.network_name
+output "group2_region" {
+  value = var.group2_region
 }
 
-output "port_name" {
-  value = "http"
+output "group3_region" {
+  value = var.group3_region
 }
 
-output "port_number" {
-  value = var.node_port
+output "load-balancer-ip" {
+  value = module.gce-lb-https.external_ip
 }
 
-output "instance_group" {
-  value = google_container_cluster.default.instance_group_urls[0]
-}
-
-output "node_tag" {
-  value = var.node_tag
+output "asset-url" {
+  value = "https://${module.gce-lb-https.external_ip}/assets/gcp-logo.svg"
 }

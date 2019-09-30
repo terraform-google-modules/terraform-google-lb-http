@@ -14,7 +14,7 @@ This example creates a global HTTP forwarding rule to an instance group without 
 ## Change to the example directory
 
 ```
-[[ `basename $PWD` != http-nat-gateway ]] && cd examples/http-nat-gateway
+[[ `basename $PWD` != mig-nat-http-lb ]] && cd examples/mig-nat-http-lb
 ```
 
 ## Install Terraform

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google Inc.
+ * Copyright 2019 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-output "cluster_name" {
-  value = google_container_cluster.default.name
+variable "project" {
+  type = string
 }
 
-output "network_name" {
-  value = var.network_name
+variable "target_size" {
+  type    = number
+  default = 2
 }
 
-output "port_name" {
-  value = "http"
+variable "group1_region" {
+  type    = string
+  default = "us-west1"
 }
 
-output "port_number" {
-  value = var.node_port
+variable "group2_region" {
+  type    = string
+  default = "us-east1"
 }
 
-output "instance_group" {
-  value = google_container_cluster.default.instance_group_urls[0]
+variable "network_prefix" {
+  type    = string
+  default = "multi-mig-lb-http"
 }
 
-output "node_tag" {
-  value = var.node_tag
+variable "service_account" {
+  type    = object({
+    email  = string,
+    scopes = list(string)
+  })
+  default = {
+    email  = ""
+    scopes = [
+      "cloud-platform"]
+  }
 }

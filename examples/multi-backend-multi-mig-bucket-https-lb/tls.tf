@@ -20,8 +20,8 @@ resource "tls_private_key" "example" {
 }
 
 resource "tls_self_signed_cert" "example" {
-  key_algorithm   = "${tls_private_key.example.algorithm}"
-  private_key_pem = "${tls_private_key.example.private_key_pem}"
+  key_algorithm   = tls_private_key.example.algorithm
+  private_key_pem = tls_private_key.example.private_key_pem
 
   # Certificate expires after 12 hours.
   validity_period_hours = 12

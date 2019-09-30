@@ -14,27 +14,19 @@
  * limitations under the License.
  */
 
-data "template_file" "group1-startup-script" {
-  template = file(format("%s/gceme.sh.tpl", path.module))
-
-  vars = {
-    PROXY_PATH = "/group1"
-  }
+provider "google" {
+  project = var.project
 }
 
-data "template_file" "group2-startup-script" {
-  template = file(format("%s/gceme.sh.tpl", path.module))
-
-  vars = {
-    PROXY_PATH = "/group2"
-  }
+provider "google-beta" {
+  project = var.project
 }
 
-data "template_file" "group3-startup-script" {
+data "template_file" "group-startup-script" {
   template = file(format("%s/gceme.sh.tpl", path.module))
 
   vars = {
-    PROXY_PATH = "/group3"
+    PROXY_PATH = ""
   }
 }
 
@@ -44,12 +36,12 @@ module "mig1_template" {
   network              = google_compute_network.default.self_link
   subnetwork           = google_compute_subnetwork.group1.self_link
   service_account      = var.service_account
-  name_prefix          = "${var.network_name}-group1"
-  startup_script       = data.template_file.group1-startup-script.rendered
+  name_prefix          = "${var.network_prefix}-group1"
+  startup_script       = data.template_file.group-startup-script.rendered
   source_image_family  = "ubuntu-1804-lts"
   source_image_project = "ubuntu-os-cloud"
   tags                 = [
-    "${var.network_name}-group1",
+    "${var.network_prefix}-group1",
     module.cloud-nat-group1.router_name]
 }
 
@@ -58,8 +50,8 @@ module "mig1" {
   version           = "1.0.0"
   instance_template = module.mig1_template.self_link
   region            = var.group1_region
-  hostname          = "${var.network_name}-group1"
-  target_size       = 2
+  hostname          = "${var.network_prefix}-group1"
+  target_size       = var.target_size
   named_ports       = [
     {
       name = "http",
@@ -75,10 +67,10 @@ module "mig2_template" {
   network         = google_compute_network.default.self_link
   subnetwork      = google_compute_subnetwork.group2.self_link
   service_account = var.service_account
-  name_prefix     = "${var.network_name}-group2"
-  startup_script  = data.template_file.group2-startup-script.rendered
+  name_prefix     = "${var.network_prefix}-group2"
+  startup_script  = data.template_file.group-startup-script.rendered
   tags            = [
-    "${var.network_name}-group2",
+    "${var.network_prefix}-group2",
     module.cloud-nat-group2.router_name]
 }
 
@@ -87,8 +79,8 @@ module "mig2" {
   version           = "1.0.0"
   instance_template = module.mig2_template.self_link
   region            = var.group2_region
-  hostname          = "${var.network_name}-group2"
-  target_size       = 2
+  hostname          = "${var.network_prefix}-group2"
+  target_size       = var.target_size
   named_ports       = [
     {
       name = "http",
@@ -97,34 +89,3 @@ module "mig2" {
   network           = google_compute_network.default.self_link
   subnetwork        = google_compute_subnetwork.group2.self_link
 }
-
-
-module "mig3_template" {
-  source          = "terraform-google-modules/vm/google//modules/instance_template"
-  version         = "1.0.0"
-  network         = google_compute_network.default.self_link
-  subnetwork      = google_compute_subnetwork.group3.self_link
-  service_account = var.service_account
-  name_prefix     = "${var.network_name}-group3"
-  startup_script  = data.template_file.group3-startup-script.rendered
-  tags            = [
-    "${var.network_name}-group3",
-    module.cloud-nat-group2.router_name]
-}
-
-module "mig3" {
-  source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "1.0.0"
-  instance_template = module.mig3_template.self_link
-  region            = var.group3_region
-  hostname          = "${var.network_name}-group3"
-  target_size       = 2
-  named_ports       = [
-    {
-      name = "http",
-      port = 80
-    }]
-  network           = google_compute_network.default.self_link
-  subnetwork        = google_compute_subnetwork.group3.self_link
-}
-

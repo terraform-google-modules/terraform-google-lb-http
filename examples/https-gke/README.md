@@ -57,12 +57,13 @@ export GOOGLE_PROJECT=$(gcloud config get-value project)
 )
 ```
 
-2. Export the instance group URI, node tag, and network name as Terraform environment variables:
+2. Export the instance group URI, node tag, network name and Project ID as Terraform environment variables:
 
 ```
 export TF_VAR_backend=$(terraform output -state gke-node-port/terraform.tfstate instance_group)
 export TF_VAR_target_tags=$(terraform output -state gke-node-port/terraform.tfstate node_tag)
 export TF_VAR_network_name=$(terraform output -state gke-node-port/terraform.tfstate network_name)
+export TF_VAR_project=$GOOGLE_PROJECT
 ```
 
 3. Run Terraform to create the load balancer:

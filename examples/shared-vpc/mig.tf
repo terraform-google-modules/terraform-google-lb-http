@@ -15,26 +15,69 @@
  */
 
 data "template_file" "group-startup-script" {
-  template = "${file("${format("%s/gceme.sh.tpl", path.module)}")}"
+  template = file(format("%s/gceme.sh.tpl", path.module))
 
-  vars {
+  vars = {
     PROXY_PATH = ""
   }
 }
 
-module "mig1" {
-  source                = "GoogleCloudPlatform/managed-instance-group/google"
-  version               = "1.1.14"
-  region                = "${var.region}"
-  network               = "${var.network}"
-  subnetwork            = "${var.subnetwork}"
-  project               = "${var.service_project}"
-  subnetwork_project    = "${var.host_project}"
-  service_account_email = "${var.service_account_email}"
-  name                  = "shared-vpc-mig"
-  size                  = "${var.group_size}"
-  target_tags           = ["allow-shared-vpc-mig"]
-  service_port          = 80
-  service_port_name     = "http"
-  startup_script        = "${data.template_file.group-startup-script.rendered}"
+resource "google_compute_network" "default" {
+  name                    = var.network
+  auto_create_subnetworks = "false"
+  project                 = var.host_project
+}
+
+resource "google_compute_subnetwork" "default" {
+  name                     = var.subnetwork
+  ip_cidr_range            = "10.127.0.0/20"
+  network                  = google_compute_network.default.self_link
+  region                   = var.region
+  project                  = var.host_project
+  private_ip_google_access = true
+}
+
+resource "google_compute_router" "default" {
+  name    = "lb-http-router"
+  network = google_compute_network.default.self_link
+  region  = var.region
+  project = var.host_project
+}
+
+module "cloud-nat" {
+  source     = "terraform-google-modules/cloud-nat/google"
+  version    = "1.0.0"
+  router     = google_compute_router.default.name
+  project_id = var.host_project
+  region     = var.region
+  name       = "cloud-nat-lb-http-router"
+}
+
+module "mig_template" {
+  source             = "terraform-google-modules/vm/google//modules/instance_template"
+  version            = "1.0.0"
+  network            = google_compute_network.default.self_link
+  subnetwork         = var.subnetwork
+  subnetwork_project = var.host_project
+  service_account    = var.service_account
+  name_prefix        = "shared-vpc-mig"
+  startup_script     = data.template_file.group-startup-script.rendered
+  tags               = [
+    "allow-shared-vpc-mig"]
+}
+
+module "mig" {
+  source            = "terraform-google-modules/vm/google//modules/mig"
+  version           = "1.0.0"
+  instance_template = module.mig_template.self_link
+  region            = var.region
+  hostname          = var.network
+  target_size       = 2
+  named_ports       = [
+    {
+      name = "http",
+      port = 80
+    }]
+  network           = google_compute_network.default.self_link
+  subnetwork        = google_compute_subnetwork.default.self_link
 }
