@@ -60,7 +60,7 @@ variable "backends" {
   type        = map(list(object({
     group                        = string
     balancing_mode               = string
-    capacity_scaler              = string
+    capacity_scaler              = number
     description                  = string
     max_connections              = number
     max_connections_per_instance = number
