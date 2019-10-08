@@ -14,8 +14,28 @@ module "gce-lb-http" {
   target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
   backends          = {
     "0" = [
-      { group = module.mig1.instance_group },
-      { group = module.mig2.instance_group }
+      {
+        group = module.mig1.instance_group
+        balancing_mode               = null
+        capacity_scaler              = null
+        description                  = null
+        max_connections              = null
+        max_connections_per_instance = null
+        max_rate                     = null
+        max_rate_per_instance        = null
+        max_utilization              = null
+      },
+      {
+        group = module.mig2.instance_group
+        balancing_mode               = null
+        capacity_scaler              = null
+        description                  = null
+        max_connections              = null
+        max_connections_per_instance = null
+        max_rate                     = null
+        max_rate_per_instance        = null
+        max_utilization              = null
+      }
     ],
   }
   backend_params    = [
