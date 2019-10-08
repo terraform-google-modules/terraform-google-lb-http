@@ -117,6 +117,7 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
+  # TODO:
   #  dynamic "cdn_policy" {
   #   for_each = [lookup(each.value, "cdn_policy", {})]
   #   content {
@@ -145,6 +146,7 @@ resource "google_compute_health_check" "default" {
   healthy_threshold   = lookup(each.value["health_check"], "healthy_threshold", 2)
   unhealthy_threshold = lookup(each.value["health_check"], "unhealthy_threshold", 2)
 
+  # TODO: Infer type of health check to use from backends.protocol
   dynamic "http_health_check" {
     for_each = lookup(each.value["health_check"], "http_health_check", {}) == {} ? [] : [each.value["health_check"]["http_health_check"]]
     content {
@@ -188,6 +190,7 @@ resource "google_compute_health_check" "default" {
 
 }
 
+# TODO: Reenable
 # resource "google_compute_firewall" "default-hc" {
 #   count         = length(var.firewall_networks)
 #   project       = length(var.firewall_networks) == 1 && var.firewall_projects[0] == "default" ? var.project : var.firewall_projects[count.index]
