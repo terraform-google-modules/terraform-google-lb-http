@@ -19,6 +19,18 @@ variable "project" {
   type        = string
 }
 
+variable "create_address" {
+  type        = bool
+  description = "Create a new global address"
+  default     = true
+}
+
+variable "address" {
+  type        = string
+  description = "IP address self link"
+  default     = null
+}
+
 variable "ip_version" {
   description = "IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4"
   type        = string
@@ -28,15 +40,15 @@ variable "ip_version" {
 variable "firewall_networks" {
   description = "Names of the networks to create firewall rules in"
   type        = list(string)
-  default     = [
-    "default"]
+  default = [
+  "default"]
 }
 
 variable "firewall_projects" {
   description = "Names of the projects to create firewall rules in"
   type        = list(string)
-  default     = [
-    "default"]
+  default = [
+  "default"]
 }
 
 variable "name" {
@@ -51,27 +63,7 @@ variable "target_tags" {
 
 variable "backends" {
   description = "Map backend indices to list of backend maps."
-  type        = map(list(object({
-    group                        = string
-    balancing_mode               = string
-    capacity_scaler              = number
-    description                  = string
-    max_connections              = number
-    max_connections_per_instance = number
-    max_rate                     = number
-    max_rate_per_instance        = number
-    max_utilization              = number
-  })))
-}
-
-variable "backend_params" {
-  description = "Comma-separated encoded list of parameters in order: health check path, service port name, service port, backend timeout seconds"
-  type        = list(string)
-}
-
-variable "backend_protocol" {
-  description = "The protocol with which to talk to the backend service"
-  default     = "HTTP"
+  type        = map
 }
 
 variable "create_url_map" {
@@ -96,6 +88,18 @@ variable "ssl" {
   description = "Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self_link certs"
   type        = bool
   default     = false
+}
+
+variable "ssl_policy" {
+  type        = string
+  description = "Selfink to SSL Policy"
+  default     = null
+}
+
+variable "quic" {
+  type        = bool
+  description = "Set to `true` to enable QUIC support"
+  default     = null
 }
 
 variable "private_key" {
