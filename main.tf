@@ -103,17 +103,17 @@ resource "google_compute_backend_service" "default" {
   dynamic "backend" {
     for_each = toset(each.value["groups"])
     content {
-      balancing_mode               = lookup(backend.value, "balancing_mode", null)
-      capacity_scaler              = lookup(backend.value, "capacity_scaler", null)
-      description                  = lookup(backend.value, "description", null)
-      group                        = lookup(backend.value, "group", null)
-      max_connections              = lookup(backend.value, "max_connections", null)
-      max_connections_per_instance = lookup(backend.value, "max_connections_per_instance", null)
-      max_connections_per_endpoint = lookup(backend.value, "max_connections_per_endpoint", null)
-      max_rate                     = lookup(backend.value, "max_rate", null)
-      max_rate_per_instance        = lookup(backend.value, "max_rate_per_instance", null)
-      max_rate_per_endpoint        = lookup(backend.value, "max_rate_per_endpoint", null)
-      max_utilization              = lookup(backend.value, "max_utilization", null)
+      balancing_mode               = lookup(backend.value, "balancing_mode")
+      capacity_scaler              = lookup(backend.value, "capacity_scaler")
+      description                  = lookup(backend.value, "description")
+      group                        = lookup(backend.value, "group")
+      max_connections              = lookup(backend.value, "max_connections")
+      max_connections_per_instance = lookup(backend.value, "max_connections_per_instance")
+      max_connections_per_endpoint = lookup(backend.value, "max_connections_per_endpoint")
+      max_rate                     = lookup(backend.value, "max_rate")
+      max_rate_per_instance        = lookup(backend.value, "max_rate_per_instance")
+      max_rate_per_endpoint        = lookup(backend.value, "max_rate_per_endpoint")
+      max_utilization              = lookup(backend.value, "max_utilization")
     }
   }
 

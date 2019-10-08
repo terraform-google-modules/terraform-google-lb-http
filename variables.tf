@@ -63,7 +63,28 @@ variable "target_tags" {
 
 variable "backends" {
   description = "Map backend indices to list of backend maps."
-  type        = map
+  #type        = map
+  type = map(object({
+    protocol     = string
+    port_name    = string
+    timeout_sec  = number
+    enable_cdn   = bool
+    health_check = any
+    groups = list(object({
+      group                        = string
+      balancing_mode               = string
+      capacity_scaler              = number
+      description                  = string
+      max_connections              = number
+      max_connections_per_instance = number
+      max_connections_per_endpoint = number
+      max_rate                     = number
+      max_rate_per_instance        = number
+      max_rate_per_endpoint        = number
+      max_utilization              = number
+    }))
+
+  }))
 }
 
 variable "create_url_map" {
