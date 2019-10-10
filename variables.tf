@@ -65,11 +65,22 @@ variable "backends" {
   description = "Map backend indices to list of backend maps."
   #type        = map
   type = map(object({
-    protocol     = string
-    port_name    = string
-    timeout_sec  = number
-    enable_cdn   = bool
-    health_check = any
+    description                     = string
+    protocol                        = string
+    port_name                       = string
+    timeout_sec                     = number
+    connection_draining_timeout_sec = number
+    enable_cdn                      = bool
+    health_check = object({
+      check_interval_sec  = number
+      timeout_sec         = number
+      healthy_threshold   = number
+      unhealthy_threshold = number
+
+      request_path = string
+      port         = number
+      host         = string
+    })
     groups = list(object({
       group                        = string
       balancing_mode               = string

@@ -18,6 +18,8 @@
 locals {
   address = var.create_address ? google_compute_global_address.default[0].address : var.address
   url_map = var.create_url_map ? google_compute_url_map.default[0].self_link : var.url_map
+
+
 }
 
 resource "google_compute_global_forwarding_rule" "http" {
@@ -146,9 +148,18 @@ resource "google_compute_health_check" "default" {
   healthy_threshold   = lookup(each.value["health_check"], "healthy_threshold", 2)
   unhealthy_threshold = lookup(each.value["health_check"], "unhealthy_threshold", 2)
 
-  # TODO: Infer type of health check to use from backends.protocol
   dynamic "http_health_check" {
-    for_each = lookup(each.value["health_check"], "http_health_check", {}) == {} ? [] : [each.value["health_check"]["http_health_check"]]
+    for_each = each.value["protocol"] == "HTTP" ? [
+      {
+        host               = lookup(each.value["health_check"], "host", null)
+        request_path       = lookup(each.value["health_check"], "request_path", null)
+        response           = lookup(each.value["health_check"], "response", null)
+        port               = lookup(each.value["health_check"], "port", null)
+        port_name          = lookup(each.value["health_check"], "port_name", null)
+        port_specification = lookup(each.value["health_check"], "port_specification", null)
+      }
+    ] : []
+
     content {
       host         = lookup(http_health_check.value, "host", null)
       request_path = lookup(http_health_check.value, "request_path", null)
@@ -161,7 +172,16 @@ resource "google_compute_health_check" "default" {
   }
 
   dynamic "https_health_check" {
-    for_each = lookup(each.value["health_check"], "https_health_check", {}) == {} ? [] : [each.value["health_check"]["https_health_check"]]
+    for_each = each.value["protocol"] == "HTTPS" ? [
+      {
+        host               = lookup(each.value["health_check"], "host", null)
+        request_path       = lookup(each.value["health_check"], "request_path", null)
+        response           = lookup(each.value["health_check"], "response", null)
+        port               = lookup(each.value["health_check"], "port", null)
+        port_name          = lookup(each.value["health_check"], "port_name", null)
+        port_specification = lookup(each.value["health_check"], "port_specification", null)
+      }
+    ] : []
 
     content {
       host         = lookup(https_health_check.value, "host", null)
@@ -175,7 +195,16 @@ resource "google_compute_health_check" "default" {
   }
 
   dynamic "http2_health_check" {
-    for_each = lookup(each.value["health_check"], "http2_health_check", {}) == {} ? [] : [each.value["health_check"]["http2_health_check"]]
+    for_each = each.value["protocol"] == "HTTP2" ? [
+      {
+        host               = lookup(each.value["health_check"], "host", null)
+        request_path       = lookup(each.value["health_check"], "request_path", null)
+        response           = lookup(each.value["health_check"], "response", null)
+        port               = lookup(each.value["health_check"], "port", null)
+        port_name          = lookup(each.value["health_check"], "port_name", null)
+        port_specification = lookup(each.value["health_check"], "port_specification", null)
+      }
+    ] : []
 
     content {
       host         = lookup(http2_health_check.value, "host", null)
