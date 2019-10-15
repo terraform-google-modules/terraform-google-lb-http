@@ -2,9 +2,6 @@
 
 [![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&working_dir=examples/multiple-certs&page=shell&tutorial=README.md)
 
-<a href="https://concourse-tf.gcp.solutions/teams/main/pipelines/tf-examples-lb-https-multi-cert" target="_blank">
-<img src="https://concourse-tf.gcp.solutions/api/v1/teams/main/pipelines/tf-examples-lb-https-multi-cert/badge" /></a>
-
 This example shows how to use multiple certificates with the HTTPS Load Balancer module.
 
 ## Change to the example directory
@@ -93,3 +90,30 @@ echo https://${EXTERNAL_IP}/group3/
 ```
 terraform destroy
 ```
+
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| group1\_region |  | string | `"us-west1"` | no |
+| group1\_zone |  | string | `"us-west1-a"` | no |
+| group2\_region |  | string | `"us-central1"` | no |
+| group2\_zone |  | string | `"us-central1-f"` | no |
+| group3\_region |  | string | `"us-east1"` | no |
+| group3\_zone |  | string | `"us-east1-b"` | no |
+| network\_name |  | string | `"tf-lb-https-multi-cert"` | no |
+| project |  | string | n/a | yes |
+| service\_account |  | object | `<map>` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| asset-url |  |
+| group1\_region |  |
+| group2\_region |  |
+| group3\_region |  |
+| load-balancer-ip |  |
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

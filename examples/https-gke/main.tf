@@ -1,11 +1,11 @@
-/*
- * Copyright 2017 Google Inc.
+/**
+ * Copyright 2017 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,12 +31,10 @@ module "gce-lb-https" {
   ssl               = true
   private_key       = tls_private_key.example.private_key_pem
   certificate       = tls_self_signed_cert.example.cert_pem
-  firewall_networks = [
-    var.network_name]
+  firewall_networks = [var.network_name]
 
   // Make sure when you create the cluster that you provide the `--tags` argument to add the appropriate `target_tags` referenced in the http module.
-  target_tags = [
-    var.target_tags]
+  target_tags = [var.target_tags]
 
   // Use custom url map.
   url_map        = google_compute_url_map.my-url-map.self_link
@@ -76,8 +74,7 @@ resource "google_compute_url_map" "my-url-map" {
   default_service = module.gce-lb-https.backend_services[0]
 
   host_rule {
-    hosts        = [
-      "*"]
+    hosts        = ["*"]
     path_matcher = "allpaths"
   }
 
@@ -86,9 +83,10 @@ resource "google_compute_url_map" "my-url-map" {
     default_service = module.gce-lb-https.backend_services[0]
 
     path_rule {
-      paths   = [
+      paths = [
         "/assets",
-        "/assets/*"]
+        "/assets/*"
+      ]
       service = google_compute_backend_bucket.assets.self_link
     }
   }

@@ -1,11 +1,11 @@
-/*
- * Copyright 2017 Google Inc.
+/**
+ * Copyright 2017 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -66,9 +66,10 @@ module "mig_template" {
   service_account = var.service_account
   name_prefix     = var.network_name
   startup_script  = data.template_file.group-startup-script.rendered
-  tags            = [
+  tags = [
     var.network_name,
-    module.cloud-nat.router_name]
+    module.cloud-nat.router_name
+  ]
 }
 
 module "mig" {
@@ -78,23 +79,20 @@ module "mig" {
   region            = var.region
   hostname          = var.network_name
   target_size       = 2
-  named_ports       = [
-    {
-      name = "http",
-      port = 80
-    }]
-  network           = google_compute_network.default.self_link
-  subnetwork        = google_compute_subnetwork.default.self_link
+  named_ports = [{
+    name = "http",
+    port = 80
+  }]
+  network    = google_compute_network.default.self_link
+  subnetwork = google_compute_subnetwork.default.self_link
 }
 
 module "gce-lb-http" {
   source            = "../../"
   name              = "mig-http-lb"
   project           = var.project
-  target_tags       = [
-    var.network_name]
-  firewall_networks = [
-    google_compute_network.default.name]
+  target_tags       = [var.network_name]
+  firewall_networks = [google_compute_network.default.name]
 
   backends = {
     "0" = [
