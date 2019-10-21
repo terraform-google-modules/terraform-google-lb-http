@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support for Terraform 0.12. [#51] [#56]
+
+### Removed
+
+- Support for Terraform 0.11. [#51]
+- Unused `region` variable. [#61]
+
 ## [1.0.10] - 2018-09-26
 
 ## [1.0.9] - 2018-09-06
@@ -40,3 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.0.2]: https://github.com/terraform-google-modules/terraform-google-lb-http/compare/1.0.1...1.0.2
 [1.0.1]: https://github.com/terraform-google-modules/terraform-google-lb-http/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/terraform-google-modules/terraform-google-lb-http/releases/tag/1.0.0
+
+[#61]: https://github.com/terraform-google-modules/terraform-google-lb-http/pull/61
+[#56]: https://github.com/terraform-google-modules/terraform-google-lb-http/pull/56
+[#51]: https://github.com/terraform-google-modules/terraform-google-lb-http/issues/51
