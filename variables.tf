@@ -19,12 +19,6 @@ variable "project" {
   type        = string
 }
 
-variable "region" {
-  description = "Region for cloud resources"
-  type        = string
-  default     = "us-central1"
-}
-
 variable "ip_version" {
   description = "IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4"
   type        = string
