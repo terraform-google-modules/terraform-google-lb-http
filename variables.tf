@@ -131,7 +131,7 @@ variable "ssl_policy" {
 variable "quic" {
   type        = bool
   description = "Set to `true` to enable QUIC support"
-  default     = null
+  default     = false
 }
 
 variable "private_key" {
