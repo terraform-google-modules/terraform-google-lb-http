@@ -73,10 +73,9 @@ variable "backends" {
       timeout_sec         = number
       healthy_threshold   = number
       unhealthy_threshold = number
-
-      request_path = string
-      port         = number
-      host         = string
+      request_path        = string
+      port                = number
+      host                = string
     })
     groups = list(object({
       group                        = string
