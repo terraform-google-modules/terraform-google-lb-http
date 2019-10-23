@@ -34,21 +34,19 @@ variable "address" {
 variable "ip_version" {
   description = "IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "firewall_networks" {
   description = "Names of the networks to create firewall rules in"
   type        = list(string)
-  default = [
-  "default"]
+  default     = ["default"]
 }
 
 variable "firewall_projects" {
   description = "Names of the projects to create firewall rules in"
   type        = list(string)
-  default = [
-  "default"]
+  default     = ["default"]
 }
 
 variable "name" {
@@ -63,7 +61,6 @@ variable "target_tags" {
 
 variable "backends" {
   description = "Map backend indices to list of backend maps."
-  #type        = map
   type = map(object({
     description                     = string
     protocol                        = string
@@ -137,13 +134,13 @@ variable "quic" {
 variable "private_key" {
   description = "Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "certificate" {
   description = "Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "use_ssl_certificates" {
@@ -161,7 +158,7 @@ variable "ssl_certificates" {
 variable "security_policy" {
   description = "The resource URL for the security policy to associate with the backend service"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "cdn" {
