@@ -69,7 +69,7 @@ resource "google_compute_target_https_proxy" "default" {
 
 resource "google_compute_ssl_certificate" "default" {
   project     = var.project
-  count       = var.ssl && ! var.use_ssl_certificates ? 1 : 0
+  count       = var.ssl && !var.use_ssl_certificates ? 1 : 0
   name_prefix = "${var.name}-certificate-"
   private_key = var.private_key
   certificate = var.certificate
