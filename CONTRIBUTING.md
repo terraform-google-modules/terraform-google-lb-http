@@ -1,48 +1,99 @@
-# How to become a contributor and submit your own code
+# Contributing
 
-## Contributor License Agreements
+This document provides guidelines for contributing to the module.
 
-We'd love to accept your sample apps and patches! Before we can take them, we
-have to jump a couple of legal hurdles.
+## Dependencies
 
-Please fill out either the individual or corporate Contributor License
-Agreement (CLA).
+The following dependencies must be installed on the development system:
 
-  * If you are an individual writing original source code and you're sure you
-    own the intellectual property, then you'll need to sign an [individual CLA]
-    (https://developers.google.com/open-source/cla/individual).
-  * If you work for a company that wants to allow you to contribute your work,
-    then you'll need to sign a [corporate CLA]
-    (https://developers.google.com/open-source/cla/corporate).
+- [Docker Engine][docker-engine]
+- [Google Cloud SDK][google-cloud-sdk]
+- [make]
 
-Follow either of the two links above to access the appropriate CLA and
-instructions for how to sign and return it. Once we receive it, we'll
-be able to accept your pull requests.
+## Generating Documentation for Inputs and Outputs
 
-## Contributing A Patch
+The Inputs and Outputs tables in the READMEs of the root module,
+submodules, and example modules are automatically generated based on
+the `variables` and `outputs` of the respective modules. These tables
+must be refreshed if the module interfaces are changed.
 
-1. Submit an issue describing your proposed change to the repo in question.
-1. The repo owner will respond to your issue promptly.
-1. If your proposed change is accepted, and you haven't already done so, sign a
-   Contributor License Agreement (see details above).
-1. Fork the desired repo, develop and test your code changes.
-1. Ensure that your code adheres to the existing style in the sample to which
-   you are contributing.
-1. Ensure that your code has an appropriate set of unit tests which all pass.
-1. Submit a pull request.
+### Execution
 
-## Style
+Run `make generate_docs` to generate new Inputs and Outputs tables.
 
-Format your HCL code with [`hclfmt`](https://github.com/fatih/hclfmt).
+## Integration Testing
 
-Make sure there are no differences between the `hclfmt` output and your .tf files:
+Integration tests are used to verify the behaviour of the root module,
+submodules, and example modules. Additions, changes, and fixes should
+be accompanied with tests.
 
-```
-diff -B <( cat *.tf ) <( hclfmt *.tf )
-```
+The integration tests are run using [Kitchen][kitchen],
+[Kitchen-Terraform][kitchen-terraform], and [InSpec][inspec]. These
+tools are packaged within a Docker image for convenience.
 
-Write changes to the files:
+The general strategy for these tests is to verify the behaviour of the
+[example modules](./examples/), thus ensuring that the root module,
+submodules, and example modules are all functionally correct.
+
+### Test Environment
+The easiest way to test the module is in an isolated test project. The setup for such a project is defined in [test/setup](./test/setup/) directory.
+
+To use this setup, you need a service account with Project Creator access on a folder. Export the Service Account credentials to your environment like so:
 
 ```
-hclfmt -w *.tf
+export SERVICE_ACCOUNT_JSON=$(< credentials.json)
 ```
+
+You will also need to set a few environment variables:
+```
+export TF_VAR_org_id="your_org_id"
+export TF_VAR_folder_id="your_folder_id"
+export TF_VAR_billing_account="your_billing_account_id"
+```
+
+With these settings in place, you can prepare a test project using Docker:
+```
+make docker_test_prepare
+```
+
+### Noninteractive Execution
+
+Run `make docker_test_integration` to test all of the example modules
+noninteractively, using the prepared test project.
+
+### Interactive Execution
+
+1. Run `make docker_run` to start the testing Docker container in
+   interactive mode.
+
+1. Run `kitchen_do create <EXAMPLE_NAME>` to initialize the working
+   directory for an example module.
+
+1. Run `kitchen_do converge <EXAMPLE_NAME>` to apply the example module.
+
+1. Run `kitchen_do verify <EXAMPLE_NAME>` to test the example module.
+
+1. Run `kitchen_do destroy <EXAMPLE_NAME>` to destroy the example module
+   state.
+
+## Linting and Formatting
+
+Many of the files in the repository can be linted or formatted to
+maintain a standard of quality.
+
+### Execution
+
+Run `make docker_test_lint`.
+
+[docker-engine]: https://www.docker.com/products/docker-engine
+[flake8]: http://flake8.pycqa.org/en/latest/
+[gofmt]: https://golang.org/cmd/gofmt/
+[google-cloud-sdk]: https://cloud.google.com/sdk/install
+[hadolint]: https://github.com/hadolint/hadolint
+[inspec]: https://inspec.io/
+[kitchen-terraform]: https://github.com/newcontext-oss/kitchen-terraform
+[kitchen]: https://kitchen.ci/
+[make]: https://en.wikipedia.org/wiki/Make_(software)
+[shellcheck]: https://www.shellcheck.net/
+[terraform-docs]: https://github.com/segmentio/terraform-docs
+[terraform]: https://terraform.io/

@@ -1,11 +1,11 @@
-/*
- * Copyright 2018 Google Inc.
+/**
+ * Copyright 2018 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,44 +14,38 @@
  * limitations under the License.
  */
 
-variable region {
+variable "region" {
   default = "us-central1"
 }
 
-variable host_project {
+variable "host_project" {
   description = "ID for the Shared VPC host project"
 }
 
-variable service_project {
+variable "service_project" {
   description = "ID for the Shared VPC service project where instances will be deployed"
 }
 
-variable service_account_email {
-  description = "The email of the service account for the MIG instance template."
-  default     = "default"
-}
-
-variable network {
+variable "network" {
   description = "ID of network to launch instances on"
 }
 
-variable subnetwork {
+variable "subnetwork" {
   description = "ID of subnetwork to launch instances on"
 }
 
-variable group_size {
+variable "group_size" {
   default     = "2"
   description = "Size of managed instance group to create"
 }
 
 variable "service_account" {
-  type    = object({
+  type = object({
     email  = string,
     scopes = list(string)
   })
   default = {
     email  = ""
-    scopes = [
-      "cloud-platform"]
+    scopes = ["cloud-platform"]
   }
 }

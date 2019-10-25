@@ -1,11 +1,11 @@
-/*
- * Copyright 2017 Google Inc.
+/**
+ * Copyright 2017 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -68,16 +68,16 @@ module "cloud-nat-group2" {
 }
 
 module "gce-lb-http" {
-  source            = "../../"
-  name              = var.network_prefix
-  project           = var.project
-  target_tags       = [
+  source  = "../../"
+  name    = var.network_prefix
+  project = var.project
+  target_tags = [
     "${var.network_prefix}-group1",
     module.cloud-nat-group1.router_name,
     "${var.network_prefix}-group2",
-    module.cloud-nat-group2.router_name]
-  firewall_networks = [
-    google_compute_network.default.name]
+    module.cloud-nat-group2.router_name
+  ]
+  firewall_networks = [google_compute_network.default.name]
 
   backends = {
     0 = [

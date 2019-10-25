@@ -48,21 +48,17 @@ Remove all resources created by terraform:
 terraform destroy
 ```
 
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| group_size | Size of managed instance group to create | string | `2` | no |
-| host_project | ID for the Shared VPC host project | string | - | yes |
-| network | ID of network to launch instances on | string | - | yes |
-| region |  | string | `us-central1` | no |
-| service_account_email | The email of the service account for the MIG instance template. | string | `default` | no |
-| service_project | ID for the Shared VPC service project where instances will be deployed | string | - | yes |
-| subnetwork | ID of subnetwork to launch instances on | string | - | yes |
+| group\_size | Size of managed instance group to create | string | `"2"` | no |
+| host\_project | ID for the Shared VPC host project | string | n/a | yes |
+| network | ID of network to launch instances on | string | n/a | yes |
+| region |  | string | `"us-central1"` | no |
+| service\_account |  | object | `<map>` | no |
+| service\_project | ID for the Shared VPC service project where instances will be deployed | string | n/a | yes |
+| subnetwork | ID of subnetwork to launch instances on | string | n/a | yes |
 
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| external_ip | The external IP assigned to the load balancer. |
-| service_project | The service project the load balancer is in. |
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

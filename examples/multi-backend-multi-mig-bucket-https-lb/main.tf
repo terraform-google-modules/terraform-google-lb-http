@@ -1,11 +1,11 @@
-/*
- * Copyright 2017 Google Inc.
+/**
+ * Copyright 2017 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -105,18 +105,18 @@ resource "random_id" "assets-bucket" {
 }
 
 module "gce-lb-https" {
-  source            = "../../"
-  name              = var.network_name
-  project           = var.project
-  target_tags       = [
+  source  = "../../"
+  name    = var.network_name
+  project = var.project
+  target_tags = [
     "${var.network_name}-group1",
     module.cloud-nat-group1.router_name,
     "${var.network_name}-group2",
     module.cloud-nat-group2.router_name,
     "${var.network_name}-group3",
-    module.cloud-nat-group3.router_name]
-  firewall_networks = [
-    google_compute_network.default.self_link]
+    module.cloud-nat-group3.router_name
+  ]
+  firewall_networks = [google_compute_network.default.self_link]
   url_map           = google_compute_url_map.ml-bkd-ml-mig-bckt-s-lb.self_link
   create_url_map    = false
   ssl               = true
@@ -218,8 +218,7 @@ resource "google_compute_url_map" "ml-bkd-ml-mig-bckt-s-lb" {
   default_service = module.gce-lb-https.backend_services[0]
 
   host_rule {
-    hosts        = [
-      "*"]
+    hosts        = ["*"]
     path_matcher = "allpaths"
   }
 
@@ -228,30 +227,34 @@ resource "google_compute_url_map" "ml-bkd-ml-mig-bckt-s-lb" {
     default_service = module.gce-lb-https.backend_services[0]
 
     path_rule {
-      paths   = [
+      paths = [
         "/group1",
-        "/group1/*"]
+        "/group1/*"
+      ]
       service = module.gce-lb-https.backend_services[1]
     }
 
     path_rule {
-      paths   = [
+      paths = [
         "/group2",
-        "/group2/*"]
+        "/group2/*"
+      ]
       service = module.gce-lb-https.backend_services[2]
     }
 
     path_rule {
-      paths   = [
+      paths = [
         "/group3",
-        "/group3/*"]
+        "/group3/*"
+      ]
       service = module.gce-lb-https.backend_services[3]
     }
 
     path_rule {
-      paths   = [
+      paths = [
         "/assets",
-        "/assets/*"]
+        "/assets/*"
+      ]
       service = google_compute_backend_bucket.assets.self_link
     }
   }

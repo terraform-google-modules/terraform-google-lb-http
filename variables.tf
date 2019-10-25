@@ -1,11 +1,11 @@
-/*
- * Copyright 2017 Google Inc.
+/**
+ * Copyright 2017 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,15 +28,13 @@ variable "ip_version" {
 variable "firewall_networks" {
   description = "Names of the networks to create firewall rules in"
   type        = list(string)
-  default     = [
-    "default"]
+  default     = ["default"]
 }
 
 variable "firewall_projects" {
   description = "Names of the projects to create firewall rules in"
   type        = list(string)
-  default     = [
-    "default"]
+  default     = ["default"]
 }
 
 variable "name" {
@@ -51,11 +49,11 @@ variable "target_tags" {
 
 variable "backends" {
   description = "Map backend indices to list of backend maps."
-  type        = map(list(object({
+  type = map(list(object({
     group                        = string
     balancing_mode               = string
-    capacity_scaler              = number
     description                  = string
+    capacity_scaler              = number
     max_connections              = number
     max_connections_per_instance = number
     max_rate                     = number

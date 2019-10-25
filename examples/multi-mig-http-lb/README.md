@@ -2,9 +2,6 @@
 
 [![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&working_dir=examples/basic&page=shell&tutorial=README.md)
 
-<a href="https://concourse-tf.gcp.solutions/teams/main/pipelines/tf-examples-lb-http-basic" target="_blank">
-<img src="https://concourse-tf.gcp.solutions/api/v1/teams/main/pipelines/tf-examples-lb-http-basic/badge" /></a>
-
 This example creates a global HTTP forwarding rule to forward traffic to instance groups in the us-west1 and us-east1 regions.
 
 **Figure 1.** *diagram of Google Cloud resources*
@@ -98,3 +95,23 @@ echo http://$(terraform output load-balancer-ip)
 ```
 terraform destroy
 ```
+
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| group1\_region |  | string | `"us-west1"` | no |
+| group2\_region |  | string | `"us-east1"` | no |
+| network\_prefix |  | string | `"multi-mig-lb-http"` | no |
+| project |  | string | n/a | yes |
+| service\_account |  | object | `<map>` | no |
+| target\_size |  | number | `"2"` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| load-balancer-ip |  |
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
