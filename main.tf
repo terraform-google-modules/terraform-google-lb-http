@@ -200,25 +200,24 @@ resource "google_compute_health_check" "default" {
 
 }
 
-# TODO: Reenable
-# resource "google_compute_firewall" "default-hc" {
-#   count         = length(var.firewall_networks)
-#   project       = length(var.firewall_networks) == 1 && var.firewall_projects[0] == "default" ? var.project : var.firewall_projects[count.index]
-#   name          = "${var.name}-hc-${count.index}"
-#   network       = length(var.firewall_networks) == 1 ? var.firewall_networks[0] : var.firewall_networks[count.index]
-#   source_ranges = [
-#     "130.211.0.0/22",
-#     "35.191.0.0/16",
-#     "209.85.152.0/22",
-#     "209.85.204.0/22"]
-#   target_tags   = var.target_tags
+resource "google_compute_firewall" "default-hc" {
+  count   = length(var.firewall_networks)
+  project = length(var.firewall_networks) == 1 && var.firewall_projects[0] == "default" ? var.project : var.firewall_projects[count.index]
+  name    = "${var.name}-hc-${count.index}"
+  network = length(var.firewall_networks) == 1 ? var.firewall_networks[0] : var.firewall_networks[count.index]
+  source_ranges = [
+    "130.211.0.0/22",
+    "35.191.0.0/16",
+    "209.85.152.0/22",
+    "209.85.204.0/22"
+  ]
+  target_tags = var.target_tags
 
-#   dynamic "allow" {
-#     for_each = distinct(var.backend_params)
-#     content {
-#       protocol = "tcp"
-#       ports    = [
-#         split(",", allow.value)[2]]
-#     }
-#   }
-# }
+  dynamic "allow" {
+    for_each = var.backends
+    content {
+      protocol = "tcp"
+      ports    = [allow.port]
+    }
+  }
+}

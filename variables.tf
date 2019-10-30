@@ -64,6 +64,7 @@ variable "backends" {
   type = map(object({
     description                     = string
     protocol                        = string
+    port                            = number
     port_name                       = string
     timeout_sec                     = number
     connection_draining_timeout_sec = number
