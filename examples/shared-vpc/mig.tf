@@ -1,11 +1,11 @@
-/*
- * Copyright 2018 Google Inc.
+/**
+ * Copyright 2018 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,8 +62,7 @@ module "mig_template" {
   service_account    = var.service_account
   name_prefix        = "shared-vpc-mig"
   startup_script     = data.template_file.group-startup-script.rendered
-  tags               = [
-    "allow-shared-vpc-mig"]
+  tags               = ["allow-shared-vpc-mig"]
 }
 
 module "mig" {
@@ -73,11 +72,10 @@ module "mig" {
   region            = var.region
   hostname          = var.network
   target_size       = 2
-  named_ports       = [
-    {
-      name = "http",
-      port = 80
-    }]
-  network           = google_compute_network.default.self_link
-  subnetwork        = google_compute_subnetwork.default.self_link
+  named_ports = [{
+    name = "http",
+    port = 80
+  }]
+  network    = google_compute_network.default.self_link
+  subnetwork = google_compute_subnetwork.default.self_link
 }

@@ -1,11 +1,11 @@
-/*
- * Copyright 2017 Google Inc.
+/**
+ * Copyright 2017 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,8 +18,6 @@
 locals {
   address = var.create_address ? google_compute_global_address.default[0].address : var.address
   url_map = var.create_url_map ? google_compute_url_map.default[0].self_link : var.url_map
-
-
 }
 
 resource "google_compute_global_forwarding_rule" "http" {
@@ -133,9 +131,7 @@ resource "google_compute_backend_service" "default" {
   #   }
   # }
 
-  depends_on = [
-    google_compute_health_check.default
-  ]
+  depends_on = [google_compute_health_check.default]
 }
 
 resource "google_compute_health_check" "default" {

@@ -2,9 +2,6 @@
 
 [![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&working_dir=examples/http-nat-gateway&page=shell&tutorial=README.md)
 
-<a href="https://concourse-tf.gcp.solutions/teams/main/pipelines/tf-examples-lb-http-nat-gw" target="_blank">
-<img src="https://concourse-tf.gcp.solutions/api/v1/teams/main/pipelines/tf-examples-lb-http-nat-gw/badge" /></a>
-
 This example creates a global HTTP forwarding rule to an instance group without external IPs. The instances access the internet via a NAT gateway.
 
 **Figure 1.** *diagram of Google Cloud resources*
@@ -74,3 +71,23 @@ You should see the instance details from `group1`.
 ```
 terraform destroy
 ```
+
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| network\_name |  | string | `"tf-lb-http-mig-nat"` | no |
+| project |  | string | n/a | yes |
+| region |  | string | `"us-west1"` | no |
+| service\_account |  | object | `<map>` | no |
+| zone |  | string | `"us-west1-b"` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| backend\_services |  |
+| load-balancer-ip |  |
+
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
