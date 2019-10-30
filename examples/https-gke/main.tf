@@ -42,36 +42,55 @@ module "gce-lb-https" {
 
   // Get selfLink URLs for the actual instance groups (not the manager) of the existing GKE cluster:
   //   gcloud compute instance-groups list --uri
-  backends = {
-    "0" = [
-      {
-        # Each node pool instance group should be added to the backend.
-        group                        = var.backend
-        balancing_mode               = null
-        capacity_scaler              = null
-        description                  = null
-        max_connections              = null
-        max_connections_per_instance = null
-        max_rate                     = null
-        max_rate_per_instance        = null
-        max_utilization              = null
-      },
-    ]
-  }
-
+  //
   // You also must add the named port on the existing GKE clusters instance group that correspond to the `service_port` and `service_port_name` referenced in the module definition.
   //   gcloud compute instance-groups set-named-ports INSTANCE_GROUP_NAME --named-ports=NAME:PORT
   // replace `INSTANCE_GROUP_NAME` with the name of your GKE cluster's instance group and `NAME` and `PORT` with the values of `service_port_name` and `service_port` respectively.
-  backend_params = [
-    // health check path, port name, port number, timeout seconds.
-    "/,${var.service_port_name},${var.service_port},10",
-  ]
+  backends = {
+    default = {
+      description                     = null
+      protocol                        = "HTTP"
+      port                            = var.service_port
+      port_name                       = var.service_port_name
+      timeout_sec                     = 10
+      connection_draining_timeout_sec = null
+      enable_cdn                      = false
+
+      health_check = {
+        check_interval_sec  = null
+        timeout_sec         = null
+        healthy_threshold   = null
+        unhealthy_threshold = null
+        request_path        = "/"
+        port                = var.service_port
+        host                = null
+      }
+
+      groups = [
+        {
+          # Each node pool instance group should be added to the backend.
+          group                        = var.backend
+          balancing_mode               = null
+          capacity_scaler              = null
+          description                  = null
+          max_connections              = null
+          max_connections_per_instance = null
+          max_connections_per_endpoint = null
+          max_rate                     = null
+          max_rate_per_instance        = null
+          max_rate_per_endpoint        = null
+          max_utilization              = null
+        },
+      ]
+    }
+  }
+
 }
 
 resource "google_compute_url_map" "my-url-map" {
   // note that this is the name of the load balancer
   name            = var.name
-  default_service = module.gce-lb-https.backend_services[0]
+  default_service = module.gce-lb-https.backend_services["default"]
 
   host_rule {
     hosts        = ["*"]
@@ -80,7 +99,7 @@ resource "google_compute_url_map" "my-url-map" {
 
   path_matcher {
     name            = "allpaths"
-    default_service = module.gce-lb-https.backend_services[0]
+    default_service = module.gce-lb-https.backend_services["default"]
 
     path_rule {
       paths = [
