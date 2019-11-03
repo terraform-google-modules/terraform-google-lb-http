@@ -4,7 +4,7 @@ Modular Global HTTP Load Balancer for GCE using forwarding rules.
 
 ## Compatibility
 
-This module is meant for use with Terraform 0.12. If you haven't [upgraded](https://www.terraform.io/upgrade-guides/0-12.html) and 
+This module is meant for use with Terraform 0.12. If you haven't [upgraded](https://www.terraform.io/upgrade-guides/0-12.html) and
 need a Terraform 0.11.x-compatible version of this module, the last released version intended for Terraform 0.11.x is
 [1.0.10](https://registry.terraform.io/modules/GoogleCloudPlatform/lb-http/google/1.0.10).
 
@@ -15,36 +15,44 @@ module "gce-lb-http" {
   source            = "GoogleCloudPlatform/lb-http/google"
   name              = "group-http-lb"
   target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
-  backends          = {
-    "0" = [
-      {
-        group = module.mig1.instance_group
-        balancing_mode               = null
-        capacity_scaler              = null
-        description                  = null
-        max_connections              = null
-        max_connections_per_instance = null
-        max_rate                     = null
-        max_rate_per_instance        = null
-        max_utilization              = null
-      },
-      {
-        group = module.mig2.instance_group
-        balancing_mode               = null
-        capacity_scaler              = null
-        description                  = null
-        max_connections              = null
-        max_connections_per_instance = null
-        max_rate                     = null
-        max_rate_per_instance        = null
-        max_utilization              = null
+  backends = {
+    default = {
+      description                     = null
+      protocol                        = "HTTP"
+      port                            = var.service_port
+      port_name                       = var.service_port_name
+      timeout_sec                     = 10
+      connection_draining_timeout_sec = null
+      enable_cdn                      = false
+
+      health_check = {
+        check_interval_sec  = null
+        timeout_sec         = null
+        healthy_threshold   = null
+        unhealthy_threshold = null
+        request_path        = "/"
+        port                = var.service_port
+        host                = null
       }
-    ],
+
+      groups = [
+        {
+          # Each node pool instance group should be added to the backend.
+          group                        = var.backend
+          balancing_mode               = null
+          capacity_scaler              = null
+          description                  = null
+          max_connections              = null
+          max_connections_per_instance = null
+          max_connections_per_endpoint = null
+          max_rate                     = null
+          max_rate_per_instance        = null
+          max_rate_per_endpoint        = null
+          max_utilization              = null
+        },
+      ]
+    }
   }
-  backend_params    = [
-    # health check path, port name, port number, timeout seconds.
-    "/,http,80,10"
-  ]
 }
 ```
 
