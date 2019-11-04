@@ -211,7 +211,7 @@ resource "google_compute_firewall" "default-hc" {
     for_each = var.backends
     content {
       protocol = "tcp"
-      ports    = [allow.port]
+      ports    = [allow.value.port]
     }
   }
 }
