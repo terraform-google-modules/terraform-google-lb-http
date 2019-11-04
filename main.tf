@@ -16,8 +16,8 @@
 
 
 locals {
-  address = var.create_address ? google_compute_global_address.default[0].address : var.address
-  url_map = var.create_url_map ? google_compute_url_map.default[0].self_link : var.url_map
+  address = var.create_address ? join("", google_compute_global_address.default.*.address) : var.address
+  url_map = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
 }
 
 resource "google_compute_global_forwarding_rule" "http" {

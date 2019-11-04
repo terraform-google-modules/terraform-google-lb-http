@@ -104,7 +104,7 @@ variable "create_url_map" {
 variable "url_map" {
   description = "The url_map resource to use. Default is to send all traffic to first backend."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "http_forward" {
