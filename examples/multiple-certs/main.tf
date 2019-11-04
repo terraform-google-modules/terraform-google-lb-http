@@ -273,7 +273,7 @@ module "gce-lb-https" {
 resource "google_compute_url_map" "https-multi-cert" {
   // note that this is the name of the load balancer
   name            = var.network_name
-  default_service = module.gce-lb-https.backend_services["default"]
+  default_service = module.gce-lb-https.backend_services["default"].self_link
 
   host_rule {
     hosts        = ["*"]
@@ -282,14 +282,14 @@ resource "google_compute_url_map" "https-multi-cert" {
 
   path_matcher {
     name            = "allpaths"
-    default_service = module.gce-lb-https.backend_services["default"]
+    default_service = module.gce-lb-https.backend_services["default"].self_link
 
     path_rule {
       paths = [
         "/group1",
         "/group1/*"
       ]
-      service = module.gce-lb-https.backend_services["mig1"]
+      service = module.gce-lb-https.backend_services["mig1"].self_link
     }
 
     path_rule {
@@ -297,7 +297,7 @@ resource "google_compute_url_map" "https-multi-cert" {
         "/group2",
         "/group2/*"
       ]
-      service = module.gce-lb-https.backend_services["mig2"]
+      service = module.gce-lb-https.backend_services["mig2"].self_link
     }
 
     path_rule {
@@ -305,7 +305,7 @@ resource "google_compute_url_map" "https-multi-cert" {
         "/group3",
         "/group3/*"
       ]
-      service = module.gce-lb-https.backend_services["mig3"]
+      service = module.gce-lb-https.backend_services["mig3"].self_link
     }
 
     path_rule {

@@ -90,7 +90,7 @@ module "gce-lb-https" {
 resource "google_compute_url_map" "my-url-map" {
   // note that this is the name of the load balancer
   name            = var.name
-  default_service = module.gce-lb-https.backend_services["default"]
+  default_service = module.gce-lb-https.backend_services["default"].self_link
 
   host_rule {
     hosts        = ["*"]
@@ -99,7 +99,7 @@ resource "google_compute_url_map" "my-url-map" {
 
   path_matcher {
     name            = "allpaths"
-    default_service = module.gce-lb-https.backend_services["default"]
+    default_service = module.gce-lb-https.backend_services["default"].self_link
 
     path_rule {
       paths = [
