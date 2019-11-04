@@ -107,7 +107,7 @@ resource "random_id" "assets-bucket" {
 locals {
   health_check = {
     check_interval_sec  = null
-    timeout_sec         = 10
+    timeout_sec         = null
     healthy_threshold   = null
     unhealthy_threshold = null
     request_path        = "/"
