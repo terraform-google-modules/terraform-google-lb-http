@@ -117,20 +117,6 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
-  # TODO:
-  #  dynamic "cdn_policy" {
-  #   for_each = [lookup(each.value, "cdn_policy", {})]
-  #   content {
-  #     signed_url_cache_max_age_sec = cdn_policy.value.signed_url_cache_max_age_sec
-  #     dynamic "cache_key_policy" {
-  #       for_each =  [lookup(cdn_policy.value, "cache_key_policy", {})]
-  #       content {
-  #         include_host = true
-  #       }
-  #     }
-  #   }
-  # }
-
   depends_on = [google_compute_health_check.default]
 }
 
