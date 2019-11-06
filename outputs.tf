@@ -25,9 +25,11 @@ output "external_ip" {
 }
 
 output "http_proxy" {
-  value = google_compute_target_http_proxy.default[*].self_link
+  description = "The HTTP proxy used by this module."
+  value       = google_compute_target_http_proxy.default[*].self_link
 }
 
 output "https_proxy" {
-  value = google_compute_target_https_proxy.default[*].self_link
+  description = "The HTTPS proxyused by this module."
+  value       = google_compute_target_https_proxy.default[*].self_link
 }
