@@ -45,7 +45,7 @@ resource "google_compute_global_address" "default" {
   ip_version = var.ip_version
 }
 
-# HTTP proxy when ssl is false
+# HTTP proxy when http forwarding is true
 resource "google_compute_target_http_proxy" "default" {
   project = var.project
   count   = var.http_forward ? 1 : 0
@@ -53,7 +53,7 @@ resource "google_compute_target_http_proxy" "default" {
   url_map = local.url_map
 }
 
-# HTTPS proxy  when ssl is true
+# HTTPS proxy when ssl is true
 resource "google_compute_target_https_proxy" "default" {
   project = var.project
   count   = var.ssl ? 1 : 0
