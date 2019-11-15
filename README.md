@@ -4,7 +4,7 @@ Modular Global HTTP Load Balancer for GCE using forwarding rules.
 
 ## Compatibility
 
-This module is meant for use with Terraform 0.12. If you haven't [upgraded](https://www.terraform.io/upgrade-guides/0-12.html) and 
+This module is meant for use with Terraform 0.12. If you haven't [upgraded](https://www.terraform.io/upgrade-guides/0-12.html) and
 need a Terraform 0.11.x-compatible version of this module, the last released version intended for Terraform 0.11.x is
 [1.0.10](https://registry.terraform.io/modules/GoogleCloudPlatform/lb-http/google/1.0.10).
 
@@ -72,7 +72,6 @@ module "gce-lb-http" {
 | name | Name for the forwarding rule and prefix for supporting resources | string | n/a | yes |
 | private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `""` | no |
 | project | The project to deploy to, if not set the default provider project is used. | string | n/a | yes |
-| region | Region for cloud resources | string | `"us-central1"` | no |
 | security\_policy | The resource URL for the security policy to associate with the backend service | string | `""` | no |
 | ssl | Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self_link certs | bool | `"false"` | no |
 | ssl\_certificates | SSL cert self_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided. | list(string) | `<list>` | no |
