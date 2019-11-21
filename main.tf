@@ -98,7 +98,7 @@ resource "google_compute_backend_service" "default" {
       max_utilization              = lookup(backend.value, "max_utilization", null)
     }
   }
-  health_checks   = [
+  health_checks = [
     element(compact(concat(google_compute_http_health_check.default.*.self_link, google_compute_https_health_check.default.*.self_link)), count.index)
   ]
   security_policy = var.security_policy

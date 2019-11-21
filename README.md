@@ -4,7 +4,7 @@ Modular Global HTTP Load Balancer for GCE using forwarding rules.
 
 ## Compatibility
 
-This module is meant for use with Terraform 0.12. If you haven't [upgraded](https://www.terraform.io/upgrade-guides/0-12.html) and 
+This module is meant for use with Terraform 0.12. If you haven't [upgraded](https://www.terraform.io/upgrade-guides/0-12.html) and
 need a Terraform 0.11.x-compatible version of this module, the last released version intended for Terraform 0.11.x is
 [1.0.10](https://registry.terraform.io/modules/GoogleCloudPlatform/lb-http/google/1.0.10).
 
@@ -53,6 +53,12 @@ module "gce-lb-http" {
 **Figure 1.** *diagram of terraform resources*
 
 ![architecture diagram](./diagram.png)
+
+## Version
+
+Current version is 3.0. Upgrade guides:
+- [1.X -> 2.X](https://www.terraform.io/upgrade-guides/0-12.html)
+- [2.X -> 3.0](./docs/upgrading-v2.0.0-v3.0.0.md)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
