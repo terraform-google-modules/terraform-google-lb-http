@@ -19,11 +19,10 @@ control "https_patterns" do
                 ssl_verify: false) do
 	  its('body') { should match /.*#{attribute("group1_region")}/ }
   end
-# Disabled due to https://github.com/terraform-google-modules/terraform-google-lb-http/issues/60
-#  describe http("https://#{attribute("lb_ip")}/group2/",
-#                ssl_verify: false) do
-#          its('body') { should match /.*#{attribute("group2_region")}/ }
-#  end
+  describe http("https://#{attribute("lb_ip")}/group2/",
+                ssl_verify: false) do
+          its('body') { should match /.*#{attribute("group2_region")}/ }
+  end
   describe http("https://#{attribute("lb_ip")}/group3/",
                 ssl_verify: false) do
           its('body') { should match /.*#{attribute("group3_region")}/ }
