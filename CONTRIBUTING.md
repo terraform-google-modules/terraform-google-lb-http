@@ -38,7 +38,18 @@ submodules, and example modules are all functionally correct.
 ### Test Environment
 The easiest way to test the module is in an isolated test project. The setup for such a project is defined in [test/setup](./test/setup/) directory.
 
-To use this setup, you need a service account with Project Creator access on a folder. Export the Service Account credentials to your environment like so:
+To use this setup, you need a service account with these permissions (on a Folder or Organization):
+- Project Creator
+- Project Billing Manager
+
+The project that the service account belongs to must have the following APIs enabled (the setup won't
+create any resources on the service account's project):
+- Cloud Resource Manager
+- Cloud Billing
+- Service Usage
+- Identity and Access Management (IAM)
+
+Export the Service Account credentials to your environment like so:
 
 ```
 export SERVICE_ACCOUNT_JSON=$(< credentials.json)

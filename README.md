@@ -80,8 +80,7 @@ module "gce-lb-http" {
 | name | Name for the forwarding rule and prefix for supporting resources | string | n/a | yes |
 | private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `"null"` | no |
 | project | The project to deploy to, if not set the default provider project is used. | string | n/a | yes |
-| quic | Set to `true` to enable QUIC support | bool | `"false"` | no |
-| security\_policy | The resource URL for the security policy to associate with the backend service | string | `"null"` | no |
+| security\_policy | The resource URL for the security policy to associate with the backend service | string | `""` | no |
 | ssl | Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self_link certs | bool | `"false"` | no |
 | ssl\_certificates | SSL cert self_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided. | list(string) | `<list>` | no |
 | ssl\_policy | Selfink to SSL Policy | string | `"null"` | no |
