@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- QUIC protocol support [#57]
+- Container Native Load Balancing support via NEGs [#57]
+- Allow existing IP address to be used [#25]
+- Allow setting a SSL Policy to restrict TLS/Ciphers
+- Add http/https target proxies to output to allow binding multiple IPs
+
+### Changed
+
+- Update minimum terraform version to 0.12.6
+- Update google providers to 2.15
+- Move to using `for_each` for state management [#57]
+- Move backend variables from list into map/object [#54]
+- Allow HTTPS/HTTP2 health checks with custom host/timeouts/thresholds [#34] [#31]
+- `backend_services` output is now a map of `google_compute_backend_service` resources rather then a list of URIs
+
 ## [2.0.0] - 2019-10-21
 
 ### Added
@@ -50,6 +68,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.0.1]: https://github.com/terraform-google-modules/terraform-google-lb-http/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/terraform-google-modules/terraform-google-lb-http/releases/tag/1.0.0
 
+[#57]: https://github.com/terraform-google-modules/terraform-google-lb-http/pull/57
 [#61]: https://github.com/terraform-google-modules/terraform-google-lb-http/pull/61
 [#56]: https://github.com/terraform-google-modules/terraform-google-lb-http/pull/56
+[#53]: https://github.com/terraform-google-modules/terraform-google-lb-http/issues/53
 [#51]: https://github.com/terraform-google-modules/terraform-google-lb-http/issues/51
+[#31]: https://github.com/terraform-google-modules/terraform-google-lb-http/issues/31
+[#34]: https://github.com/terraform-google-modules/terraform-google-lb-http/issues/34
+[#25]: https://github.com/terraform-google-modules/terraform-google-lb-http/issues/25

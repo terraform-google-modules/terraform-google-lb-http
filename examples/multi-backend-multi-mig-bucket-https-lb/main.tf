@@ -104,6 +104,18 @@ resource "random_id" "assets-bucket" {
   byte_length = 2
 }
 
+locals {
+  health_check = {
+    check_interval_sec  = null
+    timeout_sec         = null
+    healthy_threshold   = null
+    unhealthy_threshold = null
+    request_path        = "/"
+    port                = 80
+    host                = null
+  }
+}
+
 module "gce-lb-https" {
   source  = "../../"
   name    = var.network_name
@@ -124,98 +136,144 @@ module "gce-lb-https" {
   certificate       = tls_self_signed_cert.example.cert_pem
 
   backends = {
-    "0" = [
-      {
-        group                        = module.mig1.instance_group
-        balancing_mode               = null
-        capacity_scaler              = null
-        description                  = null
-        max_connections              = null
-        max_connections_per_instance = null
-        max_rate                     = null
-        max_rate_per_instance        = null
-        max_utilization              = null
-      },
-      {
-        group                        = module.mig2.instance_group
-        balancing_mode               = null
-        capacity_scaler              = null
-        description                  = null
-        max_connections              = null
-        max_connections_per_instance = null
-        max_rate                     = null
-        max_rate_per_instance        = null
-        max_utilization              = null
-      },
-      {
-        group                        = module.mig3.instance_group
-        balancing_mode               = null
-        capacity_scaler              = null
-        description                  = null
-        max_connections              = null
-        max_connections_per_instance = null
-        max_rate                     = null
-        max_rate_per_instance        = null
-        max_utilization              = null
-      },
-    ]
+    default = {
+      description                     = null
+      protocol                        = "HTTP"
+      port                            = 80
+      port_name                       = "http"
+      timeout_sec                     = 10
+      connection_draining_timeout_sec = null
+      enable_cdn                      = false
+      health_check                    = local.health_check
+      groups = [
+        {
+          group                        = module.mig1.instance_group
+          balancing_mode               = null
+          capacity_scaler              = null
+          description                  = null
+          max_connections              = null
+          max_connections_per_instance = null
+          max_connections_per_endpoint = null
+          max_rate                     = null
+          max_rate_per_instance        = null
+          max_rate_per_endpoint        = null
+          max_utilization              = null
+        },
+        {
+          group                        = module.mig2.instance_group
+          balancing_mode               = null
+          capacity_scaler              = null
+          description                  = null
+          max_connections              = null
+          max_connections_per_instance = null
+          max_connections_per_endpoint = null
+          max_rate                     = null
+          max_rate_per_instance        = null
+          max_rate_per_endpoint        = null
+          max_utilization              = null
+        },
+        {
+          group                        = module.mig3.instance_group
+          balancing_mode               = null
+          capacity_scaler              = null
+          description                  = null
+          max_connections              = null
+          max_connections_per_instance = null
+          max_connections_per_endpoint = null
+          max_rate                     = null
+          max_rate_per_instance        = null
+          max_rate_per_endpoint        = null
+          max_utilization              = null
+        },
+      ]
+    }
 
-    "1" = [
-      {
-        group                        = module.mig1.instance_group
-        balancing_mode               = null
-        capacity_scaler              = null
-        description                  = null
-        max_connections              = null
-        max_connections_per_instance = null
-        max_rate                     = null
-        max_rate_per_instance        = null
-        max_utilization              = null
-      },
-    ]
+    mig1 = {
+      description                     = null
+      protocol                        = "HTTP"
+      port                            = 80
+      port_name                       = "http"
+      timeout_sec                     = 10
+      connection_draining_timeout_sec = null
+      enable_cdn                      = false
+      health_check                    = local.health_check
+      groups = [
+        {
+          group                        = module.mig1.instance_group
+          balancing_mode               = null
+          capacity_scaler              = null
+          description                  = null
+          max_connections              = null
+          max_connections_per_instance = null
+          max_connections_per_endpoint = null
+          max_rate                     = null
+          max_rate_per_instance        = null
+          max_rate_per_endpoint        = null
+          max_utilization              = null
+        },
+      ]
+    }
 
-    "2" = [
-      {
-        group                        = module.mig2.instance_group
-        balancing_mode               = null
-        capacity_scaler              = null
-        description                  = null
-        max_connections              = null
-        max_connections_per_instance = null
-        max_rate                     = null
-        max_rate_per_instance        = null
-        max_utilization              = null
-      },
-    ]
+    mig2 = {
+      description                     = null
+      protocol                        = "HTTP"
+      port                            = 80
+      port_name                       = "http"
+      timeout_sec                     = 10
+      connection_draining_timeout_sec = null
+      enable_cdn                      = false
+      health_check                    = local.health_check
+      groups = [
+        {
+          group                        = module.mig2.instance_group
+          balancing_mode               = null
+          capacity_scaler              = null
+          description                  = null
+          max_connections              = null
+          max_connections_per_instance = null
+          max_connections_per_endpoint = null
+          max_rate                     = null
+          max_rate_per_instance        = null
+          max_rate_per_endpoint        = null
+          max_utilization              = null
+        },
+      ]
+    }
 
-    "3" = [
-      {
-        group                        = module.mig3.instance_group
-        balancing_mode               = null
-        capacity_scaler              = null
-        description                  = null
-        max_connections              = null
-        max_connections_per_instance = null
-        max_rate                     = null
-        max_rate_per_instance        = null
-        max_utilization              = null
-      },
-    ]
+    mig3 = {
+      description                     = null
+      protocol                        = "HTTP"
+      port                            = 80
+      port_name                       = "http"
+      timeout_sec                     = 10
+      connection_draining_timeout_sec = null
+      enable_cdn                      = false
+      health_check                    = local.health_check
+      groups = [
+        {
+          group                        = module.mig3.instance_group
+          balancing_mode               = null
+          capacity_scaler              = null
+          description                  = null
+          max_connections              = null
+          max_connections_per_instance = null
+          max_connections_per_endpoint = null
+          max_rate                     = null
+          max_rate_per_instance        = null
+          max_rate_per_endpoint        = null
+          max_utilization              = null
+        },
+      ]
+    }
+
   }
 
-  backend_params = [
-    // health check path, port name, port number, timeout seconds.
-    "/,http,80,10",
-    "/,http,80,10",
-    "/,http,80,10",
-    "/,http,80,10",
-  ]
 }
 
 resource "google_compute_url_map" "ml-bkd-ml-mig-bckt-s-lb" {
   // note that this is the name of the load balancer
   name            = var.network_name
-  default_service = module.gce-lb-https.backend_services[0]
+  default_service = module.gce-lb-https.backend_services["default"].self_link
 
   host_rule {
     hosts        = ["*"]
@@ -224,14 +282,14 @@ resource "google_compute_url_map" "ml-bkd-ml-mig-bckt-s-lb" {
 
   path_matcher {
     name            = "allpaths"
-    default_service = module.gce-lb-https.backend_services[0]
+    default_service = module.gce-lb-https.backend_services["default"].self_link
 
     path_rule {
       paths = [
         "/group1",
         "/group1/*"
       ]
-      service = module.gce-lb-https.backend_services[1]
+      service = module.gce-lb-https.backend_services["mig1"].self_link
     }
 
     path_rule {
@@ -239,7 +297,7 @@ resource "google_compute_url_map" "ml-bkd-ml-mig-bckt-s-lb" {
         "/group2",
         "/group2/*"
       ]
-      service = module.gce-lb-https.backend_services[2]
+      service = module.gce-lb-https.backend_services["mig2"].self_link
     }
 
     path_rule {
@@ -247,7 +305,7 @@ resource "google_compute_url_map" "ml-bkd-ml-mig-bckt-s-lb" {
         "/group3",
         "/group3/*"
       ]
-      service = module.gce-lb-https.backend_services[3]
+      service = module.gce-lb-https.backend_services["mig3"].self_link
     }
 
     path_rule {

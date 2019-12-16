@@ -19,10 +19,22 @@ variable "project" {
   type        = string
 }
 
+variable "create_address" {
+  type        = bool
+  description = "Create a new global address"
+  default     = true
+}
+
+variable "address" {
+  type        = string
+  description = "IP address self link"
+  default     = null
+}
+
 variable "ip_version" {
   description = "IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "firewall_networks" {
@@ -49,27 +61,38 @@ variable "target_tags" {
 
 variable "backends" {
   description = "Map backend indices to list of backend maps."
-  type = map(list(object({
-    group                        = string
-    balancing_mode               = string
-    description                  = string
-    capacity_scaler              = number
-    max_connections              = number
-    max_connections_per_instance = number
-    max_rate                     = number
-    max_rate_per_instance        = number
-    max_utilization              = number
-  })))
-}
+  type = map(object({
+    description                     = string
+    protocol                        = string
+    port                            = number
+    port_name                       = string
+    timeout_sec                     = number
+    connection_draining_timeout_sec = number
+    enable_cdn                      = bool
+    health_check = object({
+      check_interval_sec  = number
+      timeout_sec         = number
+      healthy_threshold   = number
+      unhealthy_threshold = number
+      request_path        = string
+      port                = number
+      host                = string
+    })
+    groups = list(object({
+      group                        = string
+      balancing_mode               = string
+      capacity_scaler              = number
+      description                  = string
+      max_connections              = number
+      max_connections_per_instance = number
+      max_connections_per_endpoint = number
+      max_rate                     = number
+      max_rate_per_instance        = number
+      max_rate_per_endpoint        = number
+      max_utilization              = number
+    }))
 
-variable "backend_params" {
-  description = "Comma-separated encoded list of parameters in order: health check path, service port name, service port, backend timeout seconds"
-  type        = list(string)
-}
-
-variable "backend_protocol" {
-  description = "The protocol with which to talk to the backend service"
-  default     = "HTTP"
+  }))
 }
 
 variable "create_url_map" {
@@ -81,7 +104,7 @@ variable "create_url_map" {
 variable "url_map" {
   description = "The url_map resource to use. Default is to send all traffic to first backend."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "http_forward" {
@@ -96,16 +119,28 @@ variable "ssl" {
   default     = false
 }
 
+variable "ssl_policy" {
+  type        = string
+  description = "Selfink to SSL Policy"
+  default     = null
+}
+
+variable "quic" {
+  type        = bool
+  description = "Set to `true` to enable QUIC support"
+  default     = false
+}
+
 variable "private_key" {
   description = "Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "certificate" {
   description = "Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "use_ssl_certificates" {
@@ -123,7 +158,7 @@ variable "ssl_certificates" {
 variable "security_policy" {
   description = "The resource URL for the security policy to associate with the backend service"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "cdn" {
