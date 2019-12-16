@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0] - 2019-12-16
+
 ### Added
 - QUIC protocol support [#57]
 - Container Native Load Balancing support via NEGs [#57]
@@ -14,7 +16,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add http/https target proxies to output to allow binding multiple IPs
 
 ### Changed
-
 - Update minimum terraform version to 0.12.6
 - Update google providers to 2.15
 - Move to using `for_each` for state management [#57]
@@ -55,7 +56,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2017-08-23
 
-[Unreleased]: https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v2.0.0...v3.0.0
+[2.0.0]: https://github.com/terraform-google-modules/terraform-google-lb-http/compare/1.0.10...v2.0.0
 [1.0.10]: https://github.com/terraform-google-modules/terraform-google-lb-http/compare/1.0.9...1.0.10
 [1.0.9]: https://github.com/terraform-google-modules/terraform-google-lb-http/compare/1.0.8...1.0.9
 [1.0.8]: https://github.com/terraform-google-modules/terraform-google-lb-http/compare/1.0.7...1.0.8
@@ -68,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [1.0.1]: https://github.com/terraform-google-modules/terraform-google-lb-http/compare/1.0.0...1.0.1
 [1.0.0]: https://github.com/terraform-google-modules/terraform-google-lb-http/releases/tag/1.0.0
 
+[#54]: https://github.com/terraform-google-modules/terraform-google-lb-http/pull/54
 [#57]: https://github.com/terraform-google-modules/terraform-google-lb-http/pull/57
 [#61]: https://github.com/terraform-google-modules/terraform-google-lb-http/pull/61
 [#56]: https://github.com/terraform-google-modules/terraform-google-lb-http/pull/56
