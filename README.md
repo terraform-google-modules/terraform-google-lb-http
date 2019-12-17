@@ -2,6 +2,11 @@
 
 Modular Global HTTP Load Balancer for GCE using forwarding rules.
 
+### Load Balancer Types
+* [TCP load balancer](https://github.com/terraform-google-modules/terraform-google-lb)
+* **HTTP/S load balancer**
+* [Internal load balancer](https://github.com/terraform-google-modules/terraform-google-lb-internal)
+
 ## Compatibility
 
 This module is meant for use with Terraform 0.12. If you haven't [upgraded](https://www.terraform.io/upgrade-guides/0-12.html) and
