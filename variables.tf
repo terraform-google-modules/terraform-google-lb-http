@@ -115,3 +115,8 @@ variable cdn {
   description = "Set to `true` to enable cdn on backend."
   default     = "false"
 }
+   
+variable quic_override {
+  default     = "NONE"
+}
+   
