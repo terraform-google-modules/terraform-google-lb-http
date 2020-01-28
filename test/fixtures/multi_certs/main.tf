@@ -18,6 +18,10 @@ resource "random_id" "random_net" {
   byte_length = 2
 }
 
+provider "google" {
+  version = "~> 3.5.0"
+}
+
 module "example" {
   source = "../../../examples/multiple-certs"
 
