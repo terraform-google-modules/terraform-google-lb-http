@@ -1,0 +1,91 @@
+1. Create a cluster with Workload Identity enabled.
+    This can be done using the [Terraform GKE module](https://github.com/terraform-google-modules/terraform-google-kubernetes-engine).
+
+2. Once you have a cluster, fetch credentials for accessing the cluster.
+
+        ```
+        gcloud container clusters get-credentials $CLUSTER_NAME \
+            --zone us-central1-a \
+            --project $PROJECT_ID
+        ```
+
+3. Use Terraform to create a namespace in the cluster and load balancer...
+
+        ```
+        terraform apply
+        ```
+
+4. Install the autoneg controller into the `autoneg-system` namespace:
+
+        ```bash
+        kubectl apply -f https://raw.githubusercontent.com/GoogleCloudPlatform/gke-autoneg-controller/master/deploy/autoneg.yaml
+        ```
+
+5. Deploy a sample [Nginx service](./manifests/nginx.yaml)
+
+### Troubleshooting
+
+#### Load Balancer Fails to Respond (502 Error)
+If the pods start successfully but your load balancer doesn't respond,
+you should check the logs of the autoneg controller:
+
+```
+kubectl logs -n autoneg-system \
+    $(kubectl get pods --no-headers -o custom-columns=":metadata.name" -n autoneg-system) manager
+```
+
+#### 403 Errors
+If the autoneg controller is showing errors, you will want to debug your IAM permissions.
+
+First, ensure workload identity is configured correctly by running a pod in the autoneg namespace:
+```
+kubectl run my-shell --rm -n autoneg-system -i --tty --image google/cloud-sdk:latest -- bash
+$ gcloud auth list
+# Should return autoneg-system@<PROJECT_ID>.iam.gserviceaccount.com
+```
+
+If Workload Identity is working correctly, retieve the IAM policies on the project:
+```
+$ gcloud iam roles describe --project $(terraform output project) autoneg
+includedPermissions:
+- compute.backendServices.get
+- compute.backendServices.update
+- compute.healthChecks.useReadOnly
+- compute.networkEndpointGroups.use
+```
+
+### NOTES
+Pre-req:
+
+1. Create IAM role + Service Account + KSA + link them
+
+1. Add k8s annotation
+
+```
+kubectl annotate sa -n autoneg-system default \
+    iam.gke.io/gcp-service-account=autoneg-system@${PROJECT_ID}.iam.gserviceaccount.com
+```
+
+kubectl annotate sa -n autoneg-system default \
+    iam.gke.io/gcp-service-account=autoneg-system@clf-gke-acm-dev.iam.gserviceaccount.com
+
+1. Deploy a simple web app
+
+kubectl apply -f manifests/deployment.yaml
+
+1. Deploy a service
+
+kubectl apply -f manifests/service.yaml
+
+## Debugging
+Get logs from manager:
+```
+kubectl logs $(kubectl get pods --no-headers -o custom-columns=":metadata.name" -n autoneg-system) manager
+```
+
+
+TODO:
+1. Allow existing SA for workload identity
+2. Use two clusters
+3. Write it all up on Medium
+4. Prevent load balancer module from attempting to remove groups
