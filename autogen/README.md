@@ -2,7 +2,12 @@
 
 Modular Global HTTP Load Balancer for GCE using forwarding rules.
 
+{% if root %}
 If you would like to allow for backend groups to be managed outside Terraform, such as via GKE services, see the [dynamic backends](./modules/dynamic_backends) submodule.
+{% elif dynamic_backends %}
+This submodule allows for configuring dynamic backend outside Terraform.
+As such, any changes to the `backends.groups` variable after creation will be ignored.
+{% endif %}
 
 ### Load Balancer Types
 * [TCP load balancer](https://github.com/terraform-google-modules/terraform-google-lb)
@@ -19,7 +24,7 @@ need a Terraform 0.11.x-compatible version of this module, the last released ver
 
 ```HCL
 module "gce-lb-http" {
-  source            = "GoogleCloudPlatform/lb-http/google"
+  source            = "GoogleCloudPlatform/lb-http/google{{ module_path }}"
   name              = "group-http-lb"
   target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
   backends = {
