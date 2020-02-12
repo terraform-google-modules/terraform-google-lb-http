@@ -119,6 +119,9 @@ resource "google_compute_backend_service" "default" {
 
   depends_on = [google_compute_health_check.default]
 
+  lifecycle {
+    ignore_changes = [backend]
+  }
 }
 
 resource "google_compute_health_check" "default" {
