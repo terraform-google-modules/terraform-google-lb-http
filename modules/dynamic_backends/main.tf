@@ -193,7 +193,8 @@ resource "google_compute_firewall" "default-hc" {
     "130.211.0.0/22",
     "35.191.0.0/16"
   ]
-  target_tags = var.target_tags
+  target_tags             = length(var.target_tags) > 0 ? var.target_tags : null
+  target_service_accounts = length(var.target_service_accounts) > 0 ? var.target_service_accounts : null
 
   dynamic "allow" {
     for_each = var.backends
