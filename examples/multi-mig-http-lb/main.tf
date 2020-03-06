@@ -101,6 +101,9 @@ module "gce-lb-http" {
         host                = null
       }
 
+      log_config = {
+        sample_rate = 1.0
+      }
 
       groups = [
         {

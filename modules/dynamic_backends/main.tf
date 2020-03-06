@@ -86,6 +86,7 @@ resource "google_compute_url_map" "default" {
 }
 
 resource "google_compute_backend_service" "default" {
+  provider = google-beta
   for_each = var.backends
 
   project = var.project
@@ -115,6 +116,11 @@ resource "google_compute_backend_service" "default" {
       max_rate_per_endpoint        = lookup(backend.value, "max_rate_per_endpoint")
       max_utilization              = lookup(backend.value, "max_utilization")
     }
+  }
+
+  log_config {
+    enable      = true
+    sample_rate = lookup(lookup(each.value, "log_config", {}), "sample_rate", "1.0")
   }
 
   depends_on = [google_compute_health_check.default]
