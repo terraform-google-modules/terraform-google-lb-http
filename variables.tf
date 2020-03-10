@@ -55,8 +55,15 @@ variable "name" {
 }
 
 variable "target_tags" {
-  description = "List of target tags for health check firewall rule."
+  description = "List of target tags for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified."
   type        = list(string)
+  default     = []
+}
+
+variable "target_service_accounts" {
+  description = "List of target service accounts for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified."
+  type        = list(string)
+  default     = []
 }
 
 variable "backends" {
