@@ -86,6 +86,7 @@ variable "backends" {
       host                = string
     })
     log_config = object({
+      enable      = bool
       sample_rate = number
     })
     groups = list(object({

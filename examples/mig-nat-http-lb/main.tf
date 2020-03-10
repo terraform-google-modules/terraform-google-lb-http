@@ -116,6 +116,7 @@ module "gce-lb-http" {
       }
 
       log_config = {
+        enable = true
         sample_rate = 1.0
       }
 

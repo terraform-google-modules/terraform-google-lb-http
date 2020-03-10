@@ -146,6 +146,7 @@ module "gce-lb-https" {
       enable_cdn                      = false
       health_check                    = local.health_check
       log_config = {
+        enable = true
         sample_rate = 1.0
       }
       groups = [
@@ -201,6 +202,7 @@ module "gce-lb-https" {
       enable_cdn                      = false
       health_check                    = local.health_check
       log_config = {
+        enable = true
         sample_rate = 1.0
       }
       groups = [
@@ -230,6 +232,7 @@ module "gce-lb-https" {
       enable_cdn                      = false
       health_check                    = local.health_check
       log_config = {
+        enable = true
         sample_rate = 1.0
       }
       groups = [
@@ -259,6 +262,7 @@ module "gce-lb-https" {
       enable_cdn                      = false
       health_check                    = local.health_check
       log_config = {
+        enable = true
         sample_rate = 1.0
       }
       groups = [
