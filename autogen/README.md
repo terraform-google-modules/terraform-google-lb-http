@@ -25,7 +25,10 @@ need a Terraform 0.11.x-compatible version of this module, the last released ver
 ```HCL
 module "gce-lb-http" {
   source            = "GoogleCloudPlatform/lb-http/google{{ module_path }}"
+  version           = "~> 3.1"
+
   name              = "group-http-lb"
+  project           = "my-project-id"
   target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
   backends = {
     default = {
