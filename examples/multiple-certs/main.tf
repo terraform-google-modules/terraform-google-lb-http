@@ -145,6 +145,10 @@ module "gce-lb-https" {
       connection_draining_timeout_sec = null
       enable_cdn                      = false
       health_check                    = local.health_check
+      log_config = {
+        enable      = true
+        sample_rate = 1.0
+      }
       groups = [
         {
           group                        = module.mig1.instance_group
@@ -197,6 +201,10 @@ module "gce-lb-https" {
       connection_draining_timeout_sec = null
       enable_cdn                      = false
       health_check                    = local.health_check
+      log_config = {
+        enable      = true
+        sample_rate = 1.0
+      }
       groups = [
         {
           group                        = module.mig1.instance_group
@@ -223,6 +231,10 @@ module "gce-lb-https" {
       connection_draining_timeout_sec = null
       enable_cdn                      = false
       health_check                    = local.health_check
+      log_config = {
+        enable      = true
+        sample_rate = 1.0
+      }
       groups = [
         {
           group                        = module.mig2.instance_group
@@ -249,6 +261,10 @@ module "gce-lb-https" {
       connection_draining_timeout_sec = null
       enable_cdn                      = false
       health_check                    = local.health_check
+      log_config = {
+        enable      = true
+        sample_rate = 1.0
+      }
       groups = [
         {
           group                        = module.mig3.instance_group

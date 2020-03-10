@@ -115,6 +115,11 @@ module "gce-lb-http" {
         host                = null
       }
 
+      log_config = {
+        enable      = false
+        sample_rate = null
+      }
+
       groups = [
         {
           group                        = module.mig.instance_group

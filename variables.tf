@@ -85,6 +85,10 @@ variable "backends" {
       port                = number
       host                = string
     })
+    log_config = object({
+      enable      = bool
+      sample_rate = number
+    })
     groups = list(object({
       group                        = string
       balancing_mode               = string

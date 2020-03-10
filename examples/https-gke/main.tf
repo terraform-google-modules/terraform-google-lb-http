@@ -66,6 +66,11 @@ module "gce-lb-https" {
         host                = null
       }
 
+      log_config = {
+        enable      = true
+        sample_rate = 1.0
+      }
+
       groups = [
         {
           # Each node pool instance group should be added to the backend.
