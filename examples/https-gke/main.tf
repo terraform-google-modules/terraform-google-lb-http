@@ -67,7 +67,7 @@ module "gce-lb-https" {
       }
 
       log_config = {
-        enable = true
+        enable      = true
         sample_rate = 1.0
       }
 
