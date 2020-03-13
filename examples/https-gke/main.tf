@@ -55,6 +55,8 @@ module "gce-lb-https" {
       timeout_sec                     = 10
       connection_draining_timeout_sec = null
       enable_cdn                      = false
+      session_affinity                = null
+      affinity_cookie_ttl_sec         = null
 
       health_check = {
         check_interval_sec  = null
