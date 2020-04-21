@@ -76,6 +76,8 @@ variable "backends" {
     timeout_sec                     = number
     connection_draining_timeout_sec = number
     enable_cdn                      = bool
+    session_affinity                = string
+    affinity_cookie_ttl_sec         = number
     health_check = object({
       check_interval_sec  = number
       timeout_sec         = number
