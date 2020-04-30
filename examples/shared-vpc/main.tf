@@ -50,6 +50,7 @@ module "gce-lb-http" {
         request_path        = "/"
         port                = 80
         host                = null
+        logging             = null
       }
 
       log_config = {

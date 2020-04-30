@@ -48,6 +48,7 @@ module "gce-lb-http" {
         request_path        = "/"
         port                = var.service_port
         host                = null
+        logging             = null
       }
 
       log_config = {

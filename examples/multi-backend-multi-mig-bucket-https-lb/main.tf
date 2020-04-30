@@ -113,6 +113,7 @@ locals {
     request_path        = "/"
     port                = 80
     host                = null
+    logging             = null
   }
 }
 
