@@ -128,7 +128,9 @@ resource "google_compute_backend_service" "default" {
 }
 
 resource "google_compute_health_check" "default" {
+  provider = google-beta
   for_each = var.backends
+
   project  = var.project
   name     = "${var.name}-hc-${each.key}"
 
