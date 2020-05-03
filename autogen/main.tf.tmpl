@@ -100,6 +100,8 @@ resource "google_compute_backend_service" "default" {
   enable_cdn                      = lookup(each.value, "enable_cdn", false)
   security_policy                 = var.security_policy
   health_checks                   = [google_compute_health_check.default[each.key].self_link]
+  session_affinity                = lookup(each.value, "session_affinity", null)
+  affinity_cookie_ttl_sec         = lookup(each.value, "affinity_cookie_ttl_sec", null)
 
   dynamic "backend" {
     for_each = toset(each.value["groups"])

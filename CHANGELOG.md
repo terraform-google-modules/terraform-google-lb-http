@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v3.2.0...v4.0.0) (2020-04-21)
+Please see the [upgrade guide](./docs/upgrading_to_v4.0.md) for details.
+
+### ⚠ BREAKING CHANGES
+
+* `session_affinity` and `affinity_cookie_ttl_sec` must now be set for backends. Use `null` to get the default value.
+* You must now specify log_config for each backend service. Use `log_config = null` to use the default.
+
+### Features
+
+* Add support for log_config in google_compute_backend_service. ([#88](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/88)) ([f5129ef](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/f5129ef91fdcf1ed19200ee6542f251cc701ab67))
+* Add support for session affinity on HTTP(S) LB ([#89](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/89)) ([bf1cf66](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/bf1cf66ba989af2d622dead9428b7a2b046fb594))
+* Add support for target_service_accounts in default firewall rule. ([#87](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/87)) ([0ea26a2](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/0ea26a2391d89cb906d91918c03a278eb9ed653a))
+
 ## [3.2.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v3.1.0...v3.2.0) (2020-02-13)
 
 
