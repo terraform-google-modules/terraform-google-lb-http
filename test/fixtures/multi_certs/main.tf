@@ -19,7 +19,7 @@ resource "random_id" "random_net" {
 }
 
 provider "google" {
-  version = "~> 3.5.0"
+  version = "~> 3.17.0"
 }
 
 module "example" {

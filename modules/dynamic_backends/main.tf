@@ -133,7 +133,6 @@ resource "google_compute_backend_service" "default" {
 resource "google_compute_health_check" "default" {
   provider = google-beta
   for_each = var.backends
-
   project  = var.project
   name     = "${var.name}-hc-${each.key}"
 
@@ -142,11 +141,8 @@ resource "google_compute_health_check" "default" {
   healthy_threshold   = lookup(each.value["health_check"], "healthy_threshold", 2)
   unhealthy_threshold = lookup(each.value["health_check"], "unhealthy_threshold", 2)
 
-  dynamic "log_config" {
-    for_each = lookup(each.value["health_check"], "logging", [])
-    content {
-      enable = lookup(each.value["health_check"], "logging", false)
-    }
+  log_config {
+    enable = lookup(each.value["health_check"], "logging", false)
   }
 
   dynamic "http_health_check" {
