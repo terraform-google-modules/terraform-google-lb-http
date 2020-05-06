@@ -86,6 +86,7 @@ variable "backends" {
       request_path        = string
       port                = number
       host                = string
+      logging             = bool
     })
     log_config = object({
       enable      = bool

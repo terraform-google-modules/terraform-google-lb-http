@@ -66,6 +66,7 @@ module "gce-lb-https" {
         request_path        = "/"
         port                = var.service_port
         host                = null
+        logging             = true
       }
 
       log_config = {
