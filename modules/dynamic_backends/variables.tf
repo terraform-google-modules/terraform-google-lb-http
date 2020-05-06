@@ -180,3 +180,21 @@ variable "cdn" {
   type        = bool
   default     = false
 }
+
+variable "iap_enabled" {
+  description = "Set to `true` to enable IAP."
+  type        = bool
+  default     = false
+}
+
+variable "iap_oauth2_client_id" {
+  description = "The OAuth2 client id used for IAP."
+  type        = string
+  default     = ""
+}
+
+variable "iap_oauth2_client_secret" {
+  description = "The OAuth2 client secret used for IAP."
+  type        = string
+  default     = ""
+}
