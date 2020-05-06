@@ -105,6 +105,11 @@ variable "backends" {
       max_rate_per_endpoint        = number
       max_utilization              = number
     }))
+    iap_config = object({
+      enable               = bool
+      oauth2_client_id     = string
+      oauth2_client_secret = string
+    })
 
   }))
 }
@@ -179,22 +184,4 @@ variable "cdn" {
   description = "Set to `true` to enable cdn on backend."
   type        = bool
   default     = false
-}
-
-variable "iap_enabled" {
-  description = "Set to `true` to enable IAP."
-  type        = bool
-  default     = false
-}
-
-variable "iap_oauth2_client_id" {
-  description = "The OAuth2 client id used for IAP."
-  type        = string
-  default     = ""
-}
-
-variable "iap_oauth2_client_secret" {
-  description = "The OAuth2 client secret used for IAP."
-  type        = string
-  default     = ""
 }
