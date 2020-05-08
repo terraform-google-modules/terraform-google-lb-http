@@ -71,7 +71,7 @@ module "gce-lb-http" {
       ]
 
       iap_config {
-        enable               = true
+        enable               = false
         oauth2_client_id     = null
         oauth2_client_secret = null
       }
