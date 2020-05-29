@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.0.0...v4.1.0) (2020-05-05)
+
+
+### Features
+
+* Add health check logging support ([#98](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/98)) ([f2b8f3c](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/f2b8f3caf49a5ad06522d703d1ba1a101c561bb7))
+
 ## [4.0.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v3.2.0...v4.0.0) (2020-04-21)
 Please see the [upgrade guide](./docs/upgrading_to_v4.0.md) for details.
 
