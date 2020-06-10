@@ -1,4 +1,5 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
@@ -6,12 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [4.1.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.0.0...v4.1.0) (2020-05-05)
 
-
 ### Features
 
 * Add health check logging support ([#98](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/98)) ([f2b8f3c](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/f2b8f3caf49a5ad06522d703d1ba1a101c561bb7))
 
 ## [4.0.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v3.2.0...v4.0.0) (2020-04-21)
+
 Please see the [upgrade guide](./docs/upgrading_to_v4.0.md) for details.
 
 ### ⚠ BREAKING CHANGES
@@ -27,13 +28,11 @@ Please see the [upgrade guide](./docs/upgrading_to_v4.0.md) for details.
 
 ## [3.2.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v3.1.0...v3.2.0) (2020-02-13)
 
-
 ### Features
 
 * Add submodule which ignores changes to backend group ([#81](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/81)) ([d8d3e33](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/d8d3e33dc3a128c8790476d44ae45f8465f9fa51))
 
 ## [3.1.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v3.0.0...v3.1.0) (2020-01-28)
-
 
 ### Features
 
@@ -42,6 +41,7 @@ Please see the [upgrade guide](./docs/upgrading_to_v4.0.md) for details.
 ## [3.0.0] - 2019-12-16
 
 ### Added
+
 - QUIC protocol support [#57]
 - Container Native Load Balancing support via NEGs [#57]
 - Allow existing IP address to be used [#25]
@@ -49,6 +49,7 @@ Please see the [upgrade guide](./docs/upgrading_to_v4.0.md) for details.
 - Add http/https target proxies to output to allow binding multiple IPs
 
 ### Changed
+
 - Update minimum terraform version to 0.12.6
 - Update google providers to 2.15
 - Move to using `for_each` for state management [#57]

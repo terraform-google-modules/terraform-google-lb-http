@@ -56,7 +56,7 @@ The new version allows you to specify all of your backend configuration, includi
 ```HCL
 module "gce-lb-http" {
   source            = "GoogleCloudPlatform/lb-http/google"
-	version           = "3.0.0"
+ version           = "3.0.0"
 
   name              = "group-http-lb"
   target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
@@ -118,6 +118,7 @@ resource 'projects/[PROJECT]/global/httpHealthChecks/multi-mig-lb-http-backend-0
 is already being used by 'projects/[PROJECT]/global/backendServices/multi-mig-lb-http-backend-0',
 resourceInUseByAnotherResource
 ```
+
 The reason for this is that when we are changing the backend service and health check around, then must be destroyed and then re-created.
 The dependencies here are as follows:
 
@@ -158,5 +159,3 @@ gcloud compute url-maps set-default-service multi-mig-lb-http-url-map \
 ```
 
 This will cut over your URL map to the new service. After that you'll only need to run `terraform apply` twice more to destroy the old backend and healthcheck resources. You'll do it twice because the backend takes a second to go away and the healthcheck can't be destroyed until the resources using it are also destroyed.
-
-

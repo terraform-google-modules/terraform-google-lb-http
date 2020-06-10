@@ -10,6 +10,7 @@ As such, any changes to the `backends.groups` variable after creation will be ig
 {% endif %}
 
 ### Load Balancer Types
+
 * [TCP load balancer](https://github.com/terraform-google-modules/terraform-google-lb)
 * **HTTP/S load balancer**
 * [Internal load balancer](https://github.com/terraform-google-modules/terraform-google-lb-internal)
@@ -88,6 +89,7 @@ module "gce-lb-http" {
 ## Version
 
 Current version is 3.0. Upgrade guides:
+
 - [1.X -> 2.X](https://www.terraform.io/upgrade-guides/0-12.html)
 - [2.X -> 3.0](./docs/upgrading-v2.0.0-v3.0.0.md)
 
