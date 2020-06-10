@@ -18,6 +18,7 @@
 locals {
   address = var.create_address ? join("", google_compute_global_address.default.*.address) : var.address
   url_map = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
+  backends_with_healthchecks = {for backend_index, backend_value in var.backends : backend_index => backend if backend["health_check"] != null}
 }
 
 resource "google_compute_global_forwarding_rule" "http" {
@@ -99,7 +100,7 @@ resource "google_compute_backend_service" "default" {
   connection_draining_timeout_sec = lookup(each.value, "connection_draining_timeout_sec", null)
   enable_cdn                      = lookup(each.value, "enable_cdn", false)
   security_policy                 = var.security_policy
-  health_checks                   = [google_compute_health_check.default[each.key].self_link]
+  health_checks                   = lookup(each.value, "health_check", false) ? [] : [google_compute_health_check.default[each.key].self_link]
   session_affinity                = lookup(each.value, "session_affinity", null)
   affinity_cookie_ttl_sec         = lookup(each.value, "affinity_cookie_ttl_sec", null)
 
@@ -134,7 +135,7 @@ resource "google_compute_backend_service" "default" {
 
 resource "google_compute_health_check" "default" {
   provider = google-beta
-  for_each = var.backends
+  for_each = local.backends_with_healthchecks
   project  = var.project
   name     = "${var.name}-hc-${each.key}"
 
