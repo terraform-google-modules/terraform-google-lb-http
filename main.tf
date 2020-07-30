@@ -16,9 +16,9 @@
 
 
 locals {
-  address = var.create_address ? join("", google_compute_global_address.default.*.address) : var.address
-  url_map = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
-  health_checked_backends = {for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null}
+  address                 = var.create_address ? join("", google_compute_global_address.default.*.address) : var.address
+  url_map                 = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
+  health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }
 }
 
 resource "google_compute_global_forwarding_rule" "http" {
