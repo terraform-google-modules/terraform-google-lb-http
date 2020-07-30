@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.1.0...v4.2.0) (2020-07-30)
+
+
+### Features
+
+* Make health checks optional to support global NEG backend services ([#106](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/106)) ([e0ea139](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/e0ea13967ed324bfd19f7ce3c9659bc1509372e0))
+
 ## [4.1.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.0.0...v4.1.0) (2020-05-05)
 
 ### Features
