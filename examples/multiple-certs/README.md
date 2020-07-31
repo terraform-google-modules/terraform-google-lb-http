@@ -69,6 +69,7 @@ echo https://${EXTERNAL_IP}/group1/
 > You should see the GCP logo and instance details from the group in us-west1.
 
 4. Open URL to route mapped to us-central1 instance group:
+
 ```
 echo https://${EXTERNAL_IP}/group2/
 ```

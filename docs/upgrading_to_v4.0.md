@@ -4,6 +4,7 @@ The v4.0 release contains backwards-incompatible
 changes to the backend config.
 
 ## Backend Config
+
 `session_affinity`, `affinity_cookie_ttl_sec`, and `log_config` must now be specified
 for backends. To use the default value, specify `null`.
 
