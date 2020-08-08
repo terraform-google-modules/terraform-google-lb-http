@@ -73,11 +73,11 @@ terraform destroy
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| network\_name |  | string | `"tf-lb-http-mig-nat"` | no |
+| network\_name |  | string | `"tf-lb-https-redirect-nat"` | no |
 | project |  | string | n/a | yes |
-| region |  | string | `"us-west1"` | no |
+| region |  | string | `"us-east1"` | no |
 | service\_account |  | object | `<map>` | no |
-| zone |  | string | `"us-west1-b"` | no |
+| zone |  | string | `"us-east1-b"` | no |
 
 ## Outputs
 
