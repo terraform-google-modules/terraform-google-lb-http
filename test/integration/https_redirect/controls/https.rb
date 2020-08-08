@@ -15,6 +15,9 @@
 control "https" do
   title "HTTPs Check"
 
+  describe http("http://#{attribute("lb_ip")}") do
+    its('status') { should eq 301 }
+  end
   describe http("https://#{attribute("lb_ip")}",
                 ssl_verify: false) do
     its('status') { should eq 200 }

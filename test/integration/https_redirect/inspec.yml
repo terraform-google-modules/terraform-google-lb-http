@@ -1,4 +1,4 @@
-name: multi_certs
+name: https_redirect
 attributes:
   - name: project_id
     required: true
