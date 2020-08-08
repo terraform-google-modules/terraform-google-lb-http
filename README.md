@@ -102,6 +102,7 @@ Current version is 3.0. Upgrade guides:
 | firewall\_networks | Names of the networks to create firewall rules in | list(string) | `<list>` | no |
 | firewall\_projects | Names of the projects to create firewall rules in | list(string) | `<list>` | no |
 | http\_forward | Set to `false` to disable HTTP port 80 forward | bool | `"true"` | no |
+| https\_redirect | Set to `true` to enable https redirect on the lb. | bool | `"false"` | no |
 | ip\_version | IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4 | string | `"null"` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | string | n/a | yes |
 | private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `"null"` | no |

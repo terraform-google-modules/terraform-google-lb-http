@@ -180,3 +180,9 @@ variable "cdn" {
   type        = bool
   default     = false
 }
+
+variable "https_redirect" {
+  description = "Set to `true` to enable https redirect on the lb."
+  type        = bool
+  default     = false
+}
