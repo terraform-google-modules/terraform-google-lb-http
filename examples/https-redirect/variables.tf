@@ -15,15 +15,15 @@
  */
 
 variable "region" {
-  default = "us-west1"
+  default = "us-east1"
 }
 
 variable "zone" {
-  default = "us-west1-b"
+  default = "us-east1-b"
 }
 
 variable "network_name" {
-  default = "tf-lb-http-mig-nat"
+  default = "tf-lb-https-redirect-nat"
 }
 
 variable "service_account" {

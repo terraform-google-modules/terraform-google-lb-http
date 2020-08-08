@@ -1,8 +1,8 @@
-# Multiple Certificate Example
+# HTTPS Redirect Example
 
 [![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&working_dir=examples/multiple-certs&page=shell&tutorial=README.md)
 
-This example shows how to use multiple certificates with the HTTPS Load Balancer module.
+This example shows how to enable HTTPS Redirection on Google HTTP/S Loadbalancers.
 
 ## Change to the example directory
 
@@ -58,31 +58,7 @@ terraform apply
 echo http://$(terraform output load-balancer-ip)
 ```
 
-> You should see the GCP logo and instance details from the group closest to your geographical region.
-
-3. Open URL to route mapped to us-west1 instance group:
-
-```
-echo https://${EXTERNAL_IP}/group1/
-```
-
-> You should see the GCP logo and instance details from the group in us-west1.
-
-4. Open URL to route mapped to us-central1 instance group:
-
-```
-echo https://${EXTERNAL_IP}/group2/
-```
-
-> You should see the GCP logo and instance details from the group in us-central1.
-
-5. Open URL to route mapped to us-east1 instance group:
-
-```
-echo https://${EXTERNAL_IP}/group3/
-```
-
-> You should see the GCP logo and instance details from the group in us-east1.
+> You should see the GCP logo and instance details.
 
 ## Cleanup
 
