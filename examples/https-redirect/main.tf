@@ -88,11 +88,11 @@ module "mig" {
 }
 
 module "gce-lb-http" {
-  source            = "../../"
-  name              = "ci-https-redirect"
-  project           = var.project
-  target_tags       = [var.network_name]
-  firewall_networks = [google_compute_network.default.name]
+  source               = "../../"
+  name                 = "ci-https-redirect"
+  project              = var.project
+  target_tags          = [var.network_name]
+  firewall_networks    = [google_compute_network.default.name]
   ssl                  = true
   ssl_certificates     = [google_compute_ssl_certificate.example.self_link]
   use_ssl_certificates = true

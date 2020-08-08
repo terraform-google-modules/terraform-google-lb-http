@@ -26,38 +26,38 @@ platforms:
   - name: default
 
 suites:
-  # - name: mig_nat
-  #   driver:
-  #     root_module_directory: test/fixtures/mig_nat/
-  #   verifier:
-  #     color: false
-  #     systems:
-  #       - name: mig_nat
-  #         backend: local
-  #         controls:
-  #           - http
-  # - name: multi_certs
-  #   driver:
-  #     root_module_directory: test/fixtures/multi_certs/
-  #   verifier:
-  #     color: false
-  #     systems:
-  #       - name: multi_certs
-  #         backend: local
-  #         controls:
-  #           - https
-  #           - https_asset
-  #           - https_patterns
-  # - name: multi_mig
-  #   driver:
-  #     root_module_directory: test/fixtures/multi_mig/
-  #   verifier:
-  #     color: false
-  #     systems:
-  #       - name: multi_mig
-  #         backend: local
-  #         controls:
-  #           - http
+  - name: mig_nat
+    driver:
+      root_module_directory: test/fixtures/mig_nat/
+    verifier:
+      color: false
+      systems:
+        - name: mig_nat
+          backend: local
+          controls:
+            - http
+  - name: multi_certs
+    driver:
+      root_module_directory: test/fixtures/multi_certs/
+    verifier:
+      color: false
+      systems:
+        - name: multi_certs
+          backend: local
+          controls:
+            - https
+            - https_asset
+            - https_patterns
+  - name: multi_mig
+    driver:
+      root_module_directory: test/fixtures/multi_mig/
+    verifier:
+      color: false
+      systems:
+        - name: multi_mig
+          backend: local
+          controls:
+            - http
   - name: https_redirect
     driver:
       root_module_directory: test/fixtures/https-redirect/
