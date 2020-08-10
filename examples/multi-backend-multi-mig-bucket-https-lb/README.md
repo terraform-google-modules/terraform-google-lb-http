@@ -18,10 +18,6 @@ This example creates an HTTPS load balancer to forward traffic to a custom URL m
 
 1. Install Terraform if it is not already installed (visit [terraform.io](https://terraform.io) for other distributions):
 
-```
-../terraform-install.sh
-```
-
 ## Set up the environment
 
 1. Set the project, replace `YOUR_PROJECT` with your project ID:
@@ -50,13 +46,7 @@ terraform apply
 
 ## Testing
 
-1. Wait for the load balancer to be provisioned:
-
-```
-./test.sh
-```
-
-2. Open URL of load balancer in browser:
+1. Open URL of load balancer in browser:
 
 ```
 echo http://$(terraform output load-balancer-ip)
@@ -64,7 +54,7 @@ echo http://$(terraform output load-balancer-ip)
 
 > You should see the GCP logo and instance details from the group closest to your geographical region.
 
-3. Open URL to route mapped to us-west1 instance group:
+2. Open URL to route mapped to us-west1 instance group:
 
 ```
 echo https://${EXTERNAL_IP}/group1/
@@ -72,7 +62,7 @@ echo https://${EXTERNAL_IP}/group1/
 
 > You should see the GCP logo and instance details from the group in us-west1.
 
-4. Open URL to route mapped to us-central1 instance group:
+3. Open URL to route mapped to us-central1 instance group:
 
 ```
 echo https://${EXTERNAL_IP}/group2/
@@ -80,7 +70,7 @@ echo https://${EXTERNAL_IP}/group2/
 
 > You should see the GCP logo and instance details from the group in us-central1.
 
-5. Open URL to route mapped to us-east1 instance group:
+4. Open URL to route mapped to us-east1 instance group:
 
 ```
 echo https://${EXTERNAL_IP}/group3/

@@ -1,6 +1,6 @@
 # HTTPS Redirect Example
 
-[![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&working_dir=examples/multiple-certs&page=shell&tutorial=README.md)
+[![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&working_dir=examples/https-redirect&page=shell&tutorial=README.md)
 
 This example shows how to enable HTTPS Redirection on Google HTTP/S Loadbalancers.
 
@@ -13,10 +13,6 @@ This example shows how to enable HTTPS Redirection on Google HTTP/S Loadbalancer
 ## Install Terraform
 
 1. Install Terraform if it is not already installed (visit [terraform.io](https://terraform.io) for other distributions):
-
-```
-../terraform-install.sh
-```
 
 ## Set up the environment
 
@@ -46,13 +42,7 @@ terraform apply
 
 ## Testing
 
-1. Wait for the load balancer to be provisioned:
-
-```
-./test.sh
-```
-
-2. Open URL of load balancer in browser:
+1. Open URL of load balancer in browser:
 
 ```
 echo http://$(terraform output load-balancer-ip)
