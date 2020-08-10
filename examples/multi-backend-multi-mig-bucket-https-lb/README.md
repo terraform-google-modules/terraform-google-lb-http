@@ -99,7 +99,6 @@ terraform destroy
 | group3\_zone |  | string | `"us-east1-b"` | no |
 | network\_name |  | string | `"ml-bk-ml-mig-bkt-s-lb"` | no |
 | project |  | string | n/a | yes |
-| service\_account |  | object | `<map>` | no |
 
 ## Outputs
 

@@ -18,10 +18,6 @@ This example creates a global HTTP forwarding rule to forward traffic to instanc
 
 1. Install Terraform if it is not already installed (visit [terraform.io](https://terraform.io) for other distributions):
 
-```
-../terraform-install.sh
-```
-
 ## Set up the environment
 
 1. Set the project, replace `YOUR_PROJECT` with your project ID:
@@ -50,13 +46,7 @@ terraform apply
 
 ## Testing
 
-1. Wait for the load balancer to be provisioned:
-
-```
-./test.sh
-```
-
-2. Open the URL of the load balancer in your browser:
+1. Open the URL of the load balancer in your browser:
 
 ```
 echo http://$(terraform output load-balancer-ip)
@@ -105,7 +95,6 @@ terraform destroy
 | group2\_region |  | string | `"us-east1"` | no |
 | network\_prefix |  | string | `"multi-mig-lb-http"` | no |
 | project |  | string | n/a | yes |
-| service\_account |  | object | `<map>` | no |
 | target\_size |  | number | `"2"` | no |
 
 ## Outputs

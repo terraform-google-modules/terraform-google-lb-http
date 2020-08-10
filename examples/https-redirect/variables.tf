@@ -26,17 +26,6 @@ variable "network_name" {
   default = "tf-lb-https-redirect-nat"
 }
 
-variable "service_account" {
-  type = object({
-    email  = string,
-    scopes = list(string)
-  })
-  default = {
-    email  = ""
-    scopes = ["cloud-platform"]
-  }
-}
-
 variable "project" {
   type = string
 }

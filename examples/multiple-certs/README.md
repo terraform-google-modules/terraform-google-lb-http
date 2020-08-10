@@ -105,7 +105,6 @@ terraform destroy
 | group3\_zone |  | string | `"us-east1-b"` | no |
 | network\_name |  | string | `"tf-lb-https-multi-cert"` | no |
 | project |  | string | n/a | yes |
-| service\_account |  | object | `<map>` | no |
 
 ## Outputs
 

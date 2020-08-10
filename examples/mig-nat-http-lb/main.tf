@@ -59,13 +59,16 @@ data "template_file" "group-startup-script" {
 }
 
 module "mig_template" {
-  source          = "terraform-google-modules/vm/google//modules/instance_template"
-  version         = "1.0.0"
-  network         = google_compute_network.default.self_link
-  subnetwork      = google_compute_subnetwork.default.self_link
-  service_account = var.service_account
-  name_prefix     = var.network_name
-  startup_script  = data.template_file.group-startup-script.rendered
+  source     = "terraform-google-modules/vm/google//modules/instance_template"
+  version    = "1.0.0"
+  network    = google_compute_network.default.self_link
+  subnetwork = google_compute_subnetwork.default.self_link
+  service_account = {
+    email  = ""
+    scopes = ["cloud-platform"]
+  }
+  name_prefix    = var.network_name
+  startup_script = data.template_file.group-startup-script.rendered
   tags = [
     var.network_name,
     module.cloud-nat.router_name

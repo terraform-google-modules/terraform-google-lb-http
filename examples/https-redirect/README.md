@@ -66,7 +66,6 @@ terraform destroy
 | network\_name |  | string | `"tf-lb-https-redirect-nat"` | no |
 | project |  | string | n/a | yes |
 | region |  | string | `"us-east1"` | no |
-| service\_account |  | object | `<map>` | no |
 | zone |  | string | `"us-east1-b"` | no |
 
 ## Outputs

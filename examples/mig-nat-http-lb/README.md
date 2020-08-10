@@ -70,7 +70,6 @@ terraform destroy
 | network\_name |  | string | `"tf-lb-http-mig-nat"` | no |
 | project |  | string | n/a | yes |
 | region |  | string | `"us-west1"` | no |
-| service\_account |  | object | `<map>` | no |
 | zone |  | string | `"us-west1-b"` | no |
 
 ## Outputs

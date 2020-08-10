@@ -59,10 +59,13 @@ module "mig_template" {
   network            = google_compute_network.default.self_link
   subnetwork         = var.subnetwork
   subnetwork_project = var.host_project
-  service_account    = var.service_account
-  name_prefix        = "shared-vpc-mig"
-  startup_script     = data.template_file.group-startup-script.rendered
-  tags               = ["allow-shared-vpc-mig"]
+  service_account = {
+    email  = ""
+    scopes = ["cloud-platform"]
+  }
+  name_prefix    = "shared-vpc-mig"
+  startup_script = data.template_file.group-startup-script.rendered
+  tags           = ["allow-shared-vpc-mig"]
 }
 
 module "mig" {
