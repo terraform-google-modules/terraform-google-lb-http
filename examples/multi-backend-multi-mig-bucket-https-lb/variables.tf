@@ -42,17 +42,6 @@ variable "network_name" {
   default = "ml-bk-ml-mig-bkt-s-lb"
 }
 
-variable "service_account" {
-  type = object({
-    email  = string,
-    scopes = list(string)
-  })
-  default = {
-    email  = ""
-    scopes = ["cloud-platform"]
-  }
-}
-
 variable "project" {
   type = string
 }

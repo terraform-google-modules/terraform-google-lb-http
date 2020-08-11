@@ -31,11 +31,14 @@ data "template_file" "group-startup-script" {
 }
 
 module "mig1_template" {
-  source               = "terraform-google-modules/vm/google//modules/instance_template"
-  version              = "1.0.0"
-  network              = google_compute_network.default.self_link
-  subnetwork           = google_compute_subnetwork.group1.self_link
-  service_account      = var.service_account
+  source     = "terraform-google-modules/vm/google//modules/instance_template"
+  version    = "1.0.0"
+  network    = google_compute_network.default.self_link
+  subnetwork = google_compute_subnetwork.group1.self_link
+  service_account = {
+    email  = ""
+    scopes = ["cloud-platform"]
+  }
   name_prefix          = "${var.network_prefix}-group1"
   startup_script       = data.template_file.group-startup-script.rendered
   source_image_family  = "ubuntu-1804-lts"
@@ -62,13 +65,16 @@ module "mig1" {
 }
 
 module "mig2_template" {
-  source          = "terraform-google-modules/vm/google//modules/instance_template"
-  version         = "1.0.0"
-  network         = google_compute_network.default.self_link
-  subnetwork      = google_compute_subnetwork.group2.self_link
-  service_account = var.service_account
-  name_prefix     = "${var.network_prefix}-group2"
-  startup_script  = data.template_file.group-startup-script.rendered
+  source     = "terraform-google-modules/vm/google//modules/instance_template"
+  version    = "1.0.0"
+  network    = google_compute_network.default.self_link
+  subnetwork = google_compute_subnetwork.group2.self_link
+  service_account = {
+    email  = ""
+    scopes = ["cloud-platform"]
+  }
+  name_prefix    = "${var.network_prefix}-group2"
+  startup_script = data.template_file.group-startup-script.rendered
   tags = [
     "${var.network_prefix}-group2",
     module.cloud-nat-group2.router_name

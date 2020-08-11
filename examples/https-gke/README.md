@@ -18,10 +18,6 @@ This example creates an HTTPS load balancer to forward traffic to a custom URL m
 
 1. Install Terraform if it is not already installed (visit [terraform.io](https://terraform.io) for other distributions):
 
-```
-../terraform-install.sh
-```
-
 ## Set up the environment
 
 1. Set the project, replace `YOUR_PROJECT` with your project ID:

@@ -57,7 +57,6 @@ terraform destroy
 | host\_project | ID for the Shared VPC host project | string | n/a | yes |
 | network | ID of network to launch instances on | string | n/a | yes |
 | region |  | string | `"us-central1"` | no |
-| service\_account |  | object | `<map>` | no |
 | service\_project | ID for the Shared VPC service project where instances will be deployed | string | n/a | yes |
 | subnetwork | ID of subnetwork to launch instances on | string | n/a | yes |
 

@@ -14,10 +14,18 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 0.12.6"
-  required_providers {
-    google      = ">= 3.32, <4.0.0"
-    google-beta = ">= 3.32, <4.0.0"
-  }
+variable "region" {
+  default = "us-east1"
+}
+
+variable "zone" {
+  default = "us-east1-b"
+}
+
+variable "network_name" {
+  default = "tf-lb-https-redirect-nat"
+}
+
+variable "project" {
+  type = string
 }

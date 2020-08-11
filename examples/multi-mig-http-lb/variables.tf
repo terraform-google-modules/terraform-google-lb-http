@@ -37,14 +37,3 @@ variable "network_prefix" {
   type    = string
   default = "multi-mig-lb-http"
 }
-
-variable "service_account" {
-  type = object({
-    email  = string,
-    scopes = list(string)
-  })
-  default = {
-    email  = ""
-    scopes = ["cloud-platform"]
-  }
-}
