@@ -76,6 +76,7 @@ variable "backends" {
     timeout_sec                     = number
     connection_draining_timeout_sec = number
     enable_cdn                      = bool
+    security_policy                 = string
     session_affinity                = string
     affinity_cookie_ttl_sec         = number
     custom_request_headers          = list(string)
@@ -172,12 +173,6 @@ variable "ssl_certificates" {
   description = "SSL cert self_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided."
   type        = list(string)
   default     = []
-}
-
-variable "security_policy" {
-  description = "The resource URL for the security policy to associate with the backend service"
-  type        = string
-  default     = null
 }
 
 variable "cdn" {
