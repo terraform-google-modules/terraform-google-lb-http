@@ -175,6 +175,12 @@ variable "ssl_certificates" {
   default     = []
 }
 
+variable "security_policy" {
+  description = "The resource URL for the security policy to associate with the backend service"
+  type        = string
+  default     = null
+}
+
 variable "cdn" {
   description = "Set to `true` to enable cdn on backend."
   type        = bool
