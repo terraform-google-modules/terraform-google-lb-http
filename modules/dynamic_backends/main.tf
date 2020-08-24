@@ -18,12 +18,13 @@
 locals {
   address                 = var.create_address ? join("", google_compute_global_address.default.*.address) : var.address
   url_map                 = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
+  create_http_forward     = var.http_forward || var.https_redirect
   health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }
 }
 
 resource "google_compute_global_forwarding_rule" "http" {
   project    = var.project
-  count      = var.http_forward ? 1 : 0
+  count      = local.create_http_forward ? 1 : 0
   name       = var.name
   target     = google_compute_target_http_proxy.default[0].self_link
   ip_address = local.address
@@ -49,9 +50,9 @@ resource "google_compute_global_address" "default" {
 # HTTP proxy when http forwarding is true
 resource "google_compute_target_http_proxy" "default" {
   project = var.project
-  count   = var.http_forward ? 1 : 0
+  count   = local.create_http_forward ? 1 : 0
   name    = "${var.name}-http-proxy"
-  url_map = local.url_map
+  url_map = var.https_redirect == false ? local.url_map : join("", google_compute_url_map.https_redirect.*.self_link)
 }
 
 # HTTPS proxy when ssl is true
@@ -84,6 +85,17 @@ resource "google_compute_url_map" "default" {
   name            = "${var.name}-url-map"
   default_service = google_compute_backend_service.default[keys(var.backends)[0]].self_link
 
+}
+
+resource "google_compute_url_map" "https_redirect" {
+  project = var.project
+  count   = var.https_redirect ? 1 : 0
+  name    = "${var.name}-https-redirect"
+  default_url_redirect {
+    https_redirect         = true
+    redirect_response_code = "MOVED_PERMANENTLY_DEFAULT"
+    strip_query            = false
+  }
 }
 
 resource "google_compute_backend_service" "default" {

@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 0.12.6"
-  required_providers {
-    google      = ">= 3.32, <4.0.0"
-    google-beta = ">= 3.32, <4.0.0"
-  }
+output "project_id" {
+  description = "The ID of the project in which resources are provisioned."
+  value       = var.project_id
+}
+
+output "lb_ip" {
+  value = module.example.load-balancer-ip
 }

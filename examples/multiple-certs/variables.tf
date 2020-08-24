@@ -42,17 +42,6 @@ variable "network_name" {
   default = "tf-lb-https-multi-cert"
 }
 
-variable "service_account" {
-  type = object({
-    email  = string,
-    scopes = list(string)
-  })
-  default = {
-    email  = ""
-    scopes = ["cloud-platform"]
-  }
-}
-
 variable "project" {
   type = string
 }

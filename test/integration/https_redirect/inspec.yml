@@ -1,0 +1,8 @@
+name: https_redirect
+attributes:
+  - name: project_id
+    required: true
+    type: string
+  - name: lb_ip
+    required: true
+    type: string

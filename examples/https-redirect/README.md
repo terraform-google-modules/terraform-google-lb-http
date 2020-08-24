@@ -1,17 +1,13 @@
-# Global HTTP Example to GCE instances with NAT Gateway
+# HTTPS Redirect Example
 
-[![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&working_dir=examples/http-nat-gateway&page=shell&tutorial=README.md)
+[![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&working_dir=examples/https-redirect&page=shell&tutorial=README.md)
 
-This example creates a global HTTP forwarding rule to an instance group without external IPs. The instances access the internet via a NAT gateway.
-
-**Figure 1.** *diagram of Google Cloud resources*
-
-![architecture diagram](https://raw.githubusercontent.com/GoogleCloudPlatform/terraform-google-lb-http/master/examples/http-nat-gateway/diagram.png)
+This example shows how to enable HTTPS Redirection on Google HTTP/S Loadbalancers.
 
 ## Change to the example directory
 
 ```
-[[ `basename $PWD` != mig-nat-http-lb ]] && cd examples/mig-nat-http-lb
+[[ `basename $PWD` != multiple-certs ]] && cd examples/multiple-certs
 ```
 
 ## Install Terraform
@@ -46,13 +42,13 @@ terraform apply
 
 ## Testing
 
-1. Open the URL of the load balancer in your browser:
+1. Open URL of load balancer in browser:
 
 ```
 echo http://$(terraform output load-balancer-ip)
 ```
 
-You should see the instance details from `group1`.
+> You should see the GCP logo and instance details.
 
 ## Cleanup
 
@@ -67,10 +63,10 @@ terraform destroy
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| network\_name |  | string | `"tf-lb-http-mig-nat"` | no |
+| network\_name |  | string | `"tf-lb-https-redirect-nat"` | no |
 | project |  | string | n/a | yes |
-| region |  | string | `"us-west1"` | no |
-| zone |  | string | `"us-west1-b"` | no |
+| region |  | string | `"us-east1"` | no |
+| zone |  | string | `"us-east1-b"` | no |
 
 ## Outputs
 

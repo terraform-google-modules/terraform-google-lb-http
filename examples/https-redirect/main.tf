@@ -36,7 +36,7 @@ resource "google_compute_subnetwork" "default" {
 }
 
 resource "google_compute_router" "default" {
-  name    = "lb-http-router"
+  name    = "lb-https-redirect-router"
   network = google_compute_network.default.self_link
   region  = var.region
 }
@@ -47,7 +47,7 @@ module "cloud-nat" {
   router     = google_compute_router.default.name
   project_id = var.project
   region     = var.region
-  name       = "cloud-nat-lb-http-router"
+  name       = "cloud-nat-lb-https-redirect"
 }
 
 data "template_file" "group-startup-script" {
@@ -91,12 +91,15 @@ module "mig" {
 }
 
 module "gce-lb-http" {
-  source            = "../../"
-  name              = "mig-http-lb"
-  project           = var.project
-  target_tags       = [var.network_name]
-  firewall_networks = [google_compute_network.default.name]
-
+  source               = "../../"
+  name                 = "ci-https-redirect"
+  project              = var.project
+  target_tags          = [var.network_name]
+  firewall_networks    = [google_compute_network.default.name]
+  ssl                  = true
+  ssl_certificates     = [google_compute_ssl_certificate.example.self_link]
+  use_ssl_certificates = true
+  https_redirect       = true
 
   backends = {
     default = {
@@ -141,12 +144,6 @@ module "gce-lb-http" {
           max_utilization              = null
         }
       ]
-
-      iap_config = {
-        enable               = false
-        oauth2_client_id     = ""
-        oauth2_client_secret = ""
-      }
     }
   }
 
