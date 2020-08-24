@@ -138,6 +138,14 @@ resource "google_compute_backend_service" "default" {
     sample_rate = lookup(lookup(each.value, "log_config", {}), "sample_rate", "1.0")
   }
 
+  dynamic "iap" {
+    for_each = lookup(lookup(each.value, "iap_config", {}), "enable", false) ? [1] : []
+    content {
+      oauth2_client_id     = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_id", "")
+      oauth2_client_secret = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_secret", "")
+    }
+  }
+
   depends_on = [google_compute_health_check.default]
 
   lifecycle {

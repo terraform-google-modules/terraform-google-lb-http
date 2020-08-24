@@ -136,6 +136,12 @@ module "gce-lb-http" {
           max_utilization              = null
         },
       ]
+
+      iap_config = {
+        enable               = false
+        oauth2_client_id     = ""
+        oauth2_client_secret = ""
+      }
     }
   }
 
