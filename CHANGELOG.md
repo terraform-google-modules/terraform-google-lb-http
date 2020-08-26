@@ -25,7 +25,7 @@ Please see the [upgrade guide](./docs/upgrading_to_v4.0.md) for details.
 ### ⚠ BREAKING CHANGES
 
 * `session_affinity` and `affinity_cookie_ttl_sec` must now be set for backends. Use `null` to get the default value.
-* You must now specify log_config for each backend service. Use `log_config = null` to use the default.
+* You must now specify log_config for each backend service. Use `log_config = {}` to use the default.
 
 ### Features
 
