@@ -20,8 +20,13 @@ output "backend_services" {
 }
 
 output "external_ip" {
-  description = "The external IP assigned to the global forwarding rule."
+  description = "The external IPv4 assigned to the global fowarding rule."
   value       = local.address
+}
+
+output "external_ipv6_address" {
+  description = "The external IPv6 assigned to the global fowarding rule."
+  value       = local.ipv6_address
 }
 
 output "http_proxy" {

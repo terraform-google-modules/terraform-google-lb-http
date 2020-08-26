@@ -111,6 +111,7 @@ Current version is 3.0. Upgrade guides:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | address | IP address self link | `string` | `null` | no |
+| ipv6\_address | IPv6 address (actual IP address value) | string | `"null"` | no |
 | backends | Map backend indices to list of backend maps. | <pre>map(object({<br>    protocol  = string<br>    port      = number<br>    port_name = string<br><br>    description            = string<br>    enable_cdn             = bool<br>    security_policy        = string<br>    custom_request_headers = list(string)<br><br>    timeout_sec                     = number<br>    connection_draining_timeout_sec = number<br>    session_affinity                = string<br>    affinity_cookie_ttl_sec         = number<br><br>    health_check = object({<br>      check_interval_sec  = number<br>      timeout_sec         = number<br>      healthy_threshold   = number<br>      unhealthy_threshold = number<br>      request_path        = string<br>      port                = number<br>      host                = string<br>      logging             = bool<br>    })<br><br>    log_config = object({<br>      enable      = bool<br>      sample_rate = number<br>    })<br><br>    groups = list(object({<br>      group = string<br><br>      balancing_mode               = string<br>      capacity_scaler              = number<br>      description                  = string<br>      max_connections              = number<br>      max_connections_per_instance = number<br>      max_connections_per_endpoint = number<br>      max_rate                     = number<br>      max_rate_per_instance        = number<br>      max_rate_per_endpoint        = number<br>      max_utilization              = number<br>    }))<br>    iap_config = object({<br>      enable               = bool<br>      oauth2_client_id     = string<br>      oauth2_client_secret = string<br>    })<br>  }))</pre> | n/a | yes |
 | cdn | Set to `true` to enable cdn on backend. | `bool` | `false` | no |
 | certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
@@ -140,7 +141,8 @@ Current version is 3.0. Upgrade guides:
 | Name | Description |
 |------|-------------|
 | backend\_services | The backend service resources. |
-| external\_ip | The external IP assigned to the global forwarding rule. |
+| external\_ip | The external IPv4 address assigned to the global fowarding rule. |
+| external\_ipv6\_address | The external IPv6 address assigned to the global fowarding rule. |
 | http\_proxy | The HTTP proxy used by this module. |
 | https\_proxy | The HTTPS proxy used by this module. |
 
