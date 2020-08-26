@@ -30,6 +30,14 @@ output "load-balancer-ip" {
   value = module.gce-lb-https.external_ip
 }
 
+output "load-balancer-ipv6" {
+  value = module.gce-lb-https.external_ipv6_address
+}
+
 output "asset-url" {
   value = "https://${module.gce-lb-https.external_ip}/assets/gcp-logo.svg"
+}
+
+output "asset-url-ipv6" {
+  value = "https://${module.gce-lb-https.external_ipv6_address}/assets/gcp-logo.svg"
 }

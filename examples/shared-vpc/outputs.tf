@@ -19,6 +19,11 @@ output external_ip {
   value       = module.gce-lb-http.external_ip
 }
 
+output external_ipv6_address {
+  description = "The external IPv6 address assigned to the load balancer."
+  value       = module.gce-lb-http.external_ipv6_address
+}
+
 output service_project {
   description = "The service project the load balancer is in."
   value       = var.service_project
