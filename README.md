@@ -99,17 +99,18 @@ Current version is 3.0. Upgrade guides:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| address | IP address self link | string | `"null"` | no |
+| address | IPv4 address (actual IP address value) | string | `"null"` | no |
+| ipv6\_address | IPv6 address (actual IP address value) | string | `"null"` | no |
 | backends | Map backend indices to list of backend maps. | object | n/a | yes |
 | cdn | Set to `true` to enable cdn on backend. | bool | `"false"` | no |
 | certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `"null"` | no |
-| create\_address | Create a new global address | bool | `"true"` | no |
+| create\_address | Create a new global IPv4 address | bool | `"true"` | no |
+| create\_ipv6\_address | Create a new global IPv6 address | bool | `"true"` | no |
 | create\_url\_map | Set to `false` if url_map variable is provided. | bool | `"true"` | no |
 | firewall\_networks | Names of the networks to create firewall rules in | list(string) | `<list>` | no |
 | firewall\_projects | Names of the projects to create firewall rules in | list(string) | `<list>` | no |
 | http\_forward | Set to `false` to disable HTTP port 80 forward | bool | `"true"` | no |
 | https\_redirect | Set to `true` to enable https redirect on the lb. | bool | `"false"` | no |
-| ip\_version | IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4 | string | `"null"` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | string | n/a | yes |
 | private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `"null"` | no |
 | project | The project to deploy to, if not set the default provider project is used. | string | n/a | yes |
@@ -128,7 +129,8 @@ Current version is 3.0. Upgrade guides:
 | Name | Description |
 |------|-------------|
 | backend\_services | The backend service resources. |
-| external\_ip | The external IP assigned to the global fowarding rule. |
+| external\_ip | The external IPv4 address assigned to the global fowarding rule. |
+| external\_ipv6\_address | The external IPv6 address assigned to the global fowarding rule. |
 | http\_proxy | The HTTP proxy used by this module. |
 | https\_proxy | The HTTPS proxyused by this module. |
 

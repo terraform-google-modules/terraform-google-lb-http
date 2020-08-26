@@ -21,19 +21,25 @@ variable "project" {
 
 variable "create_address" {
   type        = bool
-  description = "Create a new global address"
+  description = "Create a new global IPv4 address"
+  default     = true
+}
+
+variable "create_ipv6_address" {
+  type        = bool
+  description = "Create a new global IPv6 address"
   default     = true
 }
 
 variable "address" {
   type        = string
-  description = "IP address self link"
+  description = "IPv4 address (the actual IP address value)"
   default     = null
 }
 
-variable "ip_version" {
-  description = "IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4"
+variable "ipv6_address" {
   type        = string
+  description = "IPv6 address (the actual IP address value)"
   default     = null
 }
 
