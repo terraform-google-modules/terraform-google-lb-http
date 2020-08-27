@@ -105,9 +105,11 @@ terraform destroy
 | Name | Description |
 |------|-------------|
 | asset-url | n/a |
+| asset-url-ipv6 | n/a |
 | group1\_region | n/a |
 | group2\_region | n/a |
 | group3\_region | n/a |
 | load-balancer-ip | n/a |
+| load-balancer-ipv6 | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

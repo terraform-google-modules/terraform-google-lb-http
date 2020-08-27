@@ -78,5 +78,6 @@ terraform destroy
 |------|-------------|
 | backend\_services | n/a |
 | load-balancer-ip | n/a |
+| load-balancer-ipv6 | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
