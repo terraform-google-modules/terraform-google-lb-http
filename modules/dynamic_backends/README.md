@@ -38,7 +38,6 @@ module "gce-lb-http" {
       enable_cdn                      = false
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
-      custom_request_headers          = null
 
       health_check = {
         check_interval_sec  = null
@@ -78,6 +77,7 @@ module "gce-lb-http" {
         oauth2_client_id     = null
         oauth2_client_secret = null
       }
+      custom_request_headers = null
     }
   }
 }

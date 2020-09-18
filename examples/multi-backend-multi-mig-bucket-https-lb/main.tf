@@ -147,7 +147,6 @@ module "gce-lb-https" {
       enable_cdn                      = false
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
-      custom_request_headers          = null
       health_check                    = local.health_check
       log_config = {
         enable      = true
@@ -212,7 +211,6 @@ module "gce-lb-https" {
       enable_cdn                      = false
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
-      custom_request_headers          = null
       health_check                    = local.health_check
       log_config = {
         enable      = true
@@ -251,7 +249,6 @@ module "gce-lb-https" {
       enable_cdn                      = false
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
-      custom_request_headers          = null
       health_check                    = local.health_check
       log_config = {
         enable      = true
@@ -290,7 +287,6 @@ module "gce-lb-https" {
       enable_cdn                      = false
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
-      custom_request_headers          = null
       health_check                    = local.health_check
       log_config = {
         enable      = true
@@ -317,6 +313,7 @@ module "gce-lb-https" {
         oauth2_client_id     = ""
         oauth2_client_secret = ""
       }
+      custom_request_headers = null
     }
 
   }
