@@ -145,5 +145,4 @@ module "gce-lb-http" {
       }
     }
   }
-
 }

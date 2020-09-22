@@ -149,7 +149,7 @@ module "gce-lb-https" {
       affinity_cookie_ttl_sec         = null
       custom_request_headers          = null
 
-      health_check                    = local.health_check
+      health_check = local.health_check
       log_config = {
         enable      = true
         sample_rate = 1.0
@@ -215,7 +215,7 @@ module "gce-lb-https" {
       affinity_cookie_ttl_sec         = null
       custom_request_headers          = null
 
-      health_check                    = local.health_check
+      health_check = local.health_check
       log_config = {
         enable      = true
         sample_rate = 1.0
@@ -255,7 +255,7 @@ module "gce-lb-https" {
       affinity_cookie_ttl_sec         = null
       custom_request_headers          = null
 
-      health_check                    = local.health_check
+      health_check = local.health_check
       log_config = {
         enable      = true
         sample_rate = 1.0
@@ -295,7 +295,7 @@ module "gce-lb-https" {
       affinity_cookie_ttl_sec         = null
       custom_request_headers          = null
 
-      health_check                    = local.health_check
+      health_check = local.health_check
       log_config = {
         enable      = true
         sample_rate = 1.0
