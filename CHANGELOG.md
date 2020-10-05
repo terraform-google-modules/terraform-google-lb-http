@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.3.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.2.0...v4.3.0) (2020-10-05)
+
+
+### Features
+
+* Add IAP support to load balancer ([#99](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/99)) ([2421fcb](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/2421fcb98a6ddf3a4da10accae0d70316420078e))
+* Add support for configuring `custom_request_headers`  ([#122](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/122)) ([0136c65](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/0136c65dfceafcd468bfb907551cbebb016204d9))
+* Added HTTPS redirection support ([#111](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/111)) ([ba0bf1f](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/ba0bf1ff86d0e8a13ad1330944550db67f8e725d))
+
 ## [4.2.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.1.0...v4.2.0) (2020-07-30)
 
 
