@@ -79,7 +79,6 @@ variable "backends" {
     session_affinity                = string
     affinity_cookie_ttl_sec         = number
     custom_request_headers          = list(string)
-
     health_check = object({
       check_interval_sec  = number
       timeout_sec         = number
