@@ -13,7 +13,7 @@ If you would like to allow for backend groups to be managed outside Terraform, s
 ## Compatibility
 
 This module is meant for use with Terraform 0.12. If you haven't [upgraded](https://www.terraform.io/upgrade-guides/0-12.html) and
-need a Terraform 0.11.x-compatible version of this module, the last released version intended for Terraform 0.11.x is
+need a Terraform 0.11. an x-compatible version of this module, the last released version intended for Terraform 0.11.x is
 [1.0.10](https://registry.terraform.io/modules/GoogleCloudPlatform/lb-http/google/1.0.10).
 
 ## Usage
@@ -84,7 +84,7 @@ module "gce-lb-http" {
 
 ## Resources created
 
-**Figure 1.** *diagram of terraform resources*
+**Figure 1.** *diagram of terraforming resources*
 
 ![architecture diagram](./diagram.png)
 
@@ -129,9 +129,9 @@ Current version is 3.0. Upgrade guides:
 | Name | Description |
 |------|-------------|
 | backend\_services | The backend service resources. |
-| external\_ip | The external IP assigned to the global fowarding rule. |
-| http\_proxy | The HTTP proxy used by this module. |
-| https\_proxy | The HTTPS proxyused by this module. |
+| external\_ip | The external IP assigned to the global forwarding rule. |
+| http\_proxy | The HTTP proxy is used by this module. |
+| https\_proxy | The HTTPS proxy is used by this module. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
@@ -143,5 +143,5 @@ Current version is 3.0. Upgrade guides:
 * [`google_compute_url_map.default`](https://www.terraform.io/docs/providers/google/r/compute_url_map.html): The default URL map resource when input `url_map` is not provided.
 * [`google_compute_backend_service.default.*`](https://www.terraform.io/docs/providers/google/r/compute_backend_service.html): The backend services created for each of the `backend_params` elements.
 * [`google_compute_health_check.default.*`](https://www.terraform.io/docs/providers/google/r/compute_health_check.html):
-  Health check resources created for each of the (non global NEG) backend services.
-* [`google_compute_firewall.default-hc`](https://www.terraform.io/docs/providers/google/r/compute_firewall.html): Firewall rule created for each of the backed services to allow health checks to the instance group.
+  Health check resources were created for each of the (nonglobal NEG) backend services.
+* [`google_compute_firewall.default-ac`](https://www.terraform.io/docs/providers/google/r/compute_firewall.html): Firewall rule created for each of the backed services to allow health checks to the instance group.
