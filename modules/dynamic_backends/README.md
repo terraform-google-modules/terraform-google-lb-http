@@ -110,6 +110,7 @@ Current version is 3.0. Upgrade guides:
 | firewall\_networks | Names of the networks to create firewall rules in | list(string) | `<list>` | no |
 | firewall\_projects | Names of the projects to create firewall rules in | list(string) | `<list>` | no |
 | http\_forward | Set to `false` to disable HTTP port 80 forward | bool | `"true"` | no |
+| https\_redirect | Set to `true` to enable https redirect on the lb. | bool | `"false"` | no |
 | ip\_version | IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4 | string | `"null"` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | string | n/a | yes |
 | private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `"null"` | no |
@@ -119,7 +120,8 @@ Current version is 3.0. Upgrade guides:
 | ssl | Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self_link certs | bool | `"false"` | no |
 | ssl\_certificates | SSL cert self_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided. | list(string) | `<list>` | no |
 | ssl\_policy | Selfink to SSL Policy | string | `"null"` | no |
-| target\_tags | List of target tags for health check firewall rule. | list(string) | n/a | yes |
+| target\_service\_accounts | List of target service accounts for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified. | list(string) | `<list>` | no |
+| target\_tags | List of target tags for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified. | list(string) | `<list>` | no |
 | url\_map | The url_map resource to use. Default is to send all traffic to first backend. | string | `"null"` | no |
 | use\_ssl\_certificates | If true, use the certificates provided by `ssl_certificates`, otherwise, create cert from `private_key` and `certificate` | bool | `"false"` | no |
 
