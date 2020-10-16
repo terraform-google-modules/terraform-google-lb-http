@@ -76,6 +76,7 @@ variable "backends" {
     timeout_sec                     = number
     connection_draining_timeout_sec = number
     enable_cdn                      = bool
+    security_policy                 = string
     session_affinity                = string
     affinity_cookie_ttl_sec         = number
     custom_request_headers          = list(string)
