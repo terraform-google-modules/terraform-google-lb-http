@@ -170,7 +170,7 @@ variable "use_ssl_certificates" {
 }
 
 variable "ssl_certificates" {
-  description = "SSL cert self_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided."
+  description = "SSL cert self_link list. Required if `ssl` is `true` and `use_ssl_certificates` is `true`."
   type        = list(string)
   default     = []
 }
