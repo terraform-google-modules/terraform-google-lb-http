@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.4.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.3.0...v4.4.0) (2020-10-26)
+
+
+### Features
+
+* Allow configuring security policies per backend ([#115](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/115)) ([ad92b2e](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/ad92b2ece0b8ae3a3e832547c5d69b41a54ff45f))
+
+
+### Bug Fixes
+
+* Clarify explanation for ssl_certificates ([#128](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/128)) ([8536620](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/85366208fa3451d7c060688a61d50bf16188fc76))
+
 ## [4.3.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.2.0...v4.3.0) (2020-10-05)
 
 
