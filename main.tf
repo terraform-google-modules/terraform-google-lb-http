@@ -111,11 +111,12 @@ resource "google_compute_backend_service" "default" {
   description                     = lookup(each.value, "description", null)
   connection_draining_timeout_sec = lookup(each.value, "connection_draining_timeout_sec", null)
   enable_cdn                      = lookup(each.value, "enable_cdn", false)
-  security_policy                 = lookup(each.value, "security_policy", null) == null ? var.security_policy : each.value.security_policy
   health_checks                   = lookup(each.value, "health_check", null) == null ? null : [google_compute_health_check.default[each.key].self_link]
   session_affinity                = lookup(each.value, "session_affinity", null)
   affinity_cookie_ttl_sec         = lookup(each.value, "affinity_cookie_ttl_sec", null)
   custom_request_headers          = lookup(each.value, "custom_request_headers", [])
+  # To achieve a null backend security_policy, set each.value.security_policy to "" (empty string).
+  security_policy = lookup(each.value, "security_policy", null) == null ? var.security_policy : each.value.security_policy
 
   dynamic "backend" {
     for_each = toset(each.value["groups"])
