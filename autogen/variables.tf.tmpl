@@ -163,6 +163,18 @@ variable "certificate" {
   default     = null
 }
 
+variable "managed_ssl_certificate" {
+  description = "If set together with  `ssl` and `managed_ssl_certificate_domains`, create a Google-managed SSL certificate for specified domains."
+  type        = bool
+  default     = false
+}
+
+variable "managed_ssl_certificate_domains" {
+  description = "Domain names to provision a managed SSL certificate. Required if `managed_ssl_certificate` is `true`."
+  type        = list(string)
+  default     = []
+}
+
 variable "use_ssl_certificates" {
   description = "If true, use the certificates provided by `ssl_certificates`, otherwise, create cert from `private_key` and `certificate`"
   type        = bool
