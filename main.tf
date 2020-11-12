@@ -62,14 +62,14 @@ resource "google_compute_target_https_proxy" "default" {
   name    = "${var.name}-https-proxy"
   url_map = local.url_map
 
-  ssl_certificates = compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default.*.self_link, ), )
+  ssl_certificates = compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default.*.self_link, google_compute_managed_ssl_certificate.default.*.self_link, ), )
   ssl_policy       = var.ssl_policy
   quic_override    = var.quic ? "ENABLE" : null
 }
 
 resource "google_compute_ssl_certificate" "default" {
   project     = var.project
-  count       = var.ssl && ! var.use_ssl_certificates ? 1 : 0
+  count       = var.ssl && length(var.managed_ssl_certificate_domains) == 0 && ! var.use_ssl_certificates ? 1 : 0
   name_prefix = "${var.name}-certificate-"
   private_key = var.private_key
   certificate = var.certificate
@@ -79,12 +79,23 @@ resource "google_compute_ssl_certificate" "default" {
   }
 }
 
+resource "google_compute_managed_ssl_certificate" "default" {
+  provider = google-beta
+  project  = var.project
+  count    = var.ssl && length(var.managed_ssl_certificate_domains) > 0 && ! var.use_ssl_certificates ? 1 : 0
+
+  name = "${var.name}-cert"
+
+  managed {
+    domains = var.managed_ssl_certificate_domains
+  }
+}
+
 resource "google_compute_url_map" "default" {
   project         = var.project
   count           = var.create_url_map ? 1 : 0
   name            = "${var.name}-url-map"
   default_service = google_compute_backend_service.default[keys(var.backends)[0]].self_link
-
 }
 
 resource "google_compute_url_map" "https_redirect" {
