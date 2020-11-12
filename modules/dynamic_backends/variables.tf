@@ -163,14 +163,8 @@ variable "certificate" {
   default     = null
 }
 
-variable "managed_ssl_certificate" {
-  description = "If set together with  `ssl` and `managed_ssl_certificate_domains`, create a Google-managed SSL certificate for specified domains."
-  type        = bool
-  default     = false
-}
-
 variable "managed_ssl_certificate_domains" {
-  description = "Domain names to provision a managed SSL certificate. Required if `managed_ssl_certificate` is `true`."
+  description = "Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` and `use_ssl_certificates` set to `false`."
   type        = list(string)
   default     = []
 }
