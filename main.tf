@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,10 @@
 
 
 locals {
-  address                 = var.create_address ? join("", google_compute_global_address.default.*.address) : var.address
-  url_map                 = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
-  create_http_forward     = var.http_forward || var.https_redirect
+  address             = var.create_address ? join("", google_compute_global_address.default.*.address) : var.address
+  url_map             = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
+  create_http_forward = var.http_forward || var.https_redirect
+
   health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }
 }
 
@@ -116,26 +117,29 @@ resource "google_compute_backend_service" "default" {
   project = var.project
   name    = "${var.name}-backend-${each.key}"
 
-  port_name                       = each.value.port_name
-  protocol                        = each.value.protocol
+  port_name = each.value.port_name
+  protocol  = each.value.protocol
+
   timeout_sec                     = lookup(each.value, "timeout_sec", null)
   description                     = lookup(each.value, "description", null)
   connection_draining_timeout_sec = lookup(each.value, "connection_draining_timeout_sec", null)
   enable_cdn                      = lookup(each.value, "enable_cdn", false)
+  custom_request_headers          = lookup(each.value, "custom_request_headers", [])
   health_checks                   = lookup(each.value, "health_check", null) == null ? null : [google_compute_health_check.default[each.key].self_link]
   session_affinity                = lookup(each.value, "session_affinity", null)
   affinity_cookie_ttl_sec         = lookup(each.value, "affinity_cookie_ttl_sec", null)
-  custom_request_headers          = lookup(each.value, "custom_request_headers", [])
+
   # To achieve a null backend security_policy, set each.value.security_policy to "" (empty string), otherwise, it fallsback to var.security_policy.
   security_policy = lookup(each.value, "security_policy") == "" ? null : (lookup(each.value, "security_policy") == null ? var.security_policy : each.value.security_policy)
 
   dynamic "backend" {
     for_each = toset(each.value["groups"])
     content {
+      description = lookup(backend.value, "description", null)
+      group       = lookup(backend.value, "group")
+
       balancing_mode               = lookup(backend.value, "balancing_mode")
       capacity_scaler              = lookup(backend.value, "capacity_scaler")
-      description                  = lookup(backend.value, "description")
-      group                        = lookup(backend.value, "group")
       max_connections              = lookup(backend.value, "max_connections")
       max_connections_per_instance = lookup(backend.value, "max_connections_per_instance")
       max_connections_per_endpoint = lookup(backend.value, "max_connections_per_endpoint")
@@ -159,7 +163,9 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
-  depends_on = [google_compute_health_check.default]
+  depends_on = [
+    google_compute_health_check.default
+  ]
 
 }
 
@@ -225,7 +231,6 @@ resource "google_compute_health_check" "default" {
       port         = lookup(http2_health_check.value, "port", null)
     }
   }
-
 }
 
 resource "google_compute_firewall" "default-hc" {

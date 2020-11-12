@@ -30,6 +30,8 @@ module "project-ci-lb-http" {
     "storage-api.googleapis.com",
     "serviceusage.googleapis.com",
     "compute.googleapis.com",
+    "run.googleapis.com",
+    "iam.googleapis.com",
   ]
 }
 
