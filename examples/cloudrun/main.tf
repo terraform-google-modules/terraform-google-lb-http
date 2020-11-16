@@ -15,17 +15,17 @@
  */
 
 provider "google" {
-  project = var.project
+  project = var.project_id
 }
 
 provider "google-beta" {
-  project = var.project
+  project = var.project_id
 }
 
-module "gce-lb-http" {
+module "lb-http" {
   source  = "../../modules/serverless_negs"
   name    = "tf-cr-lb"
-  project = var.project
+  project = var.project_id
 
   ssl                             = var.ssl
   managed_ssl_certificate_domains = [var.domain]
@@ -69,7 +69,7 @@ resource "google_compute_region_network_endpoint_group" "serverless_neg" {
 resource "google_cloud_run_service" "default" {
   name     = "example"
   location = var.region
-  project  = var.project
+  project  = var.project_id
 
   template {
     spec {
@@ -80,16 +80,10 @@ resource "google_cloud_run_service" "default" {
   }
 }
 
-data "google_iam_policy" "public" {
-  binding {
-    role    = "roles/run.invoker"
-    members = ["allUsers"]
-  }
-}
-
-resource "google_cloud_run_service_iam_policy" "public" {
-  location    = google_cloud_run_service.default.location
-  project     = google_cloud_run_service.default.project
-  service     = google_cloud_run_service.default.name
-  policy_data = data.google_iam_policy.public.policy_data
+resource "google_cloud_run_service_iam_member" "public-access" {
+  location = google_cloud_run_service.default.location
+  project  = google_cloud_run_service.default.project
+  service  = google_cloud_run_service.default.name
+  role     = "roles/run.invoker"
+  member   = "allUsers"
 }

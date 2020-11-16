@@ -19,7 +19,7 @@ provider "google" {
 }
 
 module "example" {
-  source  = "../../../examples/cloudrun"
-  project = var.project_id
-  ssl     = false
+  source     = "../../../examples/cloudrun"
+  project_id = var.project_id
+  ssl        = false
 }

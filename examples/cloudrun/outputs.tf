@@ -15,5 +15,5 @@
  */
 
 output "load-balancer-ip" {
-  value = module.gce-lb-http.external_ip
+  value = module.lb-http.external_ip
 }

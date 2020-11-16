@@ -42,7 +42,28 @@ gcloud config set project ${PROJECT}
 export GOOGLE_PROJECT=$(gcloud config get-value project)
 ```
 
-## Option 1: Run on HTTPS load balancer (with HTTP-to-HTTPS redirect)
+## Option 1: Run on HTTP load balancer (unencrypted, not recommended)
+
+This option provisions an HTTP forwarding rule (insecure) and is not recommended
+for production use. It is provided since it provisions faster than Option 2.
+
+1. Initialize:
+
+    ```
+    terraform init
+    ```
+
+1. Deploy the load balancer, replace `example.com` with your domain name.
+
+    ```
+    terraform apply -var=project=$PROJECT \
+        -var=ssl=false
+    ```
+
+1. It may take some time for the load balancer to provision. Visit the output
+   IP address of the load balancer.
+
+## Option 2: Run on HTTPS load balancer (with HTTP-to-HTTPS redirect)
 
 This options creates a Google-managed SSL certificate for your domain name,
 sets it up on HTTPS forwarding rule and creates a HTTP forwarding rule to
@@ -57,7 +78,7 @@ redirect HTTP traffic to HTTPS.
     terraform init
     ```
 
-2. Deploy the load balancer, replace `example.com` with your domain name.
+1. Deploy the load balancer, replace `example.com` with your domain name.
 
     ```
     terraform apply -var=project=$PROJECT \
@@ -65,32 +86,11 @@ redirect HTTP traffic to HTTPS.
         -var=domain=example.com
     ```
 
-3. After the deployment completes it outputs the IP address of the load balancer.
+1. After the deployment completes it outputs the IP address of the load balancer.
    Update DNS records for your domain to point to this IP address.
 
-4. It may take around half an hour for the SSL certificate to be provisioned
+1. It may take around half an hour for the SSL certificate to be provisioned
    and the application to start serving traffic.
-
-## Option 2: Run on HTTP load balancer (unencrypted)
-
-This option provisions an HTTP forwarding rule (insecure) and is not recommended
-for production use.
-
-1. Initialize:
-
-    ```
-    terraform init
-    ```
-
-2. Deploy the load balancer, replace `example.com` with your domain name.
-
-    ```
-    terraform apply -var=project=$PROJECT \
-        -var=ssl=false
-    ```
-
-3. It may take some time for the load balancer to provision. Visit the output
-   IP address of the load balancer.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
@@ -99,7 +99,7 @@ for production use.
 |------|-------------|:----:|:-----:|:-----:|
 | domain | Domain name to run the load balancer on. Used if `ssl` is `true`. | string | `""` | no |
 | lb-name | Name for load balancer and associated resources | string | `"run-lb"` | no |
-| project |  | string | n/a | yes |
+| project\_id |  | string | n/a | yes |
 | region | Location for load balancer and Cloud Run resources | string | `"us-central1"` | no |
 | ssl | Run load balancer on HTTPS and provision managed certificate with provided `domain`. | bool | `"true"` | no |
 

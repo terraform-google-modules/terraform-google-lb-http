@@ -176,11 +176,11 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
+  {% if not serverless %}
   depends_on = [
-    {% if not serverless %}
     google_compute_health_check.default
-    {% endif %}
   ]
+  {% endif %}
 
   {% if dynamic_backends %}
   lifecycle {
