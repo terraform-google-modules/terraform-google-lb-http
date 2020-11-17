@@ -45,7 +45,7 @@ export GOOGLE_PROJECT=$(gcloud config get-value project)
 ## Option 1: Run on HTTP load balancer (unencrypted, not recommended)
 
 This option provisions an HTTP forwarding rule (insecure) and is not recommended
-for production use. It is provided since it provisions faster than Option 2.
+for production use. It is provided since it provisions faster than the Option 2.
 
 1. Initialize:
 
@@ -82,7 +82,6 @@ redirect HTTP traffic to HTTPS.
 
     ```
     terraform apply -var=project=$PROJECT \
-        -var=ssl=true \
         -var=domain=example.com
     ```
 

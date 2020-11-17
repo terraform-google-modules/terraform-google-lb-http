@@ -42,7 +42,11 @@ need a Terraform 0.11.x-compatible version of this module, the last released ver
 ## Usage
 
 ```HCL
+{% if not serverless %}
 module "gce-lb-http" {
+{% else %}
+module "lb-http" {
+{% endif %}
   source            = "GoogleCloudPlatform/lb-http/google{{ module_path }}"
   version           = "~> 3.1"
 
