@@ -32,7 +32,6 @@ variable "ssl" {
 variable "domain" {
   description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
   type        = string
-  default     = ""
 }
 
 variable "lb-name" {

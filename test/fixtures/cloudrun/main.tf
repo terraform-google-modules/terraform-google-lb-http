@@ -22,4 +22,5 @@ module "example" {
   source     = "../../../examples/cloudrun"
   project_id = var.project_id
   ssl        = false
+  domain     = null
 }

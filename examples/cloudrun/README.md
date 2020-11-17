@@ -56,8 +56,8 @@ for production use. It is provided since it provisions faster than the Option 2.
 1. Deploy the load balancer, replace `example.com` with your domain name.
 
     ```
-    terraform apply -var=project=$PROJECT \
-        -var=ssl=false
+    terraform apply -var=project_id=$PROJECT \
+        -var=ssl=false -var=domain=null
     ```
 
 1. It may take some time for the load balancer to provision. Visit the output
@@ -81,7 +81,7 @@ redirect HTTP traffic to HTTPS.
 1. Deploy the load balancer, replace `example.com` with your domain name.
 
     ```
-    terraform apply -var=project=$PROJECT \
+    terraform apply -var=project_id=$PROJECT \
         -var=domain=example.com
     ```
 
@@ -96,7 +96,7 @@ redirect HTTP traffic to HTTPS.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| domain | Domain name to run the load balancer on. Used if `ssl` is `true`. | string | `""` | no |
+| domain | Domain name to run the load balancer on. Used if `ssl` is `true`. | string | n/a | yes |
 | lb-name | Name for load balancer and associated resources | string | `"run-lb"` | no |
 | project\_id |  | string | n/a | yes |
 | region | Location for load balancer and Cloud Run resources | string | `"us-central1"` | no |
