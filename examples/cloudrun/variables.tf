@@ -14,22 +14,27 @@
  * limitations under the License.
  */
 
-output "backend_services" {
-  description = "The backend service resources."
-  value       = google_compute_backend_service.default
+variable "project_id" {
+  type = string
 }
 
-output "external_ip" {
-  description = "The external IP assigned to the global forwarding rule."
-  value       = local.address
+variable "region" {
+  description = "Location for load balancer and Cloud Run resources"
+  default     = "us-central1"
 }
 
-output "http_proxy" {
-  description = "The HTTP proxy used by this module."
-  value       = google_compute_target_http_proxy.default[*].self_link
+variable "ssl" {
+  description = "Run load balancer on HTTPS and provision managed certificate with provided `domain`."
+  type        = bool
+  default     = true
 }
 
-output "https_proxy" {
-  description = "The HTTPS proxy used by this module."
-  value       = google_compute_target_https_proxy.default[*].self_link
+variable "domain" {
+  description = "Domain name to run the load balancer on. Used if `ssl` is `true`."
+  type        = string
+}
+
+variable "lb-name" {
+  description = "Name for load balancer and associated resources"
+  default     = "run-lb"
 }

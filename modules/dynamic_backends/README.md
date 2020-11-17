@@ -1,5 +1,4 @@
 # Global HTTP Load Balancer Terraform Module
-
 Modular Global HTTP Load Balancer for GCE using forwarding rules.
 
 This submodule allows for configuring dynamic backend outside Terraform.
@@ -24,8 +23,8 @@ module "gce-lb-http" {
   source            = "GoogleCloudPlatform/lb-http/google//modules/dynamic_backends"
   version           = "~> 3.1"
 
-  name              = "group-http-lb"
   project           = "my-project-id"
+  name              = "group-http-lb"
   target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
   backends = {
     default = {
@@ -34,11 +33,12 @@ module "gce-lb-http" {
       port                            = var.service_port
       port_name                       = var.service_port_name
       timeout_sec                     = 10
-      connection_draining_timeout_sec = null
       enable_cdn                      = false
+      custom_request_headers          = null
+
+      connection_draining_timeout_sec = null
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
-      custom_request_headers          = null
 
       health_check = {
         check_interval_sec  = null
@@ -131,9 +131,9 @@ Current version is 3.0. Upgrade guides:
 | Name | Description |
 |------|-------------|
 | backend\_services | The backend service resources. |
-| external\_ip | The external IP assigned to the global fowarding rule. |
+| external\_ip | The external IP assigned to the global forwarding rule. |
 | http\_proxy | The HTTP proxy used by this module. |
-| https\_proxy | The HTTPS proxyused by this module. |
+| https\_proxy | The HTTPS proxy used by this module. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
@@ -141,7 +141,8 @@ Current version is 3.0. Upgrade guides:
 * [`google_compute_global_forwarding_rule.https`](https://www.terraform.io/docs/providers/google/r/compute_global_forwarding_rule.html): The global HTTPS forwarding rule created when `ssl` is `true`.
 * [`google_compute_target_http_proxy.default`](https://www.terraform.io/docs/providers/google/r/compute_target_http_proxy.html): The HTTP proxy resource that binds the url map. Created when input `ssl` is `false`.
 * [`google_compute_target_https_proxy.default`](https://www.terraform.io/docs/providers/google/r/compute_target_https_proxy.html): The HTTPS proxy resource that binds the url map. Created when input `ssl` is `true`.
-* [`google_compute_ssl_certificate.default`](https://www.terraform.io/docs/providers/google/r/compute_ssl_certificate.html): The certificate resource created when input `ssl` is `true`.
+* [`google_compute_ssl_certificate.default`](https://www.terraform.io/docs/providers/google/r/compute_ssl_certificate.html): The certificate resource created when input `ssl` is `true` and `managed_ssl_certificate_domains` not specified.
+* [`google_compute_managed_ssl_certificate.default`](https://www.terraform.io/docs/providers/google/r/compute_managed_ssl_certificate.html): The Google-managed certificate resource created when input `ssl` is `true` and `managed_ssl_certificate_domains` is specified.
 * [`google_compute_url_map.default`](https://www.terraform.io/docs/providers/google/r/compute_url_map.html): The default URL map resource when input `url_map` is not provided.
 * [`google_compute_backend_service.default.*`](https://www.terraform.io/docs/providers/google/r/compute_backend_service.html): The backend services created for each of the `backend_params` elements.
 * [`google_compute_health_check.default.*`](https://www.terraform.io/docs/providers/google/r/compute_health_check.html):

@@ -14,22 +14,7 @@
  * limitations under the License.
  */
 
-output "backend_services" {
-  description = "The backend service resources."
-  value       = google_compute_backend_service.default
-}
-
-output "external_ip" {
-  description = "The external IP assigned to the global forwarding rule."
-  value       = local.address
-}
-
-output "http_proxy" {
-  description = "The HTTP proxy used by this module."
-  value       = google_compute_target_http_proxy.default[*].self_link
-}
-
-output "https_proxy" {
-  description = "The HTTPS proxy used by this module."
-  value       = google_compute_target_https_proxy.default[*].self_link
+variable "project_id" {
+  description = "The ID of the project in which to provision resources."
+  type        = string
 }

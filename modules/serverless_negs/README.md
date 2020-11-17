@@ -1,21 +1,10 @@
-# Global HTTP Load Balancer Terraform Module
-Modular Global HTTP Load Balancer for GCE using forwarding rules.
+# Global HTTP Load Balancer Terraform Module for Serverless NEGs
 
+This submodule allows you to create Cloud HTTP(S) Load Balancer with
+[Serverless Network Endpoint Groups (NEGs)](https://cloud.google.com/load-balancing/docs/negs/serverless-neg-concepts)
+and place serverless services from Cloud Run, Cloud Functions and App Engine
+behind a Cloud Load Balancer.
 
-- If you would like to allow for backend groups to be managed outside Terraform,
-  such as via GKE services, see the [dynamic
-  backends](./modules/dynamic_backends) submodule.
-- If you would like to use load balancing with serverless backends (Cloud Run,
-  Cloud Functions or App Engine), see the
-  [serverless_negs](./modules/serverless_negs) submodule and
-  [cloudrun](./examples/cloudrun) example.
-
-
-## Load Balancer Types
-
-* [TCP load balancer](https://github.com/terraform-google-modules/terraform-google-lb)
-* **HTTP/S load balancer**
-* [Internal load balancer](https://github.com/terraform-google-modules/terraform-google-lb-internal)
 
 ## Compatibility
 
@@ -26,37 +15,22 @@ need a Terraform 0.11.x-compatible version of this module, the last released ver
 ## Usage
 
 ```HCL
-module "gce-lb-http" {
-  source            = "GoogleCloudPlatform/lb-http/google"
+module "lb-http" {
+  source            = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
   version           = "~> 3.1"
 
   project           = "my-project-id"
-  name              = "group-http-lb"
-  target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
+  name              = "my-lb"
+
+  ssl                             = true
+  managed_ssl_certificate_domains = ["your-domain.com"]
+  https_redirect                  = true
   backends = {
     default = {
       description                     = null
-      protocol                        = "HTTP"
-      port                            = var.service_port
-      port_name                       = var.service_port_name
-      timeout_sec                     = 10
       enable_cdn                      = false
       custom_request_headers          = null
 
-      connection_draining_timeout_sec = null
-      session_affinity                = null
-      affinity_cookie_ttl_sec         = null
-
-      health_check = {
-        check_interval_sec  = null
-        timeout_sec         = null
-        healthy_threshold   = null
-        unhealthy_threshold = null
-        request_path        = "/"
-        port                = var.service_port
-        host                = null
-        logging             = null
-      }
 
       log_config = {
         enable = true
@@ -65,19 +39,9 @@ module "gce-lb-http" {
 
       groups = [
         {
-          # Each node pool instance group should be added to the backend.
-          group                        = var.backend
-          balancing_mode               = null
-          capacity_scaler              = null
-          description                  = null
-          max_connections              = null
-          max_connections_per_instance = null
-          max_connections_per_endpoint = null
-          max_rate                     = null
-          max_rate_per_instance        = null
-          max_rate_per_endpoint        = null
-          max_utilization              = null
-        },
+          # Your serverless service should have a NEG created that's referenced here.
+          group = google_compute_region_network_endpoint_group.default.id
+        }
       ]
 
       iap_config {
@@ -90,11 +54,6 @@ module "gce-lb-http" {
 }
 ```
 
-## Resources created
-
-**Figure 1.** *diagram of terraform resources*
-
-![architecture diagram](./diagram.png)
 
 ## Version
 
@@ -114,8 +73,6 @@ Current version is 3.0. Upgrade guides:
 | certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `"null"` | no |
 | create\_address | Create a new global address | bool | `"true"` | no |
 | create\_url\_map | Set to `false` if url_map variable is provided. | bool | `"true"` | no |
-| firewall\_networks | Names of the networks to create firewall rules in | list(string) | `<list>` | no |
-| firewall\_projects | Names of the projects to create firewall rules in | list(string) | `<list>` | no |
 | http\_forward | Set to `false` to disable HTTP port 80 forward | bool | `"true"` | no |
 | https\_redirect | Set to `true` to enable https redirect on the lb. | bool | `"false"` | no |
 | ip\_version | IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4 | string | `"null"` | no |
@@ -128,8 +85,6 @@ Current version is 3.0. Upgrade guides:
 | ssl | Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self_link certs | bool | `"false"` | no |
 | ssl\_certificates | SSL cert self_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided. | list(string) | `<list>` | no |
 | ssl\_policy | Selfink to SSL Policy | string | `"null"` | no |
-| target\_service\_accounts | List of target service accounts for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified. | list(string) | `<list>` | no |
-| target\_tags | List of target tags for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified. | list(string) | `<list>` | no |
 | url\_map | The url_map resource to use. Default is to send all traffic to first backend. | string | `"null"` | no |
 | use\_ssl\_certificates | If true, use the certificates provided by `ssl_certificates`, otherwise, create cert from `private_key` and `certificate` | bool | `"false"` | no |
 
@@ -152,6 +107,3 @@ Current version is 3.0. Upgrade guides:
 * [`google_compute_managed_ssl_certificate.default`](https://www.terraform.io/docs/providers/google/r/compute_managed_ssl_certificate.html): The Google-managed certificate resource created when input `ssl` is `true` and `managed_ssl_certificate_domains` is specified.
 * [`google_compute_url_map.default`](https://www.terraform.io/docs/providers/google/r/compute_url_map.html): The default URL map resource when input `url_map` is not provided.
 * [`google_compute_backend_service.default.*`](https://www.terraform.io/docs/providers/google/r/compute_backend_service.html): The backend services created for each of the `backend_params` elements.
-* [`google_compute_health_check.default.*`](https://www.terraform.io/docs/providers/google/r/compute_health_check.html):
-  Health check resources created for each of the (non global NEG) backend services.
-* [`google_compute_firewall.default-hc`](https://www.terraform.io/docs/providers/google/r/compute_firewall.html): Firewall rule created for each of the backed services to allow health checks to the instance group.

@@ -42,68 +42,17 @@ variable "ip_version" {
   default     = null
 }
 
-{% if not serverless %}
-{# options unused for serverless LBs #}
-variable "firewall_networks" {
-  description = "Names of the networks to create firewall rules in"
-  type        = list(string)
-  default     = ["default"]
-}
-
-variable "firewall_projects" {
-  description = "Names of the projects to create firewall rules in"
-  type        = list(string)
-  default     = ["default"]
-}
-
-variable "target_tags" {
-  description = "List of target tags for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified."
-  type        = list(string)
-  default     = []
-}
-
-variable "target_service_accounts" {
-  description = "List of target service accounts for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified."
-  type        = list(string)
-  default     = []
-}
-{% endif %}
 
 variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
-    {% if not serverless %}{# not necessary for serverless as default port_name=http, protocol=HTTP #}
-    protocol  = string
-    port      = number
-    port_name = string
-    {% endif %}
 
     description            = string
     enable_cdn             = bool
     security_policy        = string
     custom_request_headers = list(string)
 
-    {% if not serverless %}
-    {# options do not apply to serverless backends #}
-    timeout_sec                     = number
-    connection_draining_timeout_sec = number
-    session_affinity                = string
-    affinity_cookie_ttl_sec         = number
-    {% endif %}
 
-    {% if not serverless %}
-    {# Serverless NEGs don't support health checks #}
-    health_check = object({
-      check_interval_sec  = number
-      timeout_sec         = number
-      healthy_threshold   = number
-      unhealthy_threshold = number
-      request_path        = string
-      port                = number
-      host                = string
-      logging             = bool
-    })
-    {% endif %}
 
     log_config = object({
       enable      = bool
@@ -113,18 +62,6 @@ variable "backends" {
     groups = list(object({
       group = string
 
-      {% if not serverless %}
-      balancing_mode               = string
-      capacity_scaler              = number
-      description                  = string
-      max_connections              = number
-      max_connections_per_instance = number
-      max_connections_per_endpoint = number
-      max_rate                     = number
-      max_rate_per_instance        = number
-      max_rate_per_endpoint        = number
-      max_utilization              = number
-      {% endif %}
     }))
     iap_config = object({
       enable               = bool

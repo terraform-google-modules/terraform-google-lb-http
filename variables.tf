@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,11 @@
 
 variable "project" {
   description = "The project to deploy to, if not set the default provider project is used."
+  type        = string
+}
+
+variable "name" {
+  description = "Name for the forwarding rule and prefix for supporting resources"
   type        = string
 }
 
@@ -49,11 +54,6 @@ variable "firewall_projects" {
   default     = ["default"]
 }
 
-variable "name" {
-  description = "Name for the forwarding rule and prefix for supporting resources"
-  type        = string
-}
-
 variable "target_tags" {
   description = "List of target tags for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified."
   type        = list(string)
@@ -69,17 +69,20 @@ variable "target_service_accounts" {
 variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
-    description                     = string
-    protocol                        = string
-    port                            = number
-    port_name                       = string
+    protocol  = string
+    port      = number
+    port_name = string
+
+    description            = string
+    enable_cdn             = bool
+    security_policy        = string
+    custom_request_headers = list(string)
+
     timeout_sec                     = number
     connection_draining_timeout_sec = number
-    enable_cdn                      = bool
-    security_policy                 = string
     session_affinity                = string
     affinity_cookie_ttl_sec         = number
-    custom_request_headers          = list(string)
+
     health_check = object({
       check_interval_sec  = number
       timeout_sec         = number
@@ -90,12 +93,15 @@ variable "backends" {
       host                = string
       logging             = bool
     })
+
     log_config = object({
       enable      = bool
       sample_rate = number
     })
+
     groups = list(object({
-      group                        = string
+      group = string
+
       balancing_mode               = string
       capacity_scaler              = number
       description                  = string

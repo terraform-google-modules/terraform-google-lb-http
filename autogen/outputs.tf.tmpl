@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Google LLC
+ * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ output "backend_services" {
 }
 
 output "external_ip" {
-  description = "The external IP assigned to the global fowarding rule."
+  description = "The external IP assigned to the global forwarding rule."
   value       = local.address
 }
 
@@ -30,6 +30,6 @@ output "http_proxy" {
 }
 
 output "https_proxy" {
-  description = "The HTTPS proxyused by this module."
+  description = "The HTTPS proxy used by this module."
   value       = google_compute_target_https_proxy.default[*].self_link
 }
