@@ -108,7 +108,7 @@ Current version is 3.0. Upgrade guides:
 | cdn | Set to `true` to enable cdn on backend. | bool | `"false"` | no |
 | certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `"null"` | no |
 | create\_address | Create a new global IPv4 address | bool | `"true"` | no |
-| create\_ipv6\_address | Create a new global IPv6 address | bool | `"true"` | no |
+| create\_ipv6\_address | Create a new global IPv6 address | bool | `"false"` | no |
 | create\_url\_map | Set to `false` if url_map variable is provided. | bool | `"true"` | no |
 | firewall\_networks | Names of the networks to create firewall rules in | list(string) | `<list>` | no |
 | firewall\_projects | Names of the projects to create firewall rules in | list(string) | `<list>` | no |

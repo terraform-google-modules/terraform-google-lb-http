@@ -33,7 +33,7 @@ variable "create_address" {
 variable "create_ipv6_address" {
   type        = bool
   description = "Create a new global IPv6 address"
-  default     = true
+  default     = false
 }
 
 variable "address" {
