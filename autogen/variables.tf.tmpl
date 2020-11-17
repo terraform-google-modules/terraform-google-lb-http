@@ -38,13 +38,13 @@ variable "create_ipv6_address" {
 
 variable "address" {
   type        = string
-  description = "IPv4 address (the actual IP address value)"
+  description = "Existing IPv4 address to use (the actual IP address value)"
   default     = null
 }
 
 variable "ipv6_address" {
   type        = string
-  description = "IPv6 address (the actual IP address value)"
+  description = "Existing IPv6 address to use (the actual IP address value)"
   default     = null
 }
 

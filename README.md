@@ -110,7 +110,7 @@ Current version is 3.0. Upgrade guides:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| address | IPv4 address (the actual IP address value) | string | `"null"` | no |
+| address | Existing IPv4 address to use (the actual IP address value) | string | `"null"` | no |
 | backends | Map backend indices to list of backend maps. | object | n/a | yes |
 | cdn | Set to `true` to enable cdn on backend. | bool | `"false"` | no |
 | certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `"null"` | no |
