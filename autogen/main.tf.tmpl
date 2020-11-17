@@ -27,7 +27,7 @@ locals {
   health_checked_backends = {}
   {% endif %}
 
-  create_ipv6_resources   = ((local.ipv6_address != null) && (length(local.ipv6_address) > 0))
+  create_ipv6_resources   = (local.ipv6_address == null) ? false : (length(local.ipv6_address) > 0) ? true : false
 }
 
 ### IPv4 block ###

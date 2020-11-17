@@ -22,7 +22,7 @@ locals {
   create_http_forward     = var.http_forward || var.https_redirect
   health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }
 
-  create_ipv6_resources = ((local.ipv6_address != null) && (length(local.ipv6_address) > 0))
+  create_ipv6_resources = (local.ipv6_address == null) ? false : (length(local.ipv6_address) > 0) ? true : false
 }
 
 ### IPv4 block ###
