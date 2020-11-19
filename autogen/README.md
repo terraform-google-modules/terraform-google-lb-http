@@ -124,7 +124,7 @@ module "lb-http" {
       ]
       {% endif %}
 
-      iap_config {
+      iap_config = {
         enable               = false
         oauth2_client_id     = null
         oauth2_client_secret = null
