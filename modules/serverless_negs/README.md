@@ -30,6 +30,7 @@ module "lb-http" {
       description                     = null
       enable_cdn                      = false
       custom_request_headers          = null
+      security_policy                 = null
 
 
       log_config = {
@@ -69,6 +70,7 @@ Current version is 3.0. Upgrade guides:
 |------|-------------|:----:|:-----:|:-----:|
 | address | IP address self link | string | `"null"` | no |
 | backends | Map backend indices to list of backend maps. | object | n/a | yes |
+| security\_policy | The resource URL for the security policy to associate with the backend service | string | n/a | yes |
 | cdn | Set to `true` to enable cdn on backend. | bool | `"false"` | no |
 | certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `"null"` | no |
 | create\_address | Create a new global address | bool | `"true"` | no |
@@ -81,7 +83,6 @@ Current version is 3.0. Upgrade guides:
 | private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `"null"` | no |
 | project | The project to deploy to, if not set the default provider project is used. | string | n/a | yes |
 | quic | Set to `true` to enable QUIC support | bool | `"false"` | no |
-| security\_policy | The resource URL for the security policy to associate with the backend service | string | `"null"` | no |
 | ssl | Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self_link certs | bool | `"false"` | no |
 | ssl\_certificates | SSL cert self_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided. | list(string) | `<list>` | no |
 | ssl\_policy | Selfink to SSL Policy | string | `"null"` | no |
