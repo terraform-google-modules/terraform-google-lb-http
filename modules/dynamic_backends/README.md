@@ -21,7 +21,7 @@ need a Terraform 0.11.x-compatible version of this module, the last released ver
 ```HCL
 module "gce-lb-http" {
   source            = "GoogleCloudPlatform/lb-http/google//modules/dynamic_backends"
-  version           = "~> 3.1"
+  version           = "~> 4.4"
 
   project           = "my-project-id"
   name              = "group-http-lb"

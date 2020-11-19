@@ -48,7 +48,7 @@ module "gce-lb-http" {
 module "lb-http" {
 {% endif %}
   source            = "GoogleCloudPlatform/lb-http/google{{ module_path }}"
-  version           = "~> 3.1"
+  version           = "~> 4.4"
 
   project           = "my-project-id"
   {% if serverless %}
