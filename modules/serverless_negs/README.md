@@ -17,7 +17,7 @@ need a Terraform 0.11.x-compatible version of this module, the last released ver
 ```HCL
 module "lb-http" {
   source            = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
-  version           = "~> 4.4.0"
+  version           = "~> 4.4"
 
   project           = "my-project-id"
   name              = "my-lb"
