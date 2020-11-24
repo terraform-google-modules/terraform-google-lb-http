@@ -30,9 +30,9 @@ variable "create_address" {
   default     = true
 }
 
-variable "create_ipv6_address" {
+variable "enable_ipv6" {
   type        = bool
-  description = "Create a new global IPv6 address"
+  description = "Enable IPv6 address on the CDN load-balancer"
   default     = false
 }
 
@@ -44,8 +44,8 @@ variable "address" {
 
 variable "ipv6_address" {
   type        = string
-  description = "Existing IPv6 address to use (the actual IP address value)"
-  default     = null
+  description = "One of \"new\" OR an existing IPv6 address to use (the actual IP address value)"
+  default     = "new"
 }
 
 variable "firewall_networks" {

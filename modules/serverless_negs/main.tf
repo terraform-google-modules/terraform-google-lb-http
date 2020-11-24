@@ -16,13 +16,26 @@
 
 
 locals {
-  address             = var.create_address ? join("", google_compute_global_address.default.*.address) : var.address
+  address = var.create_address ? join("", google_compute_global_address.default.*.address) : var.address
+
+  # var.ipv6_address == "new" indicates that the user wants a new IPv6 address assigned automatically.
+  # Any other value is expected to be a valid pre-allocated IPv6 address.
+  # TODO: Add validations for the format if IPv6 (when != "new")?
+  ipv6_address = (var.ipv6_address == "new") ? join("", google_compute_global_address.default_ipv6.*.address) : var.ipv6_address
+
   url_map             = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
   create_http_forward = var.http_forward || var.https_redirect
 
   health_checked_backends = {}
+
+  # boolean flag to control whether user wants to deploy IPv6 resources
+  use_ipv6 = ((var.enable_ipv6) && (length(local.ipv6_address) > 0)) ? true : false
+
+  # var.ipv6_address == "new" indicates that the user wants a new IPv6 address assigned automatically.
+  create_ipv6_address = ((var.enable_ipv6) && (var.ipv6_address == "new")) ? true : false
 }
 
+### IPv4 block ###
 resource "google_compute_global_forwarding_rule" "http" {
   project    = var.project
   count      = local.create_http_forward ? 1 : 0
@@ -45,8 +58,36 @@ resource "google_compute_global_address" "default" {
   count      = var.create_address ? 1 : 0
   project    = var.project
   name       = "${var.name}-address"
-  ip_version = var.ip_version
+  ip_version = "IPV4"
 }
+### IPv4 block ###
+
+### IPv6 block ###
+resource "google_compute_global_forwarding_rule" "http_ipv6" {
+  project    = var.project
+  count      = (local.use_ipv6 && local.create_http_forward) ? 1 : 0
+  name       = "${var.name}-ipv6-http"
+  target     = google_compute_target_http_proxy.default[0].self_link
+  ip_address = local.ipv6_address
+  port_range = "80"
+}
+
+resource "google_compute_global_forwarding_rule" "https_ipv6" {
+  project    = var.project
+  count      = (local.use_ipv6 && var.ssl) ? 1 : 0
+  name       = "${var.name}-ipv6-https"
+  target     = google_compute_target_https_proxy.default[0].self_link
+  ip_address = local.ipv6_address
+  port_range = "443"
+}
+
+resource "google_compute_global_address" "default_ipv6" {
+  count      = (local.create_ipv6_address) ? 1 : 0
+  project    = var.project
+  name       = "${var.name}-ipv6-address"
+  ip_version = "IPV6"
+}
+### IPv6 block ###
 
 # HTTP proxy when http forwarding is true
 resource "google_compute_target_http_proxy" "default" {
