@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.5.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.4.0...v4.5.0) (2020-11-25)
+
+
+### Features
+
+* Add managed SSL certificates support ([#135](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/135)) ([7b547d9](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/7b547d9decc1ce3747eac872c732f0f04e78d63b))
+* Added Serverless NEGs submodule ([#136](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/136)) ([871b575](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/871b5755a21b58ef332895f188e4f1cc5dca9890))
+* Update per-backend security_policy fallback to variable ([#132](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/132)) ([d726501](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/d72650160191a24c97e5d09b8ea3cd28057c3f11))
+
+
+### Bug Fixes
+
+* Add health-check prober port for checked backends to hc-firewall ([#143](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/143)) ([5acae1e](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/5acae1ead46796303711e7cf9f921d496f15ecd0))
+* Fix syntax in example code block ([#137](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/137)) ([4e43deb](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/4e43deb0cf5f2071de355c104b2ca04dc97591dd))
+
 ## [4.4.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.3.0...v4.4.0) (2020-10-26)
 
 
