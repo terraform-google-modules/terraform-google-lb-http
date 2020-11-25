@@ -28,9 +28,6 @@ locals {
 
   health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }
 
-  # boolean flag to control whether user wants to deploy IPv6 resources
-  use_ipv6 = ((var.enable_ipv6) && (length(local.ipv6_address) > 0)) ? true : false
-
   # var.ipv6_address == "new" indicates that the user wants a new IPv6 address assigned automatically.
   create_ipv6_address = ((var.enable_ipv6) && (var.ipv6_address == "new")) ? true : false
 }
@@ -65,7 +62,7 @@ resource "google_compute_global_address" "default" {
 ### IPv6 block ###
 resource "google_compute_global_forwarding_rule" "http_ipv6" {
   project    = var.project
-  count      = (local.use_ipv6 && local.create_http_forward) ? 1 : 0
+  count      = (var.enable_ipv6 && local.create_http_forward) ? 1 : 0
   name       = "${var.name}-ipv6-http"
   target     = google_compute_target_http_proxy.default[0].self_link
   ip_address = local.ipv6_address
@@ -74,7 +71,7 @@ resource "google_compute_global_forwarding_rule" "http_ipv6" {
 
 resource "google_compute_global_forwarding_rule" "https_ipv6" {
   project    = var.project
-  count      = (local.use_ipv6 && var.ssl) ? 1 : 0
+  count      = (var.enable_ipv6 && var.ssl) ? 1 : 0
   name       = "${var.name}-ipv6-https"
   target     = google_compute_target_https_proxy.default[0].self_link
   ip_address = local.ipv6_address
