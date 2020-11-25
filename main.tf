@@ -246,10 +246,10 @@ resource "google_compute_firewall" "default-hc" {
   target_service_accounts = length(var.target_service_accounts) > 0 ? var.target_service_accounts : null
 
   dynamic "allow" {
-    for_each = var.backends
+    for_each = local.health_checked_backends
     content {
       protocol = "tcp"
-      ports    = [allow.value.port]
+      ports    = [allow.value["health_check"].port]
     }
   }
 }
