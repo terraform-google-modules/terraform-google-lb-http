@@ -190,6 +190,7 @@ resource "google_compute_health_check" "default" {
         host         = lookup(each.value["health_check"], "host", null)
         request_path = lookup(each.value["health_check"], "request_path", null)
         port         = lookup(each.value["health_check"], "port", null)
+        response     = lookup(each.value["health_check"], "response", null)
       }
     ] : []
 
@@ -197,6 +198,7 @@ resource "google_compute_health_check" "default" {
       host         = lookup(http_health_check.value, "host", null)
       request_path = lookup(http_health_check.value, "request_path", null)
       port         = lookup(http_health_check.value, "port", null)
+      response     = lookup(http_health_check.value, "response", null)
     }
   }
 
@@ -206,6 +208,7 @@ resource "google_compute_health_check" "default" {
         host         = lookup(each.value["health_check"], "host", null)
         request_path = lookup(each.value["health_check"], "request_path", null)
         port         = lookup(each.value["health_check"], "port", null)
+        response     = lookup(each.value["health_check"], "response", null)
       }
     ] : []
 
@@ -213,6 +216,7 @@ resource "google_compute_health_check" "default" {
       host         = lookup(https_health_check.value, "host", null)
       request_path = lookup(https_health_check.value, "request_path", null)
       port         = lookup(https_health_check.value, "port", null)
+      response     = lookup(https_health_check.value, "response", null)
     }
   }
 
@@ -222,6 +226,7 @@ resource "google_compute_health_check" "default" {
         host         = lookup(each.value["health_check"], "host", null)
         request_path = lookup(each.value["health_check"], "request_path", null)
         port         = lookup(each.value["health_check"], "port", null)
+        response     = lookup(each.value["health_check"], "response", null)
       }
     ] : []
 
@@ -229,6 +234,7 @@ resource "google_compute_health_check" "default" {
       host         = lookup(http2_health_check.value, "host", null)
       request_path = lookup(http2_health_check.value, "request_path", null)
       port         = lookup(http2_health_check.value, "port", null)
+      response     = lookup(http2_health_check.value, "response", null)
     }
   }
 }
