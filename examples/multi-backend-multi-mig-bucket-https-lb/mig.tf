@@ -82,6 +82,8 @@ module "mig2_template" {
     scopes = ["cloud-platform"]
   }
   name_prefix    = "${var.network_name}-group2"
+  source_image_family  = "centos-7"
+  source_image_project = "centos-cloud"
   startup_script = data.template_file.group2-startup-script.rendered
   tags = [
     "${var.network_name}-group2",
@@ -115,6 +117,8 @@ module "mig3_template" {
     scopes = ["cloud-platform"]
   }
   name_prefix    = "${var.network_name}-group3"
+  source_image_family  = "centos-7"
+  source_image_project = "centos-cloud"
   startup_script = data.template_file.group3-startup-script.rendered
   tags = [
     "${var.network_name}-group3",
