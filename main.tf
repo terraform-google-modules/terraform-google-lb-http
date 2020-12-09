@@ -16,20 +16,13 @@
 
 
 locals {
-  address = var.create_address ? join("", google_compute_global_address.default.*.address) : var.address
-
-  # var.ipv6_address == "new" indicates that the user wants a new IPv6 address assigned automatically.
-  # Any other value is expected to be a valid pre-allocated IPv6 address.
-  # TODO: Add validations for the format if IPv6 (when != "new")?
-  ipv6_address = (var.ipv6_address == "new") ? join("", google_compute_global_address.default_ipv6.*.address) : var.ipv6_address
+  address      = var.create_address ? join("", google_compute_global_address.default.*.address) : var.address
+  ipv6_address = var.create_ipv6_address ? join("", google_compute_global_address.default_ipv6.*.address) : var.ipv6_address
 
   url_map             = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
   create_http_forward = var.http_forward || var.https_redirect
 
   health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }
-
-  # var.ipv6_address == "new" indicates that the user wants a new IPv6 address assigned automatically.
-  create_ipv6_address = ((var.enable_ipv6) && (var.ipv6_address == "new")) ? true : false
 }
 
 ### IPv4 block ###
@@ -79,7 +72,7 @@ resource "google_compute_global_forwarding_rule" "https_ipv6" {
 }
 
 resource "google_compute_global_address" "default_ipv6" {
-  count      = (local.create_ipv6_address) ? 1 : 0
+  count      = (var.enable_ipv6 && var.create_ipv6_address) ? 1 : 0
   project    = var.project
   name       = "${var.name}-ipv6-address"
   ip_version = "IPV6"

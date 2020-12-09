@@ -30,22 +30,28 @@ variable "create_address" {
   default     = true
 }
 
-variable "enable_ipv6" {
-  type        = bool
-  description = "Enable IPv6 address on the CDN load-balancer"
-  default     = false
-}
-
 variable "address" {
   type        = string
   description = "Existing IPv4 address to use (the actual IP address value)"
   default     = null
 }
 
+variable "enable_ipv6" {
+  type        = bool
+  description = "Enable IPv6 address on the CDN load-balancer"
+  default     = false
+}
+
+variable "create_ipv6_address" {
+  type        = bool
+  description = "Allocate a new IPv6 address. Conflicts with \"ipv6_address\" - if both specified, \"create_ipv6_address\" takes precedence."
+  default     = false
+}
+
 variable "ipv6_address" {
   type        = string
-  description = "One of \"new\" OR an existing IPv6 address to use (the actual IP address value)"
-  default     = "new"
+  description = "An existing IPv6 address to use (the actual IP address value)"
+  default     = null
 }
 
 variable "firewall_networks" {

@@ -115,15 +115,15 @@ Current version is 3.0. Upgrade guides:
 | cdn | Set to `true` to enable cdn on backend. | bool | `"false"` | no |
 | certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `"null"` | no |
 | create\_address | Create a new global IPv4 address | bool | `"true"` | no |
+| create\_ipv6\_address | Allocate a new IPv6 address. Conflicts with "ipv6_address" - if both specified, "create_ipv6_address" takes precedence. | bool | `"false"` | no |
 | create\_url\_map | Set to `false` if url_map variable is provided. | bool | `"true"` | no |
 | enable\_ipv6 | Enable IPv6 address on the CDN load-balancer | bool | `"false"` | no |
 | firewall\_networks | Names of the networks to create firewall rules in | list(string) | `<list>` | no |
 | firewall\_projects | Names of the projects to create firewall rules in | list(string) | `<list>` | no |
 | http\_forward | Set to `false` to disable HTTP port 80 forward | bool | `"true"` | no |
 | https\_redirect | Set to `true` to enable https redirect on the lb. | bool | `"false"` | no |
-| ipv6\_address | IPv6 address (the actual IP address value) | string | `"null"` | no |
-| ip\_version | IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4 | `string` | `null` | no |
-| managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` and `use_ssl_certificates` set to `false`. | `list(string)` | `[]` | no |
+| ipv6\_address | An existing IPv6 address to use (the actual IP address value) | string | `"null"` | no |
+| managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` and `use_ssl_certificates` set to `false`. | list(string) | `<list>` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | string | n/a | yes |
 | private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `"null"` | no |
 | project | The project to deploy to, if not set the default provider project is used. | string | n/a | yes |
