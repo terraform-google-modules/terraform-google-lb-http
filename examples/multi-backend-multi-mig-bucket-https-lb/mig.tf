@@ -74,7 +74,7 @@ module "mig1" {
 
 module "mig2_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "1.0.0"
+  version    = "6.0.0"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.group2.self_link
   service_account = {
@@ -82,8 +82,6 @@ module "mig2_template" {
     scopes = ["cloud-platform"]
   }
   name_prefix    = "${var.network_name}-group2"
-  source_image_family  = "centos-7"
-  source_image_project = "centos-cloud"
   startup_script = data.template_file.group2-startup-script.rendered
   tags = [
     "${var.network_name}-group2",
@@ -109,7 +107,7 @@ module "mig2" {
 
 module "mig3_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "1.0.0"
+  version    = "6.0.0"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.group3.self_link
   service_account = {
@@ -117,8 +115,6 @@ module "mig3_template" {
     scopes = ["cloud-platform"]
   }
   name_prefix    = "${var.network_name}-group3"
-  source_image_family  = "centos-7"
-  source_image_project = "centos-cloud"
   startup_script = data.template_file.group3-startup-script.rendered
   tags = [
     "${var.network_name}-group3",
