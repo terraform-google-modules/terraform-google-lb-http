@@ -62,17 +62,17 @@ terraform destroy
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| network\_name |  | string | `"tf-lb-https-redirect-nat"` | no |
-| project |  | string | n/a | yes |
-| region |  | string | `"us-east1"` | no |
-| zone |  | string | `"us-east1-b"` | no |
+|------|-------------|------|---------|:--------:|
+| network\_name | n/a | `string` | `"tf-lb-https-redirect-nat"` | no |
+| project | n/a | `string` | n/a | yes |
+| region | n/a | `string` | `"us-east1"` | no |
+| zone | n/a | `string` | `"us-east1-b"` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| backend\_services |  |
-| load-balancer-ip |  |
+| backend\_services | n/a |
+| load-balancer-ip | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
