@@ -90,6 +90,10 @@ resource "google_compute_managed_ssl_certificate" "default" {
   managed {
     domains = var.managed_ssl_certificate_domains
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "google_compute_url_map" "default" {
