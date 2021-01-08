@@ -23,6 +23,15 @@ locals {
   health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }
 }
 
+# Generate random id as a suffix for cert instances where destroy and re-create is required.
+resource "random_id" "cert_name_suffix" {
+  byte_length = 4
+
+  keepers = {
+    domains = join(",", var.managed_ssl_certificate_domains)
+  }
+}
+
 resource "google_compute_global_forwarding_rule" "http" {
   project    = var.project
   count      = local.create_http_forward ? 1 : 0
@@ -85,10 +94,14 @@ resource "google_compute_managed_ssl_certificate" "default" {
   project  = var.project
   count    = var.ssl && length(var.managed_ssl_certificate_domains) > 0 && ! var.use_ssl_certificates ? 1 : 0
 
-  name = "${var.name}-cert"
+  name = "${var.name}-cert-${random_id.cert_name_suffix.hex}"
 
   managed {
     domains = var.managed_ssl_certificate_domains
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
