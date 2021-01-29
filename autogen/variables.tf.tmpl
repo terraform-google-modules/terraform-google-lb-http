@@ -78,10 +78,11 @@ variable "backends" {
     port_name = string
     {% endif %}
 
-    description            = string
-    enable_cdn             = bool
-    security_policy        = string
-    custom_request_headers = list(string)
+    description             = string
+    enable_cdn              = bool
+    security_policy         = string
+    custom_request_headers  = list(string)
+    custom_response_headers = list(string)
 
     {% if not serverless %}
     {# options do not apply to serverless backends #}

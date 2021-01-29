@@ -39,9 +39,10 @@ module "lb-http" {
           group = google_compute_region_network_endpoint_group.serverless_neg.id
         }
       ]
-      enable_cdn             = false
-      security_policy        = null
-      custom_request_headers = null
+      enable_cdn              = false
+      security_policy         = null
+      custom_request_headers  = null
+      custom_response_headers = null 
 
       iap_config = {
         enable               = false
