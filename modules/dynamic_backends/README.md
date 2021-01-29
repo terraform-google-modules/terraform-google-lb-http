@@ -35,6 +35,7 @@ module "gce-lb-http" {
       timeout_sec                     = 10
       enable_cdn                      = false
       custom_request_headers          = null
+      custom_response_headers         = null
       security_policy                 = null
 
       connection_draining_timeout_sec = null
