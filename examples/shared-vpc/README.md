@@ -60,4 +60,11 @@ terraform destroy
 | service\_project | ID for the Shared VPC service project where instances will be deployed | string | n/a | yes |
 | subnetwork | ID of subnetwork to launch instances on | string | n/a | yes |
 
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| external\_ip | The external IP assigned to the load balancer. |
+| service\_project | The service project the load balancer is in. |
+
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
