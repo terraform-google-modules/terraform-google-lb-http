@@ -42,7 +42,7 @@ module "lb-http" {
       enable_cdn              = false
       security_policy         = null
       custom_request_headers  = null
-      custom_response_headers = null 
+      custom_response_headers = null
 
       iap_config = {
         enable               = false
