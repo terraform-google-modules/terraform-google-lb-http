@@ -217,6 +217,7 @@ module "gce-lb-https" {
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
       custom_request_headers          = null
+      custom_response_headers         = null
 
       health_check = local.health_check
       log_config = {
@@ -258,6 +259,7 @@ module "gce-lb-https" {
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
       custom_request_headers          = null
+      custom_response_headers         = null
 
       health_check = local.health_check
       log_config = {
@@ -299,6 +301,7 @@ module "gce-lb-https" {
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
       custom_request_headers          = null
+      custom_response_headers         = null
 
       health_check = local.health_check
       log_config = {
