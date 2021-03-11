@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### [4.5.1](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.5.0...v4.5.1) (2021-03-11)
+
+
+### Bug Fixes
+
+* Add centos 7 source image ([#148](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/148)) ([a98025b](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/a98025bfb034eb1424b68764fb0f8434aa841790))
+
 ## [4.5.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.4.0...v4.5.0) (2020-11-25)
 
 
