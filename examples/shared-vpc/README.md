@@ -52,13 +52,20 @@ terraform destroy
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| group\_size | Size of managed instance group to create | string | `"2"` | no |
-| host\_project | ID for the Shared VPC host project | string | n/a | yes |
-| network | ID of network to launch instances on | string | n/a | yes |
-| region |  | string | `"us-central1"` | no |
-| service\_project | ID for the Shared VPC service project where instances will be deployed | string | n/a | yes |
-| subnetwork | ID of subnetwork to launch instances on | string | n/a | yes |
+|------|-------------|------|---------|:--------:|
+| group\_size | Size of managed instance group to create | `string` | `"2"` | no |
+| host\_project | ID for the Shared VPC host project | `any` | n/a | yes |
+| network | ID of network to launch instances on | `any` | n/a | yes |
+| region | n/a | `string` | `"us-central1"` | no |
+| service\_project | ID for the Shared VPC service project where instances will be deployed | `any` | n/a | yes |
+| subnetwork | ID of subnetwork to launch instances on | `any` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| external\_ip | The external IP assigned to the load balancer. |
+| service\_project | The service project the load balancer is in. |
 
 ## Outputs
 

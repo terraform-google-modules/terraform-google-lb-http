@@ -74,7 +74,7 @@ module "mig1" {
 
 module "mig2_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "1.0.0"
+  version    = "6.0.0"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.group2.self_link
   service_account = {
@@ -107,7 +107,7 @@ module "mig2" {
 
 module "mig3_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "1.0.0"
+  version    = "6.0.0"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.group3.self_link
   service_account = {
