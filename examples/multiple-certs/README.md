@@ -96,24 +96,24 @@ terraform destroy
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| group1\_region |  | string | `"us-west1"` | no |
-| group1\_zone |  | string | `"us-west1-a"` | no |
-| group2\_region |  | string | `"us-central1"` | no |
-| group2\_zone |  | string | `"us-central1-f"` | no |
-| group3\_region |  | string | `"us-east1"` | no |
-| group3\_zone |  | string | `"us-east1-b"` | no |
-| network\_name |  | string | `"tf-lb-https-multi-cert"` | no |
-| project |  | string | n/a | yes |
+|------|-------------|------|---------|:--------:|
+| group1\_region | n/a | `string` | `"us-west1"` | no |
+| group1\_zone | n/a | `string` | `"us-west1-a"` | no |
+| group2\_region | n/a | `string` | `"us-central1"` | no |
+| group2\_zone | n/a | `string` | `"us-central1-f"` | no |
+| group3\_region | n/a | `string` | `"us-east1"` | no |
+| group3\_zone | n/a | `string` | `"us-east1-b"` | no |
+| network\_name | n/a | `string` | `"tf-lb-https-multi-cert"` | no |
+| project | n/a | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| asset-url |  |
-| group1\_region |  |
-| group2\_region |  |
-| group3\_region |  |
-| load-balancer-ip |  |
+| asset-url | n/a |
+| group1\_region | n/a |
+| group2\_region | n/a |
+| group3\_region | n/a |
+| load-balancer-ip | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
