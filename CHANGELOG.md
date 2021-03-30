@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.5.0...v5.0.0) (2021-03-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* add Terraform 0.13 constraint and module attribution (#157)
+
+### Features
+
+* add Terraform 0.13 constraint and module attribution ([#157](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/157)) ([447611b](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/447611bb9b71d886004e8e2d1cfdd1cd8f648367))
+
+
+### Bug Fixes
+
+* Add centos 7 source image ([#148](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/148)) ([a98025b](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/a98025bfb034eb1424b68764fb0f8434aa841790))
+
 ## [4.5.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.4.0...v4.5.0) (2020-11-25)
 
 
