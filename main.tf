@@ -94,7 +94,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
   project  = var.project
   count    = var.ssl && length(var.managed_ssl_certificate_domains) > 0 && ! var.use_ssl_certificates ? 1 : 0
 
-  name     = random_id.certificate.hex
+  name = random_id.certificate.hex
 
   lifecycle {
     create_before_destroy = true
