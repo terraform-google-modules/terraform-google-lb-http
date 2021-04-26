@@ -15,7 +15,7 @@
  */
 
 provider "google" {
-  version = "~> 3.32.0"
+  version = "~> 3.53"
 }
 
 module "example" {
