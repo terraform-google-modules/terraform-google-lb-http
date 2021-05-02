@@ -68,29 +68,29 @@ Current version is 3.0. Upgrade guides:
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| address | Existing IPv4 address to use (the actual IP address value) | string | `"null"` | no |
-| backends | Map backend indices to list of backend maps. | object | n/a | yes |
-| cdn | Set to `true` to enable cdn on backend. | bool | `"false"` | no |
-| certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `"null"` | no |
-| create\_address | Create a new global IPv4 address | bool | `"true"` | no |
-| create\_ipv6\_address | Allocate a new IPv6 address. Conflicts with "ipv6_address" - if both specified, "create_ipv6_address" takes precedence. | bool | `"false"` | no |
-| create\_url\_map | Set to `false` if url_map variable is provided. | bool | `"true"` | no |
-| enable\_ipv6 | Enable IPv6 address on the CDN load-balancer | bool | `"false"` | no |
-| http\_forward | Set to `false` to disable HTTP port 80 forward | bool | `"true"` | no |
-| https\_redirect | Set to `true` to enable https redirect on the lb. | bool | `"false"` | no |
-| ipv6\_address | An existing IPv6 address to use (the actual IP address value) | string | `"null"` | no |
-| managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` and `use_ssl_certificates` set to `false`. | list(string) | `<list>` | no |
-| name | Name for the forwarding rule and prefix for supporting resources | string | n/a | yes |
-| private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | string | `"null"` | no |
-| project | The project to deploy to, if not set the default provider project is used. | string | n/a | yes |
-| quic | Set to `true` to enable QUIC support | bool | `"false"` | no |
-| security\_policy | The resource URL for the security policy to associate with the backend service | string | `"null"` | no |
-| ssl | Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self_link certs | bool | `"false"` | no |
-| ssl\_certificates | SSL cert self_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided. | list(string) | `<list>` | no |
-| ssl\_policy | Selfink to SSL Policy | string | `"null"` | no |
-| url\_map | The url_map resource to use. Default is to send all traffic to first backend. | string | `"null"` | no |
-| use\_ssl\_certificates | If true, use the certificates provided by `ssl_certificates`, otherwise, create cert from `private_key` and `certificate` | bool | `"false"` | no |
+|------|-------------|------|---------|:--------:|
+| address | Existing IPv4 address to use (the actual IP address value) | `string` | `null` | no |
+| backends | Map backend indices to list of backend maps. | <pre>map(object({<br><br>    description            = string<br>    enable_cdn             = bool<br>    security_policy        = string<br>    custom_request_headers = list(string)<br><br><br><br>    log_config = object({<br>      enable      = bool<br>      sample_rate = number<br>    })<br><br>    groups = list(object({<br>      group = string<br><br>    }))<br>    iap_config = object({<br>      enable               = bool<br>      oauth2_client_id     = string<br>      oauth2_client_secret = string<br>    })<br>  }))</pre> | n/a | yes |
+| cdn | Set to `true` to enable cdn on backend. | `bool` | `false` | no |
+| certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
+| create\_address | Create a new global IPv4 address | `bool` | `true` | no |
+| create\_ipv6\_address | Allocate a new IPv6 address. Conflicts with "ipv6\_address" - if both specified, "create\_ipv6\_address" takes precedence. | `bool` | `false` | no |
+| create\_url\_map | Set to `false` if url\_map variable is provided. | `bool` | `true` | no |
+| enable\_ipv6 | Enable IPv6 address on the CDN load-balancer | `bool` | `false` | no |
+| http\_forward | Set to `false` to disable HTTP port 80 forward | `bool` | `true` | no |
+| https\_redirect | Set to `true` to enable https redirect on the lb. | `bool` | `false` | no |
+| ipv6\_address | An existing IPv6 address to use (the actual IP address value) | `string` | `null` | no |
+| managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` and `use_ssl_certificates` set to `false`. | `list(string)` | `[]` | no |
+| name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |
+| private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
+| project | The project to deploy to, if not set the default provider project is used. | `string` | n/a | yes |
+| quic | Set to `true` to enable QUIC support | `bool` | `false` | no |
+| security\_policy | The resource URL for the security policy to associate with the backend service | `string` | `null` | no |
+| ssl | Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self\_link certs | `bool` | `false` | no |
+| ssl\_certificates | SSL cert self\_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided. | `list(string)` | `[]` | no |
+| ssl\_policy | Selfink to SSL Policy | `string` | `null` | no |
+| url\_map | The url\_map resource to use. Default is to send all traffic to first backend. | `string` | `null` | no |
+| use\_ssl\_certificates | If true, use the certificates provided by `ssl_certificates`, otherwise, create cert from `private_key` and `certificate` | `bool` | `false` | no |
 
 ## Outputs
 
