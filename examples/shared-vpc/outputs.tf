@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-output external_ip {
+output "external_ip" {
   description = "The external IP assigned to the load balancer."
   value       = module.gce-lb-http.external_ip
 }
 
-output external_ipv6_address {
+output "external_ipv6_address" {
   description = "The external IPv6 address assigned to the load balancer."
   value       = module.gce-lb-http.external_ipv6_address
 }
 
-output service_project {
+output "service_project" {
   description = "The service project the load balancer is in."
   value       = var.service_project
 }
