@@ -17,3 +17,7 @@
 output "load-balancer-ip" {
   value = module.gce-lb-https.external_ip
 }
+
+output "load-balancer-ipv6" {
+  value = module.gce-lb-https.external_ipv6_address
+}

@@ -18,6 +18,10 @@ output "load-balancer-ip" {
   value = module.gce-lb-http.external_ip
 }
 
+output "load-balancer-ipv6" {
+  value = module.gce-lb-http.external_ipv6_address
+}
+
 output "backend_services" {
   value = module.gce-lb-http.backend_services
 }
