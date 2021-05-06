@@ -32,6 +32,7 @@ module "lb-http" {
       enable_cdn                      = false
       custom_request_headers          = null
       security_policy                 = null
+      protocol                        = "HTTP2"
 
 
       log_config = {
