@@ -183,5 +183,6 @@ terraform destroy
 | Name | Description |
 |------|-------------|
 | load-balancer-ip | n/a |
+| load-balancer-ipv6 | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
