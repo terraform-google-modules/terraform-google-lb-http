@@ -65,8 +65,8 @@ module "lb-http" {
   backends = {
     default = {
       description                     = null
-      {% if not serverless %}{# not necessary for serverless as default port_name=http, protocol=HTTP #}
       protocol                        = "HTTP"
+      {% if not serverless %}{# not necessary for serverless as port value is not available for serverless NEGs #}
       port                            = var.service_port
       port_name                       = var.service_port_name
       {% endif %}
