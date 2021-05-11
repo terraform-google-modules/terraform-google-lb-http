@@ -29,6 +29,11 @@ output "external_ipv6_address" {
   value       = local.ipv6_address
 }
 
+output "ipv6_enabled" {
+  description = "Whether IPv6 configuration is enabled on this load-balancer"
+  value       = var.enable_ipv6
+}
+
 output "http_proxy" {
   description = "The HTTP proxy used by this module."
   value       = google_compute_target_http_proxy.default[*].self_link
