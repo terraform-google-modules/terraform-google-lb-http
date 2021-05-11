@@ -101,6 +101,7 @@ Current version is 3.0. Upgrade guides:
 | external\_ipv6\_address | The external IPv6 assigned to the global fowarding rule. |
 | http\_proxy | The HTTP proxy used by this module. |
 | https\_proxy | The HTTPS proxy used by this module. |
+| ipv6\_enabled | Whether IPv6 configuration is enabled on this load-balancer |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
