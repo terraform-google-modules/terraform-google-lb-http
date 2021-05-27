@@ -7,7 +7,7 @@ This example shows how to enable HTTPS Redirection on Google HTTP/S Loadbalancer
 ## Change to the example directory
 
 ```
-[[ `basename $PWD` != multiple-certs ]] && cd examples/multiple-certs
+[[ `basename $PWD` != https-redirect ]] && cd examples/https-redirect
 ```
 
 ## Install Terraform
