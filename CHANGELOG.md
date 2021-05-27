@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### [5.1.1](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v5.1.0...v5.1.1) (2021-05-27)
+
+
+### Bug Fixes
+
+* Mark output derived from possible sensitive attribute as sensitive ([#167](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/167)) ([386bc89](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/386bc8959c85e8cd06d2c3e49ffc8671763ead5e))
+
 ## [5.1.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v5.0.0...v5.1.0) (2021-05-11)
 
 

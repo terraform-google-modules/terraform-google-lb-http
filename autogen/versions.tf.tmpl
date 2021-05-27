@@ -30,21 +30,21 @@ terraform {
 
   provider_meta "google" {
     {% if serverless %}
-    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v5.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v5.1.1"
     {% elif dynamic_backends %}
-    module_name = "blueprints/terraform/terraform-google-lb-http:dynamic_backends/v5.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http:dynamic_backends/v5.1.1"
     {% else %}
-    module_name = "blueprints/terraform/terraform-google-lb-http/v5.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http/v5.1.1"
     {% endif %}
   }
 
   provider_meta "google-beta" {
     {% if serverless %}
-    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v5.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v5.1.1"
     {% elif dynamic_backends %}
-    module_name = "blueprints/terraform/terraform-google-lb-http:dynamic_backends/v5.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http:dynamic_backends/v5.1.1"
     {% else %}
-    module_name = "blueprints/terraform/terraform-google-lb-http/v5.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http/v5.1.1"
     {% endif %}
   }
 
