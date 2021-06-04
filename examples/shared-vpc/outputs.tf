@@ -20,8 +20,8 @@ output "external_ip" {
 }
 
 output "external_ipv6_address" {
-  description = "The external IPv6 address assigned to the load balancer."
-  value       = module.gce-lb-http.external_ipv6_address
+  description = "The external IPv6 address assigned to the load balancer, if enabled; else \"undefined\""
+  value       = module.gce-lb-http.ipv6_enabled ? module.gce-lb-http.external_ipv6_address : "undefined"
 }
 
 output "service_project" {
