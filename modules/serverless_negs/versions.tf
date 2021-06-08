@@ -29,11 +29,11 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v5.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v5.1.1"
   }
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v5.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v5.1.1"
   }
 
 }
