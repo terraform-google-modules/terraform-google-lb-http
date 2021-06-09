@@ -26,19 +26,31 @@ variable "name" {
 
 variable "create_address" {
   type        = bool
-  description = "Create a new global address"
+  description = "Create a new global IPv4 address"
   default     = true
 }
 
 variable "address" {
   type        = string
-  description = "IP address self link"
+  description = "Existing IPv4 address to use (the actual IP address value)"
   default     = null
 }
 
-variable "ip_version" {
-  description = "IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4"
+variable "enable_ipv6" {
+  type        = bool
+  description = "Enable IPv6 address on the CDN load-balancer"
+  default     = false
+}
+
+variable "create_ipv6_address" {
+  type        = bool
+  description = "Allocate a new IPv6 address. Conflicts with \"ipv6_address\" - if both specified, \"create_ipv6_address\" takes precedence."
+  default     = false
+}
+
+variable "ipv6_address" {
   type        = string
+  description = "An existing IPv6 address to use (the actual IP address value)"
   default     = null
 }
 

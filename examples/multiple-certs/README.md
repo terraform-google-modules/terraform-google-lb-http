@@ -111,9 +111,11 @@ terraform destroy
 | Name | Description |
 |------|-------------|
 | asset-url | n/a |
+| asset-url-ipv6 | The asset url over IPv6 address of the load-balancer, if enabled; else "undefined" |
 | group1\_region | n/a |
 | group2\_region | n/a |
 | group3\_region | n/a |
 | load-balancer-ip | n/a |
+| load-balancer-ipv6 | The IPv6 address of the load-balancer, if enabled; else "undefined" |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

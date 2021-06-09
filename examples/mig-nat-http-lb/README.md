@@ -78,5 +78,6 @@ terraform destroy
 |------|-------------|
 | backend\_services | n/a |
 | load-balancer-ip | n/a |
+| load-balancer-ipv6 | The IPv6 address of the load-balancer, if enabled; else "undefined" |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

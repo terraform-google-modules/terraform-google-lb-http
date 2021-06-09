@@ -69,15 +69,17 @@ Current version is 3.0. Upgrade guides:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| address | IP address self link | `string` | `null` | no |
+| address | Existing IPv4 address to use (the actual IP address value) | `string` | `null` | no |
 | backends | Map backend indices to list of backend maps. | <pre>map(object({<br><br>    description            = string<br>    enable_cdn             = bool<br>    security_policy        = string<br>    custom_request_headers = list(string)<br><br><br><br>    log_config = object({<br>      enable      = bool<br>      sample_rate = number<br>    })<br><br>    groups = list(object({<br>      group = string<br><br>    }))<br>    iap_config = object({<br>      enable               = bool<br>      oauth2_client_id     = string<br>      oauth2_client_secret = string<br>    })<br>  }))</pre> | n/a | yes |
 | cdn | Set to `true` to enable cdn on backend. | `bool` | `false` | no |
 | certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
-| create\_address | Create a new global address | `bool` | `true` | no |
+| create\_address | Create a new global IPv4 address | `bool` | `true` | no |
+| create\_ipv6\_address | Allocate a new IPv6 address. Conflicts with "ipv6\_address" - if both specified, "create\_ipv6\_address" takes precedence. | `bool` | `false` | no |
 | create\_url\_map | Set to `false` if url\_map variable is provided. | `bool` | `true` | no |
+| enable\_ipv6 | Enable IPv6 address on the CDN load-balancer | `bool` | `false` | no |
 | http\_forward | Set to `false` to disable HTTP port 80 forward | `bool` | `true` | no |
 | https\_redirect | Set to `true` to enable https redirect on the lb. | `bool` | `false` | no |
-| ip\_version | IP version for the Global address (IPv4 or v6) - Empty defaults to IPV4 | `string` | `null` | no |
+| ipv6\_address | An existing IPv6 address to use (the actual IP address value) | `string` | `null` | no |
 | managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` and `use_ssl_certificates` set to `false`. | `list(string)` | `[]` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |
 | private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
@@ -95,9 +97,11 @@ Current version is 3.0. Upgrade guides:
 | Name | Description |
 |------|-------------|
 | backend\_services | The backend service resources. |
-| external\_ip | The external IP assigned to the global forwarding rule. |
+| external\_ip | The external IPv4 assigned to the global fowarding rule. |
+| external\_ipv6\_address | The external IPv6 assigned to the global fowarding rule. |
 | http\_proxy | The HTTP proxy used by this module. |
 | https\_proxy | The HTTPS proxy used by this module. |
+| ipv6\_enabled | Whether IPv6 configuration is enabled on this load-balancer |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
