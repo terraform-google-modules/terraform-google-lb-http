@@ -216,3 +216,9 @@ variable "https_redirect" {
   type        = bool
   default     = false
 }
+
+variable "random_certificate_suffix" {
+  description = "Bool to enable/disable random certificate name generation. Set and keep this to true if you need to change the SSL cert."
+  type        = bool
+  default     = false
+}
