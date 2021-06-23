@@ -11,7 +11,7 @@ behind a Cloud Load Balancer.
 This module is meant for use with Terraform 0.13. If you haven't
 [upgraded](https://www.terraform.io/upgrade-guides/0-13.html) and need a Terraform
 0.12.x-compatible version of this module, the last released version
-intended for Terraform 0.12.x is [v4.5.0](https://registry.terraform.io/modules/terraform-google-modules/-lb-http/google/v4.5.0).
+intended for Terraform 0.12.x is [v4.5.0](https://registry.terraform.io/modules/GoogleCloudPlatform/lb-http/google/4.5.0).
 
 ## Usage
 
