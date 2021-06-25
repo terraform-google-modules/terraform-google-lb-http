@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v5.1.1...v5.2.0) (2021-06-25)
+
+
+### Features
+
+* Add support for appending a random suffix to certificate names by setting `var.random_certificate_suffix` ([#160](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/160)) ([058549a](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/058549aa6db2eba2dfca4018b2708f2b188c0fe6))
+
 ### [5.1.1](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v5.1.0...v5.1.1) (2021-05-27)
 
 
