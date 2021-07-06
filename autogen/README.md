@@ -75,6 +75,7 @@ module "lb-http" {
       {% endif %}
       enable_cdn                      = false
       custom_request_headers          = null
+      custom_response_headers         = null
       security_policy                 = null
 
       {% if not serverless %}
