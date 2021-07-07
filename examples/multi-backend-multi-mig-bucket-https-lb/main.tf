@@ -117,8 +117,10 @@ locals {
   }
 }
 
+# [START cloudloadbalancing_ext_http_gce_plus_bucket]
 module "gce-lb-https" {
-  source  = "../../"
+  source  = "GoogleCloudPlatform/lb-http/google"
+  version = "~> 5.1"
   name    = var.network_name
   project = var.project
   target_tags = [
@@ -330,9 +332,7 @@ module "gce-lb-https" {
         oauth2_client_secret = ""
       }
     }
-
   }
-
 }
 
 resource "google_compute_url_map" "ml-bkd-ml-mig-bckt-s-lb" {
@@ -413,3 +413,4 @@ resource "google_storage_object_acl" "image-acl" {
   object         = google_storage_bucket_object.image.name
   predefined_acl = "publicRead"
 }
+# [END cloudloadbalancing_ext_http_gce_plus_bucket]
