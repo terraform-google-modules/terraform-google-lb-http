@@ -59,10 +59,11 @@ variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
 
-    description            = string
-    enable_cdn             = bool
-    security_policy        = string
-    custom_request_headers = list(string)
+    description             = string
+    enable_cdn              = bool
+    security_policy         = string
+    custom_request_headers  = list(string)
+    custom_response_headers = list(string)
 
 
 
@@ -163,6 +164,12 @@ variable "cdn" {
 
 variable "https_redirect" {
   description = "Set to `true` to enable https redirect on the lb."
+  type        = bool
+  default     = false
+}
+
+variable "random_certificate_suffix" {
+  description = "Bool to enable/disable random certificate name generation. Set and keep this to true if you need to change the SSL cert."
   type        = bool
   default     = false
 }
