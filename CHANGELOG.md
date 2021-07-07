@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v5.1.1...v6.0.0) (2021-07-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* `backends` variable now accepts `custom_response_headers`. Set `custom_response_headers = null` to preserve existing behavior.
+
+### Features
+
+* Add support for appending a random suffix to certificate names by setting `var.random_certificate_suffix` ([#160](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/160)) ([058549a](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/058549aa6db2eba2dfca4018b2708f2b188c0fe6))
+* Implement custom response headers ([#154](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/154)) ([e561eae](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/e561eae637ca5a39a9d734aad28f754451af5284))
+
 ### [5.1.1](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v5.1.0...v5.1.1) (2021-05-27)
 
 
