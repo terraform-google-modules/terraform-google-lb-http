@@ -67,7 +67,7 @@ module "cloud-nat-group2" {
   name       = "${var.network_prefix}-cloud-nat-group2"
 }
 
-# [START gce_lb_http_create]
+# [START cloudloadbalancing_ext_http_gce]
 module "gce-lb-http" {
   source  = "../../"
   name    = var.network_prefix
@@ -148,4 +148,4 @@ module "gce-lb-http" {
     }
   }
 }
-# [END gce_lb_http_create]
+# [END cloudloadbalancing_ext_http_gce]
