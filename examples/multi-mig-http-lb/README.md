@@ -1,6 +1,6 @@
 # HTTP Load Balancer Example
 
-[![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&working_dir=examples/basic&page=shell&tutorial=README.md)
+[![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&working_dir=examples/multi-mig-http-lb&page=shell&tutorial=README.md)
 
 This example creates a global HTTP forwarding rule to forward traffic to instance groups in the us-west1 and us-east1 regions.
 
