@@ -112,6 +112,7 @@ resource "google_compute_ssl_certificate" "default" {
 }
 
 resource "random_id" "certificate" {
+  count       = var.random_certificate_suffix == true ? 1 : 0
   byte_length = 4
   prefix      = "${var.name}-cert-"
 
