@@ -112,6 +112,7 @@ resource "google_compute_ssl_certificate" "default" {
 }
 
 resource "random_id" "certificate" {
+  count       = var.random_certificate_suffix == true ? 1 : 0
   byte_length = 4
   prefix      = "${var.name}-cert-"
 
@@ -124,7 +125,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
   project  = var.project
   count    = var.ssl && length(var.managed_ssl_certificate_domains) > 0 && ! var.use_ssl_certificates ? 1 : 0
-  name     = var.random_certificate_suffix == true ? random_id.certificate.hex : "${var.name}-cert"
+  name     = var.random_certificate_suffix == true ? random_id.certificate[0].hex : "${var.name}-cert"
 
   lifecycle {
     create_before_destroy = true
