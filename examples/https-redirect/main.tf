@@ -90,6 +90,7 @@ module "mig" {
   subnetwork = google_compute_subnetwork.default.self_link
 }
 
+# [START cloudloadbalancing_ext_http_gce_http_redirect]
 module "gce-lb-http" {
   source               = "../../"
   name                 = "ci-https-redirect"
@@ -154,5 +155,5 @@ module "gce-lb-http" {
       }
     }
   }
-
 }
+# [END cloudloadbalancing_ext_http_gce_http_redirect]
