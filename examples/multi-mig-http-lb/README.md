@@ -59,12 +59,12 @@ You should see the instance details from the region closest to you.
 1. Change the size of the instance group that’s currently serving requests to zero, so that traffic is forwarded to the group in the other region.
 
    For example, if requests are being served from group1 (us-west1), resize group1 to zero. You can do this using the [`gcloud` CLI](https://cloud.google.com/sdk/gcloud/reference/compute/instance-groups/managed/resize) or the [web console](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances#resize_managed_group).
-  
+
    ```
    gcloud compute instance-groups managed resize multi-mig-lb-http-group1-mig --size=0 --region=us-west1
    ```
    It may take a few minutes for the instance group to be resized.
-   
+
    **Note**: This change will cause your infrastructure to _drift_ from the Terraform state. You can run `terraform apply` at any time to update the infrastructure to match the Terraform state.
 
 2. Open the external load-balancer IP address again, and verify that you see responses from the instance group in the other region.
