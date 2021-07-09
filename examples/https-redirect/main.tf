@@ -92,8 +92,8 @@ module "mig" {
 
 # [START cloudloadbalancing_ext_http_gce_http_redirect]
 module "gce-lb-http" {
-  source  = "GoogleCloudPlatform/lb-http/google"
-  version = "~> 5.1"
+  source               = "GoogleCloudPlatform/lb-http/google"
+  version              = "~> 5.1"
   name                 = "ci-https-redirect"
   project              = var.project
   target_tags          = [var.network_name]
