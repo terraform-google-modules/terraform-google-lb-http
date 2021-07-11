@@ -22,8 +22,10 @@ provider "google-beta" {
   project = var.project_id
 }
 
+# [START cloudloadbalancing_ext_http_cloudrun]
 module "lb-http" {
-  source  = "../../modules/serverless_negs"
+  source  = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
+  version = "~> 5.1"
   name    = "tf-cr-lb"
   project = var.project_id
 
@@ -39,9 +41,10 @@ module "lb-http" {
           group = google_compute_region_network_endpoint_group.serverless_neg.id
         }
       ]
-      enable_cdn             = false
-      security_policy        = null
-      custom_request_headers = null
+      enable_cdn              = false
+      security_policy         = null
+      custom_request_headers  = null
+      custom_response_headers = null
 
       iap_config = {
         enable               = false
@@ -87,3 +90,4 @@ resource "google_cloud_run_service_iam_member" "public-access" {
   role     = "roles/run.invoker"
   member   = "allUsers"
 }
+# [END cloudloadbalancing_ext_http_cloudrun]

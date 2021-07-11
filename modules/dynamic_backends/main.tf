@@ -111,12 +111,25 @@ resource "google_compute_ssl_certificate" "default" {
   }
 }
 
+resource "random_id" "certificate" {
+  count       = var.random_certificate_suffix == true ? 1 : 0
+  byte_length = 4
+  prefix      = "${var.name}-cert-"
+
+  keepers = {
+    domains = join(",", var.managed_ssl_certificate_domains)
+  }
+}
+
 resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
   project  = var.project
   count    = var.ssl && length(var.managed_ssl_certificate_domains) > 0 && ! var.use_ssl_certificates ? 1 : 0
+  name     = var.random_certificate_suffix == true ? random_id.certificate[0].hex : "${var.name}-cert"
 
-  name = "${var.name}-cert"
+  lifecycle {
+    create_before_destroy = true
+  }
 
   managed {
     domains = var.managed_ssl_certificate_domains
@@ -156,6 +169,7 @@ resource "google_compute_backend_service" "default" {
   connection_draining_timeout_sec = lookup(each.value, "connection_draining_timeout_sec", null)
   enable_cdn                      = lookup(each.value, "enable_cdn", false)
   custom_request_headers          = lookup(each.value, "custom_request_headers", [])
+  custom_response_headers         = lookup(each.value, "custom_response_headers", [])
   health_checks                   = lookup(each.value, "health_check", null) == null ? null : [google_compute_health_check.default[each.key].self_link]
   session_affinity                = lookup(each.value, "session_affinity", null)
   affinity_cookie_ttl_sec         = lookup(each.value, "affinity_cookie_ttl_sec", null)

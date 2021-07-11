@@ -1,6 +1,6 @@
 # HTTP Load Balancer Example
 
-[![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&working_dir=examples/basic&page=shell&tutorial=README.md)
+[![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&working_dir=examples/multi-mig-http-lb&page=shell&tutorial=README.md)
 
 This example creates a global HTTP forwarding rule to forward traffic to instance groups in the us-west1 and us-east1 regions.
 
@@ -44,7 +44,7 @@ terraform init
 terraform apply
 ```
 
-## Testing
+## Test load balancing
 
 1. Open the URL of the load balancer in your browser:
 
@@ -54,29 +54,24 @@ echo http://$(terraform output load-balancer-ip)
 
 You should see the instance details from the region closest to you.
 
-## Test balancing to other region
+## Test forwarding to the other region
 
-Resize the instance group of your closest region to cause traffic to flow to the other group.
+1. Change the size of the instance group that’s currently serving requests to zero, so that traffic is forwarded to the group in the other region.
 
-1. If you are getting traffic from `group1` (us-west1), scale group 1 to 0 instances:
+   For example, if requests are being served from group1 (us-west1), resize group1 to zero. You can do this using the [`gcloud` CLI](https://cloud.google.com/sdk/gcloud/reference/compute/instance-groups/managed/resize) or the [web console](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances#resize_managed_group).
 
-```
-TF_VAR_group1_size=0 terraform apply
-```
+   ```
+   gcloud compute instance-groups managed resize multi-mig-lb-http-group1-mig --size=0 --region=us-west1
+   ```
+   It may take a few minutes for the instance group to be resized.
 
-2. Otherwise scale group 2 (us-east1) to 0 instances:
+   **Note**: This change will cause your infrastructure to _drift_ from the Terraform state. You can run `terraform apply` at any time to update the infrastructure to match the Terraform state.
 
-```
-TF_VAR_group2_size=0 terraform apply
-```
+2. Open the external load-balancer IP address again, and verify that you see responses from the instance group in the other region.
 
-3. Open the external IP again and verify you see traffic from the other group:
-
-```
-echo http://$(terraform output load-balancer-ip)
-```
-
-> It may take several minutes for the global load balancer to be created and the backends to register.
+  ```
+  echo http://$(terraform output load-balancer-ip)
+  ```
 
 ## Cleanup
 
@@ -102,6 +97,6 @@ terraform destroy
 | Name | Description |
 |------|-------------|
 | load-balancer-ip | n/a |
-| load-balancer-ipv6 | n/a |
+| load-balancer-ipv6 | The IPv6 address of the load-balancer, if enabled; else "undefined" |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

@@ -90,8 +90,10 @@ module "mig" {
   subnetwork = google_compute_subnetwork.default.self_link
 }
 
+# [START cloudloadbalancing_ext_http_gce_http_redirect]
 module "gce-lb-http" {
-  source               = "../../"
+  source               = "GoogleCloudPlatform/lb-http/google"
+  version              = "~> 5.1"
   name                 = "ci-https-redirect"
   project              = var.project
   target_tags          = [var.network_name]
@@ -114,6 +116,7 @@ module "gce-lb-http" {
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
       custom_request_headers          = null
+      custom_response_headers         = null
 
       health_check = {
         check_interval_sec  = null
@@ -153,5 +156,5 @@ module "gce-lb-http" {
       }
     }
   }
-
 }
+# [END cloudloadbalancing_ext_http_gce_http_redirect]

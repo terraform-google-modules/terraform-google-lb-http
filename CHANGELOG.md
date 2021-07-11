@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v5.1.1...v6.0.0) (2021-07-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* `backends` variable now accepts `custom_response_headers`. Set `custom_response_headers = null` to preserve existing behavior.
+
+### Features
+
+* Add support for appending a random suffix to certificate names by setting `var.random_certificate_suffix` ([#160](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/160)) ([058549a](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/058549aa6db2eba2dfca4018b2708f2b188c0fe6))
+* Implement custom response headers ([#154](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/154)) ([e561eae](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/e561eae637ca5a39a9d734aad28f754451af5284))
+
+### [5.1.1](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v5.1.0...v5.1.1) (2021-05-27)
+
+
+### Bug Fixes
+
+* Mark output derived from possible sensitive attribute as sensitive ([#167](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/167)) ([386bc89](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/386bc8959c85e8cd06d2c3e49ffc8671763ead5e))
+
+## [5.1.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v5.0.0...v5.1.0) (2021-05-11)
+
+
+### Features
+
+* Add support for dual-stack IP addresses: IPv4 + IPv6. ([#116](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/116)) ([a39aac4](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/a39aac4c0f78ba23a4026b612498cf69a7e77605))
+
+
+### Bug Fixes
+
+* Expose ipv6_enabled boolean flag as module output  ([#166](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/166)) ([8dd0d26](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/8dd0d263bd9400fe1e3c1144b01c4177677cda20))
+
 ## [5.0.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v4.5.0...v5.0.0) (2021-03-30)
 
 

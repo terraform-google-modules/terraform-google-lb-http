@@ -1,13 +1,14 @@
-# HTTPS Redirect Example
+# HTTP-to-HTTPS Redirect Example
 
 [![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&working_dir=examples/https-redirect&page=shell&tutorial=README.md)
 
-This example shows how to enable HTTPS Redirection on Google HTTP/S Loadbalancers.
+This example shows how to enable HTTPS redirection on Google external
+HTTP(S) load balancers.
 
 ## Change to the example directory
 
 ```
-[[ `basename $PWD` != multiple-certs ]] && cd examples/multiple-certs
+[[ `basename $PWD` != https-redirect ]] && cd examples/https-redirect
 ```
 
 ## Install Terraform
@@ -48,11 +49,11 @@ terraform apply
 echo http://$(terraform output load-balancer-ip)
 ```
 
-> You should see the GCP logo and instance details.
+> You should see the Google Cloud logo and instance details.
 
 ## Cleanup
 
-1. Remove all resources created by terraform:
+1. Remove all resources created by Terraform:
 
 ```
 terraform destroy
@@ -74,6 +75,6 @@ terraform destroy
 |------|-------------|
 | backend\_services | n/a |
 | load-balancer-ip | n/a |
-| load-balancer-ipv6 | n/a |
+| load-balancer-ipv6 | The IPv6 address of the load-balancer, if enabled; else "undefined" |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

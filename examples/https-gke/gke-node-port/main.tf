@@ -116,7 +116,6 @@ resource "kubernetes_replication_controller" "nginx" {
         container {
           image = "nginx:latest"
           name  = "nginx"
-
           resources {
             limits = {
               cpu    = "0.5"
