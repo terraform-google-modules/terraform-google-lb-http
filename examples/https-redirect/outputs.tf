@@ -24,5 +24,6 @@ output "load-balancer-ipv6" {
 }
 
 output "backend_services" {
-  value = module.gce-lb-http.backend_services
+  sensitive = true
+  value     = module.gce-lb-http.backend_services
 }
