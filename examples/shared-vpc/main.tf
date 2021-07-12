@@ -24,8 +24,10 @@ provider "google-beta" {
   region  = var.region
 }
 
+# [START cloudloadbalancing_ext_http_gce_shared_vpc]
 module "gce-lb-http" {
-  source            = "../../"
+  source            = "GoogleCloudPlatform/lb-http/google"
+  version           = "~> 5.1"
   name              = "group-http-lb"
   project           = var.service_project
   target_tags       = ["allow-shared-vpc-mig"]
@@ -87,3 +89,4 @@ module "gce-lb-http" {
     }
   }
 }
+# [END cloudloadbalancing_ext_http_gce_shared_vpc]

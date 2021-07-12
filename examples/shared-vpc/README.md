@@ -1,12 +1,17 @@
 # Shared VPC Example
 
-This example shows how to use this module in a Shared VPC setup. In a service project, it creates a global HTTP forwarding rule to forward traffic to an instance group. Meanwhile it ensures the host project has firewall rules in place to allow the health check ingress.
+This example shows how to use this module in a Shared VPC setup. In a service
+project, it creates a global external HTTP forwarding rule to forward traffic
+to an instance group. Meanwhile, it ensures the host project has firewall
+rules in place to allow the health check ingress.
 
 ## Usage
 
 ### Configure the module
 
-To connect your load balancer to a Shared VPC, you need to edit some inputs to match your environment. Copy `example.tfvars` into `terraform.tfvars` and update the [inputs](#inputs) to specify your desired Shared VPC network.
+To connect your load balancer to a Shared VPC, you need to edit some inputs
+to match your environment. Copy `example.tfvars` into `terraform.tfvars`
+and update the [inputs](#inputs) to specify your desired Shared VPC network.
 
 ```
 cp example.tfvars terraform.tfvars
