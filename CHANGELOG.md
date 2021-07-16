@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### [6.0.1](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v6.0.0...v6.0.1) (2021-07-12)
+
+
+### Bug Fixes
+
+* Create the `random_id.certificate` resource only when needed. ([#184](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/184)) ([7190e4e](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/7190e4e6d08a004db0345892c2e5951d0c59db0e))
+
 ## [6.0.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v5.1.1...v6.0.0) (2021-07-07)
 
 
