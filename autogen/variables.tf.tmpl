@@ -89,7 +89,8 @@ variable "backends" {
     port      = number
     port_name = string
     {% endif %}
-
+    
+    name                    = string	
     description             = string
     enable_cdn              = bool
     security_policy         = string
