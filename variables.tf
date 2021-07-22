@@ -84,7 +84,8 @@ variable "backends" {
     protocol  = string
     port      = number
     port_name = string
-
+    
+    name                    = string	
     description             = string
     enable_cdn              = bool
     security_policy         = string
