@@ -96,6 +96,29 @@ variable "backends" {
     session_affinity                = string
     affinity_cookie_ttl_sec         = number
 
+    cdn_policy = optional(object({
+      cache_key_policy = optional(object({
+        include_host           = optional(bool)
+        include_protocol       = optional(bool)
+        include_query_string   = optional(bool)
+        query_string_blacklist = optional(list(string))
+        query_string_whitelist = optional(list(string))
+      }))
+
+      negative_caching_policy = optional(list(object({
+        code = number
+        ttl  = number
+      })))
+
+      signed_url_cache_max_age_sec = optional(number)
+      default_ttl                  = optional(number)
+      max_ttl                      = optional(number)
+      client_ttl                   = optional(number)
+      negative_caching             = optional(bool)
+      cache_mode                   = optional(string)
+      serve_while_stale            = optional(number)
+    }))
+
     health_check = object({
       check_interval_sec  = number
       timeout_sec         = number

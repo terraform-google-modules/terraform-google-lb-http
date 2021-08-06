@@ -177,6 +177,41 @@ resource "google_compute_backend_service" "default" {
   # To achieve a null backend security_policy, set each.value.security_policy to "" (empty string), otherwise, it fallsback to var.security_policy.
   security_policy = lookup(each.value, "security_policy") == "" ? null : (lookup(each.value, "security_policy") == null ? var.security_policy : each.value.security_policy)
 
+  dynamic "cdn_policy" {
+    for_each = lookup(each.value, "cdn_policy", null) == null ? [] : [lookup(each.value, "cdn_policy")]
+
+    content {
+      signed_url_cache_max_age_sec = lookup(cdn_policy.value, "signed_url_cache_max_age_sec", null)
+      default_ttl                  = lookup(cdn_policy.value, "default_ttl", null)
+      max_ttl                      = lookup(cdn_policy.value, "max_ttl", null)
+      client_ttl                   = lookup(cdn_policy.value, "client_ttl", null)
+      negative_caching             = lookup(cdn_policy.value, "negative_caching", null)
+      cache_mode                   = lookup(cdn_policy.value, "cache_mode", null)
+      serve_while_stale            = lookup(cdn_policy.value, "serve_while_stale", null)
+
+      dynamic "cache_key_policy" {
+        for_each = lookup(cdn_policy.value, "cache_key_policy", null) == null ? [] : [lookup(cdn_policy.value, "cache_key_policy")]
+
+        content {
+          include_host           = lookup(cache_key_policy.value, "include_host", null)
+          include_protocol       = lookup(cache_key_policy.value, "include_protocol", null)
+          include_query_string   = lookup(cache_key_policy.value, "include_query_string", null)
+          query_string_blacklist = lookup(cache_key_policy.value, "query_string_blacklist", null)
+          query_string_whitelist = lookup(cache_key_policy.value, "query_string_whitelist", null)
+        }
+      }
+
+      dynamic "negative_caching_policy" {
+        for_each = lookup(cdn_policy.value, "negative_caching_policy", null) == null ? [] : [lookup(cdn_policy.value, "negative_caching_policy")]
+
+        content {
+          code = negative_caching_policy.code
+          ttl  = negative_caching_policy.ttl
+        }
+      }
+    }
+  }
+
   dynamic "backend" {
     for_each = toset(each.value["groups"])
     content {

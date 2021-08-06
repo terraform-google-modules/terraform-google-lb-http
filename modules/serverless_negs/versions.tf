@@ -36,4 +36,5 @@ terraform {
     module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v6.0.1"
   }
 
+  experiments = [module_variable_optional_attrs]
 }
