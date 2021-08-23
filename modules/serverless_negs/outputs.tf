@@ -47,5 +47,5 @@ output "https_proxy" {
 
 output "url_map" {
   description = "The default URL map used by this module."
-  value = google_compute_url_map.default[*].self_link
+  value       = google_compute_url_map.default[*].self_link
 }
