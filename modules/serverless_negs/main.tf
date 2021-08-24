@@ -162,6 +162,8 @@ resource "google_compute_backend_service" "default" {
   name    = "${var.name}-backend-${each.key}"
 
 
+  count = ! custom_backend_only ? 1 : 0
+
   description                     = lookup(each.value, "description", null)
   connection_draining_timeout_sec = lookup(each.value, "connection_draining_timeout_sec", null)
   enable_cdn                      = lookup(each.value, "enable_cdn", false)
@@ -193,6 +195,49 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
+
+}
+
+resource "google_compute_backend_service" "custom" {
+  provider = google-beta
+  for_each = var.backends
+  count    = var.custom_backend_only ? 1 : 0
+
+  project = var.project
+  name    = "${var.name}-backend-${each.key}"
+
+  port_name = each.value.port_name
+  protocol  = each.value.protocol
+
+  description                     = lookup(each.value, "description", null)
+  connection_draining_timeout_sec = lookup(each.value, "connection_draining_timeout_sec", null)
+  enable_cdn                      = lookup(each.value, "enable_cdn", false)
+  custom_request_headers          = lookup(each.value, "custom_request_headers", [])
+  custom_response_headers         = lookup(each.value, "custom_response_headers", [])
+
+  # To achieve a null backend security_policy, set each.value.security_policy to "" (empty string), otherwise, it fallsback to var.security_policy.
+  security_policy = lookup(each.value, "security_policy") == "" ? null : (lookup(each.value, "security_policy") == null ? var.security_policy : each.value.security_policy)
+
+  dynamic "backend" {
+    for_each = toset(each.value["groups"])
+    content {
+      description = lookup(backend.value, "description", null)
+      group       = lookup(backend.value, "group")
+    }
+  }
+
+  log_config {
+    enable      = lookup(lookup(each.value, "log_config", {}), "enable", true)
+    sample_rate = lookup(lookup(each.value, "log_config", {}), "sample_rate", "1.0")
+  }
+
+  dynamic "iap" {
+    for_each = lookup(lookup(each.value, "iap_config", {}), "enable", false) ? [1] : []
+    content {
+      oauth2_client_id     = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_id", "")
+      oauth2_client_secret = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_secret", "")
+    }
+  }
 
 }
 

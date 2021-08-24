@@ -77,6 +77,7 @@ Current version is 3.0. Upgrade guides:
 | create\_address | Create a new global IPv4 address | `bool` | `true` | no |
 | create\_ipv6\_address | Allocate a new IPv6 address. Conflicts with "ipv6\_address" - if both specified, "create\_ipv6\_address" takes precedence. | `bool` | `false` | no |
 | create\_url\_map | Set to `false` if url\_map variable is provided. | `bool` | `true` | no |
+| custom\_backend\_only | Set to `true` to disable HTTP default backend and deploy only custom backend - for HTTPS make sure to add `custom_protocol  = HTTPS` and  `custom_port_name = https`. | `bool` | `false` | no |
 | enable\_ipv6 | Enable IPv6 address on the CDN load-balancer | `bool` | `false` | no |
 | http\_forward | Set to `false` to disable HTTP port 80 forward | `bool` | `true` | no |
 | https\_redirect | Set to `true` to enable https redirect on the lb. | `bool` | `false` | no |
@@ -99,6 +100,7 @@ Current version is 3.0. Upgrade guides:
 | Name | Description |
 |------|-------------|
 | backend\_services | The backend service resources. |
+| custom\_backend\_services | The custom backend service resources. |
 | external\_ip | The external IPv4 assigned to the global fowarding rule. |
 | external\_ipv6\_address | The external IPv6 assigned to the global fowarding rule. |
 | http\_proxy | The HTTP proxy used by this module. |

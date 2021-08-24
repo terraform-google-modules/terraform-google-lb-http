@@ -20,6 +20,7 @@ output "backend_services" {
   sensitive   = true // can contain sensitive iap_config
 }
 
+
 output "external_ip" {
   description = "The external IPv4 assigned to the global fowarding rule."
   value       = local.address

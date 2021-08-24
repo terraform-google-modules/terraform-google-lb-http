@@ -164,6 +164,7 @@ resource "google_compute_backend_service" "default" {
   port_name = each.value.port_name
   protocol  = each.value.protocol
 
+
   timeout_sec                     = lookup(each.value, "timeout_sec", null)
   description                     = lookup(each.value, "description", null)
   connection_draining_timeout_sec = lookup(each.value, "connection_draining_timeout_sec", null)
@@ -213,6 +214,7 @@ resource "google_compute_backend_service" "default" {
   ]
 
 }
+
 
 resource "google_compute_health_check" "default" {
   provider = google-beta

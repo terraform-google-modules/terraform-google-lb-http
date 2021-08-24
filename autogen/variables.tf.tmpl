@@ -165,6 +165,14 @@ variable "http_forward" {
   default     = true
 }
 
+{% if serverless %}{# only used  for serverless to deploy custom backend without http #}
+variable "custom_backend_only" {
+  description = "Set to `true` to disable HTTP default backend and deploy only custom backend - for HTTPS make sure to add `custom_protocol  = HTTPS` and  `custom_port_name = https`."
+  type        = bool
+  default     = false
+}
+{% endif %}
+
 variable "ssl" {
   description = "Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self_link certs"
   type        = bool
