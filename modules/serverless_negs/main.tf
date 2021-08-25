@@ -161,8 +161,8 @@ resource "google_compute_backend_service" "default" {
   project = var.project
   name    = "${var.name}-backend-${each.key}"
 
-  port_name                       = lookup(each.value, "port_name", "http")
-  protocol                        = lookup(each.value, "protocol", "HTTP")
+  port_name = lookup(each.value, "port_name", "http")
+  protocol  = lookup(each.value, "protocol", "HTTP")
 
 
   description                     = lookup(each.value, "description", null)
