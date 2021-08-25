@@ -84,11 +84,12 @@ variable "target_service_accounts" {
 variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
-    {% if not serverless %}{# not necessary for serverless as default port_name=http, protocol=HTTP #}
-    protocol  = string
-    port      = number
-    port_name = string
+    {% if not serverless %}{# not necessary for serverless #}
+    port = number
     {% endif %}
+
+    protocol  = string
+    port_name = string
 
     description             = string
     enable_cdn              = bool
@@ -164,14 +165,6 @@ variable "http_forward" {
   type        = bool
   default     = true
 }
-
-{% if serverless %}{# only used  for serverless to deploy custom backend without http #}
-variable "custom_backend_only" {
-  description = "Set to `true` to disable HTTP default backend and deploy only custom backend - for HTTPS make sure to add `custom_protocol  = HTTPS` and  `custom_port_name = https`."
-  type        = bool
-  default     = false
-}
-{% endif %}
 
 variable "ssl" {
   description = "Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self_link certs"

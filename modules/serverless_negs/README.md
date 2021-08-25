@@ -29,6 +29,8 @@ module "lb-http" {
   backends = {
     default = {
       description                     = null
+      protocol                        = "HTTP"
+      port_name                       = var.service_port_name
       enable_cdn                      = false
       custom_request_headers          = null
       custom_response_headers         = null
@@ -71,13 +73,12 @@ Current version is 3.0. Upgrade guides:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | address | Existing IPv4 address to use (the actual IP address value) | `string` | `null` | no |
-| backends | Map backend indices to list of backend maps. | <pre>map(object({<br><br>    description             = string<br>    enable_cdn              = bool<br>    security_policy         = string<br>    custom_request_headers  = list(string)<br>    custom_response_headers = list(string)<br><br><br><br>    log_config = object({<br>      enable      = bool<br>      sample_rate = number<br>    })<br><br>    groups = list(object({<br>      group = string<br><br>    }))<br>    iap_config = object({<br>      enable               = bool<br>      oauth2_client_id     = string<br>      oauth2_client_secret = string<br>    })<br>  }))</pre> | n/a | yes |
+| backends | Map backend indices to list of backend maps. | <pre>map(object({<br><br>    protocol  = string<br>    port_name = string<br><br>    description             = string<br>    enable_cdn              = bool<br>    security_policy         = string<br>    custom_request_headers  = list(string)<br>    custom_response_headers = list(string)<br><br><br><br>    log_config = object({<br>      enable      = bool<br>      sample_rate = number<br>    })<br><br>    groups = list(object({<br>      group = string<br><br>    }))<br>    iap_config = object({<br>      enable               = bool<br>      oauth2_client_id     = string<br>      oauth2_client_secret = string<br>    })<br>  }))</pre> | n/a | yes |
 | cdn | Set to `true` to enable cdn on backend. | `bool` | `false` | no |
 | certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
 | create\_address | Create a new global IPv4 address | `bool` | `true` | no |
 | create\_ipv6\_address | Allocate a new IPv6 address. Conflicts with "ipv6\_address" - if both specified, "create\_ipv6\_address" takes precedence. | `bool` | `false` | no |
 | create\_url\_map | Set to `false` if url\_map variable is provided. | `bool` | `true` | no |
-| custom\_backend\_only | Set to `true` to disable HTTP default backend and deploy only custom backend - for HTTPS make sure to add `custom_protocol  = HTTPS` and  `custom_port_name = https`. | `bool` | `false` | no |
 | enable\_ipv6 | Enable IPv6 address on the CDN load-balancer | `bool` | `false` | no |
 | http\_forward | Set to `false` to disable HTTP port 80 forward | `bool` | `true` | no |
 | https\_redirect | Set to `true` to enable https redirect on the lb. | `bool` | `false` | no |
@@ -100,7 +101,6 @@ Current version is 3.0. Upgrade guides:
 | Name | Description |
 |------|-------------|
 | backend\_services | The backend service resources. |
-| custom\_backend\_services | The custom backend service resources. |
 | external\_ip | The external IPv4 assigned to the global fowarding rule. |
 | external\_ipv6\_address | The external IPv6 assigned to the global fowarding rule. |
 | http\_proxy | The HTTP proxy used by this module. |

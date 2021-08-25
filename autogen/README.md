@@ -66,10 +66,10 @@ module "lb-http" {
     default = {
       description                     = null
       {% if not serverless %}{# not necessary for serverless as default port_name=http, protocol=HTTP #}
-      protocol                        = "HTTP"
       port                            = var.service_port
-      port_name                       = var.service_port_name
       {% endif %}
+      protocol                        = "HTTP"
+      port_name                       = var.service_port_name
       {% if not serverless %}
       timeout_sec                     = 10
       {% endif %}
@@ -180,11 +180,6 @@ Current version is 3.0. Upgrade guides:
 | target\_tags | List of target tags for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified. | list(string) | `<list>` | no |
 | url\_map | The url_map resource to use. Default is to send all traffic to first backend. | string | `"null"` | no |
 | use\_ssl\_certificates | If true, use the certificates provided by `ssl_certificates`, otherwise, create cert from `private_key` and `certificate` | bool | `"false"` | no |
-{% if serverless %}
-| custom\_backend\_only | If true, don't deploy default http backend, deploy only custom specified backend service | bool | `"false"` | no |
-| protocol | Custom Protocol for backend service, Required if `custom_backend_only` is `true`. Available options are `HTTPS` and `HTTP2` | string | `"null"` | no |
-| port\_name | Custom Port name for backend service, Required if `custom_backend_only` is `true`. Available options are `https` and `http2` | string | `"null"` | no |
-{% endif %}
 
 ## Outputs
 

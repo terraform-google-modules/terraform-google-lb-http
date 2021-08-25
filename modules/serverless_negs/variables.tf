@@ -59,6 +59,9 @@ variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
 
+    protocol  = string
+    port_name = string
+
     description             = string
     enable_cdn              = bool
     security_policy         = string
@@ -100,12 +103,6 @@ variable "http_forward" {
   description = "Set to `false` to disable HTTP port 80 forward"
   type        = bool
   default     = true
-}
-
-variable "custom_backend_only" {
-  description = "Set to `true` to disable HTTP default backend and deploy only custom backend - for HTTPS make sure to add `custom_protocol  = HTTPS` and  `custom_port_name = https`."
-  type        = bool
-  default     = false
 }
 
 variable "ssl" {

@@ -161,8 +161,8 @@ resource "google_compute_backend_service" "default" {
   project = var.project
   name    = "${var.name}-backend-${each.key}"
 
-  port_name = each.value.port_name
-  protocol  = each.value.protocol
+  port_name = lookup(each.value, "port_name", "http")
+  protocol  = lookup(each.value, "protocol", "HTTP")
 
 
   timeout_sec                     = lookup(each.value, "timeout_sec", null)
@@ -217,7 +217,6 @@ resource "google_compute_backend_service" "default" {
     ignore_changes = [backend]
   }
 }
-
 
 resource "google_compute_health_check" "default" {
   provider = google-beta

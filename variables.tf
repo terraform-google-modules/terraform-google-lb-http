@@ -81,8 +81,9 @@ variable "target_service_accounts" {
 variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
+    port = number
+
     protocol  = string
-    port      = number
     port_name = string
 
     description             = string
@@ -151,7 +152,6 @@ variable "http_forward" {
   type        = bool
   default     = true
 }
-
 
 variable "ssl" {
   description = "Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self_link certs"
