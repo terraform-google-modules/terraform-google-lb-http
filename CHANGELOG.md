@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.1.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v6.0.1...v6.1.0) (2021-08-23)
+
+
+### Features
+
+* add url_map as output ([#203](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/203)) ([2ea30e4](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/2ea30e4af957c8154920fc3ab6222993aeda04ea))
+
 ### [6.0.1](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v6.0.0...v6.0.1) (2021-07-12)
 
 
