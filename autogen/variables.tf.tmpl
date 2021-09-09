@@ -83,7 +83,7 @@ variable "target_service_accounts" {
 
 variable "backends" {
   description = "Map backend indices to list of backend maps."
-  type = map(object({
+  type = map(any({
     {% if not serverless %}{# not necessary for serverless #}
     port = number
     {% endif %}

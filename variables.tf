@@ -80,7 +80,7 @@ variable "target_service_accounts" {
 
 variable "backends" {
   description = "Map backend indices to list of backend maps."
-  type = map(object({
+  type = map(any({
     port = number
 
     protocol  = string
