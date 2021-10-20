@@ -64,7 +64,6 @@ variable "backends" {
     security_policy         = string
     custom_request_headers  = list(string)
     custom_response_headers = list(string)
-    protocol                = string
 
 
 
