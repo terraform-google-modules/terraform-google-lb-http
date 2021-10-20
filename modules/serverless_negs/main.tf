@@ -167,6 +167,7 @@ resource "google_compute_backend_service" "default" {
   enable_cdn                      = lookup(each.value, "enable_cdn", false)
   custom_request_headers          = lookup(each.value, "custom_request_headers", [])
   custom_response_headers         = lookup(each.value, "custom_response_headers", [])
+  protocol                        = lookup(each.value, "protocol", null)
 
   # To achieve a null backend security_policy, set each.value.security_policy to "" (empty string), otherwise, it fallsback to var.security_policy.
   security_policy = lookup(each.value, "security_policy") == "" ? null : (lookup(each.value, "security_policy") == null ? var.security_policy : each.value.security_policy)
