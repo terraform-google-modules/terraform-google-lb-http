@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### [6.1.1](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v6.1.0...v6.1.1) (2021-10-13)
+
+
+### Bug Fixes
+
+* Make log_config optional ([#209](https://www.github.com/terraform-google-modules/terraform-google-lb-http/issues/209)) ([4ed360e](https://www.github.com/terraform-google-modules/terraform-google-lb-http/commit/4ed360e21d8872e0ba078de035e1ce856fd8ec6e))
+
 ## [6.1.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v6.0.1...v6.1.0) (2021-08-23)
 
 
