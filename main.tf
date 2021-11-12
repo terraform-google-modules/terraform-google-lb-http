@@ -20,6 +20,7 @@ locals {
   ipv6_address = var.create_ipv6_address ? join("", google_compute_global_address.default_ipv6.*.address) : var.ipv6_address
 
   url_map             = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
+  bucket_url_map      = var.create_url_map && var.create_backend_bucket ? join("", google_compute_url_map.bucket-url-map.*.self_link) : var.url_map
   create_http_forward = var.http_forward || var.https_redirect
 
   health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }
@@ -37,9 +38,18 @@ resource "google_compute_global_forwarding_rule" "http" {
 
 resource "google_compute_global_forwarding_rule" "https" {
   project    = var.project
-  count      = var.ssl ? 1 : 0
+  count      = var.ssl && ! var.create_backend_bucket ? 1 : 0
   name       = "${var.name}-https"
   target     = google_compute_target_https_proxy.default[0].self_link
+  ip_address = local.address
+  port_range = "443"
+}
+
+resource "google_compute_global_forwarding_rule" "bucket-https" {
+  project    = var.project
+  count      = var.ssl && var.create_backend_bucket ? 1 : 0
+  name       = "${var.name}-https"
+  target     = google_compute_target_https_proxy.bucket-https-proxy[0].self_link
   ip_address = local.address
   port_range = "443"
 }
@@ -64,9 +74,18 @@ resource "google_compute_global_forwarding_rule" "http_ipv6" {
 
 resource "google_compute_global_forwarding_rule" "https_ipv6" {
   project    = var.project
-  count      = (var.enable_ipv6 && var.ssl) ? 1 : 0
+  count      = (var.enable_ipv6 && var.ssl && ! var.create_backend_bucket) ? 1 : 0
   name       = "${var.name}-ipv6-https"
   target     = google_compute_target_https_proxy.default[0].self_link
+  ip_address = local.ipv6_address
+  port_range = "443"
+}
+
+resource "google_compute_global_forwarding_rule" "bucket_https_ipv6" {
+  project    = var.project
+  count      = (var.enable_ipv6 && var.ssl && var.create_backend_bucket) ? 1 : 0
+  name       = "${var.name}-ipv6-https"
+  target     = google_compute_target_https_proxy.bucket-https-proxy[0].self_link
   ip_address = local.ipv6_address
   port_range = "443"
 }
@@ -90,9 +109,21 @@ resource "google_compute_target_http_proxy" "default" {
 # HTTPS proxy when ssl is true
 resource "google_compute_target_https_proxy" "default" {
   project = var.project
-  count   = var.ssl ? 1 : 0
+  count   = var.ssl && ! var.create_backend_bucket ? 1 : 0
   name    = "${var.name}-https-proxy"
   url_map = local.url_map
+
+  ssl_certificates = compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default.*.self_link, google_compute_managed_ssl_certificate.default.*.self_link, ), )
+  ssl_policy       = var.ssl_policy
+  quic_override    = var.quic ? "ENABLE" : null
+}
+
+# HTTPS proxy when ssl is true and using a backend bucket
+resource "google_compute_target_https_proxy" "bucket-https-proxy" {
+  project = var.project
+  count   = var.ssl && var.create_backend_bucket ? 1 : 0
+  name    = "${var.name}-bucket-https-proxy"
+  url_map = local.bucket_url_map
 
   ssl_certificates = compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default.*.self_link, google_compute_managed_ssl_certificate.default.*.self_link, ), )
   ssl_policy       = var.ssl_policy
@@ -138,9 +169,16 @@ resource "google_compute_managed_ssl_certificate" "default" {
 
 resource "google_compute_url_map" "default" {
   project         = var.project
-  count           = var.create_url_map ? 1 : 0
+  count           = var.create_url_map && ! var.create_backend_bucket ? 1 : 0
   name            = "${var.name}-url-map"
   default_service = google_compute_backend_service.default[keys(var.backends)[0]].self_link
+}
+
+resource "google_compute_url_map" "bucket-url-map" {
+  project         = var.project
+  count           = var.create_url_map && var.create_backend_bucket ? 1 : 0
+  name            = "${var.name}-bucket-url-map"
+  default_service = google_compute_backend_bucket.default-backend-bucket[0].self_link
 }
 
 resource "google_compute_url_map" "https_redirect" {
@@ -156,7 +194,7 @@ resource "google_compute_url_map" "https_redirect" {
 
 resource "google_compute_backend_service" "default" {
   provider = google-beta
-  for_each = var.backends
+  for_each = ! var.create_backend_bucket ? var.backends : {}
 
   project = var.project
   name    = "${var.name}-backend-${each.key}"
@@ -211,15 +249,11 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
-  depends_on = [
-    google_compute_health_check.default
-  ]
-
 }
 
 resource "google_compute_health_check" "default" {
   provider = google-beta
-  for_each = local.health_checked_backends
+  for_each = ! var.create_backend_bucket ? local.health_checked_backends : {}
   project  = var.project
   name     = "${var.name}-hc-${each.key}"
 
@@ -282,7 +316,7 @@ resource "google_compute_health_check" "default" {
 }
 
 resource "google_compute_firewall" "default-hc" {
-  count   = length(var.firewall_networks)
+  count   = ! var.create_backend_bucket ? length(var.firewall_networks) : 0
   project = length(var.firewall_networks) == 1 && var.firewall_projects[0] == "default" ? var.project : var.firewall_projects[count.index]
   name    = "${var.name}-hc-${count.index}"
   network = var.firewall_networks[count.index]
@@ -299,5 +333,24 @@ resource "google_compute_firewall" "default-hc" {
       protocol = "tcp"
       ports    = [allow.value["health_check"].port]
     }
+  }
+}
+
+resource "google_compute_backend_bucket" "default-backend-bucket" {
+  provider    = google-beta
+  count       = var.create_backend_bucket ? 1 : 0
+  project     = var.project
+  name        = "${var.name}-backend-bucket"
+  description = "connects the GCLB to a backend storage bucket, likely for serving up a statuc website or files"
+  bucket_name = var.bucket_name
+  enable_cdn  = var.enable_cdn_for_bucket
+
+  cdn_policy {
+    cache_mode                   = var.cache_mode
+    client_ttl                   = var.client_ttl
+    default_ttl                  = var.default_ttl
+    max_ttl                      = var.max_ttl
+    negative_caching             = var.negative_caching
+    signed_url_cache_max_age_sec = var.signed_url_cache_max_age_sec
   }
 }

@@ -20,6 +20,11 @@ output "backend_services" {
   sensitive   = true // can contain sensitive iap_config
 }
 
+output "backend_bucket" {
+  description = "The backend bucket resource."
+  value       = google_compute_backend_bucket.default-backend-bucket
+}
+
 output "external_ip" {
   description = "The external IPv4 assigned to the global fowarding rule."
   value       = local.address
@@ -45,7 +50,17 @@ output "https_proxy" {
   value       = google_compute_target_https_proxy.default[*].self_link
 }
 
+output "https_proxy-bucket" {
+  description = "The HTTPS proxy used by this module if using a storage bucket backend."
+  value       = google_compute_target_https_proxy.bucket-https-proxy[*].self_link
+}
+
 output "url_map" {
   description = "The default URL map used by this module."
   value       = google_compute_url_map.default[*].self_link
+}
+
+output "url_map_bucket" {
+  description = "The default URL map used by this module if using a storage bucket backend."
+  value       = google_compute_url_map.bucket-url-map[*].self_link
 }
