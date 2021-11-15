@@ -15,7 +15,8 @@
  */
 
 provider "google" {
-  region = var.region
+  region  = var.region
+  version = "~> 3.90"
 }
 
 data "google_client_config" "current" {}
