@@ -49,3 +49,6 @@ credentials.json
 **/values-*.yaml
 **/*.tfplan
 **/credentials.json
+
+# tf lock file
+.terraform.lock.hcl
