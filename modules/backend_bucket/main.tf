@@ -137,8 +137,8 @@ resource "google_compute_managed_ssl_certificate" "default" {
 resource "google_compute_url_map" "default" {
   project         = var.project
   count           = var.create_url_map ? 1 : 0
-  name            = "${var.name}-bucket-url-map"
-  default_service = google_compute_backend_bucket.default-backend-bucket[0].self_link
+  name            = "${var.name}-url-map"
+  default_service = google_compute_backend_bucket.default-backend-bucket.self_link
 }
 
 resource "google_compute_url_map" "https_redirect" {
