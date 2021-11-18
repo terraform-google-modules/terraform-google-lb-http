@@ -17,6 +17,14 @@
     },
     {
         "template_folder": "./autogen",
+        "path": "./modules/backend_bucket",
+        "options": {
+            "module_path": "//modules/backend_bucket",
+            "backend_bucket": true
+        }
+    },
+    {
+        "template_folder": "./autogen",
         "path": "./",
         "options": {
             "module_path": "",
