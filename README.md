@@ -113,17 +113,11 @@ Current version is 3.0. Upgrade guides:
 |------|-------------|------|---------|:--------:|
 | address | Existing IPv4 address to use (the actual IP address value) | `string` | `null` | no |
 | backends | Map backend indices to list of backend maps. | <pre>map(object({<br>    protocol  = string<br>    port      = number<br>    port_name = string<br><br>    description             = string<br>    enable_cdn              = bool<br>    security_policy         = string<br>    custom_request_headers  = list(string)<br>    custom_response_headers = list(string)<br><br>    timeout_sec                     = number<br>    connection_draining_timeout_sec = number<br>    session_affinity                = string<br>    affinity_cookie_ttl_sec         = number<br><br>    health_check = object({<br>      check_interval_sec  = number<br>      timeout_sec         = number<br>      healthy_threshold   = number<br>      unhealthy_threshold = number<br>      request_path        = string<br>      port                = number<br>      host                = string<br>      logging             = bool<br>    })<br><br>    log_config = object({<br>      enable      = bool<br>      sample_rate = number<br>    })<br><br>    groups = list(object({<br>      group = string<br><br>      balancing_mode               = string<br>      capacity_scaler              = number<br>      description                  = string<br>      max_connections              = number<br>      max_connections_per_instance = number<br>      max_connections_per_endpoint = number<br>      max_rate                     = number<br>      max_rate_per_instance        = number<br>      max_rate_per_endpoint        = number<br>      max_utilization              = number<br>    }))<br>    iap_config = object({<br>      enable               = bool<br>      oauth2_client_id     = string<br>      oauth2_client_secret = string<br>    })<br>  }))</pre> | n/a | yes |
-| bucket\_name | a string value representing the name of the cloud storage bucket for the backend | `string` | `null` | no |
-| cache\_mode | a string representing the caching mode - options include USE\_ORIGIN\_HEADERS, FORCE\_CACHE\_ALL and CACHE\_ALL\_STATIC | `string` | `"CACHE_ALL_STATIC"` | no |
 | cdn | Set to `true` to enable cdn on backend. | `bool` | `false` | no |
 | certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
-| client\_ttl | Specifies the maximum allowed TTL for cached content served by this origin. | `string` | `"3600"` | no |
 | create\_address | Create a new global IPv4 address | `bool` | `true` | no |
-| create\_backend\_bucket | Bool to enable/disable the creation of a Backend Storage Bucket for a GCLB rather than a bakend service. | `bool` | `false` | no |
 | create\_ipv6\_address | Allocate a new IPv6 address. Conflicts with "ipv6\_address" - if both specified, "create\_ipv6\_address" takes precedence. | `bool` | `false` | no |
 | create\_url\_map | Set to `false` if url\_map variable is provided. | `bool` | `true` | no |
-| default\_ttl | Specifies the default TTL for cached content served by this origin for responses that do not have an existing valid TTL (max-age or s-max-age) | `string` | `"3600"` | no |
-| enable\_cdn\_for\_bucket | Bool to enable/disable cdn on a backend storage bucket for static websites | `bool` | `true` | no |
 | enable\_ipv6 | Enable IPv6 address on the CDN load-balancer | `bool` | `false` | no |
 | firewall\_networks | Names of the networks to create firewall rules in | `list(string)` | <pre>[<br>  "default"<br>]</pre> | no |
 | firewall\_projects | Names of the projects to create firewall rules in | `list(string)` | <pre>[<br>  "default"<br>]</pre> | no |
@@ -131,15 +125,12 @@ Current version is 3.0. Upgrade guides:
 | https\_redirect | Set to `true` to enable https redirect on the lb. | `bool` | `false` | no |
 | ipv6\_address | An existing IPv6 address to use (the actual IP address value) | `string` | `null` | no |
 | managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` and `use_ssl_certificates` set to `false`. | `list(string)` | `[]` | no |
-| max\_ttl | Specifies the maximum allowed TTL for cached content served by this origin. | `string` | `"86400"` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |
-| negative\_caching | Negative caching allows per-status code TTLs to be set, in order to apply fine-grained caching for common errors or redirects | `bool` | `false` | no |
 | private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
 | project | The project to deploy to, if not set the default provider project is used. | `string` | n/a | yes |
 | quic | Set to `true` to enable QUIC support | `bool` | `false` | no |
 | random\_certificate\_suffix | Bool to enable/disable random certificate name generation. Set and keep this to true if you need to change the SSL cert. | `bool` | `false` | no |
 | security\_policy | The resource URL for the security policy to associate with the backend service | `string` | `null` | no |
-| signed\_url\_cache\_max\_age\_sec | Maximum number of seconds the response to a signed URL request will be considered fresh, defaults to 1hr (3600s). After this time period, the response will be revalidated before being served | `string` | `"7200"` | no |
 | ssl | Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self\_link certs | `bool` | `false` | no |
 | ssl\_certificates | SSL cert self\_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided. | `list(string)` | `[]` | no |
 | ssl\_policy | Selfink to SSL Policy | `string` | `null` | no |
@@ -152,16 +143,13 @@ Current version is 3.0. Upgrade guides:
 
 | Name | Description |
 |------|-------------|
-| backend\_bucket | The backend bucket resource. |
 | backend\_services | The backend service resources. |
 | external\_ip | The external IPv4 assigned to the global fowarding rule. |
 | external\_ipv6\_address | The external IPv6 assigned to the global fowarding rule. |
 | http\_proxy | The HTTP proxy used by this module. |
 | https\_proxy | The HTTPS proxy used by this module. |
-| https\_proxy-bucket | The HTTPS proxy used by this module if using a storage bucket backend. |
 | ipv6\_enabled | Whether IPv6 configuration is enabled on this load-balancer |
 | url\_map | The default URL map used by this module. |
-| url\_map\_bucket | The default URL map used by this module if using a storage bucket backend. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
