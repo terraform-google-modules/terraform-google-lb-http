@@ -35,6 +35,16 @@ resource "google_compute_global_forwarding_rule" "http" {
   port_range = "80"
 }
 
+### IPv4 block ###
+resource "google_compute_global_forwarding_rule" "http" {
+  project    = var.project
+  count      = local.create_http_forward ? 1 : 0
+  name       = var.name
+  target     = google_compute_target_http_proxy.default[0].self_link
+  ip_address = local.address
+  port_range = "80"
+}
+
 resource "google_compute_global_forwarding_rule" "https" {
   project    = var.project
   count      = var.ssl ? 1 : 0
