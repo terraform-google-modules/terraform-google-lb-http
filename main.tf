@@ -110,6 +110,19 @@ resource "google_compute_ssl_certificate" "default" {
     create_before_destroy = true
   }
 }
+  
+
+resource "google_compute_ssl_certificate" "default" {
+  project     = var.project
+  count       = var.ssl && length(var.managed_ssl_certificate_domains) == 0 && !var.use_ssl_certificates ? 1 : 0
+  name_prefix = "${var.name}-certificate-"
+  private_key = var.private_key
+  certificate = var.certificate
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
 
 resource "random_id" "certificate" {
   count       = var.random_certificate_suffix == true ? 1 : 0
