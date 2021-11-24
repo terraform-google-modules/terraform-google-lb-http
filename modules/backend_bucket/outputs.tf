@@ -41,7 +41,7 @@ output "http_proxy" {
 
 output "https_proxy" {
   description = "The HTTPS proxy used by this module."
-  value       = google_compute_target_https_proxy.https-proxy[*].self_link
+  value       = google_compute_target_https_proxy.default[*].self_link
 }
 
 output "url_map" {

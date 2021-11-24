@@ -54,8 +54,8 @@ variable "ipv6_address" {
   default     = null
 }
 
-{% if not serverless %}
-{# options unused for serverless LBs #}
+{% if not serverless and not backend_bucket %}
+{# options unused for serverless LBs and backend buckets #}
 variable "firewall_networks" {
   description = "Names of the networks to create firewall rules in"
   type        = list(string)
@@ -81,6 +81,7 @@ variable "target_service_accounts" {
 }
 {% endif %}
 
+{% if not backend_bucket %}
 variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
@@ -146,6 +147,7 @@ variable "backends" {
     })
   }))
 }
+{% endif %}
 
 variable "create_url_map" {
   description = "Set to `false` if url_map variable is provided."
@@ -219,11 +221,13 @@ variable "security_policy" {
   default     = null
 }
 
+{% if not backend_bucket %}
 variable "cdn" {
   description = "Set to `true` to enable cdn on backend."
   type        = bool
   default     = false
 }
+{% endif %}
 
 variable "https_redirect" {
   description = "Set to `true` to enable https redirect on the lb."
@@ -236,3 +240,53 @@ variable "random_certificate_suffix" {
   type        = bool
   default     = false
 }
+
+{% if backend_bucket %}
+variable "bucket_name" {
+  description = "a string value representing the name of the cloud storage bucket for the backend"
+  type        = string
+  default     = null
+}
+
+variable "enable_cdn_for_bucket" {
+  description = "Bool to enable/disable cdn on a backend storage bucket for static websites"
+  type        = bool
+  default     = true
+}
+
+variable "cache_mode" {
+  description = "a string representing the caching mode - options include USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC"
+  type        = string
+  default     = "CACHE_ALL_STATIC"
+}    
+
+variable "client_ttl" {
+  description = "Specifies the maximum allowed TTL for cached content served by this origin."
+  type        = string
+  default     = "3600"
+} 
+
+variable "default_ttl" {
+  description = "Specifies the default TTL for cached content served by this origin for responses that do not have an existing valid TTL (max-age or s-max-age)"
+  type        = string
+  default     = "3600"
+} 
+
+variable "max_ttl" {
+  description = "Specifies the maximum allowed TTL for cached content served by this origin."
+  type        = string
+  default     = "86400"
+} 
+
+variable "negative_caching" {
+  description = "Negative caching allows per-status code TTLs to be set, in order to apply fine-grained caching for common errors or redirects"
+  type        = bool
+  default     = false
+} 
+
+variable "signed_url_cache_max_age_sec" {
+  description = "Maximum number of seconds the response to a signed URL request will be considered fresh, defaults to 1hr (3600s). After this time period, the response will be revalidated before being served"
+  type        = string
+  default     = "7200"
+}
+{% endif %}

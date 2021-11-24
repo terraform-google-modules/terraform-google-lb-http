@@ -13,12 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+{% if not backend_bucket %}
 output "backend_services" {
   description = "The backend service resources."
   value       = google_compute_backend_service.default
   sensitive   = true // can contain sensitive iap_config
 }
+{% else %}
+output "backend_bucket" {
+  description = "The backend bucket resource."
+  value       = google_compute_backend_bucket.default-backend-bucket
+}
+{% endif %}
 
 output "external_ip" {
   description = "The external IPv4 assigned to the global fowarding rule."
