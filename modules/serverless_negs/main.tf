@@ -101,7 +101,7 @@ resource "google_compute_target_https_proxy" "default" {
 
 resource "google_compute_ssl_certificate" "default" {
   project     = var.project
-  count       = var.ssl && length(var.managed_ssl_certificate_domains) == 0 && ! var.use_ssl_certificates ? 1 : 0
+  count       = var.ssl && length(var.managed_ssl_certificate_domains) == 0 && !var.use_ssl_certificates ? 1 : 0
   name_prefix = "${var.name}-certificate-"
   private_key = var.private_key
   certificate = var.certificate
@@ -124,7 +124,7 @@ resource "random_id" "certificate" {
 resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
   project  = var.project
-  count    = var.ssl && length(var.managed_ssl_certificate_domains) > 0 && ! var.use_ssl_certificates ? 1 : 0
+  count    = var.ssl && length(var.managed_ssl_certificate_domains) > 0 && !var.use_ssl_certificates ? 1 : 0
   name     = var.random_certificate_suffix == true ? random_id.certificate[0].hex : "${var.name}-cert"
 
   lifecycle {
@@ -183,9 +183,12 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
-  log_config {
-    enable      = lookup(lookup(each.value, "log_config", {}), "enable", true)
-    sample_rate = lookup(lookup(each.value, "log_config", {}), "sample_rate", "1.0")
+  dynamic "log_config" {
+    for_each = lookup(lookup(each.value, "log_config", {}), "enable", true) ? [1] : []
+    content {
+      enable      = lookup(lookup(each.value, "log_config", {}), "enable", true)
+      sample_rate = lookup(lookup(each.value, "log_config", {}), "sample_rate", "1.0")
+    }
   }
 
   dynamic "iap" {
