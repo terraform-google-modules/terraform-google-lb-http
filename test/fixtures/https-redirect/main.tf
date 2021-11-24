@@ -18,10 +18,6 @@ resource "random_id" "random_net" {
   byte_length = 2
 }
 
-provider "google" {
-  version = "~> 3.53"
-}
-
 module "example" {
   source = "../../../examples/https-redirect"
 
