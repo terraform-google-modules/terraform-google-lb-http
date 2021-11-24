@@ -37,7 +37,7 @@ resource "google_compute_global_forwarding_rule" "https" {
   project    = var.project
   count      = var.ssl ? 1 : 0
   name       = "${var.name}-https"
-  target     = google_compute_target_https_proxy.https-proxy[0].self_link
+  target     = google_compute_target_https_proxy.default[0].self_link
   ip_address = local.address
   port_range = "443"
 }
@@ -64,7 +64,7 @@ resource "google_compute_global_forwarding_rule" "https_ipv6" {
   project    = var.project
   count      = (var.enable_ipv6 && var.ssl) ? 1 : 0
   name       = "${var.name}-ipv6-https"
-  target     = google_compute_target_https_proxy.https-proxy[0].self_link
+  target     = google_compute_target_https_proxy.default[0].self_link
   ip_address = local.ipv6_address
   port_range = "443"
 }
@@ -86,7 +86,7 @@ resource "google_compute_target_http_proxy" "default" {
 }
 
 # HTTPS proxy when ssl is true and using a backend bucket
-resource "google_compute_target_https_proxy" "https-proxy" {
+resource "google_compute_target_https_proxy" "default" {
   project = var.project
   count   = var.ssl ? 1 : 0
   name    = "${var.name}-https-proxy"
