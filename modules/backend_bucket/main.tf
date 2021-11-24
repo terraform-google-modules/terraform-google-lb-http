@@ -85,7 +85,7 @@ resource "google_compute_target_http_proxy" "default" {
   url_map = var.https_redirect == false ? local.url_map : join("", google_compute_url_map.https_redirect.*.self_link)
 }
 
-# HTTPS proxy when ssl is true and using a backend bucket
+# HTTPS proxy when ssl is true
 resource "google_compute_target_https_proxy" "default" {
   project = var.project
   count   = var.ssl ? 1 : 0
