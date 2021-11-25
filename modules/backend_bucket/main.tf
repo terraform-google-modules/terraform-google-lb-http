@@ -138,7 +138,7 @@ resource "google_compute_url_map" "default" {
   project         = var.project
   count           = var.create_url_map ? 1 : 0
   name            = "${var.name}-url-map"
-  default_service = google_compute_backend_bucket.default-backend-bucket.self_link
+  default_service = google_compute_backend_bucket.default.self_link
 }
 
 resource "google_compute_url_map" "https_redirect" {
@@ -152,7 +152,7 @@ resource "google_compute_url_map" "https_redirect" {
   }
 }
 
-resource "google_compute_backend_bucket" "default-backend-bucket" {
+resource "google_compute_backend_bucket" "default" {
   provider    = google-beta
   project     = var.project
   name        = "${var.name}-backend-bucket"
