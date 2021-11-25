@@ -33,6 +33,8 @@ terraform {
     module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v6.1.1"
     {% elif dynamic_backends %}
     module_name = "blueprints/terraform/terraform-google-lb-http:dynamic_backends/v6.1.1"
+    {% elif backend_bucket %}
+    module_name = "blueprints/terraform/terraform-google-lb-http:backend_bucket/v6.1.1"
     {% else %}
     module_name = "blueprints/terraform/terraform-google-lb-http/v6.1.1"
     {% endif %}
@@ -43,6 +45,8 @@ terraform {
     module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v6.1.1"
     {% elif dynamic_backends %}
     module_name = "blueprints/terraform/terraform-google-lb-http:dynamic_backends/v6.1.1"
+    {% elif backend_bucket %}
+    module_name = "blueprints/terraform/terraform-google-lb-http:backend_bucket/v6.1.1"
     {% else %}
     module_name = "blueprints/terraform/terraform-google-lb-http/v6.1.1"
     {% endif %}
