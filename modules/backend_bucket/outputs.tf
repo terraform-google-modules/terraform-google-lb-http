@@ -16,7 +16,7 @@
  
 output "backend_bucket" {
   description = "The backend bucket resource."
-  value       = google_compute_backend_bucket.default-backend-bucket
+  value       = google_compute_backend_bucket.default
 }
 
 output "external_ip" {
