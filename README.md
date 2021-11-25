@@ -34,6 +34,7 @@ module "gce-lb-http" {
   project           = "my-project-id"
   name              = "group-http-lb"
   target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
+
   backends = {
     default = {
       description                     = null
@@ -90,6 +91,7 @@ module "gce-lb-http" {
       }
     }
   }
+
 }
 ```
 

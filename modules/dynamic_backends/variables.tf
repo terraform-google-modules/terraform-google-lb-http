@@ -53,7 +53,6 @@ variable "ipv6_address" {
   description = "An existing IPv6 address to use (the actual IP address value)"
   default     = null
 }
-
 variable "firewall_networks" {
   description = "Names of the networks to create firewall rules in"
   type        = list(string)
@@ -133,7 +132,6 @@ variable "backends" {
     })
   }))
 }
-
 variable "create_url_map" {
   description = "Set to `false` if url_map variable is provided."
   type        = bool
@@ -223,3 +221,4 @@ variable "random_certificate_suffix" {
   type        = bool
   default     = false
 }
+

@@ -54,7 +54,6 @@ variable "ipv6_address" {
   default     = null
 }
 
-
 variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
@@ -83,7 +82,6 @@ variable "backends" {
     })
   }))
 }
-
 variable "create_url_map" {
   description = "Set to `false` if url_map variable is provided."
   type        = bool
@@ -173,3 +171,4 @@ variable "random_certificate_suffix" {
   type        = bool
   default     = false
 }
+
