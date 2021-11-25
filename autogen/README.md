@@ -1,4 +1,4 @@
-# Global HTTP Load Balancer Terraform Module {%- if serverless %} for Serverless NEGs {% elif backend_bucket} for static websites using a Cloud Storage Bucket{% endif %}
+# Global HTTP Load Balancer Terraform Module {%- if serverless %} for Serverless NEGs {% elif backend_bucket %} for static websites using a Cloud Storage Bucket{% endif %}
 
 {% if not serverless and not backend_bucket %}
 Modular Global HTTP Load Balancer for GCE using forwarding rules.
@@ -26,7 +26,7 @@ behind a Cloud Load Balancer.
 This submodule allows you to create a Cloud HTTP(S) Load Balancer for [static website content hosted in a Cloud Storage Bucket](https://cloud.google.com/storage/docs/hosting-static-website) with a CDN for content caching and distribution. Although multiple backend storage buckets are supported by the HTTP(s) LB, this module is limited to one backend currently.
 {% endif %}
 
-{% if not serverless or not backend_bucket %}
+{% if not serverless and not backend_bucket %}
 {# TCP LB and ILB don't work for Serverless NEGs or backend buckets yet. #}
 ## Load Balancer Types
 
@@ -221,7 +221,7 @@ Current version is 3.0. Upgrade guides:
 {% if not backend_bucket %}
 * [`google_compute_backend_service.default.*`](https://www.terraform.io/docs/providers/google/r/compute_backend_service.html): The backend services created for each of the `backend_params` elements.
 {% endif %}
-{% if not serverless or not backend_bucket %}
+{% if not serverless and not backend_bucket %}
 * [`google_compute_health_check.default.*`](https://www.terraform.io/docs/providers/google/r/compute_health_check.html):
   Health check resources created for each of the (non global NEG) backend services.
 * [`google_compute_firewall.default-hc`](https://www.terraform.io/docs/providers/google/r/compute_firewall.html): Firewall rule created for each of the backed services to allow health checks to the instance group.
