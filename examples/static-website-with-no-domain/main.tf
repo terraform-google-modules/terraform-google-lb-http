@@ -22,10 +22,6 @@ provider "google-beta" {
   project = var.project_id
 }
 
-local {
-
-}
-
 module "website-storage-bucket" {
   source                             = "terraform-google-modules/cloud-storage/google"
   prefix                             = ""
