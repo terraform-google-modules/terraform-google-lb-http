@@ -126,6 +126,7 @@ variable "security_policy" {
   default     = null
 }
 
+
 variable "https_redirect" {
   description = "Set to `true` to enable https redirect on the lb."
   type        = bool

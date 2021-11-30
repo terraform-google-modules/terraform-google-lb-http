@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+ 
 output "backend_bucket" {
   description = "The backend bucket resource."
-  value       = google_compute_backend_bucket.default-backend-bucket
+  value       = google_compute_backend_bucket.default
 }
 
 output "external_ip" {
@@ -41,7 +41,7 @@ output "http_proxy" {
 
 output "https_proxy" {
   description = "The HTTPS proxy used by this module."
-  value       = google_compute_target_https_proxy.https-proxy[*].self_link
+  value       = google_compute_target_https_proxy.default[*].self_link
 }
 
 output "url_map" {

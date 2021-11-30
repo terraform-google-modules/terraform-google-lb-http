@@ -1,6 +1,6 @@
-# Global HTTP Load Balancer Terraform Module {%- if serverless %} for Serverless NEGs{% endif %}
+# Global HTTP Load Balancer Terraform Module {%- if serverless %} for Serverless NEGs {% elif backend_bucket %} for static websites using a Cloud Storage Bucket{% endif %}
 
-{% if not serverless %}
+{% if not serverless and not backend_bucket %}
 Modular Global HTTP Load Balancer for GCE using forwarding rules.
 {% endif %}
 
@@ -22,10 +22,12 @@ This submodule allows you to create Cloud HTTP(S) Load Balancer with
 [Serverless Network Endpoint Groups (NEGs)](https://cloud.google.com/load-balancing/docs/negs/serverless-neg-concepts)
 and place serverless services from Cloud Run, Cloud Functions and App Engine
 behind a Cloud Load Balancer.
+{% elif backend_bucket %}
+This submodule allows you to create a Cloud HTTP(S) Load Balancer for [static website content hosted in a Cloud Storage Bucket](https://cloud.google.com/storage/docs/hosting-static-website) with a CDN for content caching and distribution. Although multiple backend storage buckets are supported by the HTTP(s) LB, this module is limited to one backend currently.
 {% endif %}
 
-{% if not serverless %}
-{# TCP LB and ILB don't work for Serverless NEGs yet. #}
+{% if not serverless and not backend_bucket %}
+{# TCP LB and ILB don't work for Serverless NEGs or backend buckets yet. #}
 ## Load Balancer Types
 
 * [TCP load balancer](https://github.com/terraform-google-modules/terraform-google-lb)
@@ -52,7 +54,7 @@ module "lb-http" {
   version           = "~> 4.4"
 
   project           = "my-project-id"
-  {% if serverless %}
+  {% if serverless or backend_bucket %}
   name              = "my-lb"
 
   ssl                             = true
@@ -62,6 +64,8 @@ module "lb-http" {
   name              = "group-http-lb"
   target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
   {% endif %}
+
+  {% if not backend_bucket %}
   backends = {
     default = {
       description                     = null
@@ -133,10 +137,24 @@ module "lb-http" {
       }
     }
   }
+  {% else %}
+  bucket_name       = "your-storagebucket-name"
+  enable_cdn        = true
+
+  cdn_policy {
+    cache_mode                   = var.cache_mode
+    client_ttl                   = var.client_ttl
+    default_ttl                  = var.default_ttl
+    max_ttl                      = var.max_ttl
+    negative_caching             = var.negative_caching
+    signed_url_cache_max_age_sec = var.signed_url_cache_max_age_sec
+  }
+  {% endif %}
+
 }
 ```
 
-{% if not serverless %}
+{% if not serverless and not backend_bucket %}
 ## Resources created
 
 **Figure 1.** *diagram of terraform resources*
@@ -200,9 +218,15 @@ Current version is 3.0. Upgrade guides:
 * [`google_compute_ssl_certificate.default`](https://www.terraform.io/docs/providers/google/r/compute_ssl_certificate.html): The certificate resource created when input `ssl` is `true` and `managed_ssl_certificate_domains` not specified.
 * [`google_compute_managed_ssl_certificate.default`](https://www.terraform.io/docs/providers/google/r/compute_managed_ssl_certificate.html): The Google-managed certificate resource created when input `ssl` is `true` and `managed_ssl_certificate_domains` is specified.
 * [`google_compute_url_map.default`](https://www.terraform.io/docs/providers/google/r/compute_url_map.html): The default URL map resource when input `url_map` is not provided.
+{% if not backend_bucket %}
 * [`google_compute_backend_service.default.*`](https://www.terraform.io/docs/providers/google/r/compute_backend_service.html): The backend services created for each of the `backend_params` elements.
-{% if not serverless %}
+{% endif %}
+{% if not serverless and not backend_bucket %}
 * [`google_compute_health_check.default.*`](https://www.terraform.io/docs/providers/google/r/compute_health_check.html):
   Health check resources created for each of the (non global NEG) backend services.
 * [`google_compute_firewall.default-hc`](https://www.terraform.io/docs/providers/google/r/compute_firewall.html): Firewall rule created for each of the backed services to allow health checks to the instance group.
+{% endif %}
+{% if backend_bucket %}
+* [`google_compute_backend_bucket.default.*`](https://www.terraform.io/docs/providers/google/r/compute_backend_bucket.html):
+  The Backend cloud storage bucket used with HTTP(S) load balancing to serve static content, and its related CDN settings.
 {% endif %}

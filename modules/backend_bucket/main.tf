@@ -18,9 +18,10 @@
 locals {
   address      = var.create_address ? join("", google_compute_global_address.default.*.address) : var.address
   ipv6_address = var.create_ipv6_address ? join("", google_compute_global_address.default_ipv6.*.address) : var.ipv6_address
-
-  url_map      = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
+  
+  url_map             = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
   create_http_forward = var.http_forward || var.https_redirect
+
 }
 
 ### IPv4 block ###
@@ -37,7 +38,7 @@ resource "google_compute_global_forwarding_rule" "https" {
   project    = var.project
   count      = var.ssl ? 1 : 0
   name       = "${var.name}-https"
-  target     = google_compute_target_https_proxy.https-proxy[0].self_link
+  target     = google_compute_target_https_proxy.default[0].self_link
   ip_address = local.address
   port_range = "443"
 }
@@ -64,7 +65,7 @@ resource "google_compute_global_forwarding_rule" "https_ipv6" {
   project    = var.project
   count      = (var.enable_ipv6 && var.ssl) ? 1 : 0
   name       = "${var.name}-ipv6-https"
-  target     = google_compute_target_https_proxy.https-proxy[0].self_link
+  target     = google_compute_target_https_proxy.default[0].self_link
   ip_address = local.ipv6_address
   port_range = "443"
 }
@@ -85,8 +86,8 @@ resource "google_compute_target_http_proxy" "default" {
   url_map = var.https_redirect == false ? local.url_map : join("", google_compute_url_map.https_redirect.*.self_link)
 }
 
-# HTTPS proxy when ssl is true and using a backend bucket
-resource "google_compute_target_https_proxy" "https-proxy" {
+# HTTPS proxy when ssl is true
+resource "google_compute_target_https_proxy" "default" {
   project = var.project
   count   = var.ssl ? 1 : 0
   name    = "${var.name}-https-proxy"
@@ -138,7 +139,7 @@ resource "google_compute_url_map" "default" {
   project         = var.project
   count           = var.create_url_map ? 1 : 0
   name            = "${var.name}-url-map"
-  default_service = google_compute_backend_bucket.default-backend-bucket.self_link
+  default_service = google_compute_backend_bucket.default.self_link
 }
 
 resource "google_compute_url_map" "https_redirect" {
@@ -152,7 +153,7 @@ resource "google_compute_url_map" "https_redirect" {
   }
 }
 
-resource "google_compute_backend_bucket" "default-backend-bucket" {
+resource "google_compute_backend_bucket" "default" {
   provider    = google-beta
   project     = var.project
   name        = "${var.name}-backend-bucket"
@@ -169,3 +170,4 @@ resource "google_compute_backend_bucket" "default-backend-bucket" {
     signed_url_cache_max_age_sec = var.signed_url_cache_max_age_sec
   }
 }
+
