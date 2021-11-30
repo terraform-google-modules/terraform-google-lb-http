@@ -53,7 +53,7 @@ for production use.
 2. Deploy the load balancer:
 
     ```
-    terraform apply -var=project_id=$PROJECT 
+    terraform apply -var=project=$PROJECT 
     ```
 
 3. Upload the provided site files to the cloud storage bucket. Visit the output bucket url of the storage bucket.
@@ -70,7 +70,7 @@ for production use.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| project\_id | n/a | `string` | n/a | yes |
+| project | n/a | `string` | n/a | yes |
 
 ## Outputs
 
