@@ -17,3 +17,11 @@
 output "bucket-name" {
   value = module.website-storage-bucket.name
 }
+
+output "bucket-url" {
+  value = module.website-storage-bucket.url
+}
+
+output "loadbalancer-ip" {
+  value = module.load-balancer-sslcert-CDN.external_ip
+}

@@ -4,6 +4,6 @@ variable "project" {
 }
 
 variable "domain" {
-  description = "Zone domain, must end with a period."
+  description = "Zone domain"
   type        = string
 }
