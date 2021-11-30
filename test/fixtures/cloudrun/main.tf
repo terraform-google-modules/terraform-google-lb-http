@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-provider "google" {
-  version = "~> 3.53"
-}
-
 module "example" {
   source     = "../../../examples/cloudrun"
   project_id = var.project_id
