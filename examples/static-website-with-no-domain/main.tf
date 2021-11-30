@@ -22,14 +22,16 @@ provider "google-beta" {
   project = var.project_id
 }
 
+local {
+
+}
+
 module "website-storage-bucket" {
   source                             = "terraform-google-modules/cloud-storage/google"
   prefix                             = ""
   names                              = ["website-bucket-"]
   randomize_suffix                   = true
   project_id                         = var.project
-  versioning                         = {"${var.domain}" = true}
-  force_destroy                      = {"${var.domain}" = true}
   location                           = "US"
   set_viewer_roles                   = true
   viewers                            = ["allUsers"]
