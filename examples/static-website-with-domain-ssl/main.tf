@@ -72,7 +72,7 @@ module "website-storage-bucket" {
 }
 
 module "load-balancer-sslcert-CDN" {
-  source                             = "../CFT/terraform-google-lb-http/modules/backend_bucket"
+  source                             = "github.com/wapfel/terraform-google-lb-http/tree/master/examples/static-website-with-domain-ssl"
   project                            = var.project
   name                               = "website-lb"
   ssl                                = true
