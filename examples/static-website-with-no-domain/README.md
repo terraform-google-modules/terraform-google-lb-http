@@ -1,6 +1,6 @@
 # HTTPS load balancer with Cloud Storage Backend example
 
-[![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://wapfel/terraform-google-lb-http&working_dir=examples/static-website-with-domain-ssl&page=shell&tutorial=README.md)
+[![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/wapfel/terraform-google-lb-http&working_dir=examples/static-website-with-domain-ssl&page=shell&tutorial=README.md)
 
 This example creates at static website using a public Google Cloud Storage bucket containing basic html website files and exposes it behind a Cloud HTTPS load balancer and CDN accessible via a global IP. If you have your own domain and would like to use SSL, please see the [static-website-with-domain-ssl](https://github.com/wapfel/terraform-google-lb-http/tree/master/examples/static-website-with-domain-ssl) example.
 ​
