@@ -54,7 +54,7 @@ This option provisions an ssl certificate and a redirect from http to https traf
 2. Deploy the load balancer (your must provide your domain below to configure Cloud DNS and your SSL certificate):
 
     ```
-    terraform apply -var=project_id=$PROJECT \
+    terraform apply -var=project=$PROJECT \
         -var=domain=<yourdomain.com>
 
     ```
@@ -75,7 +75,7 @@ This option provisions an ssl certificate and a redirect from http to https traf
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| project\_id | n/a | `string` | n/a | yes |
+| project | n/a | `string` | n/a | yes |
 | domain | your domain name (ex. yourdomain.com)| `string` | n/a | yes |
 
 ## Outputs
