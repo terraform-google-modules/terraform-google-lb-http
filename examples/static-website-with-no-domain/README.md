@@ -12,7 +12,9 @@ You can tweak this example to enable other functionalities such as:
 ​
 ## Change to the example directory
 
+```
 [[ `basename $PWD` != static-website-with-no-domain ]] && cd examples/static-website-with-domain-ssl
+```
 
 ## Install Terraform
 
