@@ -14,7 +14,7 @@ You can tweak this example to enable other functionalities such as:
 
 **Figure 1.** *diagram of terraform resources*
 
-![architecture diagram](../../modules/backend_bucket/Static_Website_IP_Only.jpeg)
+![architecture diagram](../../modules/backend_bucket/Diagrams/Static_Website_IP_Only.jpeg)
 ​
 ## Change to the example directory
 
