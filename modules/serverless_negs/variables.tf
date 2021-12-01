@@ -153,13 +153,11 @@ variable "security_policy" {
   type        = string
   default     = null
 }
-
 variable "cdn" {
   description = "Set to `true` to enable cdn on backend."
   type        = bool
   default     = false
 }
-
 variable "https_redirect" {
   description = "Set to `true` to enable https redirect on the lb."
   type        = bool
@@ -171,4 +169,3 @@ variable "random_certificate_suffix" {
   type        = bool
   default     = false
 }
-

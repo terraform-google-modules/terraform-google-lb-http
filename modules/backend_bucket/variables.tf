@@ -126,7 +126,6 @@ variable "security_policy" {
   default     = null
 }
 
-
 variable "https_redirect" {
   description = "Set to `true` to enable https redirect on the lb."
   type        = bool
@@ -138,7 +137,6 @@ variable "random_certificate_suffix" {
   type        = bool
   default     = false
 }
-
 variable "bucket_name" {
   description = "a string value representing the name of the cloud storage bucket for the backend"
   type        = string
@@ -155,31 +153,31 @@ variable "cache_mode" {
   description = "a string representing the caching mode - options include USE_ORIGIN_HEADERS, FORCE_CACHE_ALL and CACHE_ALL_STATIC"
   type        = string
   default     = "CACHE_ALL_STATIC"
-}    
+}
 
 variable "client_ttl" {
   description = "Specifies the maximum allowed TTL for cached content served by this origin."
   type        = string
   default     = "3600"
-} 
+}
 
 variable "default_ttl" {
   description = "Specifies the default TTL for cached content served by this origin for responses that do not have an existing valid TTL (max-age or s-max-age)"
   type        = string
   default     = "3600"
-} 
+}
 
 variable "max_ttl" {
   description = "Specifies the maximum allowed TTL for cached content served by this origin."
   type        = string
   default     = "86400"
-} 
+}
 
 variable "negative_caching" {
   description = "Negative caching allows per-status code TTLs to be set, in order to apply fine-grained caching for common errors or redirects"
   type        = bool
   default     = false
-} 
+}
 
 variable "signed_url_cache_max_age_sec" {
   description = "Maximum number of seconds the response to a signed URL request will be considered fresh, defaults to 1hr (3600s). After this time period, the response will be revalidated before being served"
