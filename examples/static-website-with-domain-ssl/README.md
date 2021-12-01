@@ -62,8 +62,8 @@ This option provisions an ssl certificate and a redirect from http to https traf
 3. Upload the provided site files to the cloud storage bucket. Visit the output bucket url of the storage bucket.
 
     ```
-    gsutil cp /index.html <your-storage-bucket>
-    gsutil cp /404.html <your-storage-bucket>
+    gsutil cp index.html <your-storage-bucket>
+    gsutil cp 404.html <your-storage-bucket>
     ```
 
 5. Update the name servers in your domain registry to point to the Cloud DNS zone's name servers provided in the output.
