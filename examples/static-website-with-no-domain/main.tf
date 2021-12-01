@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
- provider "google" {
+
+provider "google" {
   project = var.project
 }
 
@@ -23,27 +23,27 @@ provider "google-beta" {
 }
 
 module "website-storage-bucket" {
-  source                             = "terraform-google-modules/cloud-storage/google"
-  prefix                             = ""
-  names                              = ["website-bucket-"]
-  randomize_suffix                   = true
-  project_id                         = var.project
-  location                           = "US"
-  set_viewer_roles                   = true
-  viewers                            = ["allUsers"]
-  website                            = {
+  source           = "terraform-google-modules/cloud-storage/google"
+  prefix           = ""
+  names            = ["website-bucket-"]
+  randomize_suffix = true
+  project_id       = var.project
+  location         = "US"
+  set_viewer_roles = true
+  viewers          = ["allUsers"]
+  website = {
     main_page_suffix = "index.html"
-    not_found_page = "404.html"
-}
+    not_found_page   = "404.html"
+  }
 }
 
 module "load-balancer-sslcert-CDN" {
-  source                             = "../../modules/backend_bucket"
-  project                            = var.project
-  name                               = "website-lb"
-  bucket_name                        = module.website-storage-bucket.name
+  source      = "../../modules/backend_bucket"
+  project     = var.project
+  name        = "website-lb"
+  bucket_name = module.website-storage-bucket.name
 
   #instruction to create website storage bucket first
-  depends_on                         = [module.website-storage-bucket]
+  depends_on = [module.website-storage-bucket]
 
 }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
 output "backend_bucket" {
   description = "The backend bucket resource."
   value       = google_compute_backend_bucket.default

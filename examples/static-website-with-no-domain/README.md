@@ -9,6 +9,12 @@ You can tweak this example to enable other functionalities such as:
 - configuring custom CDN caching policies
 - serving static assets from multiple cloud storage buckets
 - serving static and dynamic assets from backend buckets and backend services
+
+## Resources created
+
+**Figure 1.** *diagram of terraform resources*
+
+![architecture diagram](../../modules/backend_bucket/Static_Website_IP_Only.jpeg)
 ​
 ## Change to the example directory
 
@@ -53,7 +59,7 @@ for production use.
 2. Deploy the load balancer:
 
     ```
-    terraform apply -var=project=$PROJECT 
+    terraform apply -var=project=$PROJECT
     ```
 
 3. Upload the provided site files to the cloud storage bucket. Visit the output bucket url of the storage bucket.

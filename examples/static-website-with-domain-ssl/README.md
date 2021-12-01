@@ -11,6 +11,12 @@ You can tweak this example to enable other functionalities such as:
 - configuring custom CDN caching policies
 - securely serving static assets from multiple cloud storage buckets
 - securely serving static and dynamic assets from backend buckets and backend services
+
+## Resources created
+
+**Figure 1.** *diagram of terraform resources*
+
+![architecture diagram](../../modules/backend_bucket/Static_Website_with_DNS_SSL.jpeg)
 ​
 ## Change to the example directory
 

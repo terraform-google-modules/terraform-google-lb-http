@@ -1,4 +1,4 @@
-# Global HTTP Load Balancer Terraform Module {%- if serverless %} for Serverless NEGs {% elif backend_bucket %} for static websites using a Cloud Storage Bucket{% endif %}
+# Global HTTP Load Balancer Terraform Module {%- if serverless %} for Serverless NEGs{% elif backend_bucket %} for static websites using a Cloud Storage Bucket{% endif %}
 
 {% if not serverless and not backend_bucket %}
 Modular Global HTTP Load Balancer for GCE using forwarding rules.

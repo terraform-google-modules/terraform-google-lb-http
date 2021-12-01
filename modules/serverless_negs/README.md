@@ -1,4 +1,4 @@
-# Global HTTP Load Balancer Terraform Module for Serverless NEGs 
+# Global HTTP Load Balancer Terraform Module for Serverless NEGs
 
 This submodule allows you to create Cloud HTTP(S) Load Balancer with
 [Serverless Network Endpoint Groups (NEGs)](https://cloud.google.com/load-balancing/docs/negs/serverless-neg-concepts)

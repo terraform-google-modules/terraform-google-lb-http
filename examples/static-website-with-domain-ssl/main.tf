@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
- provider "google" {
+
+provider "google" {
   project = var.project
 }
 
@@ -23,12 +23,12 @@ provider "google-beta" {
 }
 
 module "website-dns-zone" {
-  source                             = "terraform-google-modules/cloud-dns/google"
-  project_id                         = var.project
-  type                               = "public"
-  name                               = "website-zone"
-  domain                             = "${var.domain}."
-  recordsets                         = [
+  source     = "terraform-google-modules/cloud-dns/google"
+  project_id = var.project
+  type       = "public"
+  name       = "website-zone"
+  domain     = "${var.domain}."
+  recordsets = [
     {
       name = ""
       type = "A"
@@ -45,42 +45,42 @@ module "website-dns-zone" {
         "${var.domain}."
       ]
     }
-]
+  ]
 
-depends_on = [module.load-balancer-sslcert-CDN] 
+  depends_on = [module.load-balancer-sslcert-CDN]
 }
 
 module "website-storage-bucket" {
-  source                             = "terraform-google-modules/cloud-storage/google"
-  prefix                             = ""
-  names                              = ["website-bucket"]
-  randomize_suffix                   = true
-  project_id                         = var.project
-  location                           = "US"
-  set_viewer_roles                   = true
-  viewers                            = ["allUsers"]
-  website                            = {
+  source           = "terraform-google-modules/cloud-storage/google"
+  prefix           = ""
+  names            = ["website-bucket"]
+  randomize_suffix = true
+  project_id       = var.project
+  location         = "US"
+  set_viewer_roles = true
+  viewers          = ["allUsers"]
+  website = {
     main_page_suffix = "index.html"
-    not_found_page = "404.html"
-}
-  cors                               = [{
+    not_found_page   = "404.html"
+  }
+  cors = [{
     origin          = ["http://${var.domain}"]
     method          = ["GET", "HEAD", "PUT", "POST", "DELETE"]
     response_header = ["*"]
     max_age_seconds = 3600
-}]
+  }]
 }
 
 module "load-balancer-sslcert-CDN" {
-  source                             = "../../modules/backend_bucket"
-  project                            = var.project
-  name                               = "website-lb"
-  ssl                                = true
-  managed_ssl_certificate_domains    = ["www.${var.domain}", "${var.domain}"]
-  https_redirect                     = true
-  bucket_name                        = module.website-storage-bucket.name
+  source                          = "../../modules/backend_bucket"
+  project                         = var.project
+  name                            = "website-lb"
+  ssl                             = true
+  managed_ssl_certificate_domains = ["www.${var.domain}", "${var.domain}"]
+  https_redirect                  = true
+  bucket_name                     = module.website-storage-bucket.name
 
   #instruction to create website storage bucket first
-  depends_on                         = [module.website-storage-bucket]
+  depends_on = [module.website-storage-bucket]
 
 }
