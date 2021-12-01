@@ -59,8 +59,8 @@ for production use.
 3. Upload the provided site files to the cloud storage bucket. Visit the output bucket url of the storage bucket.
 
     ```
-    gsutil cp /index.html <your-storage-bucket>
-    gsutil cp /404.html <your-storage-bucket>
+    gsutil cp index.html <your-storage-bucket>
+    gsutil cp 404.html <your-storage-bucket>
     ```
 
 4. It may take some time for the load balancer to provision. Once completed, you can visit the output IP address of the load balancer to view the site.
