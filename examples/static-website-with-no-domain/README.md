@@ -70,15 +70,15 @@ for production use.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| project | n/a | `string` | n/a | yes |
+| project | The ID of the project to create the bucket in. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| load-balancer-ip | ip of the public site |
-| bucket-name | name of the cloud storage bucket |
-| bucket-url | url of the cloud storage bucket |
+| bucket-name | n/a |
+| bucket-url | n/a |
+| loadbalancer-ip | n/a |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ​
