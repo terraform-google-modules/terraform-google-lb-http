@@ -138,7 +138,7 @@ resource "google_compute_url_map" "default" {
   project         = var.project
   count           = var.create_url_map ? 1 : 0
   name            = "${var.name}-url-map"
-  default_service = google_compute_backend_bucket.default.self_link
+  default_service = google_compute_backend_bucket.default[keys(var.backends)[0]].self_link
 }
 
 resource "google_compute_url_map" "https_redirect" {
@@ -153,20 +153,22 @@ resource "google_compute_url_map" "https_redirect" {
 }
 
 resource "google_compute_backend_bucket" "default" {
-  provider    = google-beta
+  provider = google-beta
+  for_each = var.backends
+
   project     = var.project
-  name        = "${var.name}-backend-bucket"
-  description = "connects the GCLB to a backend storage bucket, likely for serving up a statuc website or files"
-  bucket_name = var.bucket_name
-  enable_cdn  = var.enable_cdn_for_bucket
+  name        = "${var.name}-backend-bucket-${each.key}"
+  description = lookup(each.value, "description", null)
+  bucket_name = each.value.bucket_name
+  enable_cdn  = each.value.enable_cdn
 
   cdn_policy {
-    cache_mode                   = var.cache_mode
-    client_ttl                   = var.client_ttl
-    default_ttl                  = var.default_ttl
-    max_ttl                      = var.max_ttl
-    negative_caching             = var.negative_caching
-    signed_url_cache_max_age_sec = var.signed_url_cache_max_age_sec
+    cache_mode                   = lookup(each.value, "cache_mode", "CACHE_ALL_STATIC")
+    client_ttl                   = lookup(each.value, "client_ttl", 3600)
+    default_ttl                  = lookup(each.value, "default_ttl", 3600)
+    max_ttl                      = lookup(each.value, "max_ttl", 86400)
+    negative_caching             = lookup(each.value, "negative_caching", false)
+    signed_url_cache_max_age_sec = lookup(each.value, "signed_url_cache_max_age_sec", 7200)
   }
 }
 

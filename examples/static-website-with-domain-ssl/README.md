@@ -9,7 +9,7 @@ If you do not have your own domain and would like to test the static website fuc
 You can tweak this example to enable other functionalities such as:
 ​
 - configuring custom CDN caching policies
-- securely serving static assets from multiple cloud storage buckets
+- securely serving static assets from multiple cloud storage buckets (requires a custom url map to be provided)
 - securely serving static and dynamic assets from backend buckets and backend services
 
 ## Resources created
@@ -57,15 +57,20 @@ This option provisions an ssl certificate and a redirect from http to https traf
     terraform init
     ```
 
-2. Deploy the load balancer (your must provide your domain below to configure Cloud DNS and your SSL certificate):
+2. First deploy only the storage bucket, since it must be created before referencing it to the load balancer:
+
+    ```
+    terraform apply -target module.website-storage-buckets
+    ```
+
+3. Deploy the load balancer (your must provide your domain below to configure Cloud DNS and your SSL certificate):
 
     ```
     terraform apply -var=project=$PROJECT \
         -var=domain=<yourdomain.com>
-
     ```
 
-3. Upload the provided site files to the cloud storage bucket. Visit the output bucket url of the storage bucket.
+4. Upload the provided site files to the cloud storage bucket. Visit the output bucket url of the storage bucket.
 
     ```
     gsutil cp index.html <your-storage-bucket>
@@ -74,7 +79,7 @@ This option provisions an ssl certificate and a redirect from http to https traf
 
 5. Update the name servers in your domain registry to point to the Cloud DNS zone's name servers provided in the output.
 
-5. It may take some time for the load balancer and your SSL certificate to fully provision. Once completed, you can visit your site at https://yourdomain.com and https://www.yourdomain.com. http will redirect to https.
+6. It may take some time for the load balancer and your SSL certificate to fully provision. Once completed, you can visit your site at https://yourdomain.com and https://www.yourdomain.com. http will redirect to https.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
