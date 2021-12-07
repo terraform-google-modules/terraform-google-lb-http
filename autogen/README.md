@@ -23,7 +23,9 @@ This submodule allows you to create Cloud HTTP(S) Load Balancer with
 and place serverless services from Cloud Run, Cloud Functions and App Engine
 behind a Cloud Load Balancer.
 {% elif backend_bucket %}
-This submodule allows you to create a Cloud HTTP(S) Load Balancer for [static website content hosted in a Cloud Storage Bucket](https://cloud.google.com/storage/docs/hosting-static-website) with a CDN for content caching and distribution. Although multiple backend storage buckets are supported by the HTTP(s) LB, this module is limited to one backend currently.
+This submodule allows you to create a Cloud HTTP(S) Load Balancer for [static website content hosted in one or more Cloud Storage Buckets](https://cloud.google.com/storage/docs/hosting-static-website) with a CDN for content caching and distribution.
+
+Note: The use of multiple backend storage buckets with discrete CDN configurations is supported, but this requires a url map to be provided.
 {% endif %}
 
 {% if not serverless and not backend_bucket %}
@@ -138,16 +140,21 @@ module "lb-http" {
     }
   }
   {% else %}
-  bucket_name       = "your-storagebucket-name"
-  enable_cdn        = true
 
-  cdn_policy {
-    cache_mode                   = var.cache_mode
-    client_ttl                   = var.client_ttl
-    default_ttl                  = var.default_ttl
-    max_ttl                      = var.max_ttl
-    negative_caching             = var.negative_caching
-    signed_url_cache_max_age_sec = var.signed_url_cache_max_age_sec
+  backends = {
+    default = {
+      description = null
+      bucket_name = "your-bucket-name"
+      enable_cdn  = true
+      cdn_policy = {
+        cache_mode                   = "CACHE_ALL_STATIC"
+        client_ttl                   = 3600
+        default_ttl                  = 3600
+        max_ttl                      = 86400
+        negative_caching             = false
+        signed_url_cache_max_age_sec = 7200
+      }
+    }
   }
   {% endif %}
 

@@ -22,6 +22,24 @@ provider "google-beta" {
   project = var.project
 }
 
+locals {
+  buckets = tolist(module.website-storage-buckets.names_list)
+  backends = { for bucket in local.buckets : index(local.buckets, bucket) => {
+    "bucket_name" = "${bucket}"
+    "enable_cdn"  = true
+    "description" = null
+    "cdn_policy" = {
+      "cache_mode"                   = "CACHE_ALL_STATIC"
+      "client_ttl"                   = 3600
+      "default_ttl"                  = 3600
+      "max_ttl"                      = 86400
+      "negative_caching"             = false
+      "signed_url_cache_max_age_sec" = 7200
+    }
+    }
+  }
+}
+
 module "website-dns-zone" {
   source     = "terraform-google-modules/cloud-dns/google"
   project_id = var.project
@@ -50,10 +68,10 @@ module "website-dns-zone" {
   depends_on = [module.load-balancer-sslcert-CDN]
 }
 
-module "website-storage-bucket" {
+module "website-storage-buckets" {
   source           = "terraform-google-modules/cloud-storage/google"
   prefix           = ""
-  names            = ["website-bucket"]
+  names            = ["website-bucket-"]
   randomize_suffix = true
   project_id       = var.project
   location         = "US"
@@ -78,9 +96,9 @@ module "load-balancer-sslcert-CDN" {
   ssl                             = true
   managed_ssl_certificate_domains = ["www.${var.domain}", "${var.domain}"]
   https_redirect                  = true
-  bucket_name                     = module.website-storage-bucket.name
+  backends                        = local.backends
 
   #instruction to create website storage bucket first
-  depends_on = [module.website-storage-bucket]
+  depends_on = [module.website-storage-buckets]
 
 }

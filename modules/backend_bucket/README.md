@@ -1,6 +1,8 @@
 # Global HTTP Load Balancer Terraform Module for static websites using a Cloud Storage Bucket
 
-This submodule allows you to create a Cloud HTTP(S) Load Balancer for [static website content hosted in a Cloud Storage Bucket](https://cloud.google.com/storage/docs/hosting-static-website) with a CDN for content caching and distribution. Although multiple backend storage buckets are supported by the HTTP(s) LB, this module is limited to one backend currently.
+This submodule allows you to create a Cloud HTTP(S) Load Balancer for [static website content hosted in one or more Cloud Storage Buckets](https://cloud.google.com/storage/docs/hosting-static-website) with a CDN for content caching and distribution.
+
+Note: The use of multiple backend storage buckets with discrete CDN configurations is supported, but this requires a url map to be provided.
 
 
 ## Compatibility
@@ -24,16 +26,21 @@ module "gce-lb-http" {
   managed_ssl_certificate_domains = ["your-domain.com"]
   https_redirect                  = true
 
-  bucket_name       = "your-storagebucket-name"
-  enable_cdn        = true
 
-  cdn_policy {
-    cache_mode                   = var.cache_mode
-    client_ttl                   = var.client_ttl
-    default_ttl                  = var.default_ttl
-    max_ttl                      = var.max_ttl
-    negative_caching             = var.negative_caching
-    signed_url_cache_max_age_sec = var.signed_url_cache_max_age_sec
+  backends = {
+    default = {
+      description = null
+      bucket_name = "your-bucket-name"
+      enable_cdn  = true
+      cdn_policy = {
+        cache_mode                   = "CACHE_ALL_STATIC"
+        client_ttl                   = 3600
+        default_ttl                  = 3600
+        max_ttl                      = 86400
+        negative_caching             = false
+        signed_url_cache_max_age_sec = 7200
+      }
+    }
   }
 
 }
@@ -53,29 +60,22 @@ Current version is 3.0. Upgrade guides:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | address | Existing IPv4 address to use (the actual IP address value) | `string` | `null` | no |
-| bucket\_name | a string value representing the name of the cloud storage bucket for the backend | `string` | `null` | no |
-| cache\_mode | a string representing the caching mode - options include USE\_ORIGIN\_HEADERS, FORCE\_CACHE\_ALL and CACHE\_ALL\_STATIC | `string` | `"CACHE_ALL_STATIC"` | no |
+| backends | Map backend indices to list of backend maps. | <pre>map(object({<br>    description = string<br>    bucket_name = string<br>    enable_cdn  = bool<br>    cdn_policy = object({<br>      cache_mode                   = string<br>      client_ttl                   = number<br>      default_ttl                  = number<br>      max_ttl                      = number<br>      negative_caching             = bool<br>      signed_url_cache_max_age_sec = number<br>    })<br>  }))</pre> | n/a | yes |
 | certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
-| client\_ttl | Specifies the maximum allowed TTL for cached content served by this origin. | `string` | `"3600"` | no |
 | create\_address | Create a new global IPv4 address | `bool` | `true` | no |
 | create\_ipv6\_address | Allocate a new IPv6 address. Conflicts with "ipv6\_address" - if both specified, "create\_ipv6\_address" takes precedence. | `bool` | `false` | no |
 | create\_url\_map | Set to `false` if url\_map variable is provided. | `bool` | `true` | no |
-| default\_ttl | Specifies the default TTL for cached content served by this origin for responses that do not have an existing valid TTL (max-age or s-max-age) | `string` | `"3600"` | no |
-| enable\_cdn\_for\_bucket | Bool to enable/disable cdn on a backend storage bucket for static websites | `bool` | `true` | no |
 | enable\_ipv6 | Enable IPv6 address on the CDN load-balancer | `bool` | `false` | no |
 | http\_forward | Set to `false` to disable HTTP port 80 forward | `bool` | `true` | no |
 | https\_redirect | Set to `true` to enable https redirect on the lb. | `bool` | `false` | no |
 | ipv6\_address | An existing IPv6 address to use (the actual IP address value) | `string` | `null` | no |
 | managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` and `use_ssl_certificates` set to `false`. | `list(string)` | `[]` | no |
-| max\_ttl | Specifies the maximum allowed TTL for cached content served by this origin. | `string` | `"86400"` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |
-| negative\_caching | Negative caching allows per-status code TTLs to be set, in order to apply fine-grained caching for common errors or redirects | `bool` | `false` | no |
 | private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
 | project | The project to deploy to, if not set the default provider project is used. | `string` | n/a | yes |
 | quic | Set to `true` to enable QUIC support | `bool` | `false` | no |
 | random\_certificate\_suffix | Bool to enable/disable random certificate name generation. Set and keep this to true if you need to change the SSL cert. | `bool` | `false` | no |
 | security\_policy | The resource URL for the security policy to associate with the backend service | `string` | `null` | no |
-| signed\_url\_cache\_max\_age\_sec | Maximum number of seconds the response to a signed URL request will be considered fresh, defaults to 1hr (3600s). After this time period, the response will be revalidated before being served | `string` | `"7200"` | no |
 | ssl | Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self\_link certs | `bool` | `false` | no |
 | ssl\_certificates | SSL cert self\_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided. | `list(string)` | `[]` | no |
 | ssl\_policy | Selfink to SSL Policy | `string` | `null` | no |

@@ -15,11 +15,11 @@
  */
 
 output "bucket-name" {
-  value = module.website-storage-bucket.name
+  value = module.website-storage-buckets.name
 }
 
 output "bucket-url" {
-  value = module.website-storage-bucket.url
+  value = module.website-storage-buckets.url
 }
 
 output "loadbalancer-ip" {
