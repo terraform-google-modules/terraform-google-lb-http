@@ -29,15 +29,15 @@ module "gce-lb-http" {
 
   backends = {
     default = {
-      description                     = null
-      bucket_name                     = "your-bucket-name"
-      enable_cdn                      = true
+      description = null
+      bucket_name = "your-bucket-name"
+      enable_cdn  = true
       cdn_policy = {
-        cache_mode           = "CACHE_ALL_STATIC"
-        client_ttl           = 3600
-        default_ttl          = 3600
-        max_ttl              = 86400
-        negative_caching     = false
+        cache_mode                   = "CACHE_ALL_STATIC"
+        client_ttl                   = 3600
+        default_ttl                  = 3600
+        max_ttl                      = 86400
+        negative_caching             = false
         signed_url_cache_max_age_sec = 7200
       }
     }
