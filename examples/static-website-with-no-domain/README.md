@@ -59,7 +59,7 @@ for production use.
 2. First deploy only the storage bucket, since it must be created before referencing it to the load balancer:
 
     ```
-    terraform apply -target module.website-storage-buckets
+    terraform apply -target module.website-storage-buckets -var=project=$PROJECT
     ```
 
 3. Deploy the load balancer:
