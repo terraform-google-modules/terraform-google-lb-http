@@ -56,26 +56,32 @@ for production use.
     terraform init
     ```
 
-2. First deploy only the storage bucket, since it must be created before referencing it to the load balancer:
+2. Set your variables:
 
     ```
-    terraform apply -target module.website-storage-buckets -var=project=$PROJECT
+    export TF_VAR_project=$PROJECT
     ```
 
-3. Deploy the load balancer:
+3. Deploy only the storage bucket, since it must be created before referencing it to the load balancer:
 
     ```
-    terraform apply -var=project=$PROJECT
+    terraform apply -target module.website-storage-buckets
     ```
 
-4. Upload the provided site files to the cloud storage bucket. Visit the output bucket url of the storage bucket.
+4. Deploy the load balancer:
+
+    ```
+    terraform apply
+    ```
+
+5. Upload the provided site files to the cloud storage bucket. Visit the output bucket url of the storage bucket.
 
     ```
     gsutil cp index.html <your-storage-bucket>
     gsutil cp 404.html <your-storage-bucket>
     ```
 
-5. It may take a few minutes for the load balancer to provision. Once completed, you can visit the output IP address of the load balancer to view the site.
+6. It may take a few minutes for the load balancer to provision. Once completed, you can visit the output IP address of the load balancer to view the site.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs

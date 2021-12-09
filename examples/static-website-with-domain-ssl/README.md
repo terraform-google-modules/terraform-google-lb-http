@@ -57,30 +57,35 @@ This option provisions an ssl certificate and a redirect from http to https traf
     terraform init
     ```
 
-2. First deploy only the storage bucket, since it must be created before referencing it to the load balancer:
+2. Set your variables:
 
     ```
-    terraform apply -target module.website-storage-buckets -var=project=$PROJECT \
-        -var=domain=<yourdomain.com>
+    export_TF_VAR_project=$PROJECT
+    export_TF_VAR_project=domain
     ```
 
-3. Deploy the load balancer (your must provide your domain below to configure Cloud DNS and your SSL certificate):
+3. Deploy only the storage bucket, since it must be created before referencing it to the load balancer:
 
     ```
-    terraform apply -var=project=$PROJECT \
-        -var=domain=<yourdomain.com>
+    terraform apply -target module.website-storage-buckets
     ```
 
-4. Upload the provided site files to the cloud storage bucket. Visit the output bucket url of the storage bucket.
+4. Deploy the load balancer (your must provide your domain below to configure Cloud DNS and your SSL certificate):
+
+    ```
+    terraform apply
+    ```
+
+5. Upload the provided site files to the cloud storage bucket. Visit the output bucket url of the storage bucket.
 
     ```
     gsutil cp index.html <your-storage-bucket>
     gsutil cp 404.html <your-storage-bucket>
     ```
 
-5. Update the name servers in your domain registry to point to the Cloud DNS zone's name servers provided in the output.
+6. Update the name servers in your domain registry to point to the Cloud DNS zone's name servers provided in the output.
 
-6. It may take some time for the load balancer and your SSL certificate to fully provision. Once completed, you can visit your site at https://yourdomain.com and https://www.yourdomain.com. http will redirect to https.
+7. It may take some time for the load balancer and your SSL certificate to fully provision. Once completed, you can visit your site at https://yourdomain.com and https://www.yourdomain.com. http will redirect to https.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
