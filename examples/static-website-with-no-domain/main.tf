@@ -55,7 +55,7 @@ module "website-storage-buckets" {
   }
 }
 
-module "load-balancer-sslcert-CDN" {
+module "load-balancer" {
   source   = "../../modules/backend_bucket"
   project  = var.project
   name     = "website-lb"
