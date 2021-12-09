@@ -54,8 +54,8 @@ variable "ipv6_address" {
   default     = null
 }
 
-variable "backends" {
-  description = "Map backend indices to list of backend maps."
+variable "buckets" {
+  description = "Map backend indices to list of backend bucket maps."
   type = map(object({
     description = string
     bucket_name = string
@@ -143,6 +143,11 @@ variable "security_policy" {
   default     = null
 }
 
+variable "cdn" {
+  description = "Set to `true` to enable cdn on backends."
+  type        = bool
+  default     = false
+}
 
 variable "https_redirect" {
   description = "Set to `true` to enable https redirect on the lb."

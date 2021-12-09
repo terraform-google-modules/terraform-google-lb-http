@@ -207,7 +207,7 @@ variable "security_policy" {
 }
 
 variable "cdn" {
-  description = "Set to `true` to enable cdn on backend."
+  description = "Set to `true` to enable cdn on backends."
   type        = bool
   default     = false
 }

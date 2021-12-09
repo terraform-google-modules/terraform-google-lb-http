@@ -23,19 +23,10 @@ provider "google-beta" {
 }
 
 locals {
-  buckets = tolist(module.website-storage-buckets.names_list)
-  backends = { for bucket in local.buckets : index(local.buckets, bucket) => {
+  storage_buckets = tolist(module.website-storage-buckets.names_list)
+  backend_buckets = { for bucket in local.storage_buckets : index(local.storage_buckets, bucket) => {
     "bucket_name" = "${bucket}"
-    "enable_cdn"  = true
     "description" = null
-    "cdn_policy" = {
-      "cache_mode"                   = "CACHE_ALL_STATIC"
-      "client_ttl"                   = 3600
-      "default_ttl"                  = 3600
-      "max_ttl"                      = 86400
-      "negative_caching"             = false
-      "signed_url_cache_max_age_sec" = 7200
-    }
     }
   }
 }
@@ -52,7 +43,7 @@ module "website-dns-zone" {
       type = "A"
       ttl  = 300
       records = [
-        "${module.load-balancer-sslcert-CDN.external_ip}"
+        "${module.load-balancer.external_ip}"
       ]
     },
     {
@@ -65,7 +56,7 @@ module "website-dns-zone" {
     }
   ]
 
-  depends_on = [module.load-balancer-sslcert-CDN]
+  depends_on = [module.load-balancer]
 }
 
 module "website-storage-buckets" {
@@ -89,16 +80,16 @@ module "website-storage-buckets" {
   }]
 }
 
-module "load-balancer-sslcert-CDN" {
+module "load-balancer" {
   source                          = "../../modules/backend_bucket"
   project                         = var.project
   name                            = "website-lb"
   ssl                             = true
   managed_ssl_certificate_domains = ["www.${var.domain}", "${var.domain}"]
   https_redirect                  = true
-  backends                        = local.backends
+  buckets                         = local.backend_buckets
+  cdn                             = true
 
-  #instruction to create website storage bucket first
   depends_on = [module.website-storage-buckets]
 
 }

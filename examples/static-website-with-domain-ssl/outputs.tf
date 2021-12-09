@@ -27,5 +27,5 @@ output "bucket-url" {
 }
 
 output "loadbalancer-ip" {
-  value = module.load-balancer-sslcert-CDN.external_ip
+  value = module.load-balancer.external_ip
 }

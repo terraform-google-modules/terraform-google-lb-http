@@ -1,10 +1,10 @@
 # HTTPS load balancer with Cloud Storage Backend example (Including DNS & SSL)
 
-[![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/wapfel/terraform-google-lb-http&working_dir=examples/static-website-with-domain-ssl&page=shell&tutorial=README.md)
+[![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/terraform-google-modules/terraform-google-lb-http&working_dir=examples/static-website-with-domain-ssl&page=shell&tutorial=README.md)
 
 This example creates a static website using a public Google Cloud Storage bucket containing basic html website files and exposes it behind a Cloud HTTPS load balancer and Cloud CDN with HTTP-to-HTTPS redirection. Additionally, this module creates a public DNS zone for a provided domain and corresponding DNS records, and it creates a Google-managed certificate for SSL.
 
-If you do not have your own domain and would like to test the static website fuctionality, please see the [static-website-with-no-domain](https://github.com/wapfel/terraform-google-lb-http/tree/master/examples/static-website-with-no-domain) example.
+If you do not have your own domain and would like to test the static website fuctionality, please see the [static-website-with-no-domain](../static-website-with-no-domain) example.
 ​
 You can tweak this example to enable other functionalities such as:
 ​
@@ -60,7 +60,8 @@ This option provisions an ssl certificate and a redirect from http to https traf
 2. First deploy only the storage bucket, since it must be created before referencing it to the load balancer:
 
     ```
-    terraform apply -target module.website-storage-buckets
+    terraform apply -target module.website-storage-buckets -var=project=$PROJECT \
+        -var=domain=<yourdomain.com>
     ```
 
 3. Deploy the load balancer (your must provide your domain below to configure Cloud DNS and your SSL certificate):
