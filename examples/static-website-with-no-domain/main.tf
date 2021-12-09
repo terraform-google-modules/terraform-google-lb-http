@@ -60,7 +60,7 @@ module "load-balancer" {
   project = var.project
   name    = "website-lb"
   buckets = local.backend_buckets
-  cdn     = true
+  cdn     = false
 
   depends_on = [module.website-storage-buckets]
 
