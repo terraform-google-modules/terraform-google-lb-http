@@ -59,7 +59,7 @@ module "load-balancer" {
   source   = "../../modules/backend_bucket"
   project  = var.project
   name     = "website-lb"
-  buckets  = local.backends
+  buckets  = local.backend_buckets
   cdn      = true
 
   #instruction to create website storage bucket first
