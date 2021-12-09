@@ -4,7 +4,7 @@
 
 This example creates a static website using a public Google Cloud Storage bucket containing basic html website files and exposes it behind a Cloud HTTPS load balancer and Cloud CDN with HTTP-to-HTTPS redirection. Additionally, this module creates a public DNS zone for a provided domain and corresponding DNS records, and it creates a Google-managed certificate for SSL.
 
-If you do not have your own domain and would like to test the static website fuctionality, please see the [static-website-with-no-domain](https://github.com/wapfel/terraform-google-lb-http/tree/master/examples/static-website-with-no-domain) example.
+If you do not have your own domain and would like to test the static website fuctionality, please see the [static-website-with-no-domain](../static-website-with-no-domain) example.
 ​
 You can tweak this example to enable other functionalities such as:
 ​

@@ -138,7 +138,7 @@ resource "google_compute_url_map" "default" {
   project         = var.project
   count           = var.create_url_map ? 1 : 0
   name            = "${var.name}-url-map"
-  default_service = google_compute_backend_bucket.default[keys(var.backends)[0]].self_link
+  default_service = google_compute_backend_bucket.default[keys(var.buckets)[0]].self_link
 }
 
 resource "google_compute_url_map" "https_redirect" {
@@ -154,13 +154,13 @@ resource "google_compute_url_map" "https_redirect" {
 
 resource "google_compute_backend_bucket" "default" {
   provider = google-beta
-  for_each = var.backends
+  for_each = var.buckets
 
   project     = var.project
   name        = "${var.name}-backend-bucket-${each.key}"
   description = lookup(each.value, "description", null)
   bucket_name = each.value.bucket_name
-  enable_cdn  = each.value.enable_cdn
+  enable_cdn  = var.cdn
 
   cdn_policy {
     cache_mode                   = lookup(each.value, "cache_mode", "CACHE_ALL_STATIC")

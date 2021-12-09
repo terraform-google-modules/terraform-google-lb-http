@@ -47,12 +47,6 @@ module "gce-lb-http" {
 ```
 
 
-## Version
-
-Current version is 3.0. Upgrade guides:
-
-* [1.X -> 2.X](https://www.terraform.io/upgrade-guides/0-12.html)
-* [2.X -> 3.0](./docs/upgrading-v2.0.0-v3.0.0.md)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
@@ -60,7 +54,8 @@ Current version is 3.0. Upgrade guides:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | address | Existing IPv4 address to use (the actual IP address value) | `string` | `null` | no |
-| backends | Map backend indices to list of backend maps. | <pre>map(object({<br>    description = string<br>    bucket_name = string<br>    enable_cdn  = bool<br>    cdn_policy = object({<br>      cache_mode                   = string<br>      client_ttl                   = number<br>      default_ttl                  = number<br>      max_ttl                      = number<br>      negative_caching             = bool<br>      signed_url_cache_max_age_sec = number<br>    })<br>  }))</pre> | n/a | yes |
+| buckets | Map backend indices to list of backend bucket maps. | <pre>map(object({<br>    description = string<br>    bucket_name = string<br>    enable_cdn  = bool<br>    cdn_policy = object({<br>      cache_mode                   = string<br>      client_ttl                   = number<br>      default_ttl                  = number<br>      max_ttl                      = number<br>      negative_caching             = bool<br>      signed_url_cache_max_age_sec = number<br>    })<br>  }))</pre> | n/a | yes |
+| cdn | Set to `true` to enable cdn on backends. | `bool` | `false` | no |
 | certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
 | create\_address | Create a new global IPv4 address | `bool` | `true` | no |
 | create\_ipv6\_address | Allocate a new IPv6 address. Conflicts with "ipv6\_address" - if both specified, "create\_ipv6\_address" takes precedence. | `bool` | `false` | no |
