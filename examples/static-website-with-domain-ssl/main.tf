@@ -96,7 +96,8 @@ module "load-balancer-sslcert-CDN" {
   ssl                             = true
   managed_ssl_certificate_domains = ["www.${var.domain}", "${var.domain}"]
   https_redirect                  = true
-  backends                        = local.backends
+  buckets                         = local.backend_buckets
+  cdn                             = true
 
   #instruction to create website storage bucket first
   depends_on = [module.website-storage-buckets]
