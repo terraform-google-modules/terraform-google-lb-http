@@ -28,6 +28,7 @@ locals {
   backend_buckets = { for bucket in local.storage_buckets : index(local.storage_buckets, bucket) => {
     "bucket_name" = "${bucket}"
     "description" = null
+    "cdn_policy"  = {}
     }
   }
 }

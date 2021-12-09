@@ -152,7 +152,6 @@ variable "buckets" {
   type = map(object({
     description = string
     bucket_name = string
-    enable_cdn  = bool
     cdn_policy = object({
       cache_mode                   = string
       client_ttl                   = number
