@@ -76,16 +76,9 @@ This option provisions an ssl certificate and a redirect from http to https traf
     terraform apply
     ```
 
-5. Upload the provided site files to the cloud storage bucket. Visit the output bucket url of the storage bucket.
+5. Update the name servers in your domain registry to point to the Cloud DNS zone's name servers provided in the output.
 
-    ```
-    gsutil cp index.html <your-storage-bucket>
-    gsutil cp 404.html <your-storage-bucket>
-    ```
-
-6. Update the name servers in your domain registry to point to the Cloud DNS zone's name servers provided in the output.
-
-7. It may take some time for the load balancer and your SSL certificate to fully provision. Once completed, you can visit your site at https://yourdomain.com and https://www.yourdomain.com. http will redirect to https.
+6. It may take some time for the load balancer and your SSL certificate to fully provision. Once completed, you can visit your site at https://yourdomain.com and https://www.yourdomain.com. http will redirect to https.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs

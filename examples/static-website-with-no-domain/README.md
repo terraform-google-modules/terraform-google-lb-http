@@ -74,14 +74,7 @@ for production use.
     terraform apply
     ```
 
-5. Upload the provided site files to the cloud storage bucket. Visit the output bucket url of the storage bucket.
-
-    ```
-    gsutil cp index.html <your-storage-bucket>
-    gsutil cp 404.html <your-storage-bucket>
-    ```
-
-6. It may take a few minutes for the load balancer to provision. Once completed, you can visit the output IP address of the load balancer to view the site.
+5. It may take a few minutes for the load balancer to provision. Once completed, you can visit the output IP address of the load balancer to view the site.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
