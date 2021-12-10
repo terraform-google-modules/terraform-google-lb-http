@@ -66,14 +66,14 @@ module "load-balancer" {
 
 }
 
-resource "google_storage_bucket_object" "index.html" {
+resource "google_storage_bucket_object" "index" {
   name         = "index.html"
   content      = file("index.html")
   content_type = "text/html;charset=utf-8"
   bucket       = module.website-storage-buckets[0].name
 }
 
-resource "google_storage_bucket_object" "404.html" {
+resource "google_storage_bucket_object" "404" {
   name         = "404.html"
   content      = file("404.html")
   content_type = "text/html;charset=utf-8"
