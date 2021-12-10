@@ -101,3 +101,17 @@ module "load-balancer" {
   depends_on = [module.website-storage-buckets]
 
 }
+
+resource "google_storage_bucket_object" "index.html" {
+  name         = "index.html"
+  content      = file("index.html")
+  content_type = "text/html;charset=utf-8"
+  bucket       = module.website-storage-buckets[0].name
+}
+
+resource "google_storage_bucket_object" "404.html" {
+  name         = "404.html"
+  content      = file("404.html")
+  content_type = "text/html;charset=utf-8"
+  bucket       = module.website-storage-buckets[0].name
+}
