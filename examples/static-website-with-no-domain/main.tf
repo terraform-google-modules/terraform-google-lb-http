@@ -70,12 +70,12 @@ resource "google_storage_bucket_object" "website_index" {
   name         = "index.html"
   content      = file("index.html")
   content_type = "text/html;charset=utf-8"
-  bucket       = module.website-storage-buckets[0].name
+  bucket       = module.website-storage-buckets[keys(names_list)[0]].name
 }
 
 resource "google_storage_bucket_object" "website_404" {
   name         = "404.html"
   content      = file("404.html")
   content_type = "text/html;charset=utf-8"
-  bucket       = module.website-storage-buckets[0].name
+  bucket       = module.website-storage-buckets[keys(names_list)[0]].name
 }
