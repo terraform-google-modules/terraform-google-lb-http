@@ -90,14 +90,14 @@ module "gce-lb-http" {
 
 **Figure 1.** *diagram of terraform resources*
 
-![architecture diagram](./diagram.png)
+![architecture diagram](/diagram.png)
 
 ## Version
 
 Current version is 3.0. Upgrade guides:
 
 * [1.X -> 2.X](https://www.terraform.io/upgrade-guides/0-12.html)
-* [2.X -> 3.0](./docs/upgrading-v2.0.0-v3.0.0.md)
+* [2.X -> 3.0](/docs/upgrading-v2.0.0-v3.0.0.md)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
