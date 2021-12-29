@@ -86,7 +86,6 @@ variable "backends" {
   type = map(object({
     {% if not serverless %}{# not necessary for serverless as default port_name=http, protocol=HTTP #}
     protocol  = string
-    port      = number
     port_name = string
     {% endif %}
 
