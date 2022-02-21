@@ -25,7 +25,7 @@ provider "google-beta" {
 # [START cloudloadbalancing_ext_http_cloudrun]
 module "lb-http" {
   source  = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
-  version = "~> 5.1"
+  version = "~> 6.2.0"
   name    = "tf-cr-lb"
   project = var.project_id
 
