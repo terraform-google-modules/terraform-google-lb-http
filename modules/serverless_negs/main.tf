@@ -177,6 +177,8 @@ resource "google_compute_backend_service" "default" {
   # To achieve a null backend security_policy, set each.value.security_policy to "" (empty string), otherwise, it fallsback to var.security_policy.
   security_policy = lookup(each.value, "security_policy") == "" ? null : (lookup(each.value, "security_policy") == null ? var.security_policy : each.value.security_policy)
 
+  load_balancing_scheme = local.load_balancing_scheme
+
   dynamic "backend" {
     for_each = toset(each.value["groups"])
     content {
