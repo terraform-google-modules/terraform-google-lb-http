@@ -23,6 +23,8 @@ locals {
   create_http_forward = var.http_forward || var.https_redirect
 
   health_checked_backends = {}
+
+  load_balancing_scheme   = var.next_generation_load_balancer ? "EXTERNAL_MANAGED" : "EXTERNAL"
 }
 
 ### IPv4 block ###
@@ -33,6 +35,7 @@ resource "google_compute_global_forwarding_rule" "http" {
   target     = google_compute_target_http_proxy.default[0].self_link
   ip_address = local.address
   port_range = "80"
+  load_balancing_scheme = local.load_balancing_scheme
 }
 
 resource "google_compute_global_forwarding_rule" "https" {
@@ -42,6 +45,7 @@ resource "google_compute_global_forwarding_rule" "https" {
   target     = google_compute_target_https_proxy.default[0].self_link
   ip_address = local.address
   port_range = "443"
+  load_balancing_scheme = local.load_balancing_scheme
 }
 
 resource "google_compute_global_address" "default" {
@@ -60,6 +64,7 @@ resource "google_compute_global_forwarding_rule" "http_ipv6" {
   target     = google_compute_target_http_proxy.default[0].self_link
   ip_address = local.ipv6_address
   port_range = "80"
+  load_balancing_scheme = local.load_balancing_scheme
 }
 
 resource "google_compute_global_forwarding_rule" "https_ipv6" {
@@ -69,6 +74,7 @@ resource "google_compute_global_forwarding_rule" "https_ipv6" {
   target     = google_compute_target_https_proxy.default[0].self_link
   ip_address = local.ipv6_address
   port_range = "443"
+  load_balancing_scheme = local.load_balancing_scheme
 }
 
 resource "google_compute_global_address" "default_ipv6" {

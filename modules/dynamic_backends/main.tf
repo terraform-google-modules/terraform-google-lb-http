@@ -23,25 +23,29 @@ locals {
   create_http_forward = var.http_forward || var.https_redirect
 
   health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }
+
+  load_balancing_scheme = var.next_generation_load_balancer ? "EXTERNAL_MANAGED" : "EXTERNAL"
 }
 
 ### IPv4 block ###
 resource "google_compute_global_forwarding_rule" "http" {
-  project    = var.project
-  count      = local.create_http_forward ? 1 : 0
-  name       = var.name
-  target     = google_compute_target_http_proxy.default[0].self_link
-  ip_address = local.address
-  port_range = "80"
+  project               = var.project
+  count                 = local.create_http_forward ? 1 : 0
+  name                  = var.name
+  target                = google_compute_target_http_proxy.default[0].self_link
+  ip_address            = local.address
+  port_range            = "80"
+  load_balancing_scheme = local.load_balancing_scheme
 }
 
 resource "google_compute_global_forwarding_rule" "https" {
-  project    = var.project
-  count      = var.ssl ? 1 : 0
-  name       = "${var.name}-https"
-  target     = google_compute_target_https_proxy.default[0].self_link
-  ip_address = local.address
-  port_range = "443"
+  project               = var.project
+  count                 = var.ssl ? 1 : 0
+  name                  = "${var.name}-https"
+  target                = google_compute_target_https_proxy.default[0].self_link
+  ip_address            = local.address
+  port_range            = "443"
+  load_balancing_scheme = local.load_balancing_scheme
 }
 
 resource "google_compute_global_address" "default" {
@@ -54,21 +58,23 @@ resource "google_compute_global_address" "default" {
 
 ### IPv6 block ###
 resource "google_compute_global_forwarding_rule" "http_ipv6" {
-  project    = var.project
-  count      = (var.enable_ipv6 && local.create_http_forward) ? 1 : 0
-  name       = "${var.name}-ipv6-http"
-  target     = google_compute_target_http_proxy.default[0].self_link
-  ip_address = local.ipv6_address
-  port_range = "80"
+  project               = var.project
+  count                 = (var.enable_ipv6 && local.create_http_forward) ? 1 : 0
+  name                  = "${var.name}-ipv6-http"
+  target                = google_compute_target_http_proxy.default[0].self_link
+  ip_address            = local.ipv6_address
+  port_range            = "80"
+  load_balancing_scheme = local.load_balancing_scheme
 }
 
 resource "google_compute_global_forwarding_rule" "https_ipv6" {
-  project    = var.project
-  count      = (var.enable_ipv6 && var.ssl) ? 1 : 0
-  name       = "${var.name}-ipv6-https"
-  target     = google_compute_target_https_proxy.default[0].self_link
-  ip_address = local.ipv6_address
-  port_range = "443"
+  project               = var.project
+  count                 = (var.enable_ipv6 && var.ssl) ? 1 : 0
+  name                  = "${var.name}-ipv6-https"
+  target                = google_compute_target_https_proxy.default[0].self_link
+  ip_address            = local.ipv6_address
+  port_range            = "443"
+  load_balancing_scheme = local.load_balancing_scheme
 }
 
 resource "google_compute_global_address" "default_ipv6" {

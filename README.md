@@ -126,6 +126,7 @@ Current version is 3.0. Upgrade guides:
 | ipv6\_address | An existing IPv6 address to use (the actual IP address value) | `string` | `null` | no |
 | managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` and `use_ssl_certificates` set to `false`. | `list(string)` | `[]` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |
+| next\_generation\_load\_balancer | Set to `true` to enable next generation load balancer. Default of `false` will use classic load balancer. | `bool` | `false` | no |
 | private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
 | project | The project to deploy to, if not set the default provider project is used. | `string` | n/a | yes |
 | quic | Set to `true` to enable QUIC support | `bool` | `false` | no |

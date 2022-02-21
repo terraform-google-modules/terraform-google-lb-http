@@ -223,3 +223,9 @@ variable "random_certificate_suffix" {
   type        = bool
   default     = false
 }
+
+variable "next_generation_load_balancer" {
+  description = "Set to `true` to enable next generation load balancer. Default of `false` will use classic load balancer."
+  type        = bool
+  default     = false
+}
