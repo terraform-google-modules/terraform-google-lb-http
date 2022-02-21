@@ -26,7 +26,7 @@ provider "google-beta" {
 module "lb-http" {
   source  = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
   version = "~> 6.2.0"
-  name    = "tf-cr-lb"
+  name    = var.lb_name
   project = var.project_id
 
   ssl                             = var.ssl
