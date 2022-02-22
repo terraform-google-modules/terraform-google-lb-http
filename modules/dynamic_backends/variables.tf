@@ -223,3 +223,8 @@ variable "random_certificate_suffix" {
   type        = bool
   default     = false
 }
+
+variable "labels" {
+  type = map(string)
+  default = {}
+}
