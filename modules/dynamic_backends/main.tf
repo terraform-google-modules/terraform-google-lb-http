@@ -49,7 +49,7 @@ resource "google_compute_global_forwarding_rule" "https" {
 }
 
 resource "google_compute_global_address" "default" {
-  provider = google-beta
+  provider   = google-beta
   count      = var.create_address ? 1 : 0
   project    = var.project
   name       = "${var.name}-address"
@@ -83,7 +83,7 @@ resource "google_compute_global_forwarding_rule" "https_ipv6" {
 }
 
 resource "google_compute_global_address" "default_ipv6" {
-  provider = google-beta
+  provider   = google-beta
   count      = (var.enable_ipv6 && var.create_ipv6_address) ? 1 : 0
   project    = var.project
   name       = "${var.name}-ipv6-address"

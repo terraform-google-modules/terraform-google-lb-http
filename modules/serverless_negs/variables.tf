@@ -57,7 +57,7 @@ variable "ipv6_address" {
 
 variable "backends" {
   description = "Map backend indices to list of backend maps."
-  type        = map(object({
+  type = map(object({
 
     description             = string
     enable_cdn              = bool
@@ -175,6 +175,7 @@ variable "random_certificate_suffix" {
 }
 
 variable "labels" {
+  description = "List of key-value pairs to be added as labels to managed resources. Useful for filtering and reporting."
   type = map(string)
   default = {}
 }

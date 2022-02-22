@@ -225,6 +225,7 @@ variable "random_certificate_suffix" {
 }
 
 variable "labels" {
+  description = "List of key-value pairs to be added as labels to managed resources. Useful for filtering and reporting."
   type = map(string)
   default = {}
 }
