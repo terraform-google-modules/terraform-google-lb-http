@@ -34,7 +34,7 @@ variable "domain" {
   type        = string
 }
 
-variable "lb-name" {
+variable "lb_name" {
   description = "Name for load balancer and associated resources"
-  default     = "run-lb"
+  default     = "tf-cr-lb"
 }
