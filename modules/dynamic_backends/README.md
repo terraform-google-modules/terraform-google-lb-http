@@ -116,6 +116,7 @@ Current version is 3.0. Upgrade guides:
 | firewall\_projects | Names of the projects to create firewall rules in | `list(string)` | <pre>[<br>  "default"<br>]</pre> | no |
 | http\_forward | Set to `false` to disable HTTP port 80 forward | `bool` | `true` | no |
 | https\_redirect | Set to `true` to enable https redirect on the lb. | `bool` | `false` | no |
+| https\_redirect\_response\_code | The HTTP status code to use for the HTTPS redirect. Must be one of: "MOVED\_PERMANENTLY\_DEFAULT", "FOUND", "SEE\_OTHER", "TEMPORARY\_REDIRECT", "PERMANENT\_REDIRECT". | `string` | `"MOVED_PERMANENTLY_DEFAULT"` | no |
 | ipv6\_address | An existing IPv6 address to use (the actual IP address value) | `string` | `null` | no |
 | managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` and `use_ssl_certificates` set to `false`. | `list(string)` | `[]` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |

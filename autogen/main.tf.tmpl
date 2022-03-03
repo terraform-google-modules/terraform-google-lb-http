@@ -153,7 +153,7 @@ resource "google_compute_url_map" "https_redirect" {
   name    = "${var.name}-https-redirect"
   default_url_redirect {
     https_redirect         = true
-    redirect_response_code = "MOVED_PERMANENTLY_DEFAULT"
+    redirect_response_code = var.https_redirect_response_code
     strip_query            = false
   }
 }

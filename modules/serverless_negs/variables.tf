@@ -168,6 +168,12 @@ variable "https_redirect" {
   default     = false
 }
 
+variable "https_redirect_response_code" {
+  type        = string
+  description = "The HTTP status code to use for the HTTPS redirect. Must be one of: \"MOVED_PERMANENTLY_DEFAULT\", \"FOUND\", \"SEE_OTHER\", \"TEMPORARY_REDIRECT\", \"PERMANENT_REDIRECT\"."
+  default     = "MOVED_PERMANENTLY_DEFAULT"
+}
+
 variable "random_certificate_suffix" {
   description = "Bool to enable/disable random certificate name generation. Set and keep this to true if you need to change the SSL cert."
   type        = bool
