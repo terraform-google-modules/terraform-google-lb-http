@@ -92,6 +92,7 @@ Current version is 3.0. Upgrade guides:
 | ssl\_certificates | SSL cert self\_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided. | `list(string)` | `[]` | no |
 | ssl\_policy | Selfink to SSL Policy | `string` | `null` | no |
 | url\_map | The url\_map resource to use. Default is to send all traffic to first backend. | `string` | `null` | no |
+| url\_map\_spec | Specification for building a URL Map to created backend services. | <pre>map(object({<br>    hosts           = list(string)<br>    default_service = string<br>    rules = list(object({<br>      paths   = list(string)<br>      service = string<br>    }))<br>  }))</pre> | n/a | yes |
 | use\_ssl\_certificates | If true, use the certificates provided by `ssl_certificates`, otherwise, create cert from `private_key` and `certificate` | `bool` | `false` | no |
 
 ## Outputs

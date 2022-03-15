@@ -96,6 +96,23 @@ variable "url_map" {
   default     = null
 }
 
+variable "url_map_spec" {
+  type = object({
+    host_rules = list(object({
+      hosts        = list(string)
+      path_matcher = string
+    }))
+    path_matchers = map(object({
+      default_service = string
+      rules = list(object({
+        paths   = list(string)
+        service = string
+      }))
+    }))
+  })
+  description = "Spec for building a URL Map. The first service in backends is also the default backend for whole the URL Map."
+}
+
 variable "http_forward" {
   description = "Set to `false` to disable HTTP port 80 forward"
   type        = bool
