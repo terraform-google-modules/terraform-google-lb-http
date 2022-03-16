@@ -98,6 +98,7 @@ variable "url_map" {
 
 variable "url_map_spec" {
   type = object({
+    default_service = string
     host_rules = list(object({
       hosts        = list(string)
       path_matcher = string
