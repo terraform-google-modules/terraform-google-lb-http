@@ -137,11 +137,14 @@ resource "google_compute_managed_ssl_certificate" "default" {
 }
 
 resource "google_compute_url_map" "default" {
-  project         = var.project
-  count           = var.create_url_map ? 1 : 0
-  name            = "${var.name}-url-map"
-  description     = "URL map for ${var.name}."
-  default_service = google_compute_backend_service.default[keys(var.backends)[0]].self_link
+  project     = var.project
+  count       = var.create_url_map ? 1 : 0
+  name        = "${var.name}-url-map"
+  description = "URL map for ${var.name}."
+  default_service = try(
+    google_compute_backend_service.default[var.url_map_spec.default_service].self_link,
+    google_compute_backend_service.default[keys(var.backends)[0]].self_link
+  )
 
   dynamic "host_rule" {
     for_each = { for i, rule in var.url_map_spec.host_rules : i => rule }
