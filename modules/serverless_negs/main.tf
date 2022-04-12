@@ -188,6 +188,24 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
+  dynamic "cdn_policy" {
+    for_each = lookup(each.value, "enable_cdn", false) ? [1] : []
+    content {
+      deafult_ttl = lookup(lookup(each.value, "cdn_config", {}), "default_ttl", null)
+      max_ttl     = lookup(lookup(each.value, "cdn_config", {}), "max_ttl", null)
+      client_ttl  = lookup(lookup(each.value, "cdn_config", {}), "client_ttl", null)
+      cache_mode  = lookup(lookup(each.value, "cdn_config", {}), "cache_mode", null)
+
+      cache_key_policy {
+        include_host           = lookup(lookup(lookup(each.value, "cdn_config", {}), "cache_key_policy", {}), "include_host", false)
+        include_protocol       = lookup(lookup(lookup(each.value, "cdn_config", {}), "cache_key_policy", {}), "include_protocol", false)
+        include_query_string   = lookup(lookup(lookup(each.value, "cdn_config", {}), "cache_key_policy", {}), "include_query_string", false)
+        query_string_blacklist = lookup(lookup(lookup(each.value, "cdn_config", {}), "cache_key_policy", {}), "query_string_blacklist", [])
+        query_string_whitelist = lookup(lookup(lookup(each.value, "cdn_config", {}), "cache_key_policy", {}), "query_string_whitelist", [])
+      }
+    }
+  }
+
   dynamic "iap" {
     for_each = lookup(lookup(each.value, "iap_config", {}), "enable", false) ? [1] : []
     content {

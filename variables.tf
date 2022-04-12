@@ -107,6 +107,21 @@ variable "backends" {
       logging             = bool
     })
 
+    cdn_config = object({
+      deafult_ttl = number
+      max_ttl     = number
+      client_ttl  = number
+      cache_mode  = string
+
+      cache_key_policy = object({
+        include_host           = bool
+        include_protocol       = bool
+        include_query_string   = bool
+        query_string_blacklist = list(string)
+        query_string_whitelist = list(string)
+      })
+    })
+
     log_config = object({
       enable      = bool
       sample_rate = number
