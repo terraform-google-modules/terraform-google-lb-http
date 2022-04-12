@@ -203,6 +203,13 @@ module "gce-lb-https" {
         oauth2_client_id     = ""
         oauth2_client_secret = ""
       }
+      cdn_config = {
+        default_ttl      = null
+        client_ttl       = null
+        max_ttl          = null
+        cache_mode       = null
+        cache_key_policy = null
+      }
     }
 
     mig1 = {
@@ -244,6 +251,13 @@ module "gce-lb-https" {
         enable               = false
         oauth2_client_id     = ""
         oauth2_client_secret = ""
+      }
+      cdn_config = {
+        default_ttl      = null
+        client_ttl       = null
+        max_ttl          = null
+        cache_mode       = null
+        cache_key_policy = null
       }
     }
 
@@ -287,6 +301,13 @@ module "gce-lb-https" {
         oauth2_client_id     = ""
         oauth2_client_secret = ""
       }
+      cdn_config = {
+        default_ttl      = null
+        client_ttl       = null
+        max_ttl          = null
+        cache_mode       = null
+        cache_key_policy = null
+      }
     }
 
     mig3 = {
@@ -328,6 +349,13 @@ module "gce-lb-https" {
         enable               = false
         oauth2_client_id     = ""
         oauth2_client_secret = ""
+      }
+      cdn_config = {
+        default_ttl      = null
+        client_ttl       = null
+        max_ttl          = null
+        cache_mode       = null
+        cache_key_policy = null
       }
     }
   }

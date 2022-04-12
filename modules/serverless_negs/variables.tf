@@ -68,7 +68,7 @@ variable "backends" {
 
 
     cdn_config = object({
-      deafult_ttl = number
+      default_ttl = number
       max_ttl     = number
       client_ttl  = number
       cache_mode  = string

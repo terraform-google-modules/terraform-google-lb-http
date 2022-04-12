@@ -191,7 +191,7 @@ resource "google_compute_backend_service" "default" {
   dynamic "cdn_policy" {
     for_each = lookup(each.value, "enable_cdn", false) ? [1] : []
     content {
-      deafult_ttl = lookup(lookup(each.value, "cdn_config", {}), "default_ttl", null)
+      default_ttl = lookup(lookup(each.value, "cdn_config", {}), "default_ttl", null)
       max_ttl     = lookup(lookup(each.value, "cdn_config", {}), "max_ttl", null)
       client_ttl  = lookup(lookup(each.value, "cdn_config", {}), "client_ttl", null)
       cache_mode  = lookup(lookup(each.value, "cdn_config", {}), "cache_mode", null)
