@@ -223,3 +223,23 @@ variable "random_certificate_suffix" {
   type        = bool
   default     = false
 }
+
+variable "default_service" {
+  type = string
+}
+
+variable "hosts" {
+  type = map(object({
+    hosts  = list(string)
+    path_matcher  = string
+    default_service = string
+  }))
+}
+
+variable "paths" {
+  type = map(object({
+    paths  = list(string)
+    #path_matcher = string
+    service  = string
+  }))
+}
