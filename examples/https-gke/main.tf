@@ -100,11 +100,15 @@ module "gce-lb-https" {
         oauth2_client_secret = ""
       }
       cdn_config = {
-        default_ttl      = null
-        client_ttl       = null
-        max_ttl          = null
-        cache_mode       = null
-        cache_key_policy = null
+        cache_key_policy             = null
+        signed_url_cache_max_age_sec = null
+        default_ttl                  = null
+        max_ttl                      = null
+        client_ttl                   = null
+        negative_caching             = null
+        negative_caching_policy      = null
+        cache_mode                   = null
+        serve_while_stale            = null
       }
     }
   }

@@ -219,11 +219,6 @@ resource "google_compute_backend_service" "default" {
   dynamic "cdn_policy" {
     for_each = lookup(each.value, "enable_cdn", false) ? [1] : []
     content {
-      default_ttl = lookup(lookup(each.value, "cdn_config", {}), "default_ttl", null)
-      max_ttl     = lookup(lookup(each.value, "cdn_config", {}), "max_ttl", null)
-      client_ttl  = lookup(lookup(each.value, "cdn_config", {}), "client_ttl", null)
-      cache_mode  = lookup(lookup(each.value, "cdn_config", {}), "cache_mode", null)
-
       cache_key_policy {
         include_host           = lookup(lookup(lookup(each.value, "cdn_config", {}), "cache_key_policy", {}), "include_host", false)
         include_protocol       = lookup(lookup(lookup(each.value, "cdn_config", {}), "cache_key_policy", {}), "include_protocol", false)
@@ -231,6 +226,20 @@ resource "google_compute_backend_service" "default" {
         query_string_blacklist = lookup(lookup(lookup(each.value, "cdn_config", {}), "cache_key_policy", {}), "query_string_blacklist", [])
         query_string_whitelist = lookup(lookup(lookup(each.value, "cdn_config", {}), "cache_key_policy", {}), "query_string_whitelist", [])
       }
+
+      signed_url_cache_max_age_sec = lookup(lookup(each.value, "cdn_config", {}), "default_ttl", null)
+      default_ttl                  = lookup(lookup(each.value, "cdn_config", {}), "default_ttl", null)
+      max_ttl                      = lookup(lookup(each.value, "cdn_config", {}), "max_ttl", null)
+      client_ttl                   = lookup(lookup(each.value, "cdn_config", {}), "client_ttl", null)
+
+      negative_caching = lookup(lookup(each.value, "cdn_config", {}), "negative_caching", null)
+      negative_caching_policy {
+        code = lookup(lookup(lookup(each.value, "cdn_config", {}), "negative_caching_policy", {}), "code", null)
+        ttl  = lookup(lookup(lookup(each.value, "cdn_config", {}), "negative_caching_policy", {}), "ttl", null)
+      }
+
+      cache_mode         = lookup(lookup(each.value, "cdn_config", {}), "cache_mode", null)
+      serve_while_stale  = lookup(lookup(each.value, "cdn_config", {}), "serve_while_stale", null)
     }
   }
 

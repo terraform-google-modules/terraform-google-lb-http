@@ -68,11 +68,6 @@ variable "backends" {
 
 
     cdn_config = object({
-      default_ttl = number
-      max_ttl     = number
-      client_ttl  = number
-      cache_mode  = string
-
       cache_key_policy = object({
         include_host           = bool
         include_protocol       = bool
@@ -80,6 +75,20 @@ variable "backends" {
         query_string_blacklist = list(string)
         query_string_whitelist = list(string)
       })
+
+      signed_url_cache_max_age_sec = number
+      default_ttl                  = number
+      max_ttl                      = number
+      client_ttl                   = number
+
+      negative_caching = bool
+      negative_caching_policy = object({
+        code = number
+        ttl  = number
+      })
+
+      cache_mode        = string
+      serve_while_stale = bool
     })
 
     log_config = object({
