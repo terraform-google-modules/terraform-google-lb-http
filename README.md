@@ -165,3 +165,14 @@ Current version is 3.0. Upgrade guides:
 * [`google_compute_health_check.default.*`](https://www.terraform.io/docs/providers/google/r/compute_health_check.html):
   Health check resources created for each of the (non global NEG) backend services.
 * [`google_compute_firewall.default-hc`](https://www.terraform.io/docs/providers/google/r/compute_firewall.html): Firewall rule created for each of the backed services to allow health checks to the instance group.
+
+
+## Contributing
+
+Refer to the [contribution guidelines](./CONTRIBUTING.md) for
+information on contributing to this module.
+
+## Additional References
+- [project-factory-module](https://registry.terraform.io/modules/terraform-google-modules/project-factory/google) for project creation and configuration.
+- [terraform-provider-gcp](https://www.terraform.io/docs/providers/google/index.html)
+- [terraform](https://www.terraform.io/downloads.html)
