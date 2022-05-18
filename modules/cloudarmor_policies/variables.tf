@@ -15,28 +15,28 @@
  */
 
 variable "security_policies" {
-    type = any
-    default = {}
-    description = "Cloud Armor security policies. https://cloud.google.com/armor/quotas#quotas for quotas."
+  type        = any
+  default     = {}
+  description = "Cloud Armor security policies. https://cloud.google.com/armor/quotas#quotas for quotas."
 }
 
 variable "rules" {
-    type  = any
+  type = any
 }
 
 variable "name" {
-    type = string
-    description = "Cloud Armor security policy name."
+  type        = string
+  description = "Cloud Armor security policy name."
 }
 
 variable "description" {
-    type = string
-    description = "Policy description"
-    default = ""
+  type        = string
+  description = "Policy description"
+  default     = ""
 }
 
 variable "project_id" {
-    type = string
-    description = "ProjectID where policy is created."
-    default = ""
+  type        = string
+  description = "ProjectID where policy is created."
+  default     = ""
 }

@@ -15,35 +15,35 @@
  */
 
 /**************************************************************
-See: 
-- For TF properties: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_security_policy 
+See:
+- For TF properties: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_security_policy
 - For CloudArmor quotas: https://cloud.google.com/armor/quotas#quotas
 **************************************************************/
 
 resource "google_compute_security_policy" "cloud_armor_security_policy" {
-  project  = var.project_id
+  project = var.project_id
 
-  name = var.name
+  name        = var.name
   description = var.description
-  
+
   dynamic "rule" {
     for_each = var.rules
     content {
-      action   = rule.value.action
-      priority = rule.value.priority
-      description =rule.value.description
+      action      = rule.value.action
+      priority    = rule.value.priority
+      description = rule.value.description
       match {
         versioned_expr = lookup(rule.value, "versioned_expr", null)
-        dynamic config {
+        dynamic "config" {
           for_each = lookup(rule.value, "config", [])
           content {
             src_ip_ranges = lookup(config.value, "src_ip_ranges", null)
           }
-        }   
-        dynamic expr {
+        }
+        dynamic "expr" {
           for_each = lookup(rule.value, "expr", [])
           content {
-          expression = lookup(expr.value, "expression", null)
+            expression = lookup(expr.value, "expression", null)
           }
         }
       }

@@ -15,5 +15,5 @@
  */
 
 output "security_policy_id" {
-    value = google_compute_security_policy.cloud_armor_security_policy.id
+  value = google_compute_security_policy.cloud_armor_security_policy.id
 }

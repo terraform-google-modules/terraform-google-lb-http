@@ -1,4 +1,4 @@
-# Copyright 2019 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 control "http" do
   title "HTTP Check"
-  
+
   puts "Waiting for 900sec for GCLB to become healthy."
   sleep(900)
 
