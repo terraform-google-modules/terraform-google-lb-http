@@ -17,6 +17,7 @@
 variable "security_policies" {
     type = any
     description = "CloudArmor security policies"
+    default = {}
 }
 
 variable "project_id" {

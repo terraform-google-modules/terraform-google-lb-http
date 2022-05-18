@@ -15,8 +15,9 @@
  */
 
 output "security_policy_id" {
-  value = [
-    for id in module.cloud_armor_security_policies:
-      id.security_policy_id
-  ]
+  value = module.example
+}
+
+output "lb_ip" {
+  value = module.example.load-balancer-ip
 }
