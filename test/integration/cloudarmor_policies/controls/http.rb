@@ -14,6 +14,9 @@
 
 control "http" do
   title "HTTP Check"
+  
+  puts "Waiting for 900sec for GCLB to become healthy."
+  sleep(900)
 
   describe http("http://#{attribute("lb_ip")}") do
     its('status') { should eq 200 }
