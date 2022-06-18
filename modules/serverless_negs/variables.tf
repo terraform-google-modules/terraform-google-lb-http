@@ -67,6 +67,28 @@ variable "backends" {
 
 
 
+    cdn_policy = object({
+      cache_key_policy = object({
+        include_host           = bool
+        include_protocol       = bool
+        include_query_string   = bool
+        query_string_blacklist = string
+        query_string_whitelist = string
+        include_named_cookies  = string
+      })
+      signed_url_cache_max_age_sec = number
+      default_ttl                  = number
+      max_ttl                      = number
+      client_ttl                   = number
+      negative_caching             = bool
+      negative_caching_policy = object({
+        code = number
+        ttl  = number
+      })
+      cache_mode        = number
+      serve_while_stale = number
+    })
+
     log_config = object({
       enable      = bool
       sample_rate = number

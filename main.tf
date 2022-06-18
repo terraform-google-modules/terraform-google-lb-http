@@ -207,6 +207,37 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
+  dynamic "cdn_policy" {
+    for_each = lookup(lookup(each.value, "cdn_policy", {}), "enable", false) ? [1] : []
+    content {
+      dynamic "cache_key_policy" {
+        for_each = lookup(each.value, "cache_key_policy", {})
+        content {
+          include_host           = lookup(lookup(each.value, "cache_key_policy", {}), "include_host", false)
+          include_protocol       = lookup(lookup(each.value, "cache_key_policy", {}), "include_protocol", false)
+          include_query_string   = lookup(lookup(each.value, "cache_key_policy", {}), "include_query_string", false)
+          query_string_blacklist = lookup(lookup(each.value, "cache_key_policy", {}), "query_string_blacklist", "")
+          query_string_whitelist = lookup(lookup(each.value, "cache_key_policy", {}), "query_string_whitelist", "")
+          include_named_cookies  = lookup(lookup(each.value, "cache_key_policy", {}), "include_named_cookies", "")
+        }
+      }
+      signed_url_cache_max_age_sec = lookup(lookup(each.value, "cdn_policy", {}), "signed_url_cache_max_age_sec", 0)
+      default_ttl                  = lookup(lookup(each.value, "cdn_policy", {}), "default_ttl", 3600)
+      max_ttl                      = lookup(lookup(each.value, "cdn_policy", {}), "max_ttl", 0)
+      client_ttl                   = lookup(lookup(each.value, "cdn_policy", {}), "client_ttl", 0)
+      negative_caching             = lookup(lookup(each.value, "cdn_policy", {}), "negative_caching", false)
+      dynamic "negative_caching_policy" {
+        for_each = lookup(each.value, "negative_caching_policy", {})
+        content {
+          code = lookup(lookup(each.value, "negative_caching_policy", {}), "code", 0)
+          ttl  = lookup(lookup(each.value, "negative_caching_policy", {}), "ttl", 0)
+        }
+      }
+      cache_mode        = lookup(lookup(each.value, "cdn_policy", {}), "cache_mode", "")
+      serve_while_stale = lookup(lookup(each.value, "cdn_policy", {}), "serve_while_stale", 0)
+    }
+  }
+
   dynamic "log_config" {
     for_each = lookup(lookup(each.value, "log_config", {}), "enable", true) ? [1] : []
     content {
