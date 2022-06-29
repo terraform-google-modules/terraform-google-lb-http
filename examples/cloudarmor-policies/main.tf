@@ -22,24 +22,24 @@ module "cloud_armor_security_policies" {
   description = "CloudArmor policy"
 
   rules = [{
-        action         = "deny(404)" #Deny by default policy
-        type           = "CLOUD_ARMOR_EDGE"
-        priority       = "2147483647"
-        versioned_expr = "SRC_IPS_V1"
-        config = [{
-          src_ip_ranges = ["*"]
-        }]
-        description = "Default rule, higher priority overrides it."
-        },
-        {
-          action         = "allow"
-          priority       = "1000"
-          versioned_expr = "SRC_IPS_V1"
-          config = [{
-            src_ip_ranges = ["127.0.0.1"]
-          }]
-          description = "Allow traffic only from specific sources."
+    action         = "deny(404)" #Deny by default policy
+    type           = "CLOUD_ARMOR_EDGE"
+    priority       = "2147483647"
+    versioned_expr = "SRC_IPS_V1"
+    config = [{
+      src_ip_ranges = ["*"]
+    }]
+    description = "Default rule, higher priority overrides it."
+    },
+    {
+      action         = "allow"
+      priority       = "1000"
+      versioned_expr = "SRC_IPS_V1"
+      config = [{
+        src_ip_ranges = ["127.0.0.1"]
       }]
+      description = "Allow traffic only from specific sources."
+  }]
 }
 
 module "lb-http" {

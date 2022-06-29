@@ -19,5 +19,5 @@ provider "google" {
 }
 
 provider "google-beta" {
-  project = var.project
+  project = var.project_id
 }

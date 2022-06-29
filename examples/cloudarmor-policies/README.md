@@ -4,8 +4,6 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | project\_id | Project where the policies are created. | `string` | n/a | yes |
-| region | Resources region | `string` | `"us-central1"` | no |
-| security\_policies | CloudArmor security policies | `any` | `{}` | no |
 
 ## Outputs
 
