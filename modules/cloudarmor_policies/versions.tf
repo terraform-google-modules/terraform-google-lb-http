@@ -21,9 +21,9 @@ terraform {
       source  = "hashicorp/google"
       version = ">= 3.53, < 5.0"
     }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = ">= 3.53, < 5.0"
-    }
+  }
+
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-network:vpc/v5.0.0"
   }
 }

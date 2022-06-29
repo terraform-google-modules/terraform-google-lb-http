@@ -17,28 +17,4 @@
 module "example" {
   source     = "../../../examples/cloudarmor-policies"
   project_id = var.project_id
-
-
-  security_policies = {
-    "tf-managed-policy-01" = {
-      rules = [{
-        action         = "allow" #Allow by default policy
-        type           = "CLOUD_ARMOR_EDGE"
-        priority       = "2147483647" #Default rule priority.
-        versioned_expr = "SRC_IPS_V1"
-        config = [{
-          src_ip_ranges = ["*"]
-        }]
-        description = "Default rule, higher priority overrides it"
-        },
-        {
-          action   = "deny(404)"
-          priority = "1000"
-          expr = [{
-            expression = "evaluatePreconfiguredExpr('sqli-stable') || evaluatePreconfiguredExpr('xss-stable') || evaluatePreconfiguredExpr('php-stable') || evaluatePreconfiguredExpr('cve-canary')"
-          }]
-          description = "Protection for Google Cloud Preconfigured expressions."
-      }]
-    }
-  }
 }

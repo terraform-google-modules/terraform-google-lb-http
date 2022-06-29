@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-variable "security_policies" {
-  type        = any
-  description = "CloudArmor security policies"
-  default     = {}
-}
-
 variable "project_id" {
   type        = string
   description = "Project where the security policy will be deployed."

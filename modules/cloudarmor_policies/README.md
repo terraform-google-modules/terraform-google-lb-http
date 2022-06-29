@@ -3,21 +3,25 @@ Terraform module for managing CloudArmor policies for attaching them to HTTP GCL
 
 ## Usage
 ```HCL
-module "gce-cloudarmor" {
-  source            = "GoogleCloudPlatform/lb-http/google//modules/cloudarmor_policies"
-  version           = "~> 6.2"
-
+module "cloud_armor_security_policies" {
+  source     = "../../modules/cloudarmor_policies"
   project_id = var.project_id
 
-  for_each = var.security_policies
+  name        = "tf-managed-policy-01"
+  description = "CloudArmor policy"
 
-  name = each.key
-  description = "CloudArmor policy for ${each.key}"
-  rules = each.value.rules
+  rules = [{
+        action         = "deny(401)"
+        type           = "CLOUD_ARMOR_EDGE"
+        priority       = "2147483647"
+        versioned_expr = "SRC_IPS_V1"
+        config = [{
+          src_ip_ranges = ["*"]
+        }]
+        description = "Deny by default policy."
+        }]
 }
 ```
-
-Please refer to the example.tfvars in examples/cloudarmor-policies folder for a reference example.
 
 ## Compatibility
 This module is meant for use with Terraform 0.13+ and tested using Terraform 0.13+.

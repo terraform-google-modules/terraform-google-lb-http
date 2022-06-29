@@ -14,30 +14,14 @@
  * limitations under the License.
  */
 
-locals {
-  security_policies = {
-    "tf-managed-policy-01" = {
-      rules = [{
-        action         = "allow" #Allow by default policy
-        type           = "CLOUD_ARMOR_EDGE"
-        priority       = "2147483647" #Default rule priority.
-        versioned_expr = "SRC_IPS_V1"
-        config = [{
-          src_ip_ranges = ["*"]
-        }]
-        description = "Default rule, higher priority overrides it"
-        },
-        {
-          action   = "deny(404)"
-          priority = "1000"
-          expr = [{
-            expression = "evaluatePreconfiguredExpr('sqli-stable') || evaluatePreconfiguredExpr('xss-stable') || evaluatePreconfiguredExpr('php-stable') || evaluatePreconfiguredExpr('cve-canary')"
-          }]
-          description = "Protection for Google Cloud Preconfigured expressions."
-      }]
-    },
-    "tf-managed-policy-02" = {
-      rules = [{
+module "cloud_armor_security_policies" {
+  source     = "../../modules/cloudarmor_policies"
+  project_id = var.project_id
+
+  name        = "tf-managed-policy-01"
+  description = "CloudArmor policy"
+
+  rules = [{
         action         = "deny(404)" #Deny by default policy
         type           = "CLOUD_ARMOR_EDGE"
         priority       = "2147483647"
@@ -52,32 +36,10 @@ locals {
           priority       = "1000"
           versioned_expr = "SRC_IPS_V1"
           config = [{
-            src_ip_ranges = ["1.2.3.0/24", "5.6.7.8"]
+            src_ip_ranges = ["127.0.0.1"]
           }]
           description = "Allow traffic only from specific sources."
       }]
-    },
-  }
-}
-
-module "cloud_armor_security_policies" {
-  source     = "../../modules/cloudarmor_policies"
-  project_id = var.project_id
-
-  for_each = local.security_policies
-
-  name        = each.key
-  description = "CloudArmor policy for ${each.key}"
-
-  rules = each.value.rules
-}
-
-provider "google" {
-  project = var.project_id
-}
-
-provider "google-beta" {
-  project = var.project_id
 }
 
 module "lb-http" {
@@ -123,7 +85,7 @@ resource "google_compute_region_network_endpoint_group" "serverless_neg" {
   provider              = google-beta
   name                  = "serverless-neg"
   network_endpoint_type = "SERVERLESS"
-  region                = var.region
+  region                = "us-central1"
   cloud_run {
     service = google_cloud_run_service.default.name
   }
@@ -131,7 +93,7 @@ resource "google_compute_region_network_endpoint_group" "serverless_neg" {
 
 resource "google_cloud_run_service" "default" {
   name     = "example"
-  location = var.region
+  location = "us-central1"
   project  = var.project_id
 
   template {

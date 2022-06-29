@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-output "security_policy_id" {
-  value = module.example.security_policy_id
+provider "google" {
+  project = var.project_id
 }
 
-output "lb_ip" {
-  value = module.example.load-balancer-ip
+provider "google-beta" {
+  project = var.project
 }
