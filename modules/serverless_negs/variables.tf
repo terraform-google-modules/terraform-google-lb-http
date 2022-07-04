@@ -197,3 +197,9 @@ variable "random_certificate_suffix" {
   type        = bool
   default     = false
 }
+
+variable "labels" {
+  description = "The labels to attach to resources created by this module"
+  type        = map(string)
+  default     = {}
+}
