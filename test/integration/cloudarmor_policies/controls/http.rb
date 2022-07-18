@@ -15,10 +15,10 @@
 control "http" do
   title "HTTP Check"
 
-  puts "Waiting for 900sec for GCLB to become healthy."
-  sleep(900)
+  puts "Waiting for 120sec for GCLB to become healthy."
+  sleep(120)
 
   describe http("http://#{attribute("lb_ip")}") do
-    its('status') { should eq 200 }
+    its('status') { should eq 404 }
   end
 end

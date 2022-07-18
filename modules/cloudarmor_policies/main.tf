@@ -21,7 +21,7 @@ See:
 **************************************************************/
 
 resource "google_compute_security_policy" "cloud_armor_security_policy" {
-  project = var.project_id
+  project = var.project
 
   name        = var.name
   description = var.description

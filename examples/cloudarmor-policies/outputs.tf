@@ -15,9 +15,9 @@
  */
 
 output "security_policy_id" {
-  value = module.cloud_armor_security_policies
+  value = module.cloud_armor_security_policies.security_policy_id
 }
 
 output "load-balancer-ip" {
-  value = module.lb-http.external_ip
+  value = module.gce-lb-http.external_ip
 }

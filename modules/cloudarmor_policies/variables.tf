@@ -35,7 +35,7 @@ variable "description" {
   default     = ""
 }
 
-variable "project_id" {
+variable "project" {
   type        = string
   description = "ProjectID where policy is created."
 }

@@ -3,7 +3,11 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| project\_id | Project where the policies are created. | `string` | n/a | yes |
+| group1\_region | n/a | `string` | `"us-west1"` | no |
+| group2\_region | n/a | `string` | `"us-east1"` | no |
+| network\_prefix | n/a | `string` | `"multi-mig-lb-http"` | no |
+| project\_id | n/a | `string` | n/a | yes |
+| target\_size | n/a | `number` | `2` | no |
 
 ## Outputs
 

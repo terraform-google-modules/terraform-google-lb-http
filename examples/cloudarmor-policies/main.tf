@@ -15,8 +15,8 @@
  */
 
 module "cloud_armor_security_policies" {
-  source     = "../../modules/cloudarmor_policies"
-  project_id = var.project_id
+  source  = "../../modules/cloudarmor_policies"
+  project = var.project_id
 
   name        = "tf-managed-policy-01"
   description = "CloudArmor policy"
@@ -42,73 +42,153 @@ module "cloud_armor_security_policies" {
   }]
 }
 
-module "lb-http" {
+# GCE LB test config
+resource "google_compute_network" "default" {
+  name                    = var.network_prefix
+  auto_create_subnetworks = "false"
+}
 
-  source  = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
-  version = "6.2.0"
-  name    = "cloud-armor-test-gclb"
+resource "google_compute_subnetwork" "group1" {
+  name                     = "${var.network_prefix}-group1"
+  ip_cidr_range            = "10.126.0.0/20"
+  network                  = google_compute_network.default.self_link
+  region                   = var.group1_region
+  private_ip_google_access = true
+}
+
+# Router and Cloud NAT are required for installing packages from repos (apache, php etc)
+resource "google_compute_router" "group1" {
+  name    = "${var.network_prefix}-gw-group1"
+  network = google_compute_network.default.self_link
+  region  = var.group1_region
+}
+
+module "cloud-nat-group1" {
+  source     = "terraform-google-modules/cloud-nat/google"
+  version    = "1.4.0"
+  router     = google_compute_router.group1.name
+  project_id = var.project_id
+  region     = var.group1_region
+  name       = "${var.network_prefix}-cloud-nat-group1"
+}
+
+resource "google_compute_subnetwork" "group2" {
+  name                     = "${var.network_prefix}-group2"
+  ip_cidr_range            = "10.127.0.0/20"
+  network                  = google_compute_network.default.self_link
+  region                   = var.group2_region
+  private_ip_google_access = true
+}
+
+resource "google_compute_firewall" "default" {
+  name    = "allow-80"
+  network = google_compute_network.default.name
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+}
+
+# Router and Cloud NAT are required for installing packages from repos (apache, php etc)
+resource "google_compute_router" "group2" {
+  name    = "${var.network_prefix}-gw-group2"
+  network = google_compute_network.default.self_link
+  region  = var.group2_region
+}
+
+module "cloud-nat-group2" {
+  source     = "terraform-google-modules/cloud-nat/google"
+  version    = "1.4.0"
+  router     = google_compute_router.group2.name
+  project_id = var.project_id
+  region     = var.group2_region
+  name       = "${var.network_prefix}-cloud-nat-group2"
+}
+
+
+module "gce-lb-http" {
+  source  = "GoogleCloudPlatform/lb-http/google"
+  version = "~> 5.1"
+  name    = var.network_prefix
   project = var.project_id
-
-  ssl            = false
-  https_redirect = false
+  target_tags = [
+    "${var.network_prefix}-group1",
+    module.cloud-nat-group1.router_name,
+    "${var.network_prefix}-group2",
+    module.cloud-nat-group2.router_name
+  ]
+  firewall_networks = [google_compute_network.default.name]
 
   backends = {
     default = {
-      description = null
+
+      description                     = null
+      protocol                        = "HTTP"
+      port                            = 80
+      port_name                       = "http"
+      timeout_sec                     = 10
+      connection_draining_timeout_sec = null
+      enable_cdn                      = false
+      security_policy                 = "projects/${var.project_id}/global/securityPolicies/tf-managed-policy-01"
+      session_affinity                = null
+      affinity_cookie_ttl_sec         = null
+      custom_request_headers          = null
+      custom_response_headers         = null
+
+      health_check = {
+        check_interval_sec  = null
+        timeout_sec         = null
+        healthy_threshold   = null
+        unhealthy_threshold = null
+        request_path        = "/"
+        port                = 80
+        host                = null
+        logging             = null
+      }
+
+      log_config = {
+        enable      = true
+        sample_rate = 1.0
+      }
+
       groups = [
         {
-          group = google_compute_region_network_endpoint_group.serverless_neg.id
-        }
+          group                        = module.mig1.instance_group
+          balancing_mode               = null
+          capacity_scaler              = null
+          description                  = null
+          max_connections              = null
+          max_connections_per_instance = null
+          max_connections_per_endpoint = null
+          max_rate                     = null
+          max_rate_per_instance        = null
+          max_rate_per_endpoint        = null
+          max_utilization              = null
+        },
+        {
+          group                        = module.mig2.instance_group
+          balancing_mode               = null
+          capacity_scaler              = null
+          description                  = null
+          max_connections              = null
+          max_connections_per_instance = null
+          max_connections_per_endpoint = null
+          max_rate                     = null
+          max_rate_per_instance        = null
+          max_rate_per_endpoint        = null
+          max_utilization              = null
+        },
       ]
-      enable_cdn              = false
-      security_policy         = "projects/${var.project_id}/global/securityPolicies/tf-managed-policy-01"
-      custom_request_headers  = null
-      custom_response_headers = null
 
       iap_config = {
         enable               = false
         oauth2_client_id     = ""
         oauth2_client_secret = ""
       }
-      log_config = {
-        enable      = false
-        sample_rate = null
-      }
     }
   }
+
   depends_on = [
     module.cloud_armor_security_policies
   ]
-}
-
-resource "google_compute_region_network_endpoint_group" "serverless_neg" {
-  provider              = google-beta
-  name                  = "serverless-neg"
-  network_endpoint_type = "SERVERLESS"
-  region                = "us-central1"
-  cloud_run {
-    service = google_cloud_run_service.default.name
-  }
-}
-
-resource "google_cloud_run_service" "default" {
-  name     = "example"
-  location = "us-central1"
-  project  = var.project_id
-
-  template {
-    spec {
-      containers {
-        image = "gcr.io/cloudrun/hello"
-      }
-    }
-  }
-}
-
-resource "google_cloud_run_service_iam_member" "public-access" {
-  location = google_cloud_run_service.default.location
-  project  = google_cloud_run_service.default.project
-  service  = google_cloud_run_service.default.name
-  role     = "roles/run.invoker"
-  member   = "allUsers"
 }
