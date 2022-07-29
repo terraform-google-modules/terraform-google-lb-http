@@ -22,7 +22,6 @@ resource "tls_private_key" "example" {
 
 resource "tls_self_signed_cert" "example" {
   count           = 3
-  key_algorithm   = tls_private_key.example[count.index].algorithm
   private_key_pem = tls_private_key.example[count.index].private_key_pem
 
   # Certificate expires after 12 hours.
