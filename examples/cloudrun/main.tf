@@ -25,13 +25,14 @@ provider "google-beta" {
 # [START cloudloadbalancing_ext_http_cloudrun]
 module "lb-http" {
   source  = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
-  version = "~> 6.2.0"
+  version = "~> 6.3"
   name    = var.lb_name
   project = var.project_id
 
   ssl                             = var.ssl
   managed_ssl_certificate_domains = [var.domain]
   https_redirect                  = var.ssl
+  labels                          = { "Example Label" = "Cloud Run Example" }
 
   backends = {
     default = {
