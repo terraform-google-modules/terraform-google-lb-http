@@ -8,18 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [6.3.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v6.2.0...v6.3.0) (2022-07-29)
 
 
-### ⚠ BREAKING CHANGES
-
-* Adds support for labels (#250)
-
 ### Features
 
 * Adds support for labels ([#250](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/250)) ([b09bef9](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/b09bef91e6a937bf1e026a9864208a610f774530))
-
-
-### Miscellaneous Chores
-
-* release 6.3.0 ([#261](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/261)) ([b07eaac](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/b07eaac219283c5869bae3ce3a66150b16e36c11))
 
 ## [6.2.0](https://www.github.com/terraform-google-modules/terraform-google-lb-http/compare/v6.1.1...v6.2.0) (2021-11-24)
 
