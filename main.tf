@@ -174,7 +174,7 @@ resource "google_compute_backend_service" "default" {
   name    = "${var.name}-backend-${each.key}"
 
 
-  protocol  = each.value.protocol
+  protocol  = lookup(each.value, "protocol", "HTTP")
   port_name = each.value.port_name
 
   timeout_sec                     = lookup(each.value, "timeout_sec", null)
