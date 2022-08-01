@@ -32,7 +32,7 @@ module "lb-http" {
   ssl                             = var.ssl
   managed_ssl_certificate_domains = [var.domain]
   https_redirect                  = var.ssl
-  labels                          = { "Example Label" = "Cloud Run Example" }
+  labels                          = { "example-label" = "cloud-run-example" }
 
   backends = {
     default = {

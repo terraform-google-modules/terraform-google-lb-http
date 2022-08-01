@@ -26,6 +26,16 @@ platforms:
   - name: default
 
 suites:
+  - name: cloudrun
+    driver:
+      root_module_directory: test/fixtures/cloudrun
+    verifier:
+      color: false
+      systems:
+        - name: cloudrun
+          backend: local
+          controls:
+            - http
   - name: mig_nat
     driver:
       root_module_directory: test/fixtures/mig_nat/
