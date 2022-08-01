@@ -176,7 +176,6 @@ resource "google_compute_backend_service" "default" {
 
   description                     = lookup(each.value, "description", null)
   connection_draining_timeout_sec = lookup(each.value, "connection_draining_timeout_sec", null)
-  protocol                        = lookup(each.value, "protocol", null)
   enable_cdn                      = lookup(each.value, "enable_cdn", false)
   custom_request_headers          = lookup(each.value, "custom_request_headers", [])
   custom_response_headers         = lookup(each.value, "custom_response_headers", [])
