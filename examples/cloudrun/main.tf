@@ -82,6 +82,13 @@ resource "google_cloud_run_service" "default" {
       }
     }
   }
+  metadata {
+    annotations = {
+      # For valid annotation values and descriptions, see
+      # https://cloud.google.com/sdk/gcloud/reference/run/deploy#--ingress
+      "run.googleapis.com/ingress" = "all"
+    }
+  }
 }
 
 resource "google_cloud_run_service_iam_member" "public-access" {
