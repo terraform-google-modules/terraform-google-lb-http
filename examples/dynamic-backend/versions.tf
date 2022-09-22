@@ -17,23 +17,19 @@
 terraform {
   required_version = ">= 0.13"
   required_providers {
-
     google = {
       source  = "hashicorp/google"
-      version = ">= 3.53, < 5.0"
+      version = "~> 3.53"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 3.53, < 5.0"
+      version = "~> 3.53"
+    }
+    template = {
+      source = "hashicorp/template"
+    }
+    tls = {
+      source = "hashicorp/tls"
     }
   }
-
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v6.3.0"
-  }
-
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v6.3.0"
-  }
-
 }
