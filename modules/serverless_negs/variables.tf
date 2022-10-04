@@ -179,3 +179,9 @@ variable "labels" {
   type        = map(string)
   default     = {}
 }
+
+variable "load_balancing_scheme" {
+  description = "Scheme for load balancer backend and forwarding rule, can be EXTERNAL, EXTERNAL_MANAGED, or INTERNAL_SELF_MANAGED.  Defaults to EXTERNAL."
+  type        = string
+  default     = "EXTERNAL"
+}
