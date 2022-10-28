@@ -145,6 +145,7 @@ module "gce-lb-https" {
       timeout_sec                     = 10
       connection_draining_timeout_sec = null
       enable_cdn                      = false
+      compression_mode                = null
       security_policy                 = null
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
@@ -213,6 +214,7 @@ module "gce-lb-https" {
       timeout_sec                     = 10
       connection_draining_timeout_sec = null
       enable_cdn                      = false
+      compression_mode                = null
       security_policy                 = null
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
@@ -255,6 +257,7 @@ module "gce-lb-https" {
       timeout_sec                     = 10
       connection_draining_timeout_sec = null
       enable_cdn                      = false
+      compression_mode                = null
       security_policy                 = null
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
@@ -297,6 +300,7 @@ module "gce-lb-https" {
       timeout_sec                     = 10
       connection_draining_timeout_sec = null
       enable_cdn                      = false
+      compression_mode                = null
       security_policy                 = null
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
