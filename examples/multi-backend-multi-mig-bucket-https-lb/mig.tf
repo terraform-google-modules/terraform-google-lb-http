@@ -40,7 +40,7 @@ data "template_file" "group3-startup-script" {
 
 module "mig1_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "7.9.0"
+  version    = "~> 7.9"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.group1.self_link
   service_account = {
