@@ -44,7 +44,7 @@ resource "google_compute_router" "group1" {
 
 module "cloud-nat-group1" {
   source     = "terraform-google-modules/cloud-nat/google"
-  version    = "1.4.0"
+  version    = "~> 2.2"
   router     = google_compute_router.group1.name
   project_id = var.project
   region     = var.group1_region
@@ -68,7 +68,7 @@ resource "google_compute_router" "group2" {
 
 module "cloud-nat-group2" {
   source     = "terraform-google-modules/cloud-nat/google"
-  version    = "1.4.0"
+  version    = "~> 2.2"
   router     = google_compute_router.group2.name
   project_id = var.project
   region     = var.group2_region
@@ -92,7 +92,7 @@ resource "google_compute_router" "group3" {
 
 module "cloud-nat-group3" {
   source     = "terraform-google-modules/cloud-nat/google"
-  version    = "1.4.0"
+  version    = "~> 2.2"
   router     = google_compute_router.group3.name
   project_id = var.project
   region     = var.group3_region
@@ -145,6 +145,7 @@ module "gce-lb-https" {
       timeout_sec                     = 10
       connection_draining_timeout_sec = null
       enable_cdn                      = false
+      compression_mode                = null
       security_policy                 = null
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
@@ -213,6 +214,7 @@ module "gce-lb-https" {
       timeout_sec                     = 10
       connection_draining_timeout_sec = null
       enable_cdn                      = false
+      compression_mode                = null
       security_policy                 = null
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
@@ -255,6 +257,7 @@ module "gce-lb-https" {
       timeout_sec                     = 10
       connection_draining_timeout_sec = null
       enable_cdn                      = false
+      compression_mode                = null
       security_policy                 = null
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
@@ -297,6 +300,7 @@ module "gce-lb-https" {
       timeout_sec                     = 10
       connection_draining_timeout_sec = null
       enable_cdn                      = false
+      compression_mode                = null
       security_policy                 = null
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
