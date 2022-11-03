@@ -61,6 +61,7 @@ module "load_balancer" {
       affinity_cookie_ttl_sec         = null
       custom_request_headers          = null
       custom_response_headers         = null
+      compression_mode                = null
 
       health_check = {
         check_interval_sec  = 15
