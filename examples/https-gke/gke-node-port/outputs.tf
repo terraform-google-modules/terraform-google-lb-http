@@ -31,7 +31,7 @@ output "port_number" {
 }
 
 output "instance_group" {
-  value = google_container_cluster.default.instance_group_urls[0]
+  value = google_container_cluster.default.node_pool[0].instance_group_urls[0]
 }
 
 output "node_tag" {

@@ -43,7 +43,7 @@ resource "google_compute_router" "default" {
 
 module "cloud-nat" {
   source     = "terraform-google-modules/cloud-nat/google"
-  version    = "1.4.0"
+  version    = "~> 2.2"
   router     = google_compute_router.default.name
   project_id = var.project
   region     = var.region
@@ -60,7 +60,7 @@ data "template_file" "group-startup-script" {
 
 module "mig_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "6.2.0"
+  version    = "~> 7.9"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.default.self_link
   service_account = {
@@ -77,7 +77,7 @@ module "mig_template" {
 
 module "mig" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "6.2.0"
+  version           = "~> 7.9"
   instance_template = module.mig_template.self_link
   region            = var.region
   hostname          = var.network_name
@@ -93,7 +93,7 @@ module "mig" {
 # [START cloudloadbalancing_ext_http_gce_http_redirect]
 module "gce-lb-http" {
   source               = "GoogleCloudPlatform/lb-http/google"
-  version              = "~> 5.1"
+  version              = "~> 6.0"
   name                 = "ci-https-redirect"
   project              = var.project
   target_tags          = [var.network_name]

@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 3.90, < 5.0"
-    }
-    kubernetes = {
-      source = "hashicorp/kubernetes"
-    }
-    null = {
-      source = "hashicorp/null"
-    }
-  }
-  required_version = ">= 0.13"
+variable "project" {
+  type = string
+}
+
+variable "domains" {
+  description = "Domain names to use in managed certificate"
+  type        = list(string)
+  default     = ["example.com"]
 }

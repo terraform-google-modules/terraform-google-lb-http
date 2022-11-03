@@ -71,7 +71,7 @@ Current version is 3.0. Upgrade guides:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | address | Existing IPv4 address to use (the actual IP address value) | `string` | `null` | no |
-| backends | Map backend indices to list of backend maps. | <pre>map(object({<br>    protocol  = string<br><br>    description             = string<br>    enable_cdn              = bool<br>    security_policy         = string<br>    custom_request_headers  = list(string)<br>    custom_response_headers = list(string)<br><br><br><br>    log_config = object({<br>      enable      = bool<br>      sample_rate = number<br>    })<br><br>    groups = list(object({<br>      group = string<br><br>    }))<br>    iap_config = object({<br>      enable               = bool<br>      oauth2_client_id     = string<br>      oauth2_client_secret = string<br>    })<br>  }))</pre> | n/a | yes |
+| backends | Map backend indices to list of backend maps. | <pre>map(object({<br><br>    description             = string<br>    enable_cdn              = bool<br>    compression_mode        = string<br>    security_policy         = string<br>    custom_request_headers  = list(string)<br>    custom_response_headers = list(string)<br><br><br><br>    log_config = object({<br>      enable      = bool<br>      sample_rate = number<br>    })<br><br>    groups = list(object({<br>      group = string<br><br>    }))<br>    iap_config = object({<br>      enable               = bool<br>      oauth2_client_id     = string<br>      oauth2_client_secret = string<br>    })<br>  }))</pre> | n/a | yes |
 | cdn | Set to `true` to enable cdn on backend. | `bool` | `false` | no |
 | certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
 | create\_address | Create a new global IPv4 address | `bool` | `true` | no |
@@ -82,6 +82,7 @@ Current version is 3.0. Upgrade guides:
 | https\_redirect | Set to `true` to enable https redirect on the lb. | `bool` | `false` | no |
 | ipv6\_address | An existing IPv6 address to use (the actual IP address value) | `string` | `null` | no |
 | labels | The labels to attach to resources created by this module | `map(string)` | `{}` | no |
+| load\_balancing\_scheme | Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL\_MANAGED for Envoy-based load balancer, INTERNAL for classic internal load balancer, and INTERNAL\_SELF\_MANAGED for internal load balancer) | `string` | `"EXTERNAL"` | no |
 | managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` and `use_ssl_certificates` set to `false`. | `list(string)` | `[]` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |
 | private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
