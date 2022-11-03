@@ -81,6 +81,7 @@ variable "target_service_accounts" {
 variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
+
     protocol  = string
     port      = number
     port_name = string
