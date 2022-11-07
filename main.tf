@@ -193,7 +193,7 @@ resource "google_compute_backend_service" "default" {
   session_affinity                = lookup(each.value, "session_affinity", null)
   affinity_cookie_ttl_sec         = lookup(each.value, "affinity_cookie_ttl_sec", null)
 
-  # To achieve a null backend security_policy, set each.value.security_policy to "" (empty string), otherwise, it fallsback to var.security_policy.
+  # To achieve a null backend security_policy, set each.value.security_policy to "" (empty string), otherwise, it will fallback to var.security_policy.
   security_policy = lookup(each.value, "security_policy") == "" ? null : (lookup(each.value, "security_policy") == null ? var.security_policy : each.value.security_policy)
 
   dynamic "backend" {
