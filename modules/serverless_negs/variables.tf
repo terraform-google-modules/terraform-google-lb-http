@@ -59,14 +59,6 @@ variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
 
-    description             = string
-    enable_cdn              = bool
-    compression_mode        = string
-    security_policy         = string
-    custom_request_headers  = list(string)
-    custom_response_headers = list(string)
-
-
 
     log_config = object({
       enable      = bool
