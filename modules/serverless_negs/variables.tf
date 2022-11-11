@@ -58,8 +58,8 @@ variable "ipv6_address" {
 variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
-    protocol  = string
-    port_name = string
+    protocol                = string
+    port_name               = string
     description             = string
     enable_cdn              = bool
     compression_mode        = string
