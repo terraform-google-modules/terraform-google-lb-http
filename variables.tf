@@ -81,10 +81,9 @@ variable "target_service_accounts" {
 variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
-    protocol  = string
     port      = number
+    protocol  = string
     port_name = string
-
     description             = string
     enable_cdn              = bool
     compression_mode        = string
