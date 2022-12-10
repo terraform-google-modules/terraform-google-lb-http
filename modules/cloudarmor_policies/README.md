@@ -4,7 +4,7 @@ Terraform module for managing CloudArmor policies for attaching them to HTTP GCL
 ## Usage
 ```HCL
 module "cloud_armor_security_policies" {
-  source     = "../../modules/cloudarmor_policies"
+  source     = "GoogleCloudPlatform/lb-http/google//modules/cloudarmor_policies"
   project_id = var.project_id
 
   name        = "tf-managed-policy-01"
@@ -33,7 +33,7 @@ This module is meant for use with Terraform 0.13+ and tested using Terraform 0.1
 |------|-------------|------|---------|:--------:|
 | description | Policy description | `string` | `""` | no |
 | name | Cloud Armor security policy name. | `string` | n/a | yes |
-| project | ProjectID where policy is created. | `string` | n/a | yes |
+| project_id | ProjectID where policy is created. | `string` | n/a | yes |
 | rules | n/a | `any` | n/a | yes |
 | security\_policies | Cloud Armor security policies. https://cloud.google.com/armor/quotas#quotas for quotas. | `any` | `{}` | no |
 
