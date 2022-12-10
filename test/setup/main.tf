@@ -16,7 +16,7 @@
 
 module "project-ci-lb-http" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 10.0"
+  version = "~> 14.0"
 
   name                    = "ci-int-lb-http"
   random_project_id       = true

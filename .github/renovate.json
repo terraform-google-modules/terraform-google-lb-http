@@ -1,0 +1,48 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    ":semanticCommits",
+    ":preserveSemverRanges",
+    ":rebaseStalePrs"
+  ],
+  "stabilityDays":7,
+  "ignorePaths": [],
+  "labels": ["dependencies"],
+    "vulnerabilityAlerts":{
+     "labels":[
+       "type:security"
+     ],
+     "stabilityDays":0
+  },
+  "packageRules": [
+    {
+      "matchPaths": ["examples/**", "test/**", ".github/**"],
+      "extends": [":semanticCommitTypeAll(chore)"]
+    },
+    {
+      "matchDepTypes": ["module"],
+      "groupName": "TF modules",
+      "separateMajorMinor":false,
+      "major": {
+        "semanticCommitType": "feat!"
+      }
+    },
+    {
+      "matchDepTypes": ["require"],
+      "groupName": "GO modules",
+      "postUpdateOptions": ["gomodTidy"],
+      "separateMajorMinor":false
+    },
+    {
+      "matchPackageNames": ["go"],
+      "allowedVersions": "<1.19.0",
+      "postUpdateOptions": ["gomodTidy"]
+    },
+    {
+      "matchPackageNames": ["google", "google-beta"],
+      "groupName": "terraform googles",
+      "separateMajorMinor": false
+    }
+  ]
+}

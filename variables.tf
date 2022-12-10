@@ -1,5 +1,5 @@
 /**
- * Copyright 2020 Google LLC
+ * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,12 +81,12 @@ variable "target_service_accounts" {
 variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
-    protocol  = string
-    port      = number
-    port_name = string
-
+    port                    = number
+    protocol                = string
+    port_name               = string
     description             = string
     enable_cdn              = bool
+    compression_mode        = string
     security_policy         = string
     custom_request_headers  = list(string)
     custom_response_headers = list(string)
@@ -228,4 +228,10 @@ variable "labels" {
   description = "The labels to attach to resources created by this module"
   type        = map(string)
   default     = {}
+}
+
+variable "load_balancing_scheme" {
+  description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, INTERNAL for classic internal load balancer, and INTERNAL_SELF_MANAGED for internal load balancer)"
+  type        = string
+  default     = "EXTERNAL"
 }

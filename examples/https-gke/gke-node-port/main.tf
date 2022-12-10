@@ -64,7 +64,7 @@ provider "kubernetes" {
 resource "null_resource" "default" {
 
   provisioner "local-exec" {
-    command = "gcloud compute instance-groups set-named-ports ${google_container_cluster.default.instance_group_urls[0]} --named-ports=${var.port_name}:${var.node_port} --format=json"
+    command = "gcloud compute instance-groups set-named-ports ${google_container_cluster.default.node_pool[0].instance_group_urls[0]} --named-ports=${var.port_name}:${var.node_port} --format=json"
   }
 }
 
