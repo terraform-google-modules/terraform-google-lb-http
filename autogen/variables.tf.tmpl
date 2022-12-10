@@ -85,11 +85,10 @@ variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
     {% if not serverless %}{# not necessary for serverless as default port_name=http, protocol=HTTP #}
-    protocol  = string
-    port      = number
-    port_name = string
+    port                    = number
     {% endif %}
-
+    protocol                = string
+    port_name               = string
     description             = string
     enable_cdn              = bool
     compression_mode        = string
