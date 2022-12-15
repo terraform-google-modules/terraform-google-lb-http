@@ -23,9 +23,7 @@ locals {
   create_http_forward = var.http_forward || var.https_redirect
 
   {% if not serverless %}{# Serverless NEGs don't support health checks #}
-  health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }
-  {% else %}
-  health_checked_backends = {}
+  health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }  
   {% endif %}
 }
 

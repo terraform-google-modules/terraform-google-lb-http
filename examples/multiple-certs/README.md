@@ -98,11 +98,8 @@ terraform destroy
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | group1\_region | n/a | `string` | `"us-west1"` | no |
-| group1\_zone | n/a | `string` | `"us-west1-a"` | no |
 | group2\_region | n/a | `string` | `"us-central1"` | no |
-| group2\_zone | n/a | `string` | `"us-central1-f"` | no |
 | group3\_region | n/a | `string` | `"us-east1"` | no |
-| group3\_zone | n/a | `string` | `"us-east1-b"` | no |
 | network\_name | n/a | `string` | `"tf-lb-https-multi-cert"` | no |
 | project | n/a | `string` | n/a | yes |
 
