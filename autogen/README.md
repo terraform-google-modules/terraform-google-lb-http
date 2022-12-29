@@ -164,6 +164,7 @@ Current version is 3.0. Upgrade guides:
 | backends                | Map backend indices to list of backend maps.                                                                                               |    object    |    n/a    |   yes    |
 | cdn                     | Set to `true` to enable cdn on backend.                                                                                                    |     bool     | `"false"` |    no    |
 | certificate             | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty.                                               |    string    | `"null"`  |    no    |
+| certificate\_map        | Certificate Map ID in format projects/{{project}}/locations/global/certificateMaps/{{name}}. Identifies a certificate map associated with the given target proxy | `string` | `null` | no |
 | create_address          | Create a new global IPv4 address                                                                                                           |     bool     | `"true"`  |    no    |
 | create_ipv6_address     | Create a new global IPv6 address                                                                                                           |     bool     | `"true"`  |    no    |
 | create_url_map          | Set to `false` if url_map variable is provided.                                                                                            |     bool     | `"true"`  |    no    |
