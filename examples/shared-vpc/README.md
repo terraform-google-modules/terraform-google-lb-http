@@ -58,7 +58,6 @@ terraform destroy
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| group\_size | Size of managed instance group to create | `string` | `"2"` | no |
 | host\_project | ID for the Shared VPC host project | `any` | n/a | yes |
 | network | ID of network to launch instances on | `any` | n/a | yes |
 | region | n/a | `string` | `"us-central1"` | no |
