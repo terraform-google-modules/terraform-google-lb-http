@@ -242,3 +242,9 @@ variable "load_balancing_scheme" {
   type        = string
   default     = "EXTERNAL"
 }
+
+variable "certificate_map" {
+  description = "Certificate Map ID in format projects/{project}/locations/global/certificateMaps/{name}. Identifies a certificate map associated with the given target proxy"
+  type        = string
+  default     = null
+}
