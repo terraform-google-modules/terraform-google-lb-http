@@ -171,12 +171,9 @@ terraform destroy
 | name | n/a | `string` | `"tf-lb-https-gke"` | no |
 | network\_name | n/a | `string` | `"default"` | no |
 | project | n/a | `string` | n/a | yes |
-| region | n/a | `string` | `"us-central1"` | no |
-| service\_account | n/a | <pre>object({<br>    email  = string,<br>    scopes = list(string)<br>  })</pre> | <pre>{<br>  "email": "",<br>  "scopes": [<br>    "cloud-platform"<br>  ]<br>}</pre> | no |
 | service\_port | n/a | `string` | `"30000"` | no |
 | service\_port\_name | n/a | `string` | `"http"` | no |
 | target\_tags | n/a | `string` | `"tf-lb-https-gke"` | no |
-| zone | n/a | `string` | `"us-central1-f"` | no |
 
 ## Outputs
 

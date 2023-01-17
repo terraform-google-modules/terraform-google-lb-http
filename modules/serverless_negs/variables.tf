@@ -158,12 +158,6 @@ variable "security_policy" {
   default     = null
 }
 
-variable "cdn" {
-  description = "Set to `true` to enable cdn on backend."
-  type        = bool
-  default     = false
-}
-
 variable "https_redirect" {
   description = "Set to `true` to enable https redirect on the lb."
   type        = bool
@@ -186,4 +180,10 @@ variable "load_balancing_scheme" {
   description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, INTERNAL for classic internal load balancer, and INTERNAL_SELF_MANAGED for internal load balancer)"
   type        = string
   default     = "EXTERNAL"
+}
+
+variable "certificate_map" {
+  description = "Certificate Map ID in format projects/{project}/locations/global/certificateMaps/{name}. Identifies a certificate map associated with the given target proxy"
+  type        = string
+  default     = null
 }

@@ -34,27 +34,8 @@ variable "backend" {
   description = "Map backend indices to list of backend maps."
 }
 
-variable "region" {
-  default = "us-central1"
-}
-
-variable "zone" {
-  default = "us-central1-f"
-}
-
 variable "network_name" {
   default = "default"
-}
-
-variable "service_account" {
-  type = object({
-    email  = string,
-    scopes = list(string)
-  })
-  default = {
-    email  = ""
-    scopes = ["cloud-platform"]
-  }
 }
 
 variable "project" {

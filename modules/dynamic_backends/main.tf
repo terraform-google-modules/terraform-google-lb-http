@@ -23,6 +23,7 @@ locals {
   create_http_forward = var.http_forward || var.https_redirect
 
   health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }
+
 }
 
 ### IPv4 block ###
@@ -111,6 +112,7 @@ resource "google_compute_target_https_proxy" "default" {
   url_map = local.url_map
 
   ssl_certificates = compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default.*.self_link, google_compute_managed_ssl_certificate.default.*.self_link, ), )
+  certificate_map  = var.certificate_map != null ? "//certificatemanager.googleapis.com/${var.certificate_map}" : null
   ssl_policy       = var.ssl_policy
   quic_override    = var.quic ? "ENABLE" : null
 }

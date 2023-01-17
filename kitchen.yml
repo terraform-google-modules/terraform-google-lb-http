@@ -29,6 +29,7 @@ suites:
   - name: cloudrun
     driver:
       root_module_directory: test/fixtures/cloudrun
+      verify_version: false
     verifier:
       color: false
       systems:
@@ -39,6 +40,7 @@ suites:
   - name: mig_nat
     driver:
       root_module_directory: test/fixtures/mig_nat/
+      verify_version: false
     verifier:
       color: false
       systems:
@@ -49,6 +51,7 @@ suites:
   - name: multi_certs
     driver:
       root_module_directory: test/fixtures/multi_certs/
+      verify_version: false
     verifier:
       color: false
       systems:
@@ -61,6 +64,7 @@ suites:
   - name: multi_mig
     driver:
       root_module_directory: test/fixtures/multi_mig/
+      verify_version: false
     verifier:
       color: false
       systems:
@@ -71,6 +75,7 @@ suites:
   - name: https_redirect
     driver:
       root_module_directory: test/fixtures/https-redirect/
+      verify_version: false
     verifier:
       color: false
       systems:
