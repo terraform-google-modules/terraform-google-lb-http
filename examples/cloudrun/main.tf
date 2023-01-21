@@ -56,6 +56,9 @@ module "lb-http" {
         enable      = false
         sample_rate = null
       }
+      protocol         = null
+      port_name        = null
+      compression_mode = null
     }
   }
 }

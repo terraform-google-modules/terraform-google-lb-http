@@ -183,10 +183,8 @@ resource "google_compute_backend_service" "default" {
 
   load_balancing_scheme = var.load_balancing_scheme
 
-  {% if not serverless %}{# not necessary for serverless as default port_name=http, protocol=HTTP #}
   port_name = lookup(each.value, "port_name", "http")
   protocol  = lookup(each.value, "protocol", "HTTP")
-  {% endif %}
 
   {% if not serverless %}
   {# Limitation: Timeout sec is not supported for a backend service with Serverless network endpoint groups. #}

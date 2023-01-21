@@ -21,7 +21,7 @@ metadata:
 spec:
   title: Global HTTP Load Balancer Terraform Module
   source:
-    repo: https://github.com/terraform-google-modules/terraform-google-lb-http.git
+    repo: https://github.com/terraform-google-modules/terraform-google-lb-http
     sourceType: git
   version: 6.3.0
   actuationTool:
@@ -111,6 +111,10 @@ spec:
     required: true
   - name: certificate
     description: Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty.
+    type: string
+    required: false
+  - name: certificate_map
+    description: Certificate Map ID in format projects/{project}/locations/global/certificateMaps/{name}. Identifies a certificate map associated with the given target proxy
     type: string
     required: false
   - name: create_address
