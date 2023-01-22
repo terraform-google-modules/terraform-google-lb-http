@@ -60,6 +60,12 @@ variable "firewall_networks" {
   default     = ["default"]
 }
 
+variable "network" {
+  description = "Network for INTERNAL_SELF_MANAGED load balancing scheme"
+  type        = string
+  default     = "default"
+}
+
 variable "firewall_projects" {
   description = "Names of the projects to create firewall rules in"
   type        = list(string)
