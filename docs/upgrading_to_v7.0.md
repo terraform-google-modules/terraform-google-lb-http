@@ -10,7 +10,7 @@ The v7.0 release contains backwards-incompatible changes to the backend config.
   module "gce-lb-http" {
     source            = "GoogleCloudPlatform/lb-http/google"
 -   version           = "~> 6.3.0"
-+   version           = "~> 7.0.0"
++   version           = "~> 7.0"
 
     backends = {
       default = {
@@ -30,7 +30,7 @@ To use the default value (`http`), specify `null`.
   module "gce-lb-http" {
     source            = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
 -   version           = "~> 6.3.0"
-+   version           = "~> 7.0.0"
++   version           = "~> 7.0"
 
     backends = {
       default = {
