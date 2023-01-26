@@ -180,6 +180,8 @@ resource "google_compute_backend_service" "default" {
 
   load_balancing_scheme = var.load_balancing_scheme
 
+  port_name = lookup(each.value, "port_name", "http")
+  protocol  = lookup(each.value, "protocol", "HTTP")
 
   description                     = lookup(each.value, "description", null)
   connection_draining_timeout_sec = lookup(each.value, "connection_draining_timeout_sec", null)
