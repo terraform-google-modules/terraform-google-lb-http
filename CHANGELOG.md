@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v6.3.0...v7.0.0) (2023-01-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* add support for https only procotol in NEG backend service ([#287](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/287))
+* add support for compression_mode ([#281](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/281))
+
+### Features
+
+* add support for compression_mode ([#281](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/281)) ([7f30d88](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/7f30d88580b289e31090e9529fc6955841892431))
+* add support for https only procotol in NEG backend service ([#287](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/287)) ([f62d329](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/f62d329e88ddcf57ba4bf9e129d5911ecb0923f7))
+* added certificate manager support ([#294](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/294)) ([319f416](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/319f4165548188dfdf15830c0ddccda339ccf08e))
+* Implement Envoy-based load balancing schemes ([#269](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/269)) ([125bf68](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/125bf688fe88f07f1db4b942a13139e0f63ee8ec))
+
+
+### Bug Fixes
+
+* fixes lint issues and generates metadata ([#289](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/289)) ([1394f25](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/1394f259ced8cf1115bc83d1bb897a0e52f4ff64))
+* plumb backend values, upgrade guide ([#296](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/296)) ([228b59c](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/228b59c55cd87774d411e808d638b84ea54bd60f))
+
 ## [6.3.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v6.2.0...v6.3.0) (2022-07-29)
 
 
