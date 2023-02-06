@@ -78,6 +78,7 @@ module "lb-http" {
       custom_request_headers          = null
       custom_response_headers         = null
       security_policy                 = null
+      compression_mode                = null
 
       {% if not serverless %}
       connection_draining_timeout_sec = null
