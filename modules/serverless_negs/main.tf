@@ -218,6 +218,40 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
+  dynamic "cdn_policy" {
+    for_each = each.value.enable_cdn ? [1] : []
+    content {
+      cache_mode                   = each.value.cdn_policy.cache_mode
+      signed_url_cache_max_age_sec = each.value.cdn_policy.signed_url_cache_max_age_sec
+      default_ttl                  = each.value.cdn_policy.default_ttl
+      max_ttl                      = each.value.cdn_policy.max_ttl
+      client_ttl                   = each.value.cdn_policy.client_ttl
+      negative_caching             = each.value.cdn_policy.negative_caching
+      serve_while_stale            = each.value.cdn_policy.serve_while_stale
+
+      dynamic "negative_caching_policy" {
+        for_each = each.value.cdn_policy.negative_caching_policy != null ? [1] : []
+        content {
+          code = each.value.cdn_policy.negative_caching_policy.code
+          ttl  = each.value.cdn_policy.negative_caching_policy.ttl
+        }
+      }
+
+      dynamic "cache_key_policy" {
+        for_each = each.value.cdn_policy.cache_key_policy != null ? [1] : []
+        content {
+          include_host           = each.value.cdn_policy.cache_key_policy.include_host
+          include_protocol       = each.value.cdn_policy.cache_key_policy.include_protocol
+          include_query_string   = each.value.cdn_policy.cache_key_policy.include_query_string
+          query_string_blacklist = each.value.cdn_policy.cache_key_policy.query_string_blacklist
+          query_string_whitelist = each.value.cdn_policy.cache_key_policy.query_string_whitelist
+          include_http_headers   = each.value.cdn_policy.cache_key_policy.include_http_headers
+          include_named_cookies  = each.value.cdn_policy.cache_key_policy.include_named_cookies
+        }
+      }
+    }
+  }
+
 
 }
 
