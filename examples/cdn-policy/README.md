@@ -7,9 +7,7 @@ This example shows how to enable [Cloud CDN](https://cloud.google.com/cdn) on an
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| network\_name | n/a | `string` | `"tf-lb-http-mig-nat"` | no |
 | project\_id | n/a | `string` | n/a | yes |
-| region | n/a | `string` | `"us-west1"` | no |
 
 ## Outputs
 

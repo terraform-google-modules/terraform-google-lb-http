@@ -15,11 +15,11 @@
  */
 
 locals {
-  region = us-west1
+  region = "us-west1"
 }
 
 resource "google_compute_network" "default" {
-  name                    = "tf-lb-http-mig-nat"
+  name                    = "tf-lb-http-cdn"
   project                 = var.project_id
   auto_create_subnetworks = false
 }
@@ -60,7 +60,7 @@ module "mig_template" {
     scopes = ["cloud-platform"]
   }
   name_prefix    = google_compute_network.default.name
-  startup_script = templatefile("%s/gceme.sh.tpl", {PROXY_PATH = ""})
+  startup_script = templatefile("${path.module}/gceme.sh.tpl", { PROXY_PATH = "" })
   tags = [
     google_compute_network.default.name,
     module.cloud-nat.router_name
