@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
+locals {
+  region = us-west1
+}
+
 resource "google_compute_network" "default" {
-  name                    = var.network_name
+  name                    = "tf-lb-http-mig-nat"
   project                 = var.project_id
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "default" {
-  name                     = var.network_name
+  name                     = google_compute_network.default.name
   project                  = var.project_id
   ip_cidr_range            = "10.127.0.0/20"
   network                  = google_compute_network.default.self_link
-  region                   = var.region
+  region                   = local.region
   private_ip_google_access = true
 }
 
@@ -33,7 +37,7 @@ resource "google_compute_router" "default" {
   name    = "lb-http-router"
   project = var.project_id
   network = google_compute_network.default.self_link
-  region  = var.region
+  region  = local.region
 }
 
 module "cloud-nat" {
@@ -41,7 +45,7 @@ module "cloud-nat" {
   version    = "~> 2.2"
   router     = google_compute_router.default.name
   project_id = var.project_id
-  region     = var.region
+  region     = local.region
   name       = "cloud-nat-lb-http-router"
 }
 
@@ -55,10 +59,10 @@ module "mig_template" {
     email  = ""
     scopes = ["cloud-platform"]
   }
-  name_prefix    = var.network_name
+  name_prefix    = google_compute_network.default.name
   startup_script = templatefile("%s/gceme.sh.tpl", {PROXY_PATH = ""})
   tags = [
-    var.network_name,
+    google_compute_network.default.name,
     module.cloud-nat.router_name
   ]
 }
@@ -68,8 +72,8 @@ module "mig" {
   version           = "~> 8.0"
   project_id        = var.project_id
   instance_template = module.mig_template.self_link
-  region            = var.region
-  hostname          = var.network_name
+  region            = local.region
+  hostname          = google_compute_network.default.name
   target_size       = 2
   named_ports = [{
     name = "http",
@@ -81,7 +85,7 @@ module "gce-lb-http" {
   source            = "../../"
   name              = "mig-http-lb"
   project           = var.project_id
-  target_tags       = [var.network_name]
+  target_tags       = [google_compute_network.default.name]
   firewall_networks = [google_compute_network.default.name]
 
 
