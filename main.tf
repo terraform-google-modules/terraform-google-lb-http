@@ -42,7 +42,7 @@ resource "google_compute_global_forwarding_rule" "http" {
 resource "google_compute_global_forwarding_rule" "https" {
   provider              = google-beta
   project               = var.project
-  count                 = var.ssl ? 1 : 0
+  count                 = var.ssl || var.certificate_map != null ? 1 : 0
   name                  = "${var.name}-https"
   target                = google_compute_target_https_proxy.default[0].self_link
   ip_address            = local.address
@@ -77,7 +77,7 @@ resource "google_compute_global_forwarding_rule" "http_ipv6" {
 resource "google_compute_global_forwarding_rule" "https_ipv6" {
   provider              = google-beta
   project               = var.project
-  count                 = (var.enable_ipv6 && var.ssl) ? 1 : 0
+  count                 = var.enable_ipv6 && (var.ssl || var.certificate_map != null) ? 1 : 0
   name                  = "${var.name}-ipv6-https"
   target                = google_compute_target_https_proxy.default[0].self_link
   ip_address            = local.ipv6_address
@@ -107,7 +107,7 @@ resource "google_compute_target_http_proxy" "default" {
 # HTTPS proxy when ssl is true
 resource "google_compute_target_https_proxy" "default" {
   project = var.project
-  count   = var.ssl ? 1 : 0
+  count   = var.ssl || var.certificate_map != null ? 1 : 0
   name    = "${var.name}-https-proxy"
   url_map = local.url_map
 
