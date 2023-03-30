@@ -35,6 +35,7 @@ module "lb-http" {
       custom_request_headers          = null
       custom_response_headers         = null
       security_policy                 = null
+      compression_mode                = null
 
 
       log_config = {
