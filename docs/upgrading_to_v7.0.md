@@ -34,8 +34,8 @@ To use the default value (`http`), specify `null`.
 
     backends = {
       default = {
-+       port     = null
-+       protocol = null
++       port_name = null
++       protocol  = null
 ...
       }
     }
