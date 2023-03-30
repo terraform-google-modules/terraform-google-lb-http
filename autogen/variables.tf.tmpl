@@ -144,6 +144,28 @@ variable "backends" {
       oauth2_client_id     = string
       oauth2_client_secret = string
     })
+    cdn_policy = optional(object({
+      cache_mode                   = optional(string)
+      signed_url_cache_max_age_sec = optional(string)
+      default_ttl                  = optional(number)
+      max_ttl                      = optional(number)
+      client_ttl                   = optional(number)
+      negative_caching             = optional(bool)
+      negative_caching_policy = optional(object({
+        code = optional(number)
+        ttl  = optional(number)
+      }))
+      serve_while_stale = optional(number)
+      cache_key_policy = optional(object({
+        include_host           = optional(bool)
+        include_protocol       = optional(bool)
+        include_query_string   = optional(bool)
+        query_string_blacklist = optional(list(string))
+        query_string_whitelist = optional(list(string))
+        include_http_headers   = optional(list(string))
+        include_named_cookies  = optional(list(string))
+      }))
+    }))
   }))
 }
 
