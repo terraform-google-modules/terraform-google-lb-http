@@ -42,7 +42,7 @@ resource "google_compute_global_forwarding_rule" "http" {
 resource "google_compute_global_forwarding_rule" "https" {
   provider              = google-beta
   project               = var.project
-  count                 = var.ssl || var.certificate_map != null ? 1 : 0
+  count                 = var.ssl ? 1 : 0
   name                  = "${var.name}-https"
   target                = google_compute_target_https_proxy.default[0].self_link
   ip_address            = local.address
@@ -107,7 +107,7 @@ resource "google_compute_target_http_proxy" "default" {
 # HTTPS proxy when ssl is true
 resource "google_compute_target_https_proxy" "default" {
   project = var.project
-  count   = var.ssl || var.certificate_map != null ? 1 : 0
+  count   = var.ssl ? 1 : 0
   name    = "${var.name}-https-proxy"
   url_map = local.url_map
 
@@ -194,6 +194,9 @@ resource "google_compute_backend_service" "default" {
   health_checks                   = lookup(each.value, "health_check", null) == null ? null : [google_compute_health_check.default[each.key].self_link]
   session_affinity                = lookup(each.value, "session_affinity", null)
   affinity_cookie_ttl_sec         = lookup(each.value, "affinity_cookie_ttl_sec", null)
+
+  # To achieve a null backend edge_security_policy, set each.value.edge_security_policy to "" (empty string), otherwise, it fallsback to var.edge_security_policy.
+  edge_security_policy = lookup(each.value, "edge_security_policy") == "" ? null : (lookup(each.value, "edge_security_policy") == null ? var.edge_security_policy : each.value.edge_security_policy)
 
   # To achieve a null backend security_policy, set each.value.security_policy to "" (empty string), otherwise, it fallsback to var.security_policy.
   security_policy = lookup(each.value, "security_policy") == "" ? null : (lookup(each.value, "security_policy") == null ? var.security_policy : each.value.security_policy)

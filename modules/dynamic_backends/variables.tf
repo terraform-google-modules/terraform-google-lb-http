@@ -222,6 +222,12 @@ variable "ssl_certificates" {
   default     = []
 }
 
+variable "edge_security_policy" {
+  description = "The resource URL for the edge security policy to associate with the backend service"
+  type        = string
+  default     = null
+}
+
 variable "security_policy" {
   description = "The resource URL for the security policy to associate with the backend service"
   type        = string
