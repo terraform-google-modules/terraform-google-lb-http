@@ -56,6 +56,7 @@ module "load_balancer" {
       timeout_sec                     = 30
       connection_draining_timeout_sec = 0
       enable_cdn                      = false
+      edge_security_policy            = null
       security_policy                 = null
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
