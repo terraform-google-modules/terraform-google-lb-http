@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v7.0.0...v8.0.0) (2023-03-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* add cdn_policy configuration block for backend_service ([#301](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/301))
+
+### Features
+
+* add cdn_policy configuration block for backend_service ([#301](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/301)) ([7aaaa39](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/7aaaa39bc36e140d47ca90888d3830f3d622a86f))
+
+
+### Bug Fixes
+
+* Support https frontends with certificate_map ([#305](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/305)) ([bf7a9a6](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/bf7a9a63e0bf1a8c3361ef37aab0811f4d034846))
+
 ## [7.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v6.3.0...v7.0.0) (2023-01-26)
 
 
