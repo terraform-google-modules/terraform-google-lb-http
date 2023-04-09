@@ -121,7 +121,7 @@ Current version is 3.0. Upgrade guides:
 | https\_redirect | Set to `true` to enable https redirect on the lb. | `bool` | `false` | no |
 | ipv6\_address | An existing IPv6 address to use (the actual IP address value) | `string` | `null` | no |
 | labels | The labels to attach to resources created by this module | `map(string)` | `{}` | no |
-| load\_balancing\_scheme | Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL\_MANAGED for Envoy-based load balancer, INTERNAL for classic internal load balancer, and INTERNAL\_SELF\_MANAGED for internal load balancer) | `string` | `"EXTERNAL"` | no |
+| load\_balancing\_scheme | Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL\_MANAGED for Envoy-based load balancer and INTERNAL\_SELF\_MANAGED for Traffic Director) | `string` | `"EXTERNAL"` | no |
 | managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` and `use_ssl_certificates` set to `false`. | `list(string)` | `[]` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |
 | private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
