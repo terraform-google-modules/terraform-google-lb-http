@@ -67,6 +67,8 @@ variable "backends" {
     custom_request_headers  = list(string)
     custom_response_headers = list(string)
 
+    session_affinity        = string
+    affinity_cookie_ttl_sec = number
 
 
     log_config = object({
@@ -199,7 +201,7 @@ variable "labels" {
 }
 
 variable "load_balancing_scheme" {
-  description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, INTERNAL for classic internal load balancer, and INTERNAL_SELF_MANAGED for internal load balancer)"
+  description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer and INTERNAL_SELF_MANAGED for Traffic Director)"
   type        = string
   default     = "EXTERNAL"
 }
