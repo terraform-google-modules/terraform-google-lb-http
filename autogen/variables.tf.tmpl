@@ -93,6 +93,7 @@ variable "backends" {
     enable_cdn              = bool
     compression_mode        = string
     security_policy         = string
+    edge_security_policy    = string
     custom_request_headers  = list(string)
     custom_response_headers = list(string)
 
@@ -233,6 +234,12 @@ variable "ssl_certificates" {
   description = "SSL cert self_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided."
   type        = list(string)
   default     = []
+}
+
+variable "edge_security_policy" {
+  description = "The resource URL for the edge security policy to associate with the backend service"
+  type        = string
+  default     = null
 }
 
 variable "security_policy" {

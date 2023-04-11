@@ -43,6 +43,7 @@ module "lb-http" {
         }
       ]
       enable_cdn              = false
+      edge_security_policy    = null
       security_policy         = null
       custom_request_headers  = null
       custom_response_headers = null
