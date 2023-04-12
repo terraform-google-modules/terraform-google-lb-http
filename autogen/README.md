@@ -79,11 +79,11 @@ module "lb-http" {
       custom_response_headers         = null
       security_policy                 = null
       compression_mode                = null
+      session_affinity                = null
+      affinity_cookie_ttl_sec         = null
 
       {% if not serverless %}
       connection_draining_timeout_sec = null
-      session_affinity                = null
-      affinity_cookie_ttl_sec         = null
 
       health_check = {
         check_interval_sec  = null
@@ -149,10 +149,13 @@ module "lb-http" {
 
 ## Version
 
-Current version is 3.0. Upgrade guides:
+Current version is 9.0. Upgrade guides:
 
-- [1.X -> 2.X](https://www.terraform.io/upgrade-guides/0-12.html)
 - [2.X -> 3.0](/docs/upgrading-v2.0.0-v3.0.0.md)
+- [3.X -> 4.0](/docs/upgrading_to_v4.0.md)
+- [6.X -> 7.0](/docs/upgrading_to_v7.0.md)
+- [7.X -> 8.0](/docs/upgrading_to_v8.0.md)
+- [8.X -> 9.0](/docs/upgrading_to_v9.0.md)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

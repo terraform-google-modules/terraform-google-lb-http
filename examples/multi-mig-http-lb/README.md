@@ -70,7 +70,7 @@ You should see the instance details from the region closest to you.
 2. Open the external load-balancer IP address again, and verify that you see responses from the instance group in the other region.
 
   ```
-  echo http://$(terraform output load-balancer-ip)
+  echo http://$(terraform output load-balancer-ip)| sed 's/"//g'
   ```
 
 ## Cleanup

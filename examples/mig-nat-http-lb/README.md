@@ -49,7 +49,7 @@ terraform apply
 1. Open the URL of the load balancer in your browser:
 
 ```
-echo http://$(terraform output load-balancer-ip)
+echo http://$(terraform output load-balancer-ip)| sed 's/"//g'
 ```
 
 You should see the instance details from `group1`.
