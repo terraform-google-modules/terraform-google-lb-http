@@ -136,7 +136,7 @@ terraform apply
 2. Open URL of load balancer in browser:
 
 ```
-echo http://$(terraform output load-balancer-ip)
+echo http://$(terraform output load-balancer-ip)| sed 's/"//g'
 ```
 
 You should see the Google Cloud logo (served from Cloud Storage) and instance details for the sample-app running in the GKE cluster.

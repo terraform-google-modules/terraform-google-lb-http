@@ -46,7 +46,7 @@ terraform apply
 1. Open URL of load balancer in browser:
 
 ```
-echo http://$(terraform output load-balancer-ip)
+echo http://$(terraform output load-balancer-ip)| sed 's/"//g'
 ```
 
 > You should see the Google Cloud logo and instance details.
