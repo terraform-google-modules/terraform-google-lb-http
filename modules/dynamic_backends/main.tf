@@ -24,6 +24,8 @@ locals {
 
   health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }
 
+  is_internal      = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED"
+  internal_network = local.is_internal ? var.network : null
 }
 
 ### IPv4 block ###
@@ -37,6 +39,7 @@ resource "google_compute_global_forwarding_rule" "http" {
   port_range            = "80"
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
+  network               = local.internal_network
 }
 
 resource "google_compute_global_forwarding_rule" "https" {
@@ -49,11 +52,12 @@ resource "google_compute_global_forwarding_rule" "https" {
   port_range            = "443"
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
+  network               = local.internal_network
 }
 
 resource "google_compute_global_address" "default" {
   provider   = google-beta
-  count      = var.create_address ? 1 : 0
+  count      = local.is_internal ? 0 : var.create_address ? 1 : 0
   project    = var.project
   name       = "${var.name}-address"
   ip_version = "IPV4"
@@ -72,6 +76,7 @@ resource "google_compute_global_forwarding_rule" "http_ipv6" {
   port_range            = "80"
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
+  network               = local.internal_network
 }
 
 resource "google_compute_global_forwarding_rule" "https_ipv6" {
@@ -84,11 +89,12 @@ resource "google_compute_global_forwarding_rule" "https_ipv6" {
   port_range            = "443"
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
+  network               = local.internal_network
 }
 
 resource "google_compute_global_address" "default_ipv6" {
   provider   = google-beta
-  count      = (var.enable_ipv6 && var.create_ipv6_address) ? 1 : 0
+  count      = local.is_internal ? 0 : (var.enable_ipv6 && var.create_ipv6_address) ? 1 : 0
   project    = var.project
   name       = "${var.name}-ipv6-address"
   ip_version = "IPV6"
