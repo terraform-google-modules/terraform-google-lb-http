@@ -189,8 +189,8 @@ variable "ssl_policy" {
 
 variable "quic" {
   type        = bool
-  description = "Set to `true` to enable QUIC support"
-  default     = false
+  description = "Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only."
+  default     = null
 }
 
 variable "private_key" {
@@ -254,7 +254,7 @@ variable "labels" {
 }
 
 variable "load_balancing_scheme" {
-  description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, INTERNAL for classic internal load balancer, and INTERNAL_SELF_MANAGED for Traffic Director)"
+  description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, INTERNAL for classic internal load balancer, and INTERNAL_SELF_MANAGED for internal load balancer)"
   type        = string
   default     = "EXTERNAL"
 }

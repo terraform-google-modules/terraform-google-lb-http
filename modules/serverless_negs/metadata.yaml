@@ -154,9 +154,8 @@ spec:
     type: string
     required: true
   - name: quic
-    description: Set to `true` to enable QUIC support
+    description: Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only.
     type: bool
-    default: false
     required: false
   - name: random_certificate_suffix
     description: Bool to enable/disable random certificate name generation. Set and keep this to true if you need to change the SSL cert.

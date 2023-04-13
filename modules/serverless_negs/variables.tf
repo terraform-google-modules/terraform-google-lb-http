@@ -141,8 +141,8 @@ variable "ssl_policy" {
 
 variable "quic" {
   type        = bool
-  description = "Set to `true` to enable QUIC support"
-  default     = false
+  description = "Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only."
+  default     = null
 }
 
 variable "private_key" {
