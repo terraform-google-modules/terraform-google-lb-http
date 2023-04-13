@@ -55,7 +55,7 @@ terraform apply
 2. Open URL of load balancer in browser:
 
 ```
-echo http://$(terraform output load-balancer-ip)
+echo http://$(terraform output load-balancer-ip)| sed 's/"//g'
 ```
 
 > You should see the GCP logo and instance details from the group closest to your geographical region.
@@ -63,7 +63,7 @@ echo http://$(terraform output load-balancer-ip)
 3. Open URL to route mapped to us-west1 instance group:
 
 ```
-echo https://${EXTERNAL_IP}/group1/
+echo http://$(terraform output load-balancer-ip)/group1/| sed 's/"//g'
 ```
 
 > You should see the GCP logo and instance details from the group in us-west1.
@@ -71,7 +71,7 @@ echo https://${EXTERNAL_IP}/group1/
 4. Open URL to route mapped to us-central1 instance group:
 
 ```
-echo https://${EXTERNAL_IP}/group2/
+echo http://$(terraform output load-balancer-ip)/group2/| sed 's/"//g'
 ```
 
 > You should see the GCP logo and instance details from the group in us-central1.
@@ -79,7 +79,7 @@ echo https://${EXTERNAL_IP}/group2/
 5. Open URL to route mapped to us-east1 instance group:
 
 ```
-echo https://${EXTERNAL_IP}/group3/
+echo http://$(terraform output load-balancer-ip)/group3/| sed 's/"//g'
 ```
 
 > You should see the GCP logo and instance details from the group in us-east1.
