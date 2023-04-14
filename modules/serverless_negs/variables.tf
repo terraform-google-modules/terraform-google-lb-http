@@ -216,3 +216,9 @@ variable "certificate_map" {
   type        = string
   default     = null
 }
+
+variable "network" {
+  description = "Network for INTERNAL_SELF_MANAGED load balancing scheme"
+  type        = string
+  default     = "default"
+}
