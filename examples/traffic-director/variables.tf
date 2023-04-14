@@ -20,4 +20,5 @@ variable "project_id" {
 
 variable "network_name" {
   default = "traffic-director-lb"
+  type    = string
 }
