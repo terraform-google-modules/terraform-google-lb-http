@@ -57,7 +57,7 @@ variable "ipv6_address" {
 variable "firewall_networks" {
   description = "Names of the networks to create firewall rules in"
   type        = list(string)
-  default     = ["default"]
+  default     = []
 }
 
 variable "firewall_projects" {
@@ -81,57 +81,58 @@ variable "target_service_accounts" {
 variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
-    port                    = number
-    protocol                = string
-    port_name               = string
-    description             = string
-    enable_cdn              = bool
-    compression_mode        = string
-    security_policy         = string
-    edge_security_policy    = string
-    custom_request_headers  = list(string)
-    custom_response_headers = list(string)
+    port                    = optional(number, null)
+    protocol                = optional(string, null)
+    port_name               = optional(string, null)
+    description             = optional(string, null)
+    enable_cdn              = optional(bool, null)
+    compression_mode        = optional(string, null)
+    security_policy         = optional(string, null)
+    edge_security_policy    = optional(string, null)
+    custom_request_headers  = optional(list(string), null)
+    custom_response_headers = optional(list(string), null)
 
-    timeout_sec                     = number
-    connection_draining_timeout_sec = number
-    session_affinity                = string
-    affinity_cookie_ttl_sec         = number
+    timeout_sec                     = optional(number, null)
+    connection_draining_timeout_sec = optional(number, null)
+    session_affinity                = optional(string, null)
+    affinity_cookie_ttl_sec         = optional(number, null)
 
-    health_check = object({
-      check_interval_sec  = number
-      timeout_sec         = number
-      healthy_threshold   = number
-      unhealthy_threshold = number
-      request_path        = string
-      port                = number
-      host                = string
-      logging             = bool
-    })
+    health_check = optional(object({
+      check_interval_sec  = optional(number, null)
+      timeout_sec         = optional(number, null)
+      healthy_threshold   = optional(number, null)
+      unhealthy_threshold = optional(number, null)
+      request_path        = optional(string, null)
+      port_specification  = optional(string, null)
+      port                = optional(number, null)
+      host                = optional(string, null)
+      logging             = optional(bool, null)
+    }), null)
 
-    log_config = object({
-      enable      = bool
-      sample_rate = number
-    })
+    log_config = optional(object({
+      enable      = optional(bool, null)
+      sample_rate = optional(number, null)
+    }), null)
 
     groups = list(object({
       group = string
 
-      balancing_mode               = string
-      capacity_scaler              = number
-      description                  = string
-      max_connections              = number
-      max_connections_per_instance = number
-      max_connections_per_endpoint = number
-      max_rate                     = number
-      max_rate_per_instance        = number
-      max_rate_per_endpoint        = number
-      max_utilization              = number
+      balancing_mode               = optional(string, null)
+      capacity_scaler              = optional(number, null)
+      description                  = optional(string, null)
+      max_connections              = optional(number, null)
+      max_connections_per_instance = optional(number, null)
+      max_connections_per_endpoint = optional(number, null)
+      max_rate                     = optional(number, null)
+      max_rate_per_instance        = optional(number, null)
+      max_rate_per_endpoint        = optional(number, null)
+      max_utilization              = optional(number, null)
     }))
-    iap_config = object({
+    iap_config = optional(object({
       enable               = bool
       oauth2_client_id     = string
       oauth2_client_secret = string
-    })
+    }), null)
     cdn_policy = optional(object({
       cache_mode                   = optional(string)
       signed_url_cache_max_age_sec = optional(string)

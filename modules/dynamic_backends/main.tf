@@ -276,9 +276,9 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
-  depends_on = [
-    google_compute_health_check.default
-  ]
+  # depends_on = [
+  #   google_compute_health_check.default
+  # ]
 
   lifecycle {
     ignore_changes = [backend]
@@ -303,48 +303,54 @@ resource "google_compute_health_check" "default" {
   dynamic "http_health_check" {
     for_each = each.value["protocol"] == "HTTP" ? [
       {
-        host         = lookup(each.value["health_check"], "host", null)
-        request_path = lookup(each.value["health_check"], "request_path", null)
-        port         = lookup(each.value["health_check"], "port", null)
+        host               = lookup(each.value["health_check"], "host", null)
+        request_path       = lookup(each.value["health_check"], "request_path", null)
+        port               = lookup(each.value["health_check"], "port", null)
+        port_specification = lookup(each.value["health_check"], "port_specification", null)
       }
     ] : []
 
     content {
-      host         = lookup(http_health_check.value, "host", null)
-      request_path = lookup(http_health_check.value, "request_path", null)
-      port         = lookup(http_health_check.value, "port", null)
+      host               = lookup(http_health_check.value, "host", null)
+      request_path       = lookup(http_health_check.value, "request_path", null)
+      port               = lookup(http_health_check.value, "port", null)
+      port_specification = lookup(http_health_check.value, "port_specification", null)
     }
   }
 
   dynamic "https_health_check" {
     for_each = each.value["protocol"] == "HTTPS" ? [
       {
-        host         = lookup(each.value["health_check"], "host", null)
-        request_path = lookup(each.value["health_check"], "request_path", null)
-        port         = lookup(each.value["health_check"], "port", null)
+        host               = lookup(each.value["health_check"], "host", null)
+        request_path       = lookup(each.value["health_check"], "request_path", null)
+        port               = lookup(each.value["health_check"], "port", null)
+        port_specification = lookup(each.value["health_check"], "port_specification", null)
       }
     ] : []
 
     content {
-      host         = lookup(https_health_check.value, "host", null)
-      request_path = lookup(https_health_check.value, "request_path", null)
-      port         = lookup(https_health_check.value, "port", null)
+      host               = lookup(https_health_check.value, "host", null)
+      request_path       = lookup(https_health_check.value, "request_path", null)
+      port               = lookup(https_health_check.value, "port", null)
+      port_specification = lookup(https_health_check.value, "port_specification", null)
     }
   }
 
   dynamic "http2_health_check" {
     for_each = each.value["protocol"] == "HTTP2" ? [
       {
-        host         = lookup(each.value["health_check"], "host", null)
-        request_path = lookup(each.value["health_check"], "request_path", null)
-        port         = lookup(each.value["health_check"], "port", null)
+        host               = lookup(each.value["health_check"], "host", null)
+        request_path       = lookup(each.value["health_check"], "request_path", null)
+        port               = lookup(each.value["health_check"], "port", null)
+        port_specification = lookup(each.value["health_check"], "port_specification", null)
       }
     ] : []
 
     content {
-      host         = lookup(http2_health_check.value, "host", null)
-      request_path = lookup(http2_health_check.value, "request_path", null)
-      port         = lookup(http2_health_check.value, "port", null)
+      host               = lookup(http2_health_check.value, "host", null)
+      request_path       = lookup(http2_health_check.value, "request_path", null)
+      port               = lookup(http2_health_check.value, "port", null)
+      port_specification = lookup(http2_health_check.value, "port_specification", null)
     }
   }
 }

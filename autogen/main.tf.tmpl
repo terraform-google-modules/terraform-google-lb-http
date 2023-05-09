@@ -22,9 +22,7 @@ locals {
   url_map             = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
   create_http_forward = var.http_forward || var.https_redirect
 
-  {% if not serverless %}{# Serverless NEGs don't support health checks #}
   health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }  
-  {% endif %}
 
   is_internal       = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED"
   internal_network  = local.is_internal ? var.network : null
@@ -192,10 +190,8 @@ resource "google_compute_backend_service" "default" {
   port_name = lookup(each.value, "port_name", "http")
   protocol  = lookup(each.value, "protocol", "HTTP")
 
-  {% if not serverless %}
   {# Limitation: Timeout sec is not supported for a backend service with Serverless network endpoint groups. #}
   timeout_sec                     = lookup(each.value, "timeout_sec", null)
-  {% endif %}
   description                     = lookup(each.value, "description", null)
   connection_draining_timeout_sec = lookup(each.value, "connection_draining_timeout_sec", null)
   enable_cdn                      = lookup(each.value, "enable_cdn", false)
@@ -205,9 +201,7 @@ resource "google_compute_backend_service" "default" {
   session_affinity                = lookup(each.value, "session_affinity", null)
   affinity_cookie_ttl_sec         = lookup(each.value, "affinity_cookie_ttl_sec", null)
 
-  {% if not serverless %}{# doesn't apply to serverless NEGs #}
   health_checks                   = lookup(each.value, "health_check", null) == null ? null : [google_compute_health_check.default[each.key].self_link]
-  {% endif %}
 
   # To achieve a null backend edge_security_policy, set each.value.edge_security_policy to "" (empty string), otherwise, it fallsback to var.edge_security_policy.
   edge_security_policy = lookup(each.value, "edge_security_policy") == "" ? null : (lookup(each.value, "edge_security_policy") == null ? var.edge_security_policy : each.value.edge_security_policy)
@@ -221,7 +215,6 @@ resource "google_compute_backend_service" "default" {
       description = lookup(backend.value, "description", null)
       group       = lookup(backend.value, "group")
 
-      {% if not serverless %}{# doesn't apply to serverless NEGs #}
       balancing_mode               = lookup(backend.value, "balancing_mode")
       capacity_scaler              = lookup(backend.value, "capacity_scaler")
       max_connections              = lookup(backend.value, "max_connections")
@@ -231,7 +224,6 @@ resource "google_compute_backend_service" "default" {
       max_rate_per_instance        = lookup(backend.value, "max_rate_per_instance")
       max_rate_per_endpoint        = lookup(backend.value, "max_rate_per_endpoint")
       max_utilization              = lookup(backend.value, "max_utilization")
-      {% endif %}
     }
   }
 
@@ -285,11 +277,9 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
-  {% if not serverless %}
-  depends_on = [
-    google_compute_health_check.default
-  ]
-  {% endif %}
+  # depends_on = [
+  #   google_compute_health_check.default
+  # ]
 
   {% if dynamic_backends %}
   lifecycle {
@@ -298,7 +288,6 @@ resource "google_compute_backend_service" "default" {
   {% endif %}
 }
 
-{% if not serverless %}{# doesn't apply to serverless NEGs #}
 resource "google_compute_health_check" "default" {
   provider = google-beta
   for_each = local.health_checked_backends
@@ -317,48 +306,54 @@ resource "google_compute_health_check" "default" {
   dynamic "http_health_check" {
     for_each = each.value["protocol"] == "HTTP" ? [
       {
-        host         = lookup(each.value["health_check"], "host", null)
-        request_path = lookup(each.value["health_check"], "request_path", null)
-        port         = lookup(each.value["health_check"], "port", null)
+        host               = lookup(each.value["health_check"], "host", null)
+        request_path       = lookup(each.value["health_check"], "request_path", null)
+        port               = lookup(each.value["health_check"], "port", null)
+        port_specification = lookup(each.value["health_check"], "port_specification", null)
       }
     ] : []
 
     content {
-      host         = lookup(http_health_check.value, "host", null)
-      request_path = lookup(http_health_check.value, "request_path", null)
-      port         = lookup(http_health_check.value, "port", null)
+      host               = lookup(http_health_check.value, "host", null)
+      request_path       = lookup(http_health_check.value, "request_path", null)
+      port               = lookup(http_health_check.value, "port", null)
+      port_specification = lookup(http_health_check.value, "port_specification", null)
     }
   }
 
   dynamic "https_health_check" {
     for_each = each.value["protocol"] == "HTTPS" ? [
       {
-        host         = lookup(each.value["health_check"], "host", null)
-        request_path = lookup(each.value["health_check"], "request_path", null)
-        port         = lookup(each.value["health_check"], "port", null)
+        host               = lookup(each.value["health_check"], "host", null)
+        request_path       = lookup(each.value["health_check"], "request_path", null)
+        port               = lookup(each.value["health_check"], "port", null)
+        port_specification = lookup(each.value["health_check"], "port_specification", null)
       }
     ] : []
 
     content {
-      host         = lookup(https_health_check.value, "host", null)
-      request_path = lookup(https_health_check.value, "request_path", null)
-      port         = lookup(https_health_check.value, "port", null)
+      host               = lookup(https_health_check.value, "host", null)
+      request_path       = lookup(https_health_check.value, "request_path", null)
+      port               = lookup(https_health_check.value, "port", null)
+      port_specification = lookup(https_health_check.value, "port_specification", null)
     }
   }
 
   dynamic "http2_health_check" {
     for_each = each.value["protocol"] == "HTTP2" ? [
       {
-        host         = lookup(each.value["health_check"], "host", null)
-        request_path = lookup(each.value["health_check"], "request_path", null)
-        port         = lookup(each.value["health_check"], "port", null)
+        host               = lookup(each.value["health_check"], "host", null)
+        request_path       = lookup(each.value["health_check"], "request_path", null)
+        port               = lookup(each.value["health_check"], "port", null)
+        port_specification = lookup(each.value["health_check"], "port_specification", null)
       }
     ] : []
 
     content {
-      host         = lookup(http2_health_check.value, "host", null)
-      request_path = lookup(http2_health_check.value, "request_path", null)
-      port         = lookup(http2_health_check.value, "port", null)
+      host               = lookup(http2_health_check.value, "host", null)
+      request_path       = lookup(http2_health_check.value, "request_path", null)
+      port               = lookup(http2_health_check.value, "port", null)
+      port_specification = lookup(http2_health_check.value, "port_specification", null)
     }
   }
 }
@@ -383,4 +378,3 @@ resource "google_compute_firewall" "default-hc" {
     }
   }
 }
-{% endif %}

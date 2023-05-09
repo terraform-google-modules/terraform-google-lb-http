@@ -1,8 +1,6 @@
-# Global HTTP Load Balancer Terraform Module {%- if serverless %} for Serverless NEGs{% endif %}
+# Global HTTP Load Balancer Terraform Module
 
-{% if not serverless %}
 Modular Global HTTP Load Balancer for GCE using forwarding rules.
-{% endif %}
 
 {% if root %}
 
@@ -17,14 +15,8 @@ Modular Global HTTP Load Balancer for GCE using forwarding rules.
 {% elif dynamic_backends %}
 This submodule allows for configuring dynamic backend outside Terraform.
 As such, any changes to the `backends.groups` variable after creation will be ignored.
-{% elif serverless %}
-This submodule allows you to create Cloud HTTP(S) Load Balancer with
-[Serverless Network Endpoint Groups (NEGs)](https://cloud.google.com/load-balancing/docs/negs/serverless-neg-concepts)
-and place serverless services from Cloud Run, Cloud Functions and App Engine
-behind a Cloud Load Balancer.
 {% endif %}
 
-{% if not serverless %}
 {# TCP LB and ILB don't work for Serverless NEGs yet. #}
 
 ## Load Balancer Types
@@ -32,7 +24,6 @@ behind a Cloud Load Balancer.
 - [TCP load balancer](https://github.com/terraform-google-modules/terraform-google-lb)
 - **HTTP/S load balancer**
 - [Internal load balancer](https://github.com/terraform-google-modules/terraform-google-lb-internal)
-  {% endif %}
 
 ## Compatibility
 
@@ -44,43 +35,31 @@ intended for Terraform 0.12.x is [v4.5.0](https://registry.terraform.io/modules/
 ## Usage
 
 ```HCL
-{% if not serverless %}
 module "gce-lb-http" {
-{% else %}
-module "lb-http" {
-{% endif %}
   source            = "GoogleCloudPlatform/lb-http/google{{ module_path }}"
   version           = "~> 4.4"
 
   project           = "my-project-id"
-  {% if serverless %}
   name              = "my-lb"
 
   ssl                             = true
   managed_ssl_certificate_domains = ["your-domain.com"]
   https_redirect                  = true
-  {% else %}
-  name              = "group-http-lb"
-  target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
-  {% endif %}
+  name                            = "group-http-lb"
+  target_tags                     = [module.mig1.target_tags, module.mig2.target_tags]
   backends = {
     default = {
       description                     = null
-      {% if not serverless %}{# not necessary for serverless as default port_name=http, protocol=HTTP #}
       port                            = var.service_port
-      {% endif %}
       protocol                        = "HTTP"
       port_name                       = var.service_port_name
-      {% if not serverless %}
       timeout_sec                     = 10
-      {% endif %}
       enable_cdn                      = false
       custom_request_headers          = null
       custom_response_headers         = null
       security_policy                 = null
       compression_mode                = null
 
-      {% if not serverless %}
       connection_draining_timeout_sec = null
       session_affinity                = null
       affinity_cookie_ttl_sec         = null
@@ -95,21 +74,12 @@ module "lb-http" {
         host                = null
         logging             = null
       }
-      {% endif %}
 
       log_config = {
         enable = true
         sample_rate = 1.0
       }
 
-      {% if serverless %}
-      groups = [
-        {
-          # Your serverless service should have a NEG created that's referenced here.
-          group = google_compute_region_network_endpoint_group.default.id
-        }
-      ]
-      {% else %}
       groups = [
         {
           # Each node pool instance group should be added to the backend.
@@ -126,7 +96,6 @@ module "lb-http" {
           max_utilization              = null
         },
       ]
-      {% endif %}
 
       iap_config = {
         enable               = false
@@ -138,14 +107,12 @@ module "lb-http" {
 }
 ```
 
-{% if not serverless %}
 
 ## Resources created
 
 **Figure 1.** _diagram of terraform resources_
 
 ![architecture diagram](/diagram.png)
-{% endif %}
 
 ## Version
 
@@ -210,8 +177,6 @@ Current version is 9.0. Upgrade guides:
 - [`google_compute_managed_ssl_certificate.default`](https://www.terraform.io/docs/providers/google/r/compute_managed_ssl_certificate.html): The Google-managed certificate resource created when input `ssl` is `true` and `managed_ssl_certificate_domains` is specified.
 - [`google_compute_url_map.default`](https://www.terraform.io/docs/providers/google/r/compute_url_map.html): The default URL map resource when input `url_map` is not provided.
 - [`google_compute_backend_service.default.*`](https://www.terraform.io/docs/providers/google/r/compute_backend_service.html): The backend services created for each of the `backend_params` elements.
-  {% if not serverless %}
 - [`google_compute_health_check.default.*`](https://www.terraform.io/docs/providers/google/r/compute_health_check.html):
   Health check resources created for each of the (non global NEG) backend services.
 - [`google_compute_firewall.default-hc`](https://www.terraform.io/docs/providers/google/r/compute_firewall.html): Firewall rule created for each of the backed services to allow health checks to the instance group.
-  {% endif %}
