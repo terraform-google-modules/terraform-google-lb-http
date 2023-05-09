@@ -34,8 +34,13 @@ module "gce-lb-http" {
   version           = "~> 4.4"
 
   project           = "my-project-id"
-  name              = "group-http-lb"
-  target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
+  name              = "my-lb"
+
+  ssl                             = true
+  managed_ssl_certificate_domains = ["your-domain.com"]
+  https_redirect                  = true
+  name                            = "group-http-lb"
+  target_tags                     = [module.mig1.target_tags, module.mig2.target_tags]
   backends = {
     default = {
       description                     = null

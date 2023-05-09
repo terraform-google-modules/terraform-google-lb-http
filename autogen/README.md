@@ -40,16 +40,13 @@ module "gce-lb-http" {
   version           = "~> 4.4"
 
   project           = "my-project-id"
-  {# {% if serverless %}
   name              = "my-lb"
 
   ssl                             = true
   managed_ssl_certificate_domains = ["your-domain.com"]
   https_redirect                  = true
-  {% else %} #}
-  name              = "group-http-lb"
-  target_tags       = [module.mig1.target_tags, module.mig2.target_tags]
-  {# {% endif %} #}
+  name                            = "group-http-lb"
+  target_tags                     = [module.mig1.target_tags, module.mig2.target_tags]
   backends = {
     default = {
       description                     = null
@@ -83,14 +80,6 @@ module "gce-lb-http" {
         sample_rate = 1.0
       }
 
-      {# {% if serverless %}
-      groups = [
-        {
-          # Your serverless service should have a NEG created that's referenced here.
-          group = google_compute_region_network_endpoint_group.default.id
-        }
-      ]
-      {% else %} #}
       groups = [
         {
           # Each node pool instance group should be added to the backend.
@@ -107,7 +96,6 @@ module "gce-lb-http" {
           max_utilization              = null
         },
       ]
-      {# {% endif %} #}
 
       iap_config = {
         enable               = false
@@ -119,14 +107,12 @@ module "gce-lb-http" {
 }
 ```
 
-{# {% if not serverless %} #}
 
 ## Resources created
 
 **Figure 1.** _diagram of terraform resources_
 
 ![architecture diagram](/diagram.png)
-{# {% endif %} #}
 
 ## Version
 
@@ -191,8 +177,6 @@ Current version is 9.0. Upgrade guides:
 - [`google_compute_managed_ssl_certificate.default`](https://www.terraform.io/docs/providers/google/r/compute_managed_ssl_certificate.html): The Google-managed certificate resource created when input `ssl` is `true` and `managed_ssl_certificate_domains` is specified.
 - [`google_compute_url_map.default`](https://www.terraform.io/docs/providers/google/r/compute_url_map.html): The default URL map resource when input `url_map` is not provided.
 - [`google_compute_backend_service.default.*`](https://www.terraform.io/docs/providers/google/r/compute_backend_service.html): The backend services created for each of the `backend_params` elements.
-  {# {% if not serverless %} #}
 - [`google_compute_health_check.default.*`](https://www.terraform.io/docs/providers/google/r/compute_health_check.html):
   Health check resources created for each of the (non global NEG) backend services.
 - [`google_compute_firewall.default-hc`](https://www.terraform.io/docs/providers/google/r/compute_firewall.html): Firewall rule created for each of the backed services to allow health checks to the instance group.
-  {# {% endif %} #}

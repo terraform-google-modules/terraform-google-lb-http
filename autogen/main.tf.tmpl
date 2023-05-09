@@ -190,10 +190,8 @@ resource "google_compute_backend_service" "default" {
   port_name = lookup(each.value, "port_name", "http")
   protocol  = lookup(each.value, "protocol", "HTTP")
 
-  {# {% if not serverless %} #}
   {# Limitation: Timeout sec is not supported for a backend service with Serverless network endpoint groups. #}
   timeout_sec                     = lookup(each.value, "timeout_sec", null)
-  {# {% endif %} #}
   description                     = lookup(each.value, "description", null)
   connection_draining_timeout_sec = lookup(each.value, "connection_draining_timeout_sec", null)
   enable_cdn                      = lookup(each.value, "enable_cdn", false)

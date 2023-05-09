@@ -33,8 +33,6 @@ terraform {
   }
 
   provider_meta "google" {
-    {# {% if serverless %}
-    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v9.0.0" #}
     {% if dynamic_backends %}
     module_name = "blueprints/terraform/terraform-google-lb-http:dynamic_backends/v9.0.0"
     {% else %}
@@ -43,8 +41,6 @@ terraform {
   }
 
   provider_meta "google-beta" {
-    {# {% if serverless %}
-    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v9.0.0" #}
     {% if dynamic_backends %}
     module_name = "blueprints/terraform/terraform-google-lb-http:dynamic_backends/v9.0.0"
     {% else %}
