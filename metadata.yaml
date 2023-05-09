@@ -30,8 +30,8 @@ spec:
   subBlueprints:
   - name: dynamic_backends
     location: modules/dynamic_backends
-  - name: serverless_negs
-    location: modules/serverless_negs
+  # - name: serverless_negs
+  #   location: modules/serverless_negs
   examples:
   - name: cloudrun
     location: examples/cloudrun
