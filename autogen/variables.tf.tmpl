@@ -140,10 +140,9 @@ variable "backends" {
       max_ttl                      = optional(number)
       client_ttl                   = optional(number)
       negative_caching             = optional(bool)
-      negative_caching_policy = optional(object({
-        code = optional(number)
+      negative_caching_policy = optional(map(object({
         ttl  = optional(number)
-      }))
+      })), null)
       serve_while_stale = optional(number)
       cache_key_policy = optional(object({
         include_host           = optional(bool)

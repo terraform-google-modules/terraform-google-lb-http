@@ -254,10 +254,10 @@ resource "google_compute_backend_service" "default" {
       serve_while_stale            = each.value.cdn_policy.serve_while_stale
 
       dynamic "negative_caching_policy" {
-        for_each = each.value.cdn_policy.negative_caching_policy != null ? [1] : []
+        for_each = each.value.cdn_policy.negative_caching_policy != null ? each.value.cdn_policy.negative_caching_policy : {}
         content {
-          code = each.value.cdn_policy.negative_caching_policy.code
-          ttl  = each.value.cdn_policy.negative_caching_policy.ttl
+          code = negative_caching_policy.key
+          ttl  = negative_caching_policy.value.ttl
         }
       }
 
