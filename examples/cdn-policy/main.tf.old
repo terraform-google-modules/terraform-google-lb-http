@@ -14,87 +14,78 @@
  * limitations under the License.
  */
 
-provider "google" {
-  project = var.project
-}
-
-provider "google-beta" {
-  project = var.project
+locals {
+  region = "us-west1"
 }
 
 resource "google_compute_network" "default" {
-  name                    = var.network_name
+  name                    = "tf-lb-http-cdn"
+  project                 = var.project_id
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "default" {
-  name                     = var.network_name
+  name                     = google_compute_network.default.name
+  project                  = var.project_id
   ip_cidr_range            = "10.127.0.0/20"
   network                  = google_compute_network.default.self_link
-  region                   = var.region
+  region                   = local.region
   private_ip_google_access = true
 }
 
 resource "google_compute_router" "default" {
   name    = "lb-http-router"
+  project = var.project_id
   network = google_compute_network.default.self_link
-  region  = var.region
+  region  = local.region
 }
 
 module "cloud-nat" {
   source     = "terraform-google-modules/cloud-nat/google"
   version    = "~> 2.2"
   router     = google_compute_router.default.name
-  project_id = var.project
-  region     = var.region
+  project_id = var.project_id
+  region     = local.region
   name       = "cloud-nat-lb-http-router"
-}
-
-data "template_file" "group-startup-script" {
-  template = file(format("%s/gceme.sh.tpl", path.module))
-
-  vars = {
-    PROXY_PATH = ""
-  }
 }
 
 module "mig_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "~> 7.9"
+  version    = "~> 8.0"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.default.self_link
+  project_id = var.project_id
   service_account = {
     email  = ""
     scopes = ["cloud-platform"]
   }
-  name_prefix    = var.network_name
-  startup_script = data.template_file.group-startup-script.rendered
+  name_prefix    = google_compute_network.default.name
+  startup_script = templatefile("${path.module}/gceme.sh.tpl", { PROXY_PATH = "" })
   tags = [
-    var.network_name,
+    google_compute_network.default.name,
     module.cloud-nat.router_name
   ]
 }
 
 module "mig" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 7.9"
+  version           = "~> 8.0"
+  project_id        = var.project_id
   instance_template = module.mig_template.self_link
-  region            = var.region
-  hostname          = var.network_name
+  region            = local.region
+  hostname          = google_compute_network.default.name
   target_size       = 2
   named_ports = [{
     name = "http",
     port = 80
   }]
-  network    = google_compute_network.default.self_link
-  subnetwork = google_compute_subnetwork.default.self_link
 }
 
 module "gce-lb-http" {
   source            = "../../"
   name              = "mig-http-lb"
-  project           = var.project
-  target_tags       = [var.network_name]
+  project           = var.project_id
+  target_tags       = [google_compute_network.default.name]
   firewall_networks = [google_compute_network.default.name]
 
 
@@ -106,7 +97,7 @@ module "gce-lb-http" {
       port_name   = "http"
       timeout_sec = 10
       # connection_draining_timeout_sec = null
-      enable_cdn = false
+      enable_cdn = true
       # compression_mode                = null
       # edge_security_policy            = null
       # security_policy                 = null
@@ -127,8 +118,21 @@ module "gce-lb-http" {
       }
 
       log_config = {
-        enable = false
-        # sample_rate = null
+        enable      = false
+        sample_rate = null
+      }
+
+      cdn_policy = {
+        cache_mode  = "CACHE_ALL_STATIC"
+        default_ttl = 3600
+        client_ttl  = 7200
+        max_ttl     = 10800
+        cache_key_policy = {
+          include_host          = true
+          include_protocol      = true
+          include_query_string  = true
+          include_named_cookies = ["__next_preview_data", "__prerender_bypass"]
+        }
       }
 
       groups = [

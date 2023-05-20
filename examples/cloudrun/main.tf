@@ -24,8 +24,8 @@ provider "google-beta" {
 
 # [START cloudloadbalancing_ext_http_cloudrun]
 module "lb-http" {
-  source  = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
-  version = "~> 6.3"
+  source = "../..//modules/serverless_negs"
+  # version = "~> 6.3"
   name    = var.lb_name
   project = var.project_id
 
@@ -42,24 +42,24 @@ module "lb-http" {
           group = google_compute_region_network_endpoint_group.serverless_neg.id
         }
       ]
-      enable_cdn              = false
-      edge_security_policy    = null
-      security_policy         = null
-      custom_request_headers  = null
-      custom_response_headers = null
+      enable_cdn = false
+      # edge_security_policy    = null
+      # security_policy         = null
+      # custom_request_headers  = null
+      # custom_response_headers = null
 
       iap_config = {
-        enable               = false
-        oauth2_client_id     = ""
-        oauth2_client_secret = ""
+        enable = false
+        # oauth2_client_id     = ""
+        # oauth2_client_secret = ""
       }
       log_config = {
-        enable      = false
-        sample_rate = null
+        enable = false
+        # sample_rate = null
       }
-      protocol         = null
-      port_name        = null
-      compression_mode = null
+      # protocol         = null
+      # port_name        = null
+      # compression_mode = null
     }
   }
 }

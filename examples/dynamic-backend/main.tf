@@ -49,20 +49,20 @@ module "load_balancer" {
 
   backends = {
     default = {
-      description                     = null
+      # description                     = null
       protocol                        = "HTTPS"
       port                            = 443
       port_name                       = "https"
       timeout_sec                     = 30
       connection_draining_timeout_sec = 0
       enable_cdn                      = false
-      edge_security_policy            = null
-      security_policy                 = null
-      session_affinity                = null
-      affinity_cookie_ttl_sec         = null
-      custom_request_headers          = null
-      custom_response_headers         = null
-      compression_mode                = null
+      # edge_security_policy            = null
+      # security_policy                 = null
+      # session_affinity                = null
+      # affinity_cookie_ttl_sec         = null
+      # custom_request_headers          = null
+      # custom_response_headers         = null
+      # compression_mode                = null
 
       health_check = {
         check_interval_sec  = 15
@@ -71,8 +71,8 @@ module "load_balancer" {
         unhealthy_threshold = 4
         request_path        = "/api/health"
         port                = 443
-        host                = null
-        logging             = true
+        # host                = null
+        logging = true
       }
 
       log_config = {
@@ -84,9 +84,9 @@ module "load_balancer" {
       groups = []
 
       iap_config = {
-        enable               = false
-        oauth2_client_id     = ""
-        oauth2_client_secret = ""
+        enable = false
+        # oauth2_client_id     = ""
+        # oauth2_client_secret = ""
       }
     }
   }

@@ -81,56 +81,56 @@ variable "target_service_accounts" {
 variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
-    port                    = number
-    protocol                = string
-    port_name               = string
-    description             = string
-    enable_cdn              = bool
-    compression_mode        = string
-    security_policy         = string
-    edge_security_policy    = string
-    custom_request_headers  = list(string)
-    custom_response_headers = list(string)
+    port                    = optional(number)
+    protocol                = optional(string)
+    port_name               = optional(string)
+    description             = optional(string)
+    enable_cdn              = optional(bool)
+    compression_mode        = optional(string)
+    security_policy         = optional(string, "")
+    edge_security_policy    = optional(string, "")
+    custom_request_headers  = optional(list(string))
+    custom_response_headers = optional(list(string))
 
-    timeout_sec                     = number
-    connection_draining_timeout_sec = number
-    session_affinity                = string
-    affinity_cookie_ttl_sec         = number
+    timeout_sec                     = optional(number)
+    connection_draining_timeout_sec = optional(number)
+    session_affinity                = optional(string)
+    affinity_cookie_ttl_sec         = optional(number)
 
     health_check = object({
-      check_interval_sec  = number
-      timeout_sec         = number
-      healthy_threshold   = number
-      unhealthy_threshold = number
-      request_path        = string
-      port                = number
-      host                = string
-      logging             = bool
+      check_interval_sec  = optional(number)
+      timeout_sec         = optional(number)
+      healthy_threshold   = optional(number)
+      unhealthy_threshold = optional(number)
+      request_path        = optional(string)
+      port                = optional(number)
+      host                = optional(string)
+      logging             = optional(bool)
     })
 
     log_config = object({
-      enable      = bool
-      sample_rate = number
+      enable      = optional(bool)
+      sample_rate = optional(number)
     })
 
     groups = list(object({
       group = string
 
-      balancing_mode               = string
-      capacity_scaler              = number
-      description                  = string
-      max_connections              = number
-      max_connections_per_instance = number
-      max_connections_per_endpoint = number
-      max_rate                     = number
-      max_rate_per_instance        = number
-      max_rate_per_endpoint        = number
-      max_utilization              = number
+      balancing_mode               = optional(string)
+      capacity_scaler              = optional(number)
+      description                  = optional(string)
+      max_connections              = optional(number)
+      max_connections_per_instance = optional(number)
+      max_connections_per_endpoint = optional(number)
+      max_rate                     = optional(number)
+      max_rate_per_instance        = optional(number)
+      max_rate_per_endpoint        = optional(number)
+      max_utilization              = optional(number)
     }))
     iap_config = object({
       enable               = bool
-      oauth2_client_id     = string
-      oauth2_client_secret = string
+      oauth2_client_id     = optional(string)
+      oauth2_client_secret = optional(string)
     })
     cdn_policy = optional(object({
       cache_mode                   = optional(string)
