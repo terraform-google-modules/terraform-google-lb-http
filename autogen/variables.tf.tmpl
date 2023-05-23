@@ -92,8 +92,8 @@ variable "backends" {
     description             = optional(string)
     enable_cdn              = optional(bool)
     compression_mode        = optional(string)
-    security_policy         = optional(string,"")
-    edge_security_policy    = optional(string,"")
+    security_policy         = optional(string,null)
+    edge_security_policy    = optional(string,null)
     custom_request_headers  = optional(list(string))
     custom_response_headers = optional(list(string))
 
