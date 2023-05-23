@@ -113,7 +113,7 @@ locals {
 
 # [START cloudloadbalancing_ext_http_gce_plus_bucket]
 module "gce-lb-https" {
-  source = "../../"
+  source  = "../../"
   name    = var.network_name
   project = var.project
   target_tags = [
@@ -137,7 +137,7 @@ module "gce-lb-https" {
       port        = 80
       port_name   = "http"
       timeout_sec = 10
-      enable_cdn = false
+      enable_cdn  = false
 
       health_check = local.health_check
       log_config = {
@@ -188,7 +188,7 @@ module "gce-lb-https" {
       port        = 80
       port_name   = "http"
       timeout_sec = 10
-      enable_cdn = false
+      enable_cdn  = false
 
       health_check = local.health_check
       log_config = {
@@ -211,7 +211,7 @@ module "gce-lb-https" {
       port        = 80
       port_name   = "http"
       timeout_sec = 10
-      enable_cdn = false
+      enable_cdn  = false
 
       health_check = local.health_check
       log_config = {

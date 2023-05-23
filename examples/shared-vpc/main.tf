@@ -26,7 +26,7 @@ provider "google-beta" {
 
 # [START cloudloadbalancing_ext_http_gce_shared_vpc]
 module "gce-lb-http" {
-  source = "../../"
+  source            = "../../"
   name              = "group-http-lb"
   project           = var.service_project
   target_tags       = ["allow-shared-vpc-mig"]
@@ -39,7 +39,7 @@ module "gce-lb-http" {
       port        = 80
       port_name   = "http"
       timeout_sec = 10
-      enable_cdn = false
+      enable_cdn  = false
 
       health_check = {
         request_path = "/"

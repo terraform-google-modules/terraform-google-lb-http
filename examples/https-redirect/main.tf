@@ -92,7 +92,7 @@ module "mig" {
 
 # [START cloudloadbalancing_ext_http_gce_http_redirect]
 module "gce-lb-http" {
-  source = "../../"
+  source               = "../../"
   name                 = "ci-https-redirect"
   project              = var.project
   target_tags          = [var.network_name]
@@ -108,7 +108,7 @@ module "gce-lb-http" {
       port        = 80
       port_name   = "http"
       timeout_sec = 10
-      enable_cdn = false
+      enable_cdn  = false
 
       health_check = {
         request_path = "/"

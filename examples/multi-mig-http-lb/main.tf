@@ -69,7 +69,7 @@ module "cloud-nat-group2" {
 
 # [START cloudloadbalancing_ext_http_gce]
 module "gce-lb-http" {
-  source = "../../"
+  source  = "../../"
   name    = var.network_prefix
   project = var.project
   target_tags = [
@@ -87,7 +87,7 @@ module "gce-lb-http" {
       port        = 80
       port_name   = "http"
       timeout_sec = 10
-      enable_cdn = false
+      enable_cdn  = false
 
       health_check = {
         request_path = "/"

@@ -63,7 +63,7 @@ module "load_balancer" {
         unhealthy_threshold = 4
         request_path        = "/api/health"
         port                = 443
-        logging = true
+        logging             = true
       }
 
       log_config = {

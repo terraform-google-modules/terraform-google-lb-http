@@ -104,7 +104,7 @@ module "gce-lb-http" {
       port        = 80
       port_name   = "http"
       timeout_sec = 10
-      enable_cdn = false
+      enable_cdn  = false
 
       health_check = {
         request_path = "/"
