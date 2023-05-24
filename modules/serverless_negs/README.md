@@ -8,17 +8,28 @@ behind a Cloud Load Balancer.
 
 ## Compatibility
 
-This module is meant for use with Terraform 0.13+ and tested using Terraform 1.0+. If you find incompatibilities using Terraform >=0.13, please open an issue. If you haven't
+This module is meant for use with Terraform 1.3+ and tested using Terraform 1.3. If you find incompatibilities using Terraform >=1.3, please open an issue. If you haven't
 [upgraded](https://www.terraform.io/upgrade-guides/0-13.html) and need a Terraform
 0.12.x-compatible version of this module, the last released version
 intended for Terraform 0.12.x is [v4.5.0](https://registry.terraform.io/modules/GoogleCloudPlatform/lb-http/google/4.5.0).
+
+## Version
+
+Current version is 9.0. Upgrade guides:
+
+- [2.X -> 3.0](/docs/upgrading-v2.0.0-v3.0.0.md)
+- [3.X -> 4.0](/docs/upgrading_to_v4.0.md)
+- [6.X -> 7.0](/docs/upgrading_to_v7.0.md)
+- [7.X -> 8.0](/docs/upgrading_to_v8.0.md)
+- [8.X -> 9.0](/docs/upgrading_to_v9.0.md)
+
 
 ## Usage
 
 ```HCL
 module "lb-http" {
   source            = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
-  version           = "~> 4.4"
+  version           = "~> 9.0"
 
   project           = "my-project-id"
   name              = "my-lb"
@@ -61,16 +72,6 @@ module "lb-http" {
 ```
 
 
-## Version
-
-Current version is 9.0. Upgrade guides:
-
-- [2.X -> 3.0](/docs/upgrading-v2.0.0-v3.0.0.md)
-- [3.X -> 4.0](/docs/upgrading_to_v4.0.md)
-- [6.X -> 7.0](/docs/upgrading_to_v7.0.md)
-- [7.X -> 8.0](/docs/upgrading_to_v8.0.md)
-- [8.X -> 9.0](/docs/upgrading_to_v9.0.md)
-
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
@@ -78,7 +79,7 @@ Current version is 9.0. Upgrade guides:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | address | Existing IPv4 address to use (the actual IP address value) | `string` | `null` | no |
-| backends | Map backend indices to list of backend maps. | <pre>map(object({<br>    protocol                = string<br>    port_name               = string<br>    description             = string<br>    enable_cdn              = bool<br>    compression_mode        = string<br>    security_policy         = string<br>    edge_security_policy    = string<br>    custom_request_headers  = list(string)<br>    custom_response_headers = list(string)<br><br><br><br>    log_config = object({<br>      enable      = bool<br>      sample_rate = number<br>    })<br><br>    groups = list(object({<br>      group = string<br><br>    }))<br>    iap_config = object({<br>      enable               = bool<br>      oauth2_client_id     = string<br>      oauth2_client_secret = string<br>    })<br>    cdn_policy = optional(object({<br>      cache_mode                   = optional(string)<br>      signed_url_cache_max_age_sec = optional(string)<br>      default_ttl                  = optional(number)<br>      max_ttl                      = optional(number)<br>      client_ttl                   = optional(number)<br>      negative_caching             = optional(bool)<br>      negative_caching_policy = optional(object({<br>        code = optional(number)<br>        ttl  = optional(number)<br>      }))<br>      serve_while_stale = optional(number)<br>      cache_key_policy = optional(object({<br>        include_host           = optional(bool)<br>        include_protocol       = optional(bool)<br>        include_query_string   = optional(bool)<br>        query_string_blacklist = optional(list(string))<br>        query_string_whitelist = optional(list(string))<br>        include_http_headers   = optional(list(string))<br>        include_named_cookies  = optional(list(string))<br>      }))<br>    }))<br>  }))</pre> | n/a | yes |
+| backends | Map backend indices to list of backend maps. | <pre>map(object({<br>    protocol                = optional(string)<br>    port_name               = optional(string)<br>    description             = optional(string)<br>    enable_cdn              = optional(bool)<br>    compression_mode        = optional(string)<br>    security_policy         = optional(string, null)<br>    edge_security_policy    = optional(string, null)<br>    custom_request_headers  = optional(list(string))<br>    custom_response_headers = optional(list(string))<br><br>    connection_draining_timeout_sec = optional(number)<br>    session_affinity                = optional(string)<br>    affinity_cookie_ttl_sec         = optional(number)<br><br><br>    log_config = object({<br>      enable      = optional(bool)<br>      sample_rate = optional(number)<br>    })<br><br>    groups = list(object({<br>      group = string<br><br>    }))<br>    iap_config = object({<br>      enable               = bool<br>      oauth2_client_id     = optional(string)<br>      oauth2_client_secret = optional(string)<br>    })<br>    cdn_policy = optional(object({<br>      cache_mode                   = optional(string)<br>      signed_url_cache_max_age_sec = optional(string)<br>      default_ttl                  = optional(number)<br>      max_ttl                      = optional(number)<br>      client_ttl                   = optional(number)<br>      negative_caching             = optional(bool)<br>      negative_caching_policy = optional(object({<br>        code = optional(number)<br>        ttl  = optional(number)<br>      }))<br>      serve_while_stale = optional(number)<br>      cache_key_policy = optional(object({<br>        include_host           = optional(bool)<br>        include_protocol       = optional(bool)<br>        include_query_string   = optional(bool)<br>        query_string_blacklist = optional(list(string))<br>        query_string_whitelist = optional(list(string))<br>        include_http_headers   = optional(list(string))<br>        include_named_cookies  = optional(list(string))<br>      }))<br>    }))<br>  }))</pre> | n/a | yes |
 | certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
 | certificate\_map | Certificate Map ID in format projects/{project}/locations/global/certificateMaps/{name}. Identifies a certificate map associated with the given target proxy | `string` | `null` | no |
 | create\_address | Create a new global IPv4 address | `bool` | `true` | no |

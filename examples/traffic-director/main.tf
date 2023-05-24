@@ -41,20 +41,12 @@ module "load_balancer" {
 
   backends = {
     default = {
-      description                     = null
       protocol                        = "HTTP"
       port                            = 80
       port_name                       = "http"
       timeout_sec                     = 30
       connection_draining_timeout_sec = 0
       enable_cdn                      = false
-      edge_security_policy            = null
-      security_policy                 = null
-      session_affinity                = null
-      affinity_cookie_ttl_sec         = null
-      custom_request_headers          = null
-      custom_response_headers         = null
-      compression_mode                = null
 
       health_check = {
         check_interval_sec  = 15
@@ -63,22 +55,18 @@ module "load_balancer" {
         unhealthy_threshold = 4
         request_path        = "/api/health"
         port                = 443
-        host                = null
         logging             = true
       }
 
       log_config = {
-        enable      = false
-        sample_rate = null
+        enable = false
       }
 
       # leave blank, NEGs are dynamically added to the lb via autoneg
       groups = []
 
       iap_config = {
-        enable               = false
-        oauth2_client_id     = ""
-        oauth2_client_secret = ""
+        enable = false
       }
     }
   }

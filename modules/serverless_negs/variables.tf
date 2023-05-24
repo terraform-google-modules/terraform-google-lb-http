@@ -58,21 +58,24 @@ variable "ipv6_address" {
 variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
-    protocol                = string
-    port_name               = string
-    description             = string
-    enable_cdn              = bool
-    compression_mode        = string
-    security_policy         = string
-    edge_security_policy    = string
-    custom_request_headers  = list(string)
-    custom_response_headers = list(string)
+    protocol                = optional(string)
+    port_name               = optional(string)
+    description             = optional(string)
+    enable_cdn              = optional(bool)
+    compression_mode        = optional(string)
+    security_policy         = optional(string, null)
+    edge_security_policy    = optional(string, null)
+    custom_request_headers  = optional(list(string))
+    custom_response_headers = optional(list(string))
 
+    connection_draining_timeout_sec = optional(number)
+    session_affinity                = optional(string)
+    affinity_cookie_ttl_sec         = optional(number)
 
 
     log_config = object({
-      enable      = bool
-      sample_rate = number
+      enable      = optional(bool)
+      sample_rate = optional(number)
     })
 
     groups = list(object({
@@ -81,8 +84,8 @@ variable "backends" {
     }))
     iap_config = object({
       enable               = bool
-      oauth2_client_id     = string
-      oauth2_client_secret = string
+      oauth2_client_id     = optional(string)
+      oauth2_client_secret = optional(string)
     })
     cdn_policy = optional(object({
       cache_mode                   = optional(string)

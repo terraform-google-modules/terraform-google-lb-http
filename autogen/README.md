@@ -36,10 +36,21 @@ behind a Cloud Load Balancer.
 
 ## Compatibility
 
-This module is meant for use with Terraform 0.13+ and tested using Terraform 1.0+. If you find incompatibilities using Terraform >=0.13, please open an issue. If you haven't
+This module is meant for use with Terraform 1.3+ and tested using Terraform 1.3. If you find incompatibilities using Terraform >=1.3, please open an issue. If you haven't
 [upgraded](https://www.terraform.io/upgrade-guides/0-13.html) and need a Terraform
 0.12.x-compatible version of this module, the last released version
 intended for Terraform 0.12.x is [v4.5.0](https://registry.terraform.io/modules/GoogleCloudPlatform/lb-http/google/4.5.0).
+
+## Version
+
+Current version is 9.0. Upgrade guides:
+
+- [2.X -> 3.0](/docs/upgrading-v2.0.0-v3.0.0.md)
+- [3.X -> 4.0](/docs/upgrading_to_v4.0.md)
+- [6.X -> 7.0](/docs/upgrading_to_v7.0.md)
+- [7.X -> 8.0](/docs/upgrading_to_v8.0.md)
+- [8.X -> 9.0](/docs/upgrading_to_v9.0.md)
+
 
 ## Usage
 
@@ -50,7 +61,7 @@ module "gce-lb-http" {
 module "lb-http" {
 {% endif %}
   source            = "GoogleCloudPlatform/lb-http/google{{ module_path }}"
-  version           = "~> 4.4"
+  version           = "~> 9.0"
 
   project           = "my-project-id"
   {% if serverless %}
@@ -146,16 +157,6 @@ module "lb-http" {
 
 ![architecture diagram](/diagram.png)
 {% endif %}
-
-## Version
-
-Current version is 9.0. Upgrade guides:
-
-- [2.X -> 3.0](/docs/upgrading-v2.0.0-v3.0.0.md)
-- [3.X -> 4.0](/docs/upgrading_to_v4.0.md)
-- [6.X -> 7.0](/docs/upgrading_to_v7.0.md)
-- [7.X -> 8.0](/docs/upgrading_to_v8.0.md)
-- [8.X -> 9.0](/docs/upgrading_to_v9.0.md)
 
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
