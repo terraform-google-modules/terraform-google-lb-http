@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v9.0.0...v9.1.0) (2023-06-21)
+
+
+### Features
+
+* Set edge_security_policy optional and add session_affinity in variables ([#333](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/333)) ([853ccba](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/853ccba8c93971cb1eebea4a36de3e0a89eacf8e))
+
 ## [9.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v8.0.0...v9.0.0) (2023-04-14)
 
 
