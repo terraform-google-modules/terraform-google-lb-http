@@ -182,7 +182,7 @@ resource "google_compute_backend_service" "default" {
   provider = google-beta
   for_each = var.backends
 
-  project = var.project
+  project = coalesce(each.value["project"], var.project)
   name    = "${var.name}-backend-${each.key}"
 
   load_balancing_scheme = var.load_balancing_scheme
@@ -288,7 +288,7 @@ resource "google_compute_backend_service" "default" {
 resource "google_compute_health_check" "default" {
   provider = google-beta
   for_each = local.health_checked_backends
-  project  = var.project
+  project  = coalesce(each.value["project"], var.project)
   name     = "${var.name}-hc-${each.key}"
 
   check_interval_sec  = lookup(each.value["health_check"], "check_interval_sec", 5)

@@ -87,6 +87,7 @@ variable "backends" {
     {% if not serverless %}{# not necessary for serverless as default port_name=http, protocol=HTTP #}
     port                    = optional(number)
     {% endif %}
+    project                 = optional(string)
     protocol                = optional(string)
     port_name               = optional(string)
     description             = optional(string)

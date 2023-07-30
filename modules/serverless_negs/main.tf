@@ -181,7 +181,7 @@ resource "google_compute_backend_service" "default" {
   provider = google-beta
   for_each = var.backends
 
-  project = var.project
+  project = coalesce(each.value["project"], var.project)
   name    = "${var.name}-backend-${each.key}"
 
   load_balancing_scheme = var.load_balancing_scheme
