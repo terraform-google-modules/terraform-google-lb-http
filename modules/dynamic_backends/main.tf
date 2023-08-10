@@ -347,6 +347,18 @@ resource "google_compute_health_check" "default" {
       port         = lookup(http2_health_check.value, "port", null)
     }
   }
+
+  dynamic "tcp_health_check" {
+    for_each = each.value["protocol"] == "TCP" ? [
+      {
+        port = lookup(each.value["health_check"], "port", null)
+      }
+    ] : []
+
+    content {
+      port = lookup(tcp_health_check.value, "port", null)
+    }
+  }
 }
 
 resource "google_compute_firewall" "default-hc" {
