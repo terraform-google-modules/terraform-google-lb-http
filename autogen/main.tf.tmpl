@@ -365,12 +365,22 @@ resource "google_compute_health_check" "default" {
   dynamic "tcp_health_check" {
     for_each = each.value["protocol"] == "TCP" ? [
       {
-        port         = lookup(each.value["health_check"], "port", null)
+        port                = lookup(each.value["health_check"], "port", null)
+        port_name           = lookup(each.value["health_check"], "port_name", null)
+        port_specification  = lookup(each.value["health_check"], "port_specification", null)
+        request             = lookup(each.value["health_check"], "request", null)
+        proxy_header        = lookup(each.value["health_check"], "proxy_header", null)
+        response            = lookup(each.value["health_check"], "response", null)
       }
     ] : []
 
     content {
-      port         = lookup(tcp_health_check.value, "port", null)
+      port                = lookup(tcp_health_check.value, "port", null)
+      port_name           = lookup(tcp_health_check.value, "port_name", null)
+      port_specification  = lookup(tcp_health_check.value, "port_specification", null)
+      request             = lookup(tcp_health_check.value, "request", null)
+      proxy_header        = lookup(tcp_health_check.value, "proxy_header", null)
+      response            = lookup(tcp_health_check.value, "response", null)
     }
   }
 }
