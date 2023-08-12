@@ -98,13 +98,18 @@ variable "backends" {
     affinity_cookie_ttl_sec         = optional(number)
 
     health_check = object({
+      host                = optional(string)
+      request_path        = optional(string)
+      request             = optional(string)
+      response            = optional(string)
+      port                = optional(number)
+      port_name           = optional(string)
+      proxy_header        = optional(string)
+      port_specification  = optional(string)
       check_interval_sec  = optional(number)
       timeout_sec         = optional(number)
       healthy_threshold   = optional(number)
       unhealthy_threshold = optional(number)
-      request_path        = optional(string)
-      port                = optional(number)
-      host                = optional(string)
       logging             = optional(bool)
     })
 
