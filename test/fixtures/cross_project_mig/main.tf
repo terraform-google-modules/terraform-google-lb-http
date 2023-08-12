@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  value = module.project-ci-lb-http.project_id
+resource "random_id" "random_net" {
+  byte_length = 2
 }
 
-output "project_id_1" {
-  value = module.project-ci-lb-http-1.project_id
-}
-
-output "sa_key" {
-  value     = google_service_account_key.int_test.private_key
-  sensitive = true
+module "example" {
+  source          = "../../../examples/cross-project-mig-backend"
+  network_name    = "ci-lb-http-cross-project-mig-${random_id.random_net.hex}"
+  host_project    = var.project_id
+  service_project = var.project_id_1
 }

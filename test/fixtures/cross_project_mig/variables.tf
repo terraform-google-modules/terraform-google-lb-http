@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  value = module.project-ci-lb-http.project_id
+variable "project_id" {
+  description = "The ID of the project in which to provision LB."
+  type        = string
 }
 
-output "project_id_1" {
-  value = module.project-ci-lb-http-1.project_id
-}
-
-output "sa_key" {
-  value     = google_service_account_key.int_test.private_key
-  sensitive = true
+variable "project_id_1" {
+  description = "The ID of the project in which to provision mig."
+  type        = string
 }

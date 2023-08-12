@@ -160,6 +160,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
 }
 
 resource "google_compute_url_map" "default" {
+  provider        = google-beta
   project         = var.project
   count           = var.create_url_map ? 1 : 0
   name            = "${var.name}-url-map"
