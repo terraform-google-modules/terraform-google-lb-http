@@ -302,7 +302,7 @@ resource "google_compute_health_check" "default" {
   }
 
   dynamic "http_health_check" {
-    for_each = each.value["protocol"] == "HTTP" ? [
+    for_each = coalesce(lookup(each.value["health_check"], "protocol", null), each.value["protocol"]) == "HTTP" ? [
       {
         host               = lookup(each.value["health_check"], "host", null)
         request_path       = lookup(each.value["health_check"], "request_path", null)
@@ -326,7 +326,7 @@ resource "google_compute_health_check" "default" {
   }
 
   dynamic "https_health_check" {
-    for_each = each.value["protocol"] == "HTTPS" ? [
+    for_each = coalesce(lookup(each.value["health_check"], "protocol", null), each.value["protocol"]) == "HTTPS" ? [
       {
         host               = lookup(each.value["health_check"], "host", null)
         request_path       = lookup(each.value["health_check"], "request_path", null)
@@ -350,7 +350,7 @@ resource "google_compute_health_check" "default" {
   }
 
   dynamic "http2_health_check" {
-    for_each = each.value["protocol"] == "HTTP2" ? [
+    for_each = coalesce(lookup(each.value["health_check"], "protocol", null), each.value["protocol"]) == "HTTP2" ? [
       {
         host               = lookup(each.value["health_check"], "host", null)
         request_path       = lookup(each.value["health_check"], "request_path", null)
@@ -374,7 +374,7 @@ resource "google_compute_health_check" "default" {
   }
 
   dynamic "tcp_health_check" {
-    for_each = each.value["protocol"] == "TCP" ? [
+    for_each = coalesce(lookup(each.value["health_check"], "protocol", null), each.value["protocol"]) == "TCP" ? [
       {
         request            = lookup(each.value["health_check"], "request", null)
         response           = lookup(each.value["health_check"], "response", null)

@@ -107,6 +107,7 @@ variable "backends" {
       port_name           = optional(string)
       proxy_header        = optional(string)
       port_specification  = optional(string)
+      protocol            = optional(string)
       check_interval_sec  = optional(number)
       timeout_sec         = optional(number)
       healthy_threshold   = optional(number)
