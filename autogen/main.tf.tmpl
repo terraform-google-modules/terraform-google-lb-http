@@ -317,48 +317,94 @@ resource "google_compute_health_check" "default" {
   dynamic "http_health_check" {
     for_each = each.value["protocol"] == "HTTP" ? [
       {
-        host         = lookup(each.value["health_check"], "host", null)
-        request_path = lookup(each.value["health_check"], "request_path", null)
-        port         = lookup(each.value["health_check"], "port", null)
+        host                = lookup(each.value["health_check"], "host", null)
+        request_path        = lookup(each.value["health_check"], "request_path", null)
+        response            = lookup(each.value["health_check"], "response", null)
+        port                = lookup(each.value["health_check"], "port", null)
+        port_name           = lookup(each.value["health_check"], "port_name", null)
+        proxy_header        = lookup(each.value["health_check"], "proxy_header", null)
+        port_specification  = lookup(each.value["health_check"], "port_specification", null)
       }
     ] : []
 
     content {
-      host         = lookup(http_health_check.value, "host", null)
-      request_path = lookup(http_health_check.value, "request_path", null)
-      port         = lookup(http_health_check.value, "port", null)
+      host                = lookup(http_health_check.value, "host", null)
+      request_path        = lookup(http_health_check.value, "request_path", null)
+      response            = lookup(http_health_check.value, "response", null)
+      port                = lookup(http_health_check.value, "port", null)
+      port_name           = lookup(http_health_check.value, "port_name", null)
+      proxy_header        = lookup(http_health_check.value, "proxy_header", null)
+      port_specification  = lookup(http_health_check.value, "port_specification", null)
     }
   }
 
   dynamic "https_health_check" {
     for_each = each.value["protocol"] == "HTTPS" ? [
       {
-        host         = lookup(each.value["health_check"], "host", null)
-        request_path = lookup(each.value["health_check"], "request_path", null)
-        port         = lookup(each.value["health_check"], "port", null)
+        host                = lookup(each.value["health_check"], "host", null)
+        request_path        = lookup(each.value["health_check"], "request_path", null)
+        response            = lookup(each.value["health_check"], "response", null)
+        port                = lookup(each.value["health_check"], "port", null)
+        port_name           = lookup(each.value["health_check"], "port_name", null)
+        proxy_header        = lookup(each.value["health_check"], "proxy_header", null)
+        port_specification  = lookup(each.value["health_check"], "port_specification", null)
       }
     ] : []
 
     content {
-      host         = lookup(https_health_check.value, "host", null)
-      request_path = lookup(https_health_check.value, "request_path", null)
-      port         = lookup(https_health_check.value, "port", null)
+      host                = lookup(https_health_check.value, "host", null)
+      request_path        = lookup(https_health_check.value, "request_path", null)
+      response            = lookup(https_health_check.value, "response", null)
+      port                = lookup(https_health_check.value, "port", null)
+      port_name           = lookup(https_health_check.value, "port_name", null)
+      proxy_header        = lookup(https_health_check.value, "proxy_header", null)
+      port_specification  = lookup(https_health_check.value, "port_specification", null)
     }
   }
 
   dynamic "http2_health_check" {
     for_each = each.value["protocol"] == "HTTP2" ? [
       {
-        host         = lookup(each.value["health_check"], "host", null)
-        request_path = lookup(each.value["health_check"], "request_path", null)
-        port         = lookup(each.value["health_check"], "port", null)
+        host                = lookup(each.value["health_check"], "host", null)
+        request_path        = lookup(each.value["health_check"], "request_path", null)
+        response            = lookup(each.value["health_check"], "response", null)
+        port                = lookup(each.value["health_check"], "port", null)
+        port_name           = lookup(each.value["health_check"], "port_name", null)
+        proxy_header        = lookup(each.value["health_check"], "proxy_header", null)
+        port_specification  = lookup(each.value["health_check"], "port_specification", null)
       }
     ] : []
 
     content {
-      host         = lookup(http2_health_check.value, "host", null)
-      request_path = lookup(http2_health_check.value, "request_path", null)
-      port         = lookup(http2_health_check.value, "port", null)
+      host                = lookup(http2_health_check.value, "host", null)
+      request_path        = lookup(http2_health_check.value, "request_path", null)
+      response            = lookup(http2_health_check.value, "response", null)
+      port                = lookup(http2_health_check.value, "port", null)
+      port_name           = lookup(http2_health_check.value, "port_name", null)
+      proxy_header        = lookup(http2_health_check.value, "proxy_header", null)
+      port_specification  = lookup(http2_health_check.value, "port_specification", null)
+    }
+  }
+
+  dynamic "tcp_health_check" {
+    for_each = each.value["protocol"] == "TCP" ? [
+      {
+        request             = lookup(each.value["health_check"], "request", null)
+        response            = lookup(each.value["health_check"], "response", null)
+        port                = lookup(each.value["health_check"], "port", null)
+        port_name           = lookup(each.value["health_check"], "port_name", null)
+        proxy_header        = lookup(each.value["health_check"], "proxy_header", null)
+        port_specification  = lookup(each.value["health_check"], "port_specification", null)
+      }
+    ] : []
+
+    content {
+      request             = lookup(tcp_health_check.value, "request", null)
+      response            = lookup(tcp_health_check.value, "response", null)
+      port                = lookup(tcp_health_check.value, "port", null)
+      port_name           = lookup(tcp_health_check.value, "port_name", null)
+      proxy_header        = lookup(tcp_health_check.value, "proxy_header", null)
+      port_specification  = lookup(tcp_health_check.value, "port_specification", null)
     }
   }
 }
