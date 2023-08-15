@@ -24,6 +24,12 @@ provider "google-beta" {
   region  = var.region
 }
 
+provider "google" {
+  alias   = "service_project"
+  project = var.service_project
+  region  = var.region
+}
+
 data "template_file" "group-startup-script" {
   template = file(format("%s/gceme.sh.tpl", path.module))
 
@@ -33,7 +39,8 @@ data "template_file" "group-startup-script" {
 }
 
 data "google_projects" "service_project" {
-  filter = "id:${var.service_project}"
+  provider = google.service_project
+  filter   = "id:${var.service_project}"
 }
 
 resource "google_project_iam_member" "host_project_network_user" {
