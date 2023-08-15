@@ -82,6 +82,7 @@ variable "backends" {
   description = "Map backend indices to list of backend maps."
   type = map(object({
     port                    = optional(number)
+    project                 = optional(string)
     protocol                = optional(string)
     port_name               = optional(string)
     description             = optional(string)

@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,12 @@
  */
 
 locals {
-  int_required_roles = [
+  int_required_project_roles = [
     "roles/owner",
     "roles/storage.admin"
+  ]
+  int_required_folder_roles = [
+    "roles/compute.xpnAdmin"
   ]
 }
 
@@ -27,11 +30,24 @@ resource "google_service_account" "int_test" {
   display_name = "ci-int-lb-http"
 }
 
-resource "google_project_iam_member" "int_test" {
-  count = length(local.int_required_roles)
+resource "google_folder_iam_member" "int_test" {
+  count  = length(local.int_required_folder_roles)
+  folder = "folders/${var.folder_id}"
+  role   = local.int_required_folder_roles[count.index]
+  member = "serviceAccount:${google_service_account.int_test.email}"
+}
 
+resource "google_project_iam_member" "int_test" {
+  count   = length(local.int_required_project_roles)
   project = module.project-ci-lb-http.project_id
-  role    = local.int_required_roles[count.index]
+  role    = local.int_required_project_roles[count.index]
+  member  = "serviceAccount:${google_service_account.int_test.email}"
+}
+
+resource "google_project_iam_member" "int_test_1" {
+  count   = length(local.int_required_project_roles)
+  project = module.project-ci-lb-http-1.project_id
+  role    = local.int_required_project_roles[count.index]
   member  = "serviceAccount:${google_service_account.int_test.email}"
 }
 

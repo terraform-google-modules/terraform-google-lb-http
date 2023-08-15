@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,7 @@
  * limitations under the License.
  */
 
-output "project_id" {
-  value = module.project-ci-lb-http.project_id
-}
-
-output "project_id_1" {
-  value = module.project-ci-lb-http-1.project_id
-}
-
-output "sa_key" {
-  value     = google_service_account_key.int_test.private_key
-  sensitive = true
+output "load-balancer-ip" {
+  description = "The external IP assigned to the load balancer."
+  value       = module.gce-lb-http.external_ip
 }

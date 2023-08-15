@@ -53,6 +53,8 @@ spec:
     location: examples/multiple-certs
   - name: shared-vpc
     location: examples/shared-vpc
+  - name: cross-project-mig-backend
+    location: examples/cross-project-mig-backend
   variables:
   - name: address
     description: Existing IPv4 address to use (the actual IP address value)

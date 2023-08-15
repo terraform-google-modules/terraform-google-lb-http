@@ -160,6 +160,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
 }
 
 resource "google_compute_url_map" "default" {
+  provider        = google-beta
   project         = var.project
   count           = var.create_url_map ? 1 : 0
   name            = "${var.name}-url-map"
@@ -181,7 +182,7 @@ resource "google_compute_backend_service" "default" {
   provider = google-beta
   for_each = var.backends
 
-  project = var.project
+  project = coalesce(each.value["project"], var.project)
   name    = "${var.name}-backend-${each.key}"
 
   load_balancing_scheme = var.load_balancing_scheme

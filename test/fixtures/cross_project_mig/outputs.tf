@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,10 @@
  */
 
 output "project_id" {
-  value = module.project-ci-lb-http.project_id
+  description = "The ID of the project in which LB is provisioned."
+  value       = var.project_id
 }
 
-output "project_id_1" {
-  value = module.project-ci-lb-http-1.project_id
-}
-
-output "sa_key" {
-  value     = google_service_account_key.int_test.private_key
-  sensitive = true
+output "lb_ip" {
+  value = module.example.load-balancer-ip
 }
