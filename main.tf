@@ -209,23 +209,23 @@ resource "google_compute_backend_service" "default" {
   # To achieve a null backend security_policy, set each.value.security_policy to "" (empty string), otherwise, it fallsback to var.security_policy.
   security_policy = lookup(each.value, "security_policy") == "" ? null : (lookup(each.value, "security_policy") == null ? var.security_policy : each.value.security_policy)
 
-  dynamic "backend" {
-    for_each = toset(each.value["groups"])
-    content {
-      description = lookup(backend.value, "description", null)
-      group       = lookup(backend.value, "group")
-
-      balancing_mode               = lookup(backend.value, "balancing_mode")
-      capacity_scaler              = lookup(backend.value, "capacity_scaler")
-      max_connections              = lookup(backend.value, "max_connections")
-      max_connections_per_instance = lookup(backend.value, "max_connections_per_instance")
-      max_connections_per_endpoint = lookup(backend.value, "max_connections_per_endpoint")
-      max_rate                     = lookup(backend.value, "max_rate")
-      max_rate_per_instance        = lookup(backend.value, "max_rate_per_instance")
-      max_rate_per_endpoint        = lookup(backend.value, "max_rate_per_endpoint")
-      max_utilization              = lookup(backend.value, "max_utilization")
-    }
-  }
+#  dynamic "backend" {
+#    for_each = toset(each.value["groups"])
+#    content {
+#      description = lookup(backend.value, "description", null)
+#      group       = lookup(backend.value, "group")
+#
+#      balancing_mode               = lookup(backend.value, "balancing_mode")
+#      capacity_scaler              = lookup(backend.value, "capacity_scaler")
+#      max_connections              = lookup(backend.value, "max_connections")
+#      max_connections_per_instance = lookup(backend.value, "max_connections_per_instance")
+#      max_connections_per_endpoint = lookup(backend.value, "max_connections_per_endpoint")
+#      max_rate                     = lookup(backend.value, "max_rate")
+#      max_rate_per_instance        = lookup(backend.value, "max_rate_per_instance")
+#      max_rate_per_endpoint        = lookup(backend.value, "max_rate_per_endpoint")
+#      max_utilization              = lookup(backend.value, "max_utilization")
+#    }
+#  }
 
   dynamic "log_config" {
     for_each = lookup(lookup(each.value, "log_config", {}), "enable", true) ? [1] : []
@@ -277,10 +277,15 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
+  lifecycle {
+    ignore_changes = [
+      backend,
+    ]
+  }
+
   depends_on = [
     google_compute_health_check.default
   ]
-
 }
 
 resource "google_compute_health_check" "default" {
