@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.2.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v9.1.0...v9.2.0) (2023-08-24)
+
+
+### Features
+
+* Add project for backend service and health check for cross project reference ([#345](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/345)) ([e2b77ed](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/e2b77ed4dde5167d7d355399640e55438b7dea12))
+* Add support for TCP healthcheck ([#346](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/346)) ([ddddf32](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/ddddf32b4ba8431d2392e16df1c7073600a72d8e))
+* Decouple health check protocol ([#349](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/349)) ([f04d9bb](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/f04d9bbae95faf09f87ef1ed6896af957fbdd3b3))
+
 ## [9.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v9.0.0...v9.1.0) (2023-06-21)
 
 
