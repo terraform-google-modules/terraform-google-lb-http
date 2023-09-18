@@ -69,6 +69,7 @@ variable "backends" {
     custom_request_headers  = optional(list(string))
     custom_response_headers = optional(list(string))
 
+    timeout_sec                     = optional(number)
     connection_draining_timeout_sec = optional(number)
     session_affinity                = optional(string)
     affinity_cookie_ttl_sec         = optional(number)
