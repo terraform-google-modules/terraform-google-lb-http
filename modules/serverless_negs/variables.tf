@@ -32,7 +32,7 @@ variable "create_address" {
 
 variable "address" {
   type        = string
-  description = "Existing IPv4 address to use (the actual IP address value)"
+  description = "Existing IPv4 address to use (the actual IP address value). Ignored unless \"create_address\" is set to \"false\"."
   default     = null
 }
 
