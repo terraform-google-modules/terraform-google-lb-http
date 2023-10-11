@@ -277,6 +277,37 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
+  dynamic "outlier_detection" {
+    for_each = each.value.outlier_detection != null ? [1] : []
+    content {
+      consecutive_errors                    = each.value.outlier_detection.consecutive_errors
+      consecutive_gateway_failure           = each.value.outlier_detection.consecutive_gateway_failure
+      enforcing_consecutive_errors          = each.value.outlier_detection.enforcing_consecutive_errors
+      enforcing_consecutive_gateway_failure = each.value.outlier_detection.enforcing_consecutive_gateway_failure
+      enforcing_success_rate                = each.value.outlier_detection.enforcing_success_rate
+      max_ejection_percent                  = each.value.outlier_detection.max_ejection_percent
+      success_rate_minimum_hosts            = each.value.outlier_detection.success_rate_minimum_hosts
+      success_rate_request_volume           = each.value.outlier_detection.success_rate_request_volume
+      success_rate_stdev_factor             = each.value.outlier_detection.success_rate_stdev_factor
+
+      dynamic "base_ejection_time" {
+        for_each = each.value.outlier_detection.base_ejection_time != null ? [1] : []
+        content {
+          seconds = each.value.outlier_detection.base_ejection_time.seconds
+          nanos   = each.value.outlier_detection.base_ejection_time.nanos
+        }
+      }
+
+      dynamic "interval" {
+        for_each = each.value.outlier_detection.cache_key_policy != null ? [1] : []
+        content {
+          seconds = each.value.outlier_detection.cache_key_policy.seconds
+          nanos   = each.value.outlier_detection.cache_key_policy.nanos
+        }
+      }
+    }
+  }
+
   depends_on = [
     google_compute_health_check.default
   ]
