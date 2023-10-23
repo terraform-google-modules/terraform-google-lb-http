@@ -27,7 +27,7 @@ module "gce-lb-http" {
 
   backends = {
     default = {
-      project     = var.service_project
+      project     = var.host_project
       protocol    = "HTTP"
       port        = 80
       port_name   = "http"
