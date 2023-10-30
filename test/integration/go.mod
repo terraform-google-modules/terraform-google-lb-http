@@ -2,7 +2,7 @@ module github.com/terraform-google-modules/terraform-google-lb-http/test/integra
 
 go 1.20
 
-require github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.8.1
+require github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test v0.9.1
 
 require (
 	cloud.google.com/go v0.110.7 // indirect
