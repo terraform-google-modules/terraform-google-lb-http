@@ -83,14 +83,3 @@ suites:
           backend: local
           controls:
             - https
-  - name: cross_project_mig
-    driver:
-      root_module_directory: test/fixtures/cross_project_mig/
-      verify_version: false
-    verifier:
-      color: false
-      systems:
-        - name: cross_project_mig
-          backend: local
-          controls:
-            - http
