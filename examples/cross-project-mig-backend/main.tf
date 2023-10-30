@@ -19,15 +19,15 @@
 module "gce-lb-http" {
   source                = "../../"
   name                  = "ci-crossproject-lb"
-  project               = var.host_project
+  project               = var.project_id
   target_tags           = ["allow-cross-project-mig"]
-  firewall_projects     = [var.host_project]
+  firewall_projects     = [var.project_id]
   firewall_networks     = [var.network_name]
   load_balancing_scheme = "EXTERNAL_MANAGED"
 
   backends = {
     default = {
-      project     = var.service_project
+      project     = var.project_id_1
       protocol    = "HTTP"
       port        = 80
       port_name   = "http"
