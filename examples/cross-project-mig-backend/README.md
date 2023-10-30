@@ -51,10 +51,10 @@ terraform destroy
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| host\_project | ID for the Shared VPC host project | `any` | n/a | yes |
 | network\_name | n/a | `string` | `"multi-mig-cross-project-mig"` | no |
+| project\_id | ID for the Shared VPC host project | `any` | n/a | yes |
+| project\_id\_1 | ID for the Shared VPC service project where instances will be deployed | `any` | n/a | yes |
 | region | n/a | `string` | `"us-central1"` | no |
-| service\_project | ID for the Shared VPC service project where instances will be deployed | `any` | n/a | yes |
 
 ## Outputs
 
