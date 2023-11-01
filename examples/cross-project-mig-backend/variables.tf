@@ -18,11 +18,11 @@ variable "region" {
   default = "us-central1"
 }
 
-variable "host_project" {
+variable "project_id" {
   description = "ID for the Shared VPC host project"
 }
 
-variable "service_project" {
+variable "project_id_1" {
   description = "ID for the Shared VPC service project where instances will be deployed"
 }
 
