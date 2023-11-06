@@ -161,6 +161,25 @@ variable "backends" {
         include_named_cookies  = optional(list(string))
       }))
     }))
+    outlier_detection = optional(object({
+      base_ejection_time = optional(object({
+        seconds = number
+        nanos   = optional(number)
+      }))
+      consecutive_errors                    = optional(number)
+      consecutive_gateway_failure           = optional(number)
+      enforcing_consecutive_errors          = optional(number)
+      enforcing_consecutive_gateway_failure = optional(number)
+      enforcing_success_rate                = optional(number)
+      interval = optional(object({
+        seconds = number
+        nanos   = optional(number)
+      }))
+      max_ejection_percent        = optional(number)
+      success_rate_minimum_hosts  = optional(number)
+      success_rate_request_volume = optional(number)
+      success_rate_stdev_factor   = optional(number)
+    }))
   }))
 }
 
