@@ -287,7 +287,7 @@ resource "google_compute_backend_service" "default" {
   }
 
   dynamic "outlier_detection" {
-    for_each = each.value.outlier_detection != null ? [1] : []
+    for_each = each.value.outlier_detection != null && ( var.load_balancing_scheme == "INTERNAL_SELF_MANAGED" || var.load_balancing_scheme == "EXTERNAL_MANAGED" ) ? [1] : []
     content {
       consecutive_errors                    = each.value.outlier_detection.consecutive_errors
       consecutive_gateway_failure           = each.value.outlier_detection.consecutive_gateway_failure
