@@ -41,8 +41,7 @@ module "load_balancer" {
 
   load_balancing_scheme = "EXTERNAL_MANAGED"
 
-  ssl                  = true
-  use_ssl_certificates = true
+  ssl = true
   ssl_certificates = [
     google_compute_managed_ssl_certificate.frontend.self_link
   ]

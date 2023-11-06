@@ -62,6 +62,32 @@ steps:
 - id: traffic-director-example-teardown
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestAll/examples/traffic-director --stage teardown --verbose']
+# certificate-map example
+- id: certificate-map-example-init
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TTestAll/examples/certificate-map --stage init --verbose']
+- id: certificate-map-example-apply
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TTestAll/examples/certificate-map --stage apply --verbose']
+- id: certificate-map-example-verify
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TTestAll/examples/certificate-map --stage verify --verbose']
+- id: certificate-map-example-teardown
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TTestAll/examples/certificate-map --stage teardown --verbose']
+# managed-manual-certificates example
+- id: user-managed-google-managed-ssl-example-init
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/user-managed-google-managed-ssl --stage init --verbose']
+- id: user-managed-google-managed-ssl-example-apply
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/user-managed-google-managed-ssl --stage apply --verbose']
+- id: user-managed-google-managed-ssl-example-verify
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/user-managed-google-managed-ssl --stage verify --verbose']
+- id: user-managed-google-managed-ssl-example-teardown
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/user-managed-google-managed-ssl --stage teardown --verbose']
 tags:
 - 'ci'
 - 'integration'

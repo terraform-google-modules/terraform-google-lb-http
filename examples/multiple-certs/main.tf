@@ -129,12 +129,11 @@ module "gce-lb-https" {
     "${var.network_name}-group3",
     module.cloud-nat-group3.router_name
   ]
-  firewall_networks    = [google_compute_network.default.self_link]
-  url_map              = google_compute_url_map.https-multi-cert.self_link
-  create_url_map       = false
-  ssl                  = true
-  ssl_certificates     = google_compute_ssl_certificate.example.*.self_link
-  use_ssl_certificates = true
+  firewall_networks = [google_compute_network.default.self_link]
+  url_map           = google_compute_url_map.https-multi-cert.self_link
+  create_url_map    = false
+  ssl               = true
+  ssl_certificates  = google_compute_ssl_certificate.example.*.self_link
 
   backends = {
     default = {
