@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.3.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v9.2.0...v9.3.0) (2023-11-06)
+
+
+### Features
+
+* Added support for google_compute_backend_service outlier_detection ([#365](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/365)) ([8554cd0](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/8554cd0f0b56b1ee2976f82770d15eefef09c2f5))
+
 ## [9.2.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v9.1.0...v9.2.0) (2023-08-24)
 
 
