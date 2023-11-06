@@ -34,7 +34,7 @@ Current version is 9.0. Upgrade guides:
 - [6.X -> 7.0](/docs/upgrading_to_v7.0.md)
 - [7.X -> 8.0](/docs/upgrading_to_v8.0.md)
 - [8.X -> 9.0](/docs/upgrading_to_v9.0.md)
-
+- [9.X -> 10.0](/docs/upgrading_to_v10.0.m)
 
 ## Usage
 
