@@ -202,9 +202,45 @@ variable "http_forward" {
 }
 
 variable "ssl" {
-  description = "Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self_link certs"
+  description = "Set to `true` to enable SSL support. If `true` then at least one of these are required: 1) `ssl_certificates` OR 2) `create_ssl_certificate` set to `true` and `private_key/certificate` OR  3) `managed_ssl_certificate_domains`, OR 4) `certificate_map`"
   type        = bool
   default     = false
+}
+
+variable "create_ssl_certificate" {
+  description = "If `true`, Create certificate using `private_key/certificate`"
+  type        = bool
+  default     = false
+}
+
+variable "ssl_certificates" {
+  description = "SSL cert self_link list. Requires `ssl` to be set to `true`"
+  type        = list(string)
+  default     = []
+}
+
+variable "private_key" {
+  description = "Content of the private SSL key. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true`"
+  type        = string
+  default     = null
+}
+
+variable "certificate" {
+  description = "Content of the SSL certificate. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true`"
+  type        = string
+  default     = null
+}
+
+variable "managed_ssl_certificate_domains" {
+  description = "Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true`"
+  type        = list(string)
+  default     = []
+}
+
+variable "certificate_map" {
+  description = "Certificate Map ID in format projects/{project}/locations/global/certificateMaps/{name}. Identifies a certificate map associated with the given target proxy.  Requires `ssl` to be set to `true`"
+  type        = string
+  default     = null
 }
 
 variable "ssl_policy" {
@@ -217,36 +253,6 @@ variable "quic" {
   type        = bool
   description = "Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only."
   default     = null
-}
-
-variable "private_key" {
-  description = "Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty."
-  type        = string
-  default     = null
-}
-
-variable "certificate" {
-  description = "Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty."
-  type        = string
-  default     = null
-}
-
-variable "managed_ssl_certificate_domains" {
-  description = "Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` and `use_ssl_certificates` set to `false`."
-  type        = list(string)
-  default     = []
-}
-
-variable "use_ssl_certificates" {
-  description = "If true, use the certificates provided by `ssl_certificates`, otherwise, create cert from `private_key` and `certificate`"
-  type        = bool
-  default     = false
-}
-
-variable "ssl_certificates" {
-  description = "SSL cert self_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided."
-  type        = list(string)
-  default     = []
 }
 
 variable "edge_security_policy" {
@@ -283,12 +289,6 @@ variable "load_balancing_scheme" {
   description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_SELF_MANAGED for traffic director)"
   type        = string
   default     = "EXTERNAL"
-}
-
-variable "certificate_map" {
-  description = "Certificate Map ID in format projects/{project}/locations/global/certificateMaps/{name}. Identifies a certificate map associated with the given target proxy"
-  type        = string
-  default     = null
 }
 
 variable "network" {
