@@ -65,16 +65,16 @@ steps:
 # certificate-map example
 - id: certificate-map-example-init
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TTestAll/examples/certificate-map --stage init --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/certificate-map --stage init --verbose']
 - id: certificate-map-example-apply
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TTestAll/examples/certificate-map --stage apply --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/certificate-map --stage apply --verbose']
 - id: certificate-map-example-verify
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TTestAll/examples/certificate-map --stage verify --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/certificate-map --stage verify --verbose']
 - id: certificate-map-example-teardown
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TTestAll/examples/certificate-map --stage teardown --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/certificate-map --stage teardown --verbose']
 # managed-manual-certificates example
 - id: user-managed-google-managed-ssl-example-init
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
