@@ -92,15 +92,14 @@ module "mig" {
 
 # [START cloudloadbalancing_ext_http_gce_http_redirect]
 module "gce-lb-http" {
-  source               = "../../"
-  name                 = "ci-https-redirect"
-  project              = var.project
-  target_tags          = [var.network_name]
-  firewall_networks    = [google_compute_network.default.name]
-  ssl                  = true
-  ssl_certificates     = [google_compute_ssl_certificate.example.self_link]
-  use_ssl_certificates = true
-  https_redirect       = true
+  source            = "../../"
+  name              = "ci-https-redirect"
+  project           = var.project
+  target_tags       = [var.network_name]
+  firewall_networks = [google_compute_network.default.name]
+  ssl               = true
+  ssl_certificates  = [google_compute_ssl_certificate.example.self_link]
+  https_redirect    = true
 
   backends = {
     default = {

@@ -44,7 +44,7 @@ resource "google_compute_global_forwarding_rule" "http" {
 resource "google_compute_global_forwarding_rule" "https" {
   provider              = google-beta
   project               = var.project
-  count                 = var.ssl || var.certificate_map != null ? 1 : 0
+  count                 = var.ssl ? 1 : 0
   name                  = "${var.name}-https"
   target                = google_compute_target_https_proxy.default[0].self_link
   ip_address            = local.address
@@ -81,7 +81,7 @@ resource "google_compute_global_forwarding_rule" "http_ipv6" {
 resource "google_compute_global_forwarding_rule" "https_ipv6" {
   provider              = google-beta
   project               = var.project
-  count                 = var.enable_ipv6 && (var.ssl || var.certificate_map != null) ? 1 : 0
+  count                 = var.enable_ipv6 && var.ssl ? 1 : 0
   name                  = "${var.name}-ipv6-https"
   target                = google_compute_target_https_proxy.default[0].self_link
   ip_address            = local.ipv6_address
@@ -112,7 +112,7 @@ resource "google_compute_target_http_proxy" "default" {
 # HTTPS proxy when ssl is true
 resource "google_compute_target_https_proxy" "default" {
   project = var.project
-  count   = var.ssl || var.certificate_map != null ? 1 : 0
+  count   = var.ssl ? 1 : 0
   name    = "${var.name}-https-proxy"
   url_map = local.url_map
 
@@ -124,7 +124,7 @@ resource "google_compute_target_https_proxy" "default" {
 
 resource "google_compute_ssl_certificate" "default" {
   project     = var.project
-  count       = var.ssl && length(var.managed_ssl_certificate_domains) == 0 && !var.use_ssl_certificates ? 1 : 0
+  count       = var.ssl && var.create_ssl_certificate ? 1 : 0
   name_prefix = "${var.name}-certificate-"
   private_key = var.private_key
   certificate = var.certificate
@@ -147,7 +147,7 @@ resource "random_id" "certificate" {
 resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
   project  = var.project
-  count    = var.ssl && length(var.managed_ssl_certificate_domains) > 0 && !var.use_ssl_certificates ? 1 : 0
+  count    = var.ssl && length(var.managed_ssl_certificate_domains) > 0 ? 1 : 0
   name     = var.random_certificate_suffix == true ? random_id.certificate[0].hex : "${var.name}-cert"
 
   lifecycle {

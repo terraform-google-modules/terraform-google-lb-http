@@ -34,6 +34,7 @@ module "project-ci-lb-http" {
     "compute.googleapis.com",
     "run.googleapis.com",
     "iam.googleapis.com",
+    "certificatemanager.googleapis.com",
   ]
 }
 
@@ -57,5 +58,6 @@ module "project-ci-lb-http-1" {
     "compute.googleapis.com",
     "run.googleapis.com",
     "iam.googleapis.com",
+    "certificatemanager.googleapis.com",
   ]
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Google LLC
+ * Copyright 2023 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,11 @@
  */
 
 provider "google" {
-  project = var.project
+  project = var.project_id
 }
 
 provider "google-beta" {
-  project = var.project
+  project = var.project_id
 }
 
 resource "google_compute_network" "default" {
@@ -46,57 +46,9 @@ module "cloud-nat-group1" {
   source     = "terraform-google-modules/cloud-nat/google"
   version    = "~> 2.2"
   router     = google_compute_router.group1.name
-  project_id = var.project
+  project_id = var.project_id
   region     = var.group1_region
   name       = "${var.network_name}-cloud-nat-group1"
-}
-
-resource "google_compute_subnetwork" "group2" {
-  name                     = var.network_name
-  ip_cidr_range            = "10.126.0.0/20"
-  network                  = google_compute_network.default.self_link
-  region                   = var.group2_region
-  private_ip_google_access = true
-}
-
-# Router and Cloud NAT are required for installing packages from repos (apache, php etc)
-resource "google_compute_router" "group2" {
-  name    = "${var.network_name}-gw-group2"
-  network = google_compute_network.default.self_link
-  region  = var.group2_region
-}
-
-module "cloud-nat-group2" {
-  source     = "terraform-google-modules/cloud-nat/google"
-  version    = "~> 2.2"
-  router     = google_compute_router.group2.name
-  project_id = var.project
-  region     = var.group2_region
-  name       = "${var.network_name}-cloud-nat-group2"
-}
-
-resource "google_compute_subnetwork" "group3" {
-  name                     = var.network_name
-  ip_cidr_range            = "10.127.0.0/20"
-  network                  = google_compute_network.default.self_link
-  region                   = var.group3_region
-  private_ip_google_access = true
-}
-
-# Router and Cloud NAT are required for installing packages from repos (apache, php etc)
-resource "google_compute_router" "group3" {
-  name    = "${var.network_name}-gw-group3"
-  network = google_compute_network.default.self_link
-  region  = var.group3_region
-}
-
-module "cloud-nat-group3" {
-  source     = "terraform-google-modules/cloud-nat/google"
-  version    = "~> 2.2"
-  router     = google_compute_router.group3.name
-  project_id = var.project
-  region     = var.group3_region
-  name       = "${var.network_name}-cloud-nat-group3"
 }
 
 resource "random_id" "assets-bucket" {
@@ -106,34 +58,24 @@ resource "random_id" "assets-bucket" {
 
 locals {
   health_check = {
-    check_interval_sec  = null
-    timeout_sec         = null
-    healthy_threshold   = null
-    unhealthy_threshold = null
-    request_path        = "/"
-    port                = 80
-    host                = null
-    logging             = null
+    request_path = "/"
+    port         = 80
   }
 }
 
 module "gce-lb-https" {
-  source  = "../../"
-  name    = var.network_name
-  project = var.project
-  target_tags = [
-    "${var.network_name}-group1",
-    module.cloud-nat-group1.router_name,
-    "${var.network_name}-group2",
-    module.cloud-nat-group2.router_name,
-    "${var.network_name}-group3",
-    module.cloud-nat-group3.router_name
-  ]
-  firewall_networks = [google_compute_network.default.self_link]
-  url_map           = google_compute_url_map.https-multi-cert.self_link
-  create_url_map    = false
-  ssl               = true
-  ssl_certificates  = google_compute_ssl_certificate.example.*.self_link
+  source                          = "../../"
+  name                            = var.network_name
+  project                         = var.project_id
+  firewall_networks               = [google_compute_network.default.self_link]
+  url_map                         = google_compute_url_map.https-multi-cert.self_link
+  create_url_map                  = false
+  ssl                             = true
+  create_ssl_certificate          = true
+  private_key                     = tls_private_key.single_key.private_key_pem
+  certificate                     = tls_self_signed_cert.single_cert.cert_pem
+  managed_ssl_certificate_domains = ["test.example.com"]
+  ssl_certificates                = google_compute_ssl_certificate.example.*.self_link
 
   backends = {
     default = {
@@ -151,12 +93,6 @@ module "gce-lb-https" {
       groups = [
         {
           group = module.mig1.instance_group
-        },
-        {
-          group = module.mig2.instance_group
-        },
-        {
-          group = module.mig3.instance_group
         },
       ]
 
@@ -187,53 +123,9 @@ module "gce-lb-https" {
         enable = false
       }
     }
-
-    mig2 = {
-      protocol    = "HTTP"
-      port        = 80
-      port_name   = "http"
-      timeout_sec = 10
-      enable_cdn  = false
-
-      health_check = local.health_check
-      log_config = {
-        enable      = true
-        sample_rate = 1.0
-      }
-      groups = [
-        {
-          group = module.mig2.instance_group
-        },
-      ]
-
-      iap_config = {
-        enable = false
-      }
-    }
-
-    mig3 = {
-      protocol    = "HTTP"
-      port        = 80
-      port_name   = "http"
-      timeout_sec = 10
-      enable_cdn  = false
-
-      health_check = local.health_check
-      log_config = {
-        enable      = true
-        sample_rate = 1.0
-      }
-      groups = [
-        {
-          group = module.mig3.instance_group
-        },
-      ]
-
-      iap_config = {
-        enable = false
-      }
-    }
   }
+
+  # depends_on = [google_certificate_manager_certificate_map.certificate_map]
 }
 
 resource "google_compute_url_map" "https-multi-cert" {
@@ -256,22 +148,6 @@ resource "google_compute_url_map" "https-multi-cert" {
         "/group1/*"
       ]
       service = module.gce-lb-https.backend_services["mig1"].self_link
-    }
-
-    path_rule {
-      paths = [
-        "/group2",
-        "/group2/*"
-      ]
-      service = module.gce-lb-https.backend_services["mig2"].self_link
-    }
-
-    path_rule {
-      paths = [
-        "/group3",
-        "/group3/*"
-      ]
-      service = module.gce-lb-https.backend_services["mig3"].self_link
     }
 
     path_rule {

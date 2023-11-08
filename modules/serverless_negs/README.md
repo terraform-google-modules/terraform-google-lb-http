@@ -22,7 +22,7 @@ Current version is 9.0. Upgrade guides:
 - [6.X -> 7.0](/docs/upgrading_to_v7.0.md)
 - [7.X -> 8.0](/docs/upgrading_to_v8.0.md)
 - [8.X -> 9.0](/docs/upgrading_to_v9.0.md)
-
+- [9.X -> 10.0](/docs/upgrading_to_v10.0.m)
 
 ## Usage
 
@@ -80,10 +80,11 @@ module "lb-http" {
 |------|-------------|------|---------|:--------:|
 | address | Existing IPv4 address to use (the actual IP address value) | `string` | `null` | no |
 | backends | Map backend indices to list of backend maps. | <pre>map(object({<br>    project                 = optional(string)<br>    protocol                = optional(string)<br>    port_name               = optional(string)<br>    description             = optional(string)<br>    enable_cdn              = optional(bool)<br>    compression_mode        = optional(string)<br>    security_policy         = optional(string, null)<br>    edge_security_policy    = optional(string, null)<br>    custom_request_headers  = optional(list(string))<br>    custom_response_headers = optional(list(string))<br><br>    connection_draining_timeout_sec = optional(number)<br>    session_affinity                = optional(string)<br>    affinity_cookie_ttl_sec         = optional(number)<br><br><br>    log_config = object({<br>      enable      = optional(bool)<br>      sample_rate = optional(number)<br>    })<br><br>    groups = list(object({<br>      group = string<br><br>    }))<br>    iap_config = object({<br>      enable               = bool<br>      oauth2_client_id     = optional(string)<br>      oauth2_client_secret = optional(string)<br>    })<br>    cdn_policy = optional(object({<br>      cache_mode                   = optional(string)<br>      signed_url_cache_max_age_sec = optional(string)<br>      default_ttl                  = optional(number)<br>      max_ttl                      = optional(number)<br>      client_ttl                   = optional(number)<br>      negative_caching             = optional(bool)<br>      negative_caching_policy = optional(object({<br>        code = optional(number)<br>        ttl  = optional(number)<br>      }))<br>      serve_while_stale = optional(number)<br>      cache_key_policy = optional(object({<br>        include_host           = optional(bool)<br>        include_protocol       = optional(bool)<br>        include_query_string   = optional(bool)<br>        query_string_blacklist = optional(list(string))<br>        query_string_whitelist = optional(list(string))<br>        include_http_headers   = optional(list(string))<br>        include_named_cookies  = optional(list(string))<br>      }))<br>    }))<br>    outlier_detection = optional(object({<br>      base_ejection_time = optional(object({<br>        seconds = number<br>        nanos   = optional(number)<br>      }))<br>      consecutive_errors                    = optional(number)<br>      consecutive_gateway_failure           = optional(number)<br>      enforcing_consecutive_errors          = optional(number)<br>      enforcing_consecutive_gateway_failure = optional(number)<br>      enforcing_success_rate                = optional(number)<br>      interval = optional(object({<br>        seconds = number<br>        nanos   = optional(number)<br>      }))<br>      max_ejection_percent        = optional(number)<br>      success_rate_minimum_hosts  = optional(number)<br>      success_rate_request_volume = optional(number)<br>      success_rate_stdev_factor   = optional(number)<br>    }))<br>  }))</pre> | n/a | yes |
-| certificate | Content of the SSL certificate. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
-| certificate\_map | Certificate Map ID in format projects/{project}/locations/global/certificateMaps/{name}. Identifies a certificate map associated with the given target proxy | `string` | `null` | no |
+| certificate | Content of the SSL certificate. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true` | `string` | `null` | no |
+| certificate\_map | Certificate Map ID in format projects/{project}/locations/global/certificateMaps/{name}. Identifies a certificate map associated with the given target proxy.  Requires `ssl` to be set to `true` | `string` | `null` | no |
 | create\_address | Create a new global IPv4 address | `bool` | `true` | no |
 | create\_ipv6\_address | Allocate a new IPv6 address. Conflicts with "ipv6\_address" - if both specified, "create\_ipv6\_address" takes precedence. | `bool` | `false` | no |
+| create\_ssl\_certificate | If `true`, Create certificate using `private_key/certificate` | `bool` | `false` | no |
 | create\_url\_map | Set to `false` if url\_map variable is provided. | `bool` | `true` | no |
 | edge\_security\_policy | The resource URL for the edge security policy to associate with the backend service | `string` | `null` | no |
 | enable\_ipv6 | Enable IPv6 address on the CDN load-balancer | `bool` | `false` | no |
@@ -92,19 +93,18 @@ module "lb-http" {
 | ipv6\_address | An existing IPv6 address to use (the actual IP address value) | `string` | `null` | no |
 | labels | The labels to attach to resources created by this module | `map(string)` | `{}` | no |
 | load\_balancing\_scheme | Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL\_MANAGED for Envoy-based load balancer, and INTERNAL\_SELF\_MANAGED for traffic director) | `string` | `"EXTERNAL"` | no |
-| managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` and `use_ssl_certificates` set to `false`. | `list(string)` | `[]` | no |
+| managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` | `list(string)` | `[]` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |
 | network | Network for INTERNAL\_SELF\_MANAGED load balancing scheme | `string` | `"default"` | no |
-| private\_key | Content of the private SSL key. Required if `ssl` is `true` and `ssl_certificates` is empty. | `string` | `null` | no |
+| private\_key | Content of the private SSL key. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true` | `string` | `null` | no |
 | project | The project to deploy to, if not set the default provider project is used. | `string` | n/a | yes |
 | quic | Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only. | `bool` | `null` | no |
 | random\_certificate\_suffix | Bool to enable/disable random certificate name generation. Set and keep this to true if you need to change the SSL cert. | `bool` | `false` | no |
 | security\_policy | The resource URL for the security policy to associate with the backend service | `string` | `null` | no |
-| ssl | Set to `true` to enable SSL support, requires variable `ssl_certificates` - a list of self\_link certs | `bool` | `false` | no |
-| ssl\_certificates | SSL cert self\_link list. Required if `ssl` is `true` and no `private_key` and `certificate` is provided. | `list(string)` | `[]` | no |
+| ssl | Set to `true` to enable SSL support. If `true` then at least one of these are required: 1) `ssl_certificates` OR 2) `create_ssl_certificate` set to `true` and `private_key/certificate` OR  3) `managed_ssl_certificate_domains`, OR 4) `certificate_map` | `bool` | `false` | no |
+| ssl\_certificates | SSL cert self\_link list. Requires `ssl` to be set to `true` | `list(string)` | `[]` | no |
 | ssl\_policy | Selfink to SSL Policy | `string` | `null` | no |
 | url\_map | The url\_map resource to use. Default is to send all traffic to first backend. | `string` | `null` | no |
-| use\_ssl\_certificates | If true, use the certificates provided by `ssl_certificates`, otherwise, create cert from `private_key` and `certificate` | `bool` | `false` | no |
 
 ## Outputs
 
@@ -116,6 +116,7 @@ module "lb-http" {
 | http\_proxy | The HTTP proxy used by this module. |
 | https\_proxy | The HTTPS proxy used by this module. |
 | ipv6\_enabled | Whether IPv6 configuration is enabled on this load-balancer |
+| ssl\_certificate\_created | The SSL certificate create from key/pem |
 | url\_map | The default URL map used by this module. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
