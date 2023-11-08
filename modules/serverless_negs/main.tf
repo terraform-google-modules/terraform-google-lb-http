@@ -287,10 +287,10 @@ resource "google_compute_backend_service" "default" {
       }
 
       dynamic "interval" {
-        for_each = each.value.outlier_detection.cache_key_policy != null ? [1] : []
+        for_each = each.value.outlier_detection.interval != null ? [1] : []
         content {
-          seconds = each.value.outlier_detection.cache_key_policy.seconds
-          nanos   = each.value.outlier_detection.cache_key_policy.nanos
+          seconds = each.value.outlier_detection.interval.seconds
+          nanos   = each.value.outlier_detection.interval.nanos
         }
       }
     }
