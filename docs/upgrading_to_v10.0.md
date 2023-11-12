@@ -10,7 +10,7 @@ The `use_ssl_certificates` parameter has been removed. A new parameter `create_s
 
 In order to create https load balancer you need to pass `ssl = true` and at least one of the following:
 
-1) list of self links to your own certificates passed to`ssl_certificates` OR
+1) list of self links to your own certificates passed to `ssl_certificates` OR
 2) `create_ssl_certificate` set to `true` and `private_key/certificate` OR
 3) list of domains for `managed_ssl_certificate_domains`, OR
 4) Managed certificate using certificate manager by passing `certificate_map`
