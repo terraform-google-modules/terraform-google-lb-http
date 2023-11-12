@@ -54,6 +54,7 @@ module "gce-lb-http" {
       timeout_sec                     = 10
       enable_cdn                      = false
 
+
       health_check = {
         request_path        = "/"
         port                = var.service_port

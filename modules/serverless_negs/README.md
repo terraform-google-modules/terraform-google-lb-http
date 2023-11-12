@@ -22,7 +22,7 @@ Current version is 9.0. Upgrade guides:
 - [6.X -> 7.0](/docs/upgrading_to_v7.0.md)
 - [7.X -> 8.0](/docs/upgrading_to_v8.0.md)
 - [8.X -> 9.0](/docs/upgrading_to_v9.0.md)
-- [9.X -> 10.0](/docs/upgrading_to_v10.0.m)
+- [9.X -> 10.0](/docs/upgrading_to_v10.0.md)
 
 ## Usage
 
@@ -39,14 +39,9 @@ module "lb-http" {
   https_redirect                  = true
   backends = {
     default = {
-      description                     = null
       protocol                        = "HTTP"
       port_name                       = var.service_port_name
       enable_cdn                      = false
-      custom_request_headers          = null
-      custom_response_headers         = null
-      security_policy                 = null
-      compression_mode                = null
 
 
       log_config = {
@@ -63,8 +58,6 @@ module "lb-http" {
 
       iap_config = {
         enable               = false
-        oauth2_client_id     = null
-        oauth2_client_secret = null
       }
     }
   }
