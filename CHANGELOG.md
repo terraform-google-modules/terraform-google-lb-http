@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v9.3.0...v10.0.0) (2023-11-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* Fix certificate map issue. Allow adding different types of certificates together. ([#382](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/382))
+
+### Features
+
+* add bypass_cache_on_request_headers to cdn_policy ([#385](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/385)) ([e91961b](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/e91961bedb997bf9c47f3a963149267b365490d6))
+
+
+### Bug Fixes
+
+* Fix certificate map issue. Allow adding different types of certificates together. ([#382](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/382)) ([d1c89b9](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/d1c89b987b3fa12e4a3cc4dcd52f076b792d6471))
+* Invalid variable name in outlier_detection block ([#381](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/381)) ([34fbda9](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/34fbda928d4c03a11ffaefeb9c12e1b5019d7a08))
+
 ## [9.3.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v9.2.0...v9.3.0) (2023-11-06)
 
 
