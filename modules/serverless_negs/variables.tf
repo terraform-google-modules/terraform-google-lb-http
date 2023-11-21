@@ -245,3 +245,10 @@ variable "network" {
   type        = string
   default     = "default"
 }
+
+
+variable "server_tls_policy" {
+  description = "The resource URL for the server TLS policy to associate with the https proxy service"
+  type        = string
+  default     = null
+}

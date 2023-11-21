@@ -120,6 +120,7 @@ resource "google_compute_target_https_proxy" "default" {
   certificate_map  = var.certificate_map != null ? "//certificatemanager.googleapis.com/${var.certificate_map}" : null
   ssl_policy       = var.ssl_policy
   quic_override    = var.quic == null ? "NONE" : var.quic ? "ENABLE" : "DISABLE"
+  server_tls_policy = var.server_tls_policy
 }
 
 resource "google_compute_ssl_certificate" "default" {
