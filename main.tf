@@ -274,6 +274,13 @@ resource "google_compute_backend_service" "default" {
           include_named_cookies  = each.value.cdn_policy.cache_key_policy.include_named_cookies
         }
       }
+
+      dynamic "bypass_cache_on_request_headers" {
+        for_each = toset(each.value.cdn_policy.bypass_cache_on_request_headers) != null ? each.value.cdn_policy.bypass_cache_on_request_headers : []
+        content {
+          header_name = bypass_cache_on_request_headers.value
+        }
+      }
     }
   }
 

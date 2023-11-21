@@ -160,6 +160,7 @@ variable "backends" {
         include_http_headers   = optional(list(string))
         include_named_cookies  = optional(list(string))
       }))
+      bypass_cache_on_request_headers = optional(list(string))
     }))
     outlier_detection = optional(object({
       base_ejection_time = optional(object({

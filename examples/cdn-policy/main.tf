@@ -116,6 +116,7 @@ module "gce-lb-http" {
           include_query_string  = true
           include_named_cookies = ["__next_preview_data", "__prerender_bypass"]
         }
+        bypass_cache_on_request_headers = ["example-header-1", "example-header-2"]
       }
 
       groups = [
