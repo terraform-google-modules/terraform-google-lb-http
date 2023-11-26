@@ -199,6 +199,12 @@ variable "ssl_policy" {
   default     = null
 }
 
+variable "server_tls_policy" {
+  type        = string
+  description = "A URL referring to a networksecurity.ServerTlsPolicy resource that describes how the proxy should authenticate inbound traffic"
+  default     = null
+}
+
 variable "quic" {
   type        = bool
   description = "Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only."
