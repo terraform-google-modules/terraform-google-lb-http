@@ -116,10 +116,10 @@ resource "google_compute_target_https_proxy" "default" {
   name    = "${var.name}-https-proxy"
   url_map = local.url_map
 
-  ssl_certificates = compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default.*.self_link, google_compute_managed_ssl_certificate.default.*.self_link, ), )
-  certificate_map  = var.certificate_map != null ? "//certificatemanager.googleapis.com/${var.certificate_map}" : null
-  ssl_policy       = var.ssl_policy
-  quic_override    = var.quic == null ? "NONE" : var.quic ? "ENABLE" : "DISABLE"
+  ssl_certificates  = compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default.*.self_link, google_compute_managed_ssl_certificate.default.*.self_link, ), )
+  certificate_map   = var.certificate_map != null ? "//certificatemanager.googleapis.com/${var.certificate_map}" : null
+  ssl_policy        = var.ssl_policy
+  quic_override     = var.quic == null ? "NONE" : var.quic ? "ENABLE" : "DISABLE"
   server_tls_policy = var.server_tls_policy
 }
 
