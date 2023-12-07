@@ -201,6 +201,7 @@ resource "google_compute_backend_service" "default" {
   custom_response_headers         = lookup(each.value, "custom_response_headers", [])
   session_affinity                = lookup(each.value, "session_affinity", null)
   affinity_cookie_ttl_sec         = lookup(each.value, "affinity_cookie_ttl_sec", null)
+  locality_lb_policy              = lookup(each.value, "locality_lb_policy", null)
 
   health_checks = lookup(each.value, "health_check", null) == null ? null : [google_compute_health_check.default[each.key].self_link]
 

@@ -72,6 +72,7 @@ variable "backends" {
     connection_draining_timeout_sec = optional(number)
     session_affinity                = optional(string)
     affinity_cookie_ttl_sec         = optional(number)
+    locality_lb_policy              = optional(string)
 
 
     log_config = object({
