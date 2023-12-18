@@ -64,7 +64,8 @@ locals {
 }
 
 module "gce-lb-https" {
-  source            = "../../"
+  source            = "terraform-google-modules/lb-http/google"
+  version           = "~> 10.0"
   name              = var.network_name
   project           = var.project_id
   firewall_networks = [google_compute_network.default.self_link]

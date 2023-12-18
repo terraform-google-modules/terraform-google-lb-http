@@ -91,7 +91,8 @@ module "mig" {
 }
 
 module "gce-lb-http" {
-  source            = "../../"
+  source            = "terraform-google-modules/lb-http/google"
+  version           = "~> 10.0"
   name              = "mig-http-lb"
   project           = var.project
   target_tags       = [var.network_name]
