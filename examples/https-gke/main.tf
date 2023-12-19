@@ -25,8 +25,10 @@ provider "google-beta" {
 data "google_client_config" "current" {}
 
 module "gce-lb-https" {
-  project           = var.project
-  source            = "../../"
+  project = var.project
+  source  = "terraform-google-modules/lb-http/google"
+  version = "~> 10.0"
+
   name              = var.name
   ssl               = true
   private_key       = tls_private_key.example.private_key_pem

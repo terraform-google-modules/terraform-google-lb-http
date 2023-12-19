@@ -26,7 +26,9 @@ provider "google-beta" {
 
 # [START cloudloadbalancing_ext_http_gce_shared_vpc]
 module "gce-lb-http" {
-  source            = "../../"
+  source  = "terraform-google-modules/lb-http/google"
+  version = "~> 10.0"
+
   name              = "group-http-lb"
   project           = var.service_project
   target_tags       = ["allow-shared-vpc-mig"]

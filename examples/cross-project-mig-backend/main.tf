@@ -17,7 +17,9 @@
 
 # [START cloudloadbalancing_ext_http_gce_shared_vpc]
 module "gce-lb-http" {
-  source                = "../../"
+  source  = "terraform-google-modules/lb-http/google"
+  version = "~> 10.0"
+
   name                  = "ci-crossproject-lb"
   project               = var.project_id
   target_tags           = ["allow-cross-project-mig"]
