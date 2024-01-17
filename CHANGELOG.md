@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v10.0.0...v10.1.0) (2024-01-16)
+
+
+### Features
+
+* Add Server TLS Policy parameter ([#387](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/387)) ([c553947](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/c553947cbaad01ab8e8b1a837be60092bc3c10fa))
+* Added support for locality_lb_policy ([#392](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/392)) ([0127723](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/012772310a18c2198cbd96776fd2e218e5f29d2a))
+
 ## [10.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v9.3.0...v10.0.0) (2023-11-17)
 
 
