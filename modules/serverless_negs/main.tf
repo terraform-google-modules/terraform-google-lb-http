@@ -23,7 +23,7 @@ locals {
   create_http_forward = var.http_forward || var.https_redirect
 
 
-  is_internal      = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED"
+  is_internal      = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED" || var.load_balancing_scheme == "INTERNAL_MANAGED" || var.load_balancing_scheme == "INTERNAL"
   internal_network = local.is_internal ? var.network : null
 }
 
