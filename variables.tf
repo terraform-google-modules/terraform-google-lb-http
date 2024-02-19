@@ -304,3 +304,15 @@ variable "server_tls_policy" {
   type        = string
   default     = null
 }
+
+variable "http_port" {
+  description = "The port for the HTTP load balancer"
+  type        = number
+  default     = 80
+}
+
+variable "https_port" {
+  description = "The port for the HTTPS load balancer"
+  type        = number
+  default     = 443
+}

@@ -36,7 +36,7 @@ resource "google_compute_global_forwarding_rule" "http" {
   name                  = var.name
   target                = google_compute_target_http_proxy.default[0].self_link
   ip_address            = local.address
-  port_range            = "80"
+  port_range            = var.http_port
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
   network               = local.internal_network
@@ -49,7 +49,7 @@ resource "google_compute_global_forwarding_rule" "https" {
   name                  = "${var.name}-https"
   target                = google_compute_target_https_proxy.default[0].self_link
   ip_address            = local.address
-  port_range            = "443"
+  port_range            = var.https_port
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
   network               = local.internal_network
