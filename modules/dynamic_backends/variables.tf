@@ -304,3 +304,23 @@ variable "server_tls_policy" {
   type        = string
   default     = null
 }
+
+variable "http_port" {
+  description = "The port for the HTTP load balancer"
+  type        = number
+  default     = 80
+  validation {
+    condition     = var.http_port >= 1 && var.http_port <= 65535
+    error_message = "You must specify exactly one port between 1 and 65535"
+  }
+}
+
+variable "https_port" {
+  description = "The port for the HTTPS load balancer"
+  type        = number
+  default     = 443
+  validation {
+    condition     = var.https_port >= 1 && var.https_port <= 65535
+    error_message = "You must specify exactly one port between 1 and 65535"
+  }
+}

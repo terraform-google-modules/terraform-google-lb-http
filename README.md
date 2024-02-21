@@ -106,6 +106,8 @@ module "gce-lb-http" {
 | firewall\_networks | Names of the networks to create firewall rules in | `list(string)` | <pre>[<br>  "default"<br>]</pre> | no |
 | firewall\_projects | Names of the projects to create firewall rules in | `list(string)` | <pre>[<br>  "default"<br>]</pre> | no |
 | http\_forward | Set to `false` to disable HTTP port 80 forward | `bool` | `true` | no |
+| http\_port | The port for the HTTP load balancer | `number` | `80` | no |
+| https\_port | The port for the HTTPS load balancer | `number` | `443` | no |
 | https\_redirect | Set to `true` to enable https redirect on the lb. | `bool` | `false` | no |
 | ipv6\_address | An existing IPv6 address to use (the actual IP address value) | `string` | `null` | no |
 | labels | The labels to attach to resources created by this module | `map(string)` | `{}` | no |
