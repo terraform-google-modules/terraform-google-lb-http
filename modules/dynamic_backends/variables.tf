@@ -99,7 +99,7 @@ variable "backends" {
     affinity_cookie_ttl_sec         = optional(number)
     locality_lb_policy              = optional(string)
 
-    health_check = object({
+    health_check = optional(object({
       host                = optional(string)
       request_path        = optional(string)
       request             = optional(string)
@@ -114,7 +114,7 @@ variable "backends" {
       healthy_threshold   = optional(number)
       unhealthy_threshold = optional(number)
       logging             = optional(bool)
-    })
+    }))
 
     log_config = object({
       enable      = optional(bool)
