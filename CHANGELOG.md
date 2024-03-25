@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.2.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v10.1.0...v10.2.0) (2024-03-20)
+
+
+### Features
+
+* Allow specifying HTTP and HTTPS port. ([#409](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/409)) ([e24a5a5](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/e24a5a5f9594feff49ceec2235e880e17c74098d))
+
 ## [10.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v10.0.0...v10.1.0) (2024-01-16)
 
 

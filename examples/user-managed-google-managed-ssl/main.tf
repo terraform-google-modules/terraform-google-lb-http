@@ -44,7 +44,7 @@ resource "google_compute_router" "group1" {
 
 module "cloud-nat-group1" {
   source     = "terraform-google-modules/cloud-nat/google"
-  version    = "~> 2.2"
+  version    = "~> 5.0"
   router     = google_compute_router.group1.name
   project_id = var.project_id
   region     = var.group1_region
