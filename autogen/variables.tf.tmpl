@@ -109,7 +109,7 @@ variable "backends" {
 
     {% if not serverless %}
     {# Serverless NEGs don't support health checks #}
-    health_check = object({
+    health_check = optional(object({
       host                = optional(string)
       request_path        = optional(string)
       request             = optional(string)
@@ -124,7 +124,7 @@ variable "backends" {
       healthy_threshold   = optional(number)
       unhealthy_threshold = optional(number)
       logging             = optional(bool)
-    })
+    }))
     {% endif %}
 
     log_config = object({
