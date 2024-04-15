@@ -77,7 +77,7 @@ module "gce-lb-https" {
   private_key                     = tls_private_key.single_key.private_key_pem
   certificate                     = tls_self_signed_cert.single_cert.cert_pem
   managed_ssl_certificate_domains = ["test.example.com"]
-  ssl_certificates                = google_compute_ssl_certificate.example.*.self_link
+  ssl_certificates                = google_compute_ssl_certificate.example[*].self_link
 
   backends = {
     default = {

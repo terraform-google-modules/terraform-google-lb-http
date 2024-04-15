@@ -16,10 +16,10 @@
 
 
 locals {
-  address      = var.create_address ? join("", google_compute_global_address.default.*.address) : var.address
-  ipv6_address = var.create_ipv6_address ? join("", google_compute_global_address.default_ipv6.*.address) : var.ipv6_address
+  address      = var.create_address ? join("", google_compute_global_address.default[*].address) : var.address
+  ipv6_address = var.create_ipv6_address ? join("", google_compute_global_address.default_ipv6[*].address) : var.ipv6_address
 
-  url_map             = var.create_url_map ? join("", google_compute_url_map.default.*.self_link) : var.url_map
+  url_map             = var.create_url_map ? join("", google_compute_url_map.default[*].self_link) : var.url_map
   create_http_forward = var.http_forward || var.https_redirect
 
   health_checked_backends = { for backend_index, backend_value in var.backends : backend_index => backend_value if backend_value["health_check"] != null }
@@ -107,7 +107,7 @@ resource "google_compute_target_http_proxy" "default" {
   project = var.project
   count   = local.create_http_forward ? 1 : 0
   name    = "${var.name}-http-proxy"
-  url_map = var.https_redirect == false ? local.url_map : join("", google_compute_url_map.https_redirect.*.self_link)
+  url_map = var.https_redirect == false ? local.url_map : join("", google_compute_url_map.https_redirect[*].self_link)
 }
 
 # HTTPS proxy when ssl is true
@@ -117,7 +117,7 @@ resource "google_compute_target_https_proxy" "default" {
   name    = "${var.name}-https-proxy"
   url_map = local.url_map
 
-  ssl_certificates  = compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default.*.self_link, google_compute_managed_ssl_certificate.default.*.self_link, ), )
+  ssl_certificates  = compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default[*].self_link, google_compute_managed_ssl_certificate.default[*].self_link, ), )
   certificate_map   = var.certificate_map != null ? "//certificatemanager.googleapis.com/${var.certificate_map}" : null
   ssl_policy        = var.ssl_policy
   quic_override     = var.quic == null ? "NONE" : var.quic ? "ENABLE" : "DISABLE"
@@ -206,26 +206,26 @@ resource "google_compute_backend_service" "default" {
   health_checks = lookup(each.value, "health_check", null) == null ? null : [google_compute_health_check.default[each.key].self_link]
 
   # To achieve a null backend edge_security_policy, set each.value.edge_security_policy to "" (empty string), otherwise, it fallsback to var.edge_security_policy.
-  edge_security_policy = lookup(each.value, "edge_security_policy") == "" ? null : (lookup(each.value, "edge_security_policy") == null ? var.edge_security_policy : each.value.edge_security_policy)
+  edge_security_policy = each.value["edge_security_policy"] == "" ? null : (each.value["edge_security_policy"] == null ? var.edge_security_policy : each.value.edge_security_policy)
 
   # To achieve a null backend security_policy, set each.value.security_policy to "" (empty string), otherwise, it fallsback to var.security_policy.
-  security_policy = lookup(each.value, "security_policy") == "" ? null : (lookup(each.value, "security_policy") == null ? var.security_policy : each.value.security_policy)
+  security_policy = each.value["security_policy"] == "" ? null : (each.value["security_policy"] == null ? var.security_policy : each.value.security_policy)
 
   dynamic "backend" {
     for_each = toset(each.value["groups"])
     content {
       description = lookup(backend.value, "description", null)
-      group       = lookup(backend.value, "group")
+      group       = backend.value["group"]
 
-      balancing_mode               = lookup(backend.value, "balancing_mode")
-      capacity_scaler              = lookup(backend.value, "capacity_scaler")
-      max_connections              = lookup(backend.value, "max_connections")
-      max_connections_per_instance = lookup(backend.value, "max_connections_per_instance")
-      max_connections_per_endpoint = lookup(backend.value, "max_connections_per_endpoint")
-      max_rate                     = lookup(backend.value, "max_rate")
-      max_rate_per_instance        = lookup(backend.value, "max_rate_per_instance")
-      max_rate_per_endpoint        = lookup(backend.value, "max_rate_per_endpoint")
-      max_utilization              = lookup(backend.value, "max_utilization")
+      balancing_mode               = backend.value["balancing_mode"]
+      capacity_scaler              = backend.value["capacity_scaler"]
+      max_connections              = backend.value["max_connections"]
+      max_connections_per_instance = backend.value["max_connections_per_instance"]
+      max_connections_per_endpoint = backend.value["max_connections_per_endpoint"]
+      max_rate                     = backend.value["max_rate"]
+      max_rate_per_instance        = backend.value["max_rate_per_instance"]
+      max_rate_per_endpoint        = backend.value["max_rate_per_endpoint"]
+      max_utilization              = backend.value["max_utilization"]
     }
   }
 

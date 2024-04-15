@@ -134,7 +134,7 @@ module "gce-lb-https" {
   url_map           = google_compute_url_map.https-multi-cert.self_link
   create_url_map    = false
   ssl               = true
-  ssl_certificates  = google_compute_ssl_certificate.example.*.self_link
+  ssl_certificates  = google_compute_ssl_certificate.example[*].self_link
 
   backends = {
     default = {
