@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [11.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v10.2.0...v11.0.0) (2024-05-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG>=4.84:** make health_check optional in root module for serverless neg ([#414](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/414))
+
+### Features
+
+* **TPG>=4.84:** make health_check optional in root module for serverless neg ([#414](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/414)) ([fe92b95](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/fe92b95024414d019a4f0125c1bea307be60bc24))
+
+
+### Bug Fixes
+
+* updates for tflint ([#403](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/403)) ([29e4503](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/29e4503a62a7df8656353d271756da62236b3529))
+
 ## [10.2.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v10.1.0...v10.2.0) (2024-03-20)
 
 
