@@ -99,6 +99,7 @@ module "gce-lb-http" {
 | firewall\_networks | Names of the networks to create firewall rules in | `list(string)` | <pre>[<br>  "default"<br>]</pre> | no |
 | firewall\_projects | Names of the projects to create firewall rules in | `list(string)` | <pre>[<br>  "default"<br>]</pre> | no |
 | http\_forward | Set to `false` to disable HTTP port 80 forward | `bool` | `true` | no |
+| http\_keep\_alive\_timeout\_sec | Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds). | `number` | `null` | no |
 | http\_port | The port for the HTTP load balancer | `number` | `80` | no |
 | https\_port | The port for the HTTPS load balancer | `number` | `443` | no |
 | https\_redirect | Set to `true` to enable https redirect on the lb. | `bool` | `false` | no |

@@ -337,3 +337,9 @@ variable "https_port" {
     error_message = "You must specify exactly one port between 1 and 65535"
   }
 }
+
+variable "http_keep_alive_timeout_sec" {
+  description = "Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds)."
+  type        = number
+  default     = null
+}
