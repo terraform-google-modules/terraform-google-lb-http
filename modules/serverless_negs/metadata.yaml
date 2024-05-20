@@ -74,8 +74,8 @@ spec:
           })
 
           groups = list(object({
-            group = string
-
+            group       = string
+            description = string
           }))
           iap_config = object({
             enable               = bool
