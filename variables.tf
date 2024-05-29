@@ -122,11 +122,11 @@ variable "backends" {
     })
 
     groups = list(object({
-      group = string
+      group       = string
+      description = optional(string)
 
       balancing_mode               = optional(string)
       capacity_scaler              = optional(number)
-      description                  = optional(string)
       max_connections              = optional(number)
       max_connections_per_instance = optional(number)
       max_connections_per_endpoint = optional(number)

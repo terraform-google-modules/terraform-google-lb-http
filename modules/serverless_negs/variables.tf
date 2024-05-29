@@ -81,7 +81,8 @@ variable "backends" {
     })
 
     groups = list(object({
-      group = string
+      group       = string
+      description = optional(string)
 
     }))
     iap_config = object({
