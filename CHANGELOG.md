@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [11.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v11.0.0...v11.1.0) (2024-05-29)
+
+
+### Features
+
+* Add support for setting http_keep_alive_timeout_sec ([#425](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/425)) ([804b7b9](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/804b7b9f9cedf234a2973e13c5ab78c8fec6ee12))
+
+
+### Bug Fixes
+
+* add backend.groups.description variable to serverless_neg ([#427](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/427)) ([3d7943c](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/3d7943ca8f7c5a38b3b7bf57c5de034a9f7eed49))
+
 ## [11.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v10.2.0...v11.0.0) (2024-05-03)
 
 
