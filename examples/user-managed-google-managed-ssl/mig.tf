@@ -24,7 +24,7 @@ data "template_file" "group1-startup-script" {
 
 module "mig1_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "~> 7.9"
+  version    = "~> 11.0"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.group1.self_link
   service_account = {
@@ -43,7 +43,7 @@ module "mig1_template" {
 
 module "mig1" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "7.9.0"
+  version           = "11.1.0"
   instance_template = module.mig1_template.self_link
   region            = var.group1_region
   hostname          = "${var.network_name}-group1"

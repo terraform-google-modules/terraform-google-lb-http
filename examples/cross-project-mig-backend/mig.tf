@@ -91,7 +91,7 @@ resource "google_compute_shared_vpc_service_project" "service" {
 
 module "mig_template" {
   source             = "terraform-google-modules/vm/google//modules/instance_template"
-  version            = "~> 7.9"
+  version            = "~> 11.0"
   project_id         = var.project_id_1
   network            = google_compute_network.default.self_link
   subnetwork         = "${var.network_name}-${var.region}"
@@ -111,7 +111,7 @@ module "mig_template" {
 
 module "mig" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 7.9"
+  version           = "~> 11.0"
   project_id        = var.project_id_1
   instance_template = module.mig_template.self_link
   region            = var.region
