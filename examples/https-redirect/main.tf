@@ -93,7 +93,7 @@ module "mig" {
 # [START cloudloadbalancing_ext_http_gce_http_redirect]
 module "gce-lb-http" {
   source            = "terraform-google-modules/lb-http/google"
-  version           = "~> 10.0"
+  version           = "~> 11.0"
   name              = "ci-https-redirect"
   project           = var.project
   target_tags       = [var.network_name]
