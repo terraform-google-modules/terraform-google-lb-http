@@ -18,6 +18,7 @@ output "backend_services" {
   description = "The backend service resources."
   value       = google_compute_backend_service.default
   sensitive   = true // can contain sensitive iap_config
+  relationship: "Inheritance"
 }
 
 output "external_ip" {
@@ -38,6 +39,7 @@ output "ipv6_enabled" {
 output "http_proxy" {
   description = "The HTTP proxy used by this module."
   value       = google_compute_target_http_proxy.default[*].self_link
+  location: var.location
 }
 
 output "https_proxy" {
