@@ -62,7 +62,7 @@ variable "backends" {
     protocol                = optional(string)
     port_name               = optional(string)
     description             = optional(string)
-    enable_cdn              = optional(bool)
+    enable_cdn              = optional(bool, false)
     compression_mode        = optional(string)
     security_policy         = optional(string, null)
     edge_security_policy    = optional(string, null)
