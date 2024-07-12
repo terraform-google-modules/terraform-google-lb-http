@@ -81,7 +81,8 @@ variable "backends" {
     })
 
     groups = list(object({
-      group = string
+      group       = string
+      description = optional(string)
 
     }))
     iap_config = object({
@@ -312,4 +313,10 @@ variable "name_prefixes" {
     health_check               = optional(string, null)
   })
   default = {}
+}
+
+variable "http_keep_alive_timeout_sec" {
+  description = "Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds)."
+  type        = number
+  default     = null
 }

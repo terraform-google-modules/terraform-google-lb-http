@@ -122,11 +122,11 @@ variable "backends" {
     })
 
     groups = list(object({
-      group = string
+      group       = string
+      description = optional(string)
 
       balancing_mode               = optional(string)
       capacity_scaler              = optional(number)
-      description                  = optional(string)
       max_connections              = optional(number)
       max_connections_per_instance = optional(number)
       max_connections_per_endpoint = optional(number)
@@ -363,4 +363,10 @@ variable "name_prefixes" {
     health_check               = optional(string, null)
   })
   default = {}
+}
+
+variable "http_keep_alive_timeout_sec" {
+  description = "Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds)."
+  type        = number
+  default     = null
 }

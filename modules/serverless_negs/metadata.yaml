@@ -23,7 +23,7 @@ spec:
   source:
     repo: https://github.com/terraform-google-modules/terraform-google-lb-http
     sourceType: git
-  version: 10.2.0
+  version: 11.1.0
   actuationTool:
     type: Terraform
     version: '>= 0.13'
@@ -74,8 +74,8 @@ spec:
           })
 
           groups = list(object({
-            group = string
-
+            group       = string
+            description = string
           }))
           iap_config = object({
             enable               = bool

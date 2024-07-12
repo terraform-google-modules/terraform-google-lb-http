@@ -34,11 +34,12 @@ module "load_balancer" {
   source  = "terraform-google-modules/lb-http/google//modules/dynamic_backends"
   version = "~> 10.0"
 
-  name                = "dynamic-backend-lb"
-  project             = var.project
-  enable_ipv6         = true
-  create_ipv6_address = true
-  http_forward        = false
+  name                        = "dynamic-backend-lb"
+  project                     = var.project
+  enable_ipv6                 = true
+  create_ipv6_address         = true
+  http_forward                = false
+  http_keep_alive_timeout_sec = 610
 
   load_balancing_scheme = "EXTERNAL_MANAGED"
 
