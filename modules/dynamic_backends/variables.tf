@@ -86,7 +86,7 @@ variable "backends" {
     protocol                = optional(string)
     port_name               = optional(string)
     description             = optional(string)
-    enable_cdn              = optional(bool)
+    enable_cdn              = optional(bool, false)
     compression_mode        = optional(string)
     security_policy         = optional(string, null)
     edge_security_policy    = optional(string, null)
@@ -116,11 +116,6 @@ variable "backends" {
       logging             = optional(bool)
     }))
 
-    log_config = object({
-      enable      = optional(bool)
-      sample_rate = optional(number)
-    })
-
     groups = list(object({
       group       = string
       description = optional(string)
@@ -135,11 +130,16 @@ variable "backends" {
       max_rate_per_endpoint        = optional(number)
       max_utilization              = optional(number)
     }))
-    iap_config = object({
+
+    log_config = optional(object({
+      enable      = optional(bool)
+      sample_rate = optional(number)
+    }))
+    iap_config = optional(object({
       enable               = bool
       oauth2_client_id     = optional(string)
       oauth2_client_secret = optional(string)
-    })
+    }))
     cdn_policy = optional(object({
       cache_mode                   = optional(string)
       signed_url_cache_max_age_sec = optional(string)

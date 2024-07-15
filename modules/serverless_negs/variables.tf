@@ -74,9 +74,11 @@ variable "backends" {
     affinity_cookie_ttl_sec         = optional(number)
     locality_lb_policy              = optional(string)
 
+
     groups = list(object({
       group       = string
       description = optional(string)
+
     }))
 
     log_config = optional(object({
