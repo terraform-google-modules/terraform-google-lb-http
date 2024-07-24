@@ -218,13 +218,6 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
-  dynamic "backend" {
-    for_each = toset(each.value["serverless_neg_backends"])
-    content {
-      group = google_compute_region_network_endpoint_group.serverless_negs["neg-${each.key}-${backend.value["region"]}"]
-    }
-  }
-
   dynamic "log_config" {
     for_each = lookup(lookup(each.value, "log_config", {}), "enable", true) ? [1] : []
     content {
@@ -314,44 +307,5 @@ resource "google_compute_backend_service" "default" {
   }
 
 
-}
-
-resource "google_compute_region_network_endpoint_group" "serverless_negs" {
-  for_each = merge([
-    for backend_index, backend in var.backends : {
-      for serverless_neg_backend in backend.serverless_neg_backends :
-      "${backend_index}-${serverless_neg_backend.region}" => serverless_neg_backend
-    }
-  ]...)
-
-  name                  = "neg-${each.key}"
-  network_endpoint_type = "SERVERLESS"
-  region                = each.value.region
-
-  dynamic "cloud_run" {
-    for_each = each.value.type == "cloud-run" ? [1] : []
-    content {
-      service = each.value.service.name
-    }
-  }
-
-  dynamic "cloud_function" {
-    for_each = each.value.type == "cloud-function" ? [1] : []
-    content {
-      function = each.value.service.name
-    }
-  }
-
-  dynamic "app_engine" {
-    for_each = each.value.type == "app-engine" ? [1] : []
-    content {
-      service = each.value.service.name
-      version = each.value.service.version
-    }
-  }
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 

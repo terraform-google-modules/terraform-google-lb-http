@@ -85,15 +85,6 @@ variable "backends" {
       description = optional(string)
 
     }))
-
-    // serverless_neg_backends is mutually exclusive to groups.There can only be one serverless neg per region
-    // with one of cloud-run, cloud-functions and app-engine as service.
-    serverless_neg_backends = list(object({
-      region  = string,
-      type    = string, // cloud-run, cloud-function and app-engine
-      service = object({ name : string, version : optional(string) })
-    }))
-
     iap_config = object({
       enable               = bool
       oauth2_client_id     = optional(string)
