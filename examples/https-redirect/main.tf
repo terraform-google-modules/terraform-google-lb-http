@@ -60,7 +60,7 @@ data "template_file" "group-startup-script" {
 
 module "mig_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "~> 7.9"
+  version    = "~> 11.0"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.default.self_link
   service_account = {
@@ -77,7 +77,7 @@ module "mig_template" {
 
 module "mig" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 7.9"
+  version           = "~> 11.0"
   instance_template = module.mig_template.self_link
   region            = var.region
   hostname          = var.network_name
