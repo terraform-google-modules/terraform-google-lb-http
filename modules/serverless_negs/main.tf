@@ -312,6 +312,8 @@ resource "google_compute_backend_service" "default" {
       }
     }
   }
+
+
 }
 
 resource "google_compute_region_network_endpoint_group" "serverless_negs" {
