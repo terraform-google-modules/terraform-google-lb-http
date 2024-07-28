@@ -248,6 +248,15 @@ resource "google_compute_backend_service" "default" {
   }
 
   {% endif %}
+  {% if serverless %}
+  dynamic "backend" {
+    for_each = toset(each.value["serverless_neg_backends"])
+    content {
+      group = google_compute_region_network_endpoint_group.serverless_negs["neg-${each.key}-${backend.value["region"]}"]
+    }
+  }
+
+  {% endif %}
   dynamic "log_config" {
     for_each = lookup(lookup(each.value, "log_config", {}), "enable", true) ? [1] : []
     content {
@@ -351,14 +360,9 @@ resource "google_compute_backend_service" "default" {
 {% if serverless %}
 
 resource "google_compute_region_network_endpoint_group" "serverless_negs" {
-  for_each = merge([
-    for backend_index, backend in var.backends : {
-      for serverless_neg_backend in backend.serverless_neg_backends : 
-        "${backend_index}-${serverless_neg_backend.region}" => serverless_neg_backend 
-    }
-  ]...)
+  for_each = { for backend_index, backend in var.backends : backend_index => backend.serverless_neg_backends }
 
-  name                  = "neg-${each.key}"
+  name                  = "neg-${each.key}-${each.value.region}"
   network_endpoint_type = "SERVERLESS"
   region                = each.value.region
 
