@@ -92,6 +92,7 @@ variable "backends" {
     edge_security_policy    = optional(string)
     custom_request_headers  = optional(list(string))
     custom_response_headers = optional(list(string))
+    locality_lb_policy      = optional(string)
 
     timeout_sec                     = optional(number)
     connection_draining_timeout_sec = optional(number)
