@@ -37,9 +37,13 @@ module "lb-http" {
 
   backends = {
     default = {
-      description             = null
-      groups                  = []
-      serverless_neg_backends = [{ region : var.region, type : "cloud-run", service : { name : google_cloud_run_service.default.name } }]
+      description = null
+      groups = [
+        {
+          group = google_compute_region_network_endpoint_group.serverless_neg.id
+        }
+      ]
+      serverless_neg_backends = []
       enable_cdn              = false
 
       iap_config = {
