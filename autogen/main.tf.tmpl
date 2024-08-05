@@ -351,14 +351,12 @@ resource "google_compute_backend_service" "default" {
 {% if serverless %}
 
 resource "google_compute_region_network_endpoint_group" "serverless_negs" {
-  for_each = flatten([
-    for backend_index, backend in var.backends : [
-      for serverless_neg_backend in backend.serverless_neg_backends : {
-        key   = "${backend_index}-${serverless_neg_backend.region}"
-        value = serverless_neg_backend
-      }
-    ]
-  ])
+  for_each = merge([
+    for backend_index, backend in var.backends : {
+      for serverless_neg_backend in backend.serverless_neg_backends : 
+        "${backend_index}-${serverless_neg_backend.region}" => serverless_neg_backend 
+    }
+  ]...)
 
   name                  = "neg-${each.key}"
   network_endpoint_type = "SERVERLESS"
