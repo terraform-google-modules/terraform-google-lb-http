@@ -43,7 +43,7 @@ module "mig1_template" {
 
 module "mig1" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "7.9.0"
+  version           = "~> 11.1"
   instance_template = module.mig1_template.self_link
   region            = var.group1_region
   hostname          = "${var.network_name}-group1"

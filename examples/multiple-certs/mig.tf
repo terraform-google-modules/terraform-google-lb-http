@@ -59,7 +59,7 @@ module "mig1_template" {
 
 module "mig1" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "7.9.0"
+  version           = "~> 11.1"
   instance_template = module.mig1_template.self_link
   region            = var.group1_region
   hostname          = "${var.network_name}-group1"
@@ -91,7 +91,7 @@ module "mig2_template" {
 
 module "mig2" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 7.9"
+  version           = "~> 11.1"
   instance_template = module.mig2_template.self_link
   region            = var.group2_region
   hostname          = "${var.network_name}-group2"
@@ -124,7 +124,7 @@ module "mig3_template" {
 
 module "mig3" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 7.9"
+  version           = "~> 11.1"
   instance_template = module.mig3_template.self_link
   region            = var.group3_region
   hostname          = "${var.network_name}-group3"
