@@ -51,7 +51,7 @@ module "cloud-nat" {
 
 module "mig_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "~> 8.0"
+  version    = "~> 11.1"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.default.self_link
   project_id = var.project_id
