@@ -85,7 +85,6 @@ variable "backends" {
       description = optional(string)
 
     }))
-
     iap_config = object({
       enable               = bool
       oauth2_client_id     = optional(string)

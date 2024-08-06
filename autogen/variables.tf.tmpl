@@ -148,7 +148,6 @@ variable "backends" {
       max_utilization              = optional(number)
       {% endif %}
     }))
-
     iap_config = object({
       enable               = bool
       oauth2_client_id     = optional(string)
