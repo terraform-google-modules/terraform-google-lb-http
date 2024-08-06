@@ -43,8 +43,7 @@ module "lb-http" {
           group = google_compute_region_network_endpoint_group.serverless_neg.id
         }
       ]
-      serverless_neg_backends = []
-      enable_cdn              = false
+      enable_cdn = false
 
       iap_config = {
         enable = false

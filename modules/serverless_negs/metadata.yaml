@@ -38,8 +38,6 @@ spec:
         location: examples/certificate-map
       - name: cloudrun
         location: examples/cloudrun
-      - name: cloudrun-implicit-serverless-neg
-        location: examples/cloudrun-implicit-serverless-neg
       - name: cross-project-mig-backend
         location: examples/cross-project-mig-backend
       - name: dynamic-backend
@@ -99,14 +97,6 @@ spec:
                 group       = string
                 description = optional(string)
 
-              }))
-
-              // serverless_neg_backends is mutually exclusive to groups.There can only be one serverless neg per region
-              // with one of cloud-run, cloud-functions and app-engine as service.
-              serverless_neg_backends = list(object({
-                region  = string,
-                type    = string, // cloud-run, cloud-function and app-engine
-                service = object({ name : string, version : optional(string) })
               }))
 
               iap_config = object({
