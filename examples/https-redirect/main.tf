@@ -86,8 +86,6 @@ module "mig" {
     name = "http",
     port = 80
   }]
-  network    = google_compute_network.default.self_link
-  subnetwork = google_compute_subnetwork.default.self_link
 }
 
 # [START cloudloadbalancing_ext_http_gce_http_redirect]

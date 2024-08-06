@@ -68,8 +68,6 @@ module "mig1" {
     name = "http",
     port = 80
   }]
-  network    = google_compute_network.default.self_link
-  subnetwork = google_compute_subnetwork.group1.self_link
 }
 
 module "mig2_template" {
@@ -102,8 +100,6 @@ module "mig2" {
     name = "http",
     port = 80
   }]
-  network    = google_compute_network.default.self_link
-  subnetwork = google_compute_subnetwork.group2.self_link
 }
 
 
@@ -137,6 +133,4 @@ module "mig3" {
     name = "http",
     port = 80
   }]
-  network    = google_compute_network.default.self_link
-  subnetwork = google_compute_subnetwork.group3.self_link
 }

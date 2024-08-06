@@ -52,6 +52,4 @@ module "mig1" {
     name = "http",
     port = 80
   }]
-  network    = google_compute_network.default.self_link
-  subnetwork = google_compute_subnetwork.group1.self_link
 }

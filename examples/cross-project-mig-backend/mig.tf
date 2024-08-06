@@ -121,8 +121,6 @@ module "mig" {
     name = "http",
     port = 80
   }]
-  network    = google_compute_network.default.self_link
-  subnetwork = google_compute_subnetwork.default.self_link
   depends_on = [
     google_compute_subnetwork.default,
     google_compute_shared_vpc_service_project.service
