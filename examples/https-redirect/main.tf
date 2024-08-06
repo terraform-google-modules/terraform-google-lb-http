@@ -67,8 +67,10 @@ module "mig_template" {
     email  = ""
     scopes = ["cloud-platform"]
   }
-  name_prefix    = var.network_name
-  startup_script = data.template_file.group-startup-script.rendered
+  name_prefix          = var.network_name
+  source_image_family  = "ubuntu-2004-lts"
+  source_image_project = "ubuntu-os-cloud"
+  startup_script       = data.template_file.group-startup-script.rendered
   tags = [
     var.network_name,
     module.cloud-nat.router_name

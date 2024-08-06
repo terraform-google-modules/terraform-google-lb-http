@@ -79,8 +79,10 @@ module "mig2_template" {
     email  = ""
     scopes = ["cloud-platform"]
   }
-  name_prefix    = "${var.network_name}-group2"
-  startup_script = data.template_file.group2-startup-script.rendered
+  name_prefix          = "${var.network_name}-group2"
+  startup_script       = data.template_file.group2-startup-script.rendered
+  source_image_family  = "ubuntu-2004-lts"
+  source_image_project = "ubuntu-os-cloud"
   tags = [
     "${var.network_name}-group2",
     module.cloud-nat-group2.router_name
@@ -110,8 +112,10 @@ module "mig3_template" {
     email  = ""
     scopes = ["cloud-platform"]
   }
-  name_prefix    = "${var.network_name}-group3"
-  startup_script = data.template_file.group3-startup-script.rendered
+  name_prefix          = "${var.network_name}-group3"
+  startup_script       = data.template_file.group3-startup-script.rendered
+  source_image_family  = "ubuntu-2004-lts"
+  source_image_project = "ubuntu-os-cloud"
   tags = [
     "${var.network_name}-group3",
     module.cloud-nat-group2.router_name
