@@ -1,5 +1,4 @@
 # Copyright 2024 Google LLC
-# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +15,7 @@
 apiVersion: blueprints.cloud.google.com/v1alpha1
 kind: BlueprintMetadata
 metadata:
-  name: terraform-google-lb-http
+  name: terraform-google-lb-http-serverless-negs
   annotations:
     config.kubernetes.io/local-config: "true"
 spec:
@@ -91,10 +90,6 @@ spec:
               locality_lb_policy              = optional(string)
 
 
-              log_config = object({
-                enable      = optional(bool)
-                sample_rate = optional(number)
-              })
               log_config = object({
                 enable      = optional(bool)
                 sample_rate = optional(number)
@@ -289,11 +284,11 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/compute.xpnAdmin
-      - level: Project
-        roles:
           - roles/owner
           - roles/storage.admin
+      - level: Project
+        roles:
+          - roles/compute.xpnAdmin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
