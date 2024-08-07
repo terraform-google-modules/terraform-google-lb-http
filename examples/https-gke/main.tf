@@ -26,7 +26,7 @@ data "google_client_config" "current" {}
 
 module "gce-lb-https" {
   source  = "terraform-google-modules/lb-http/google"
-  version = "~> 10.0"
+  version = "~> 11.0"
 
   project           = var.project
   name              = var.name
