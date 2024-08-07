@@ -70,7 +70,7 @@ module "cloud-nat-group2" {
 # [START cloudloadbalancing_ext_http_gce]
 module "gce-lb-http" {
   source  = "terraform-google-modules/lb-http/google"
-  version = "~> 10.0"
+  version = "~> 11.0"
   name    = var.network_prefix
   project = var.project
   target_tags = [
