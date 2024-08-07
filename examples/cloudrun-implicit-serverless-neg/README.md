@@ -97,7 +97,7 @@ redirect HTTP traffic to HTTPS.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | domain | Domain name to run the load balancer on. Used if `ssl` is `true`. | `string` | n/a | yes |
-| lb\_name | Name for load balancer and associated resources | `string` | `"tf-cr-lb"` | no |
+| lb\_name | Name for load balancer and associated resources | `string` | `"tf-cr-lb-1"` | no |
 | project\_id | n/a | `string` | n/a | yes |
 | region | Location for load balancer and Cloud Run resources | `string` | `"us-central1"` | no |
 | ssl | Run load balancer on HTTPS and provision managed certificate with provided `domain`. | `bool` | `true` | no |
