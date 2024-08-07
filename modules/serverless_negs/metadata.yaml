@@ -1,4 +1,5 @@
 # Copyright 2024 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,8 +39,6 @@ spec:
         location: examples/certificate-map
       - name: cloudrun
         location: examples/cloudrun
-      - name: cloudrun-implicit-serverless-neg
-        location: examples/cloudrun-implicit-serverless-neg
       - name: cross-project-mig-backend
         location: examples/cross-project-mig-backend
       - name: dynamic-backend
@@ -94,21 +93,16 @@ spec:
                 enable      = optional(bool)
                 sample_rate = optional(number)
               })
+              log_config = object({
+                enable      = optional(bool)
+                sample_rate = optional(number)
+              })
 
               groups = list(object({
                 group       = string
                 description = optional(string)
 
               }))
-
-              // serverless_neg_backends is mutually exclusive to groups.There can only be one serverless neg per region
-              // with one of cloud-run, cloud-functions and app-engine as service.
-              serverless_neg_backends = list(object({
-                region  = string,
-                type    = string, // cloud-run, cloud-function and app-engine
-                service = object({ name : string, version : optional(string) })
-              }))
-
               iap_config = object({
                 enable               = bool
                 oauth2_client_id     = optional(string)
