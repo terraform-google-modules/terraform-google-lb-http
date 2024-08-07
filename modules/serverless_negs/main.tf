@@ -218,6 +218,13 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
+  dynamic "backend" {
+    for_each = toset(each.value["serverless_neg_backends"])
+    content {
+      group = google_compute_region_network_endpoint_group.serverless_negs["neg-${each.key}-${backend.value["region"]}"]
+    }
+  }
+
   dynamic "log_config" {
     for_each = lookup(lookup(each.value, "log_config", {}), "enable", true) ? [1] : []
     content {
