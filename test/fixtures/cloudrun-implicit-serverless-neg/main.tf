@@ -15,7 +15,7 @@
  */
 
 module "example" {
-  source     = "../../../examples/cloudrun"
+  source     = "../../../examples/cloudrun-implicit-serverless-neg"
   project_id = var.project_id
   ssl        = false
   domain     = null

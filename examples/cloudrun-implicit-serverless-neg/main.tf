@@ -53,7 +53,7 @@ module "lb-http" {
 }
 
 resource "google_cloud_run_service" "default" {
-  name     = "example"
+  name     = "example-1"
   location = var.region
   project  = var.project_id
 

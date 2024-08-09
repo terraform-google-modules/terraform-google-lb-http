@@ -36,5 +36,5 @@ variable "domain" {
 
 variable "lb_name" {
   description = "Name for load balancer and associated resources"
-  default     = "tf-cr-lb"
+  default     = "tf-cr-lb-1"
 }

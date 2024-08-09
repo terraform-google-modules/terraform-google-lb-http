@@ -324,11 +324,11 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/owner
-          - roles/storage.admin
+          - roles/compute.xpnAdmin
       - level: Project
         roles:
-          - roles/compute.xpnAdmin
+          - roles/owner
+          - roles/storage.admin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
