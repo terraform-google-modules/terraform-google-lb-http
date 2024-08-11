@@ -23,7 +23,7 @@ import (
 	test "github.com/terraform-google-modules/terraform-google-lb-http/test/integration"
 )
 
-func TestRedis(t *testing.T) {
+func TestCloudrunImplicit(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
