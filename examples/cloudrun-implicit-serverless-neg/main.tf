@@ -21,7 +21,7 @@ module "lb-http" {
   name    = "tf-cr-lb-1"
   project = var.project_id
 
-  ssl            = true
+  ssl            = false
   https_redirect = false
   labels         = { "example-label" = "cloud-run-example" }
 
