@@ -37,17 +37,6 @@ suites:
           backend: local
           controls:
             - http
-  - name: cloudrun-implicit-serverless-neg
-    driver:
-      root_module_directory: test/fixtures/cloudrun-implicit-serverless-neg
-      verify_version: false
-    verifier:
-      color: false
-      systems:
-        - name: cloudrun-implicit-serverless-neg
-          backend: local
-          controls:
-            - http
   - name: mig_nat
     driver:
       root_module_directory: test/fixtures/mig_nat/

@@ -324,6 +324,8 @@ resource "google_compute_region_network_endpoint_group" "serverless_negs" {
     }
   ]...)
 
+  provider              = google-beta
+  project               = var.project
   name                  = each.key
   network_endpoint_type = "SERVERLESS"
   region                = each.value.region
