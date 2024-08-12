@@ -24,7 +24,7 @@ import (
 func AssertResponseStatus(assert *assert.Assertions, url string, statusCode int) {
 	var resStatusCode int
 	resStatusCode, _, _ = httpGetRequest(url)
-	assert.Equal(resStatusCode, statusCode)
+	assert.Equal(statusCode, resStatusCode)
 }
 
 func httpGetRequest(url string) (statusCode int, body string, err error) {

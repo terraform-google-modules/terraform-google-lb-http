@@ -39,7 +39,7 @@ steps:
   waitFor:
     - apply cloudrun-implicit
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestCloudrunImplicit --stage verify --verbose']
+  args: ['/bin/bash', '-c', 'sleep 720 && cft test run TestCloudrunImplicit --stage verify --verbose']
 - id: teardown cloudrun-implicit
   waitFor:
     - verify cloudrun-implicit
