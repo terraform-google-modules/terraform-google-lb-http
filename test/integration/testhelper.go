@@ -17,23 +17,28 @@ package test
 import (
 	"io"
 	"net/http"
+	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func AssertResponseStatus(assert *assert.Assertions, url string, statusCode int) {
+func AssertResponseStatus(t *testing.T, assert *assert.Assertions, url string, statusCode int) {
 	var resStatusCode int
-	resStatusCode, _, _ = httpGetRequest(url)
+	resStatusCode, _, _ = httpGetRequest(t, url)
 	assert.Equal(statusCode, resStatusCode)
 }
 
-func httpGetRequest(url string) (statusCode int, body string, err error) {
+func httpGetRequest(t *testing.T, url string) (statusCode int, body string, err error) {
+	t.Helper()
 	res, err := http.Get(url)
 	if err != nil {
-		return 0, "", err
+		t.Fatalf("http get unexpected err: %v", err)
 	}
 	defer res.Body.Close()
 
 	buffer, err := io.ReadAll(res.Body)
+	if err != nil {
+		t.Fatalf("reading response body unexpected err: %v", err)
+	}
 	return res.StatusCode, string(buffer), err
 }

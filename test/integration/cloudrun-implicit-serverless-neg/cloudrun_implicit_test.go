@@ -31,7 +31,7 @@ func TestCloudrunImplicit(t *testing.T) {
 
 		loadBalancerIp := bpt.GetStringOutput("load-balancer-ip")
 
-		test.AssertResponseStatus(assert, "http://"+loadBalancerIp, 200)
+		test.AssertResponseStatus(t, assert, "http://"+loadBalancerIp, 200)
 	})
 
 	bpt.Test()
