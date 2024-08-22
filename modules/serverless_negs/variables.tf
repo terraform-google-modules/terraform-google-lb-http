@@ -57,6 +57,16 @@ variable "ipv6_address" {
 
 variable "backends" {
   description = "Map backend indices to list of backend maps."
+  validation {
+    condition = alltrue([
+      for backend_key, backend_value in var.backends :
+      alltrue([
+        for neg_backend in backend_value.serverless_neg_backends :
+        contains(["cloud-run", "cloud-function", "app-engine"], neg_backend.type)
+      ])
+    ])
+    error_message = "serverless_neg_backend type should be either 'cloud-run' or 'cloud-function' or 'app-engine'."
+  }
   type = map(object({
     project                 = optional(string)
     protocol                = optional(string)
@@ -85,6 +95,15 @@ variable "backends" {
       description = optional(string)
 
     }))
+
+    // serverless_neg_backends is mutually exclusive to groups.There can only be one serverless neg per region
+    // with one of cloud-run, cloud-functions and app-engine as service.
+    serverless_neg_backends = optional(list(object({
+      region  = string,
+      type    = string, // cloud-run, cloud-function and app-engine
+      service = object({ name : string, version : optional(string) })
+    })), [])
+
     iap_config = object({
       enable               = bool
       oauth2_client_id     = optional(string)

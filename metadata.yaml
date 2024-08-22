@@ -42,6 +42,8 @@ spec:
         location: examples/certificate-map
       - name: cloudrun
         location: examples/cloudrun
+      - name: cloudrun-implicit-serverless-neg
+        location: examples/cloudrun-implicit-serverless-neg
       - name: cross-project-mig-backend
         location: examples/cross-project-mig-backend
       - name: dynamic-backend
@@ -322,11 +324,11 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/owner
-          - roles/storage.admin
+          - roles/compute.xpnAdmin
       - level: Project
         roles:
-          - roles/compute.xpnAdmin
+          - roles/owner
+          - roles/storage.admin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com

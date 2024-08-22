@@ -83,6 +83,18 @@ variable "target_service_accounts" {
 
 variable "backends" {
   description = "Map backend indices to list of backend maps."
+  {% if serverless %}
+  validation {
+    condition = alltrue([
+      for backend_key, backend_value in var.backends : 
+        alltrue([
+        for neg_backend in backend_value.serverless_neg_backends : 
+          contains(["cloud-run", "cloud-function", "app-engine"], neg_backend.type)
+      ])
+    ])
+    error_message = "serverless_neg_backend type should be either 'cloud-run' or 'cloud-function' or 'app-engine'."
+  }
+  {% endif %}
   type = map(object({
     {% if not serverless %}{# not necessary for serverless as default port_name=http, protocol=HTTP #}
     port                    = optional(number)
@@ -148,6 +160,17 @@ variable "backends" {
       max_utilization              = optional(number)
       {% endif %}
     }))
+    {% if serverless %}
+
+    // serverless_neg_backends is mutually exclusive to groups.There can only be one serverless neg per region
+    // with one of cloud-run, cloud-functions and app-engine as service.
+    serverless_neg_backends = optional(list(object({
+      region  = string,
+      type    = string, // cloud-run, cloud-function and app-engine
+      service = object({ name : string, version : optional(string) })
+    })), [])
+    
+    {% endif %}
     iap_config = object({
       enable               = bool
       oauth2_client_id     = optional(string)
