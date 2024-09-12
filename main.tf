@@ -231,7 +231,7 @@ resource "google_compute_backend_service" "default" {
   }
 
   dynamic "log_config" {
-    for_each = lookup(lookup(each.value, "log_config", {}), "enable", true) ? [1] : []
+    for_each = [lookup(lookup(each.value, "log_config", {}), "enable", true)]
     content {
       enable      = lookup(lookup(each.value, "log_config", {}), "enable", true)
       sample_rate = lookup(lookup(each.value, "log_config", {}), "sample_rate", "1.0")
@@ -239,12 +239,12 @@ resource "google_compute_backend_service" "default" {
   }
 
   dynamic "iap" {
-    for_each = lookup(lookup(each.value, "iap_config", {}), "enabled", false) ? [1] : []
+    for_each = [lookup(lookup(each.value, "iap_config", {}), "enabled", false)]
     content {
       enabled              = lookup(lookup(each.value, "iap_config", {}), "enabled", false)
       oauth2_client_id     = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_id", null)
       oauth2_client_secret = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_secret", null)
-      oauth2_client_secret_sha256  = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_secret_sha256 ", null)
+      oauth2_client_secret_sha256  = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_secret_sha256", null)
     }
   }
 
