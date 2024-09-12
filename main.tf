@@ -242,8 +242,9 @@ resource "google_compute_backend_service" "default" {
     for_each = lookup(lookup(each.value, "iap_config", {}), "enabled", false) ? [1] : []
     content {
       enabled              = lookup(lookup(each.value, "iap_config", {}), "enabled", false)
-      oauth2_client_id     = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_id", "")
-      oauth2_client_secret = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_secret", "")
+      oauth2_client_id     = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_id", null)
+      oauth2_client_secret = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_secret", null)
+      oauth2_client_secret_sha256  = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_secret_sha256 ", null)
     }
   }
 

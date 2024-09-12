@@ -139,6 +139,7 @@ variable "backends" {
       enabled              = bool
       oauth2_client_id     = optional(string)
       oauth2_client_secret = optional(string)
+      oauth2_client_secret_sha256 = optional(string)
     })
     cdn_policy = optional(object({
       cache_mode                   = optional(string)
