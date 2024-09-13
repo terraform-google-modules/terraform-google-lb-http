@@ -69,7 +69,7 @@ module "mig_template" {
 
 module "mig" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 11.1"
+  version           = "~> 12.0"
   project_id        = var.project_id
   instance_template = module.mig_template.self_link
   region            = local.region
