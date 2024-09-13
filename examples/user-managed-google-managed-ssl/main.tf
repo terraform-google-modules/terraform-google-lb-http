@@ -64,8 +64,9 @@ locals {
 }
 
 module "gce-lb-https" {
-  source  = "terraform-google-modules/lb-http/google"
-  version = "~> 10.0"
+  # source  = "terraform-google-modules/lb-http/google"
+  # version = "~> 10.0"
+  source = "../../"
 
   name                            = var.network_name
   project                         = var.project_id
@@ -99,7 +100,7 @@ module "gce-lb-https" {
       ]
 
       iap_config = {
-        enable = false
+        enable = true
       }
     }
 
@@ -122,7 +123,7 @@ module "gce-lb-https" {
       ]
 
       iap_config = {
-        enable = false
+        enable = true
       }
     }
   }

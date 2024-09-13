@@ -135,11 +135,11 @@ variable "backends" {
       max_rate_per_endpoint        = optional(number)
       max_utilization              = optional(number)
     }))
-    iap_config = object({
+    iap_config = optional(object({
       enable               = bool
       oauth2_client_id     = optional(string)
       oauth2_client_secret = optional(string)
-    })
+    }))
     cdn_policy = optional(object({
       cache_mode                   = optional(string)
       signed_url_cache_max_age_sec = optional(string)
