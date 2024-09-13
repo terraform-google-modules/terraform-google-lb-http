@@ -16,7 +16,7 @@
 
 module "lb-http" {
   source  = "terraform-google-modules/lb-http/google//modules/serverless_negs"
-  version = "~> 10.0"
+  version = "~> 12.0"
 
   name    = "tf-cr-lb-1"
   project = var.project_id
