@@ -212,6 +212,12 @@ resource "google_compute_backend_service" "default" {
   # To achieve a null backend security_policy, set each.value.security_policy to "" (empty string), otherwise, it fallsback to var.security_policy.
   security_policy = each.value["security_policy"] == "" ? null : (each.value["security_policy"] == null ? var.security_policy : each.value.security_policy)
 
+  iap {
+    enabled              = lookup(lookup(each.value, "iap_config", {}), "enable", false)
+    oauth2_client_id     = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_id", null)
+    oauth2_client_secret = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_secret", null)
+  }
+
   dynamic "backend" {
     for_each = toset(each.value["groups"])
     content {
@@ -235,14 +241,6 @@ resource "google_compute_backend_service" "default" {
     content {
       enable      = lookup(lookup(each.value, "log_config", {}), "enable", true)
       sample_rate = lookup(lookup(each.value, "log_config", {}), "sample_rate", "1.0")
-    }
-  }
-
-  dynamic "iap" {
-    for_each = lookup(lookup(each.value, "iap_config", {}), "enable", false) ? [1] : []
-    content {
-      oauth2_client_id     = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_id", "")
-      oauth2_client_secret = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_secret", "")
     }
   }
 
