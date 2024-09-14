@@ -174,20 +174,31 @@ resource "google_compute_url_map" "https_redirect" {
   project = var.project
   count   = var.https_redirect ? 1 : 0
   name    = "${var.name}-https-redirect"
-  route_rules {
-    priority = 1
 
-    match_rules {
-      prefix_match = "/"
-    }
+  # host_rule {
+  #   hosts        = ["*"]
+  #   path_matcher = "default"
+  # }
 
-    url_redirect {
-      https_redirect = true
-      strip_query = false
-      redirect_response_code = "FOUND"
-    }
-  }
-  
+  # path_matcher {
+  #   name = "default"
+  #   default_service = google_compute_backend_service.default[keys(var.backends)[0]].self_link
+
+  #   route_rules {
+  #     priority = 1
+
+  #     match_rules {
+  #       prefix_match = "/"
+  #     }
+
+  #     url_redirect {
+  #       https_redirect = true
+  #       strip_query = false
+  #       redirect_response_code = "FOUND"
+  #     }
+  #   }
+  # }
+
   default_url_redirect {
     https_redirect         = true
     redirect_response_code = "FOUND"
