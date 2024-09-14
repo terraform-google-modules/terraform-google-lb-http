@@ -174,9 +174,23 @@ resource "google_compute_url_map" "https_redirect" {
   project = var.project
   count   = var.https_redirect ? 1 : 0
   name    = "${var.name}-https-redirect"
+  route_rules {
+    priority = 1
+
+    match_rules {
+      prefix_match = "/"
+    }
+
+    url_redirect {
+      https_redirect = true
+      strip_query = false
+      redirect_response_code = "FOUND"
+    }
+  }
+  
   default_url_redirect {
     https_redirect         = true
-    redirect_response_code = "MOVED_PERMANENTLY_DEFAULT"
+    redirect_response_code = "FOUND"
     strip_query            = false
   }
 }
