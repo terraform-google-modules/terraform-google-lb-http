@@ -99,7 +99,7 @@ module "gce-lb-https" {
       ]
 
       iap_config = {
-        enable = false
+        enable = true
       }
     }
 
@@ -122,7 +122,7 @@ module "gce-lb-https" {
       ]
 
       iap_config = {
-        enable = false
+        enable = true
       }
     }
   }
