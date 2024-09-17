@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v11.1.0...v12.0.0) (2024-09-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG >=6.0:** added iap.enabled for v6 upgrade ([#453](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/453))
+
+### Features
+
+* Add creating serverless negs inside module/serverless-negs itself ([#438](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/438)) ([ec0b73b](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/ec0b73b05238d70e310bb35b28fce3dddea962f3))
+* **TPG >=6.0:** added iap.enabled for v6 upgrade ([#453](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/453)) ([c8db02c](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/c8db02c9a1f349744a12b3e51243c418ae069e01))
+
 ## [11.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v11.0.0...v11.1.0) (2024-05-29)
 
 
