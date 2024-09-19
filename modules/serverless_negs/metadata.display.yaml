@@ -1,0 +1,123 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-lb-http-serverless-negs-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: Global HTTP Load Balancer Terraform Module for Serverless NEGs
+    source:
+      repo: https://github.com/terraform-google-modules/terraform-google-lb-http.git
+      sourceType: git
+      dir: /modules/serverless_negs
+  ui:
+    input:
+      variables:
+        address:
+          name: address
+          title: Address
+        backends:
+          name: backends
+          title: Backends
+        certificate:
+          name: certificate
+          title: Certificate
+        certificate_map:
+          name: certificate_map
+          title: Certificate Map
+        create_address:
+          name: create_address
+          title: Create Address
+        create_ipv6_address:
+          name: create_ipv6_address
+          title: Create Ipv6 Address
+        create_ssl_certificate:
+          name: create_ssl_certificate
+          title: Create Ssl Certificate
+        create_url_map:
+          name: create_url_map
+          title: Create Url Map
+        edge_security_policy:
+          name: edge_security_policy
+          title: Edge Security Policy
+        enable_ipv6:
+          name: enable_ipv6
+          title: Enable Ipv6
+        http_forward:
+          name: http_forward
+          title: Http Forward
+        http_keep_alive_timeout_sec:
+          name: http_keep_alive_timeout_sec
+          title: Http Keep Alive Timeout Sec
+        http_port:
+          name: http_port
+          title: Http Port
+        https_port:
+          name: https_port
+          title: Https Port
+        https_redirect:
+          name: https_redirect
+          title: Https Redirect
+        ipv6_address:
+          name: ipv6_address
+          title: Ipv6 Address
+        labels:
+          name: labels
+          title: Labels
+        load_balancing_scheme:
+          name: load_balancing_scheme
+          title: Load Balancing Scheme
+        managed_ssl_certificate_domains:
+          name: managed_ssl_certificate_domains
+          title: Managed Ssl Certificate Domains
+        name:
+          name: name
+          title: Name
+        network:
+          name: network
+          title: Network
+        private_key:
+          name: private_key
+          title: Private Key
+        project:
+          name: project
+          title: Project
+        quic:
+          name: quic
+          title: Quic
+        random_certificate_suffix:
+          name: random_certificate_suffix
+          title: Random Certificate Suffix
+        security_policy:
+          name: security_policy
+          title: Security Policy
+        server_tls_policy:
+          name: server_tls_policy
+          title: Server Tls Policy
+        ssl:
+          name: ssl
+          title: Ssl
+        ssl_certificates:
+          name: ssl_certificates
+          title: Ssl Certificates
+        ssl_policy:
+          name: ssl_policy
+          title: Ssl Policy
+        url_map:
+          name: url_map
+          title: Url Map
