@@ -182,6 +182,8 @@ variable "backends" {
       success_rate_request_volume = optional(number)
       success_rate_stdev_factor   = optional(number)
     }))
+    
+    ignore_backend_changes = optional(bool)
   }))
 }
 

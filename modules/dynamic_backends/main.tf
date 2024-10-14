@@ -323,8 +323,13 @@ resource "google_compute_backend_service" "default" {
     google_compute_health_check.default
   ]
 
-  lifecycle {
-    ignore_changes = [backend]
+  dynamic "ignore_backend" {
+    for_each = each.value.ignore_backend_changes ? [1] : []
+    content {
+      lifecycle {
+        ignore_changes = [backend]
+      }
+    }
   }
 }
 
