@@ -189,6 +189,7 @@ resource "google_compute_backend_service" "default" {
   name    = "${var.name}-backend-${each.key}"
 
   load_balancing_scheme = var.load_balancing_scheme
+  service_lb_policy = var.service_lb_policy
 
   port_name = lookup(each.value, "port_name", "http")
   protocol  = lookup(each.value, "protocol", "HTTP")

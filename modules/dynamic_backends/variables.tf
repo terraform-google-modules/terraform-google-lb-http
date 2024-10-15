@@ -182,7 +182,7 @@ variable "backends" {
       success_rate_request_volume = optional(number)
       success_rate_stdev_factor   = optional(number)
     }))
-    
+
     ignore_backend_changes = optional(bool)
   }))
 }
@@ -293,6 +293,12 @@ variable "load_balancing_scheme" {
   description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_SELF_MANAGED for traffic director)"
   type        = string
   default     = "EXTERNAL"
+}
+
+variable "service_lb_policy" {
+  description = "The resource URL for the service level LB policy to associate with the backend service"
+  type        = string
+  default     = null
 }
 
 variable "network" {
