@@ -36,6 +36,7 @@ resource "google_compute_backend_service" "default" {
   locality_lb_policy              = var.locality_lb_policy
   edge_security_policy            = var.edge_security_policy
   security_policy                 = var.security_policy
+  timeout_sec                     = var.timeout_sec
 
   health_checks = var.health_check != null ? google_compute_health_check.default[*].self_link : null
 
@@ -45,6 +46,15 @@ resource "google_compute_backend_service" "default" {
       description = lookup(backend.value, "description", null)
       group       = backend.value["group"]
 
+      balancing_mode               = backend.value["balancing_mode"]
+      capacity_scaler              = backend.value["capacity_scaler"]
+      max_connections              = backend.value["max_connections"]
+      max_connections_per_instance = backend.value["max_connections_per_instance"]
+      max_connections_per_endpoint = backend.value["max_connections_per_endpoint"]
+      max_rate                     = backend.value["max_rate"]
+      max_rate_per_instance        = backend.value["max_rate_per_instance"]
+      max_rate_per_endpoint        = backend.value["max_rate_per_endpoint"]
+      max_utilization              = backend.value["max_utilization"]
     }
   }
 

@@ -16,14 +16,8 @@
 
 
 variable "name" {
-  description = "Name for the backend service"
+  description = "Name for the backend service."
   type        = string
-}
-
-variable "load_balancing_scheme" {
-  description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_SELF_MANAGED for traffic director)"
-  type        = string
-  default     = "EXTERNAL_MANAGED"
 }
 
 variable "project_id" {
@@ -31,62 +25,86 @@ variable "project_id" {
   type        = string
 }
 
+variable "load_balancing_scheme" {
+  description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_SELF_MANAGED for traffic director)."
+  type        = string
+  default     = "EXTERNAL_MANAGED"
+}
+
 variable "protocol" {
-  type    = string
-  default = "HTTP"
+  description = "The protocol this BackendService uses to communicate with backends."
+  type        = string
+  default     = "HTTP"
 }
 
 variable "port_name" {
-  type    = string
-  default = "http"
+  description = "Name of backend port. The same name should appear in the instance groups referenced by this service. Required when the load balancing scheme is EXTERNAL."
+  type        = string
+  default     = "http"
 }
 
 variable "description" {
-  type    = string
-  default = null
+  description = "Description of the backend service."
+  type        = string
+  default     = null
 }
 
 variable "enable_cdn" {
-  type    = bool
-  default = false
+  description = "Enable Cloud CDN for this BackendService."
+  type        = bool
+  default     = false
 }
 
 variable "compression_mode" {
-  type    = string
-  default = "DISABLED"
+  description = "Compress text responses using Brotli or gzip compression."
+  type        = string
+  default     = "DISABLED"
 }
 
 variable "custom_request_headers" {
-  type    = list(string)
-  default = []
+  description = "Headers that the HTTP/S load balancer should add to proxied requests."
+  type        = list(string)
+  default     = []
 }
 
 variable "custom_response_headers" {
-  type    = list(string)
-  default = []
+  description = "Headers that the HTTP/S load balancer should add to proxied responses."
+  type        = list(string)
+  default     = []
 }
 
 variable "connection_draining_timeout_sec" {
-  type    = number
-  default = null
+  description = "Time for which instance will be drained (not accept new connections, but still work to finish started)."
+  type        = number
+  default     = null
 }
 
 variable "session_affinity" {
-  type    = string
-  default = null
+  description = "Type of session affinity to use. Possible values are: NONE, CLIENT_IP, CLIENT_IP_PORT_PROTO, CLIENT_IP_PROTO, GENERATED_COOKIE, HEADER_FIELD, HTTP_COOKIE, STRONG_COOKIE_AFFINITY."
+  type        = string
+  default     = null
 }
 
 variable "affinity_cookie_ttl_sec" {
-  type    = number
-  default = null
+  description = "Lifetime of cookies in seconds if session_affinity is GENERATED_COOKIE."
+  type        = number
+  default     = null
 }
 
 variable "locality_lb_policy" {
-  type    = string
-  default = null
+  description = "The load balancing algorithm used within the scope of the locality."
+  type        = string
+  default     = null
+}
+
+variable "timeout_sec" {
+  description = "This has different meaning for different type of load balancing. Please refer https://cloud.google.com/load-balancing/docs/backend-service#timeout-setting"
+  type        = number
+  default     = null
 }
 
 variable "log_config" {
+  description = "This field denotes the logging options for the load balancer traffic served by this backend service. If logging is enabled, logs will be exported to Stackdriver."
   type = object({
     enable      = bool
     sample_rate = number
@@ -95,14 +113,26 @@ variable "log_config" {
 }
 
 variable "groups" {
+  description = "The list of backend instance group which serves the traffic."
   type = list(object({
     group       = string
     description = optional(string)
+
+    balancing_mode               = optional(string)
+    capacity_scaler              = optional(number)
+    max_connections              = optional(number)
+    max_connections_per_instance = optional(number)
+    max_connections_per_endpoint = optional(number)
+    max_rate                     = optional(number)
+    max_rate_per_instance        = optional(number)
+    max_rate_per_endpoint        = optional(number)
+    max_utilization              = optional(number)
   }))
   default = []
 }
 
 variable "serverless_neg_backends" {
+  description = "The list of serverless backend which serves the traffic."
   type = list(object({
     region          = string
     type            = string // cloud-run, cloud-function, and app-engine
@@ -113,6 +143,7 @@ variable "serverless_neg_backends" {
 }
 
 variable "iap_config" {
+  description = "Settings for enabling Cloud Identity Aware Proxy Structure."
   type = object({
     enable               = bool
     oauth2_client_id     = optional(string)
@@ -122,6 +153,7 @@ variable "iap_config" {
 }
 
 variable "cdn_policy" {
+  description = "Cloud CDN configuration for this BackendService."
   type = object({
     cache_mode                      = optional(string)
     signed_url_cache_max_age_sec    = optional(string)
@@ -149,6 +181,7 @@ variable "cdn_policy" {
 }
 
 variable "outlier_detection" {
+  description = "Settings controlling eviction of unhealthy hosts from the load balancing pool."
   type = object({
     base_ejection_time = optional(object({
       seconds = number
@@ -172,6 +205,7 @@ variable "outlier_detection" {
 }
 
 variable "health_check" {
+  description = "Input for creating HttpHealthCheck or HttpsHealthCheck resource for health checking this BackendService. A health check must be specified unless the backend service uses an internet or serverless NEG as a backend."
   type = object({
     host                = optional(string, null)
     request_path        = optional(string, null)

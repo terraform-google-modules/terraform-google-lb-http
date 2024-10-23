@@ -50,6 +50,8 @@ spec:
         location: examples/https-gke
       - name: https-redirect
         location: examples/https-redirect
+      - name: lb-http-separate-frontend-and-backend
+        location: examples/lb-http-separate-frontend-and-backend
       - name: mig-nat-http-lb
         location: examples/mig-nat-http-lb
       - name: multi-backend-multi-mig-bucket-https-lb
@@ -66,9 +68,122 @@ spec:
         location: examples/user-managed-google-managed-ssl
   interfaces:
     variables:
-      - name: affinity_cookie_ttl_sec
+      - name: name
+        description: Name for the backend service.
+        varType: string
+        required: true
+      - name: project_id
+        description: The project to deploy to, if not set the default provider project is used.
+        varType: string
+        required: true
+      - name: load_balancing_scheme
+        description: Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_SELF_MANAGED for traffic director).
+        varType: string
+        defaultValue: EXTERNAL_MANAGED
+      - name: protocol
+        description: The protocol this BackendService uses to communicate with backends.
+        varType: string
+        defaultValue: HTTP
+      - name: port_name
+        description: Name of backend port. The same name should appear in the instance groups referenced by this service. Required when the load balancing scheme is EXTERNAL.
+        varType: string
+        defaultValue: http
+      - name: description
+        description: Description of the backend service.
+        varType: string
+      - name: enable_cdn
+        description: Enable Cloud CDN for this BackendService.
+        varType: bool
+        defaultValue: false
+      - name: compression_mode
+        description: Compress text responses using Brotli or gzip compression.
+        varType: string
+        defaultValue: DISABLED
+      - name: custom_request_headers
+        description: Headers that the HTTP/S load balancer should add to proxied requests.
+        varType: list(string)
+        defaultValue: []
+      - name: custom_response_headers
+        description: Headers that the HTTP/S load balancer should add to proxied responses.
+        varType: list(string)
+        defaultValue: []
+      - name: connection_draining_timeout_sec
+        description: Time for which instance will be drained (not accept new connections, but still work to finish started).
         varType: number
+      - name: session_affinity
+        description: "Type of session affinity to use. Possible values are: NONE, CLIENT_IP, CLIENT_IP_PORT_PROTO, CLIENT_IP_PROTO, GENERATED_COOKIE, HEADER_FIELD, HTTP_COOKIE, STRONG_COOKIE_AFFINITY."
+        varType: string
+      - name: affinity_cookie_ttl_sec
+        description: Lifetime of cookies in seconds if session_affinity is GENERATED_COOKIE.
+        varType: number
+      - name: locality_lb_policy
+        description: The load balancing algorithm used within the scope of the locality.
+        varType: string
+      - name: timeout_sec
+        description: This has different meaning for different type of load balancing. Please refer https://cloud.google.com/load-balancing/docs/backend-service#timeout-setting
+        varType: number
+      - name: log_config
+        description: This field denotes the logging options for the load balancer traffic served by this backend service. If logging is enabled, logs will be exported to Stackdriver.
+        varType: |-
+          object({
+              enable      = bool
+              sample_rate = number
+            })
+        defaultValue:
+          enable: true
+          sample_rate: 1
+      - name: groups
+        description: The list of backend instance group which serves the traffic.
+        varType: |-
+          list(object({
+              group       = string
+              description = optional(string)
+
+              balancing_mode               = optional(string)
+              capacity_scaler              = optional(number)
+              max_connections              = optional(number)
+              max_connections_per_instance = optional(number)
+              max_connections_per_endpoint = optional(number)
+              max_rate                     = optional(number)
+              max_rate_per_instance        = optional(number)
+              max_rate_per_endpoint        = optional(number)
+              max_utilization              = optional(number)
+            }))
+        defaultValue: []
+        connections:
+          source:
+            source: github.com/terraform-google-modules/terraform-google-vm//modules/mig
+            version: ~> 12.0
+          spec:
+            outputExpr: '{"group": instance_group}'
+      - name: serverless_neg_backends
+        description: The list of serverless backend which serves the traffic.
+        varType: |-
+          list(object({
+              region          = string
+              type            = string // cloud-run, cloud-function, and app-engine
+              service_name    = string
+              service_version = optional(string)
+            }))
+        defaultValue: []
+        connections:
+          source:
+            source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
+            version: ~> 0.12
+          spec:
+            outputExpr: '{"region": location, "service_name": service_name, "type": "cloud-run"}'
+      - name: iap_config
+        description: Settings for enabling Cloud Identity Aware Proxy Structure.
+        varType: |-
+          object({
+              enable               = bool
+              oauth2_client_id     = optional(string)
+              oauth2_client_secret = optional(string)
+            })
+        defaultValue:
+          enable: false
       - name: cdn_policy
+        description: Cloud CDN configuration for this BackendService.
         varType: |-
           object({
               cache_mode                      = optional(string)
@@ -94,101 +209,8 @@ spec:
               }))
             })
         defaultValue: {}
-      - name: compression_mode
-        varType: string
-        defaultValue: DISABLED
-      - name: connection_draining_timeout_sec
-        varType: number
-      - name: custom_request_headers
-        varType: list(string)
-        defaultValue: []
-      - name: custom_response_headers
-        varType: list(string)
-        defaultValue: []
-      - name: description
-        varType: string
-      - name: edge_security_policy
-        description: The resource URL for the edge security policy to associate with the backend service
-        varType: string
-      - name: enable_cdn
-        varType: bool
-        defaultValue: false
-      - name: firewall_networks
-        description: Names of the networks to create firewall rules in
-        varType: list(string)
-        defaultValue:
-          - default
-      - name: firewall_projects
-        description: Names of the projects to create firewall rules in
-        varType: list(string)
-        defaultValue:
-          - default
-      - name: groups
-        varType: |-
-          list(object({
-              group       = string
-              description = optional(string)
-            }))
-        defaultValue: []
-        connections:
-          source:
-            source: github.com/terraform-google-modules/terraform-google-vm//modules/mig
-            version: ~> 12.0
-          spec:
-            outputExpr: '{"group": instance_group}'
-      - name: health_check
-        varType: |-
-          object({
-              host                = optional(string, null)
-              request_path        = optional(string, null)
-              request             = optional(string, null)
-              response            = optional(string, null)
-              port                = optional(number, null)
-              port_name           = optional(string, null)
-              proxy_header        = optional(string, null)
-              port_specification  = optional(string, null)
-              protocol            = optional(string, null)
-              check_interval_sec  = optional(number, 5)
-              timeout_sec         = optional(number, 5)
-              healthy_threshold   = optional(number, 2)
-              unhealthy_threshold = optional(number, 2)
-              logging             = optional(bool, false)
-            })
-      - name: host_path_mappings
-        description: The list of host/path for which traffic could be sent to the backend service
-        varType: "list(object({ host : string, path : string }))"
-        defaultValue:
-          - host: "*"
-            path: /*
-      - name: iap_config
-        varType: |-
-          object({
-              enable               = bool
-              oauth2_client_id     = optional(string)
-              oauth2_client_secret = optional(string)
-            })
-        defaultValue:
-          enable: false
-      - name: load_balancing_scheme
-        description: Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_SELF_MANAGED for traffic director)
-        varType: string
-        defaultValue: EXTERNAL_MANAGED
-      - name: locality_lb_policy
-        varType: string
-      - name: log_config
-        varType: |-
-          object({
-              enable      = bool
-              sample_rate = number
-            })
-        defaultValue:
-          enable: true
-          sample_rate: 1
-      - name: name
-        description: Name for the backend service
-        varType: string
-        required: true
       - name: outlier_detection
+        description: Settings controlling eviction of unhealthy hosts from the load balancing pool.
         varType: |-
           object({
               base_ejection_time = optional(object({
@@ -209,42 +231,53 @@ spec:
               success_rate_request_volume = optional(number)
               success_rate_stdev_factor   = optional(number)
             })
-      - name: port_name
+      - name: health_check
+        description: Input for creating HttpHealthCheck or HttpsHealthCheck resource for health checking this BackendService. A health check must be specified unless the backend service uses an internet or serverless NEG as a backend.
+        varType: |-
+          object({
+              host                = optional(string, null)
+              request_path        = optional(string, null)
+              request             = optional(string, null)
+              response            = optional(string, null)
+              port                = optional(number, null)
+              port_name           = optional(string, null)
+              proxy_header        = optional(string, null)
+              port_specification  = optional(string, null)
+              protocol            = optional(string, null)
+              check_interval_sec  = optional(number, 5)
+              timeout_sec         = optional(number, 5)
+              healthy_threshold   = optional(number, 2)
+              unhealthy_threshold = optional(number, 2)
+              logging             = optional(bool, false)
+            })
+      - name: edge_security_policy
+        description: The resource URL for the edge security policy to associate with the backend service
         varType: string
-        defaultValue: http
-      - name: project_id
-        description: The project to deploy to, if not set the default provider project is used.
-        varType: string
-        required: true
-      - name: protocol
-        varType: string
-        defaultValue: HTTP
       - name: security_policy
         description: The resource URL for the security policy to associate with the backend service
         varType: string
-      - name: serverless_neg_backends
-        varType: |-
-          list(object({
-              region          = string
-              type            = string // cloud-run, cloud-function, and app-engine
-              service_name    = string
-              service_version = optional(string)
-            }))
-        defaultValue: []
-        connections:
-          source:
-            source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
-            version: ~> 0.12
-          spec:
-            outputExpr: '{"region": location, "service_name": service_name, "type": "cloud-run"}'
-      - name: session_affinity
-        varType: string
-      - name: target_service_accounts
-        description: List of target service accounts for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified.
+      - name: host_path_mappings
+        description: The list of host/path for which traffic could be sent to the backend service
+        varType: "list(object({ host : string, path : string }))"
+        defaultValue:
+          - host: "*"
+            path: /*
+      - name: firewall_networks
+        description: Names of the networks to create firewall rules in
         varType: list(string)
-        defaultValue: []
+        defaultValue:
+          - default
+      - name: firewall_projects
+        description: Names of the projects to create firewall rules in
+        varType: list(string)
+        defaultValue:
+          - default
       - name: target_tags
         description: List of target tags for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified.
+        varType: list(string)
+        defaultValue: []
+      - name: target_service_accounts
+        description: List of target service accounts for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified.
         varType: list(string)
         defaultValue: []
     outputs:
@@ -260,11 +293,11 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/compute.xpnAdmin
-      - level: Project
-        roles:
           - roles/owner
           - roles/storage.admin
+      - level: Project
+        roles:
+          - roles/compute.xpnAdmin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
@@ -273,3 +306,10 @@ spec:
       - run.googleapis.com
       - iam.googleapis.com
       - certificatemanager.googleapis.com
+    providerVersions:
+      - source: hashicorp/google
+        version: ">= 6.0, < 7"
+      - source: hashicorp/google-beta
+        version: ">= 6.0, < 7"
+      - source: hashicorp/random
+        version: ">= 2.1"

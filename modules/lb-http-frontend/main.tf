@@ -30,10 +30,10 @@ locals {
   hosts = toset([for service in var.url_map_input : service.host])
   backend_services_by_host = {
     for host in local.hosts :
-    host => [
+    host => {
       for s in var.url_map_input :
-      s if s.host == host
-    ]
+      s.path => s.backend_service if s.host == host
+    }
   }
 }
 
@@ -183,12 +183,11 @@ resource "google_compute_url_map" "https_redirect" {
 }
 
 resource "google_compute_url_map" "default" {
-  count           = var.create_url_map ? 1 : 0
+  count           = var.create_url_map && length(local.backend_services_by_host) > 0 ? 1 : 0
   provider        = google-beta
   project         = var.project_id
   name            = "${var.name}-url-map"
-  default_service = local.backend_services_by_host["*"][0].backend_service
-
+  default_service = local.backend_services_by_host["*"]["/*"]
 
   dynamic "host_rule" {
     for_each = local.backend_services_by_host
@@ -202,13 +201,13 @@ resource "google_compute_url_map" "default" {
     for_each = local.backend_services_by_host
     content {
       name            = path_matcher.key == "*" ? "default" : replace(path_matcher.key, ".", "")
-      default_service = path_matcher.value[0].backend_service
+      default_service = path_matcher.value["/*"]
 
       dynamic "path_rule" {
         for_each = path_matcher.value
         content {
-          paths   = [path_rule.value.path]
-          service = path_rule.value.backend_service
+          paths   = [path_rule.key]
+          service = path_rule.value
         }
       }
     }

@@ -1,5 +1,7 @@
 # HTTP Load balancer frontend module
+This module creates `HTTP(S) forwarding rule` and its dependencies. This modules doesn't create `google_compute_backend_service` which can be created by using `modules/lb-http-frontend`. The separation of the modules makes it easier for creating backend and frontend resources independent of each other. The logical separation helps in improved maintainability.
 
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -11,7 +13,6 @@
 | create\_ipv6\_address | Allocate a new IPv6 address. Conflicts with "ipv6\_address" - if both specified, "create\_ipv6\_address" takes precedence. | `bool` | `false` | no |
 | create\_ssl\_certificate | If `true`, Create certificate using `private_key/certificate` | `bool` | `false` | no |
 | create\_url\_map | Set to `false` if url\_map variable is provided. | `bool` | `true` | no |
-| edge\_security\_policy | The resource URL for the edge security policy to associate with the backend service | `string` | `null` | no |
 | enable\_ipv6 | Enable IPv6 address on the CDN load-balancer | `bool` | `false` | no |
 | http\_forward | Set to `false` to disable HTTP port 80 forward | `bool` | `true` | no |
 | http\_keep\_alive\_timeout\_sec | Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds). | `number` | `null` | no |
@@ -28,7 +29,6 @@
 | project\_id | The project to deploy to, if not set the default provider project is used. | `string` | n/a | yes |
 | quic | Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only. | `bool` | `null` | no |
 | random\_certificate\_suffix | Bool to enable/disable random certificate name generation. Set and keep this to true if you need to change the SSL cert. | `bool` | `false` | no |
-| security\_policy | The resource URL for the security policy to associate with the backend service | `string` | `null` | no |
 | server\_tls\_policy | The resource URL for the server TLS policy to associate with the https proxy service | `string` | `null` | no |
 | ssl | Set to `true` to enable SSL support. If `true` then at least one of these are required: 1) `ssl_certificates` OR 2) `create_ssl_certificate` set to `true` and `private_key/certificate` OR  3) `managed_ssl_certificate_domains`, OR 4) `certificate_map` | `bool` | `false` | no |
 | ssl\_certificates | SSL cert self\_link list. Requires `ssl` to be set to `true` | `list(string)` | `[]` | no |

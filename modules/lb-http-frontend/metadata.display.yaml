@@ -127,4 +127,3 @@ spec:
           visibility: VISIBILITY_ROOT
         external_ipv6_address:
           visibility: VISIBILITY_ROOT
-      

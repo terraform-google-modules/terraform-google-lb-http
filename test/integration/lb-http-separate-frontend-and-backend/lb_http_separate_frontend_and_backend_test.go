@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package cloudrun_implicit_serverless_neg
+package lb_http_separate_frontend_and_backend
 
 import (
 	"testing"
@@ -23,7 +23,7 @@ import (
 	test "github.com/terraform-google-modules/terraform-google-lb-http/test/integration"
 )
 
-func TestCloudrunImplicit(t *testing.T) {
+func TestSeparateFrontendAndBackend(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {

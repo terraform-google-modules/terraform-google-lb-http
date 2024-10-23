@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-variable "project_id" {
-  description = "The project to deploy to, if not set the default provider project is used."
-  type        = string
-}
 
 variable "name" {
   description = "Name for the forwarding rule and prefix for supporting resources"
+  type        = string
+}
+
+variable "project_id" {
+  description = "The project to deploy to, if not set the default provider project is used."
   type        = string
 }
 
@@ -133,18 +134,6 @@ variable "ssl_policy" {
 variable "quic" {
   type        = bool
   description = "Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only."
-  default     = null
-}
-
-variable "edge_security_policy" {
-  description = "The resource URL for the edge security policy to associate with the backend service"
-  type        = string
-  default     = null
-}
-
-variable "security_policy" {
-  description = "The resource URL for the security policy to associate with the backend service"
-  type        = string
   default     = null
 }
 
