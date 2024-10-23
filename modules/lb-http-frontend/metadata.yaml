@@ -15,16 +15,16 @@
 apiVersion: blueprints.cloud.google.com/v1alpha1
 kind: BlueprintMetadata
 metadata:
-  name: terraform-google-lb-http-dynamic-backends
+  name: terraform-google-lb-http-lb-http-frontend
   annotations:
     config.kubernetes.io/local-config: "true"
 spec:
   info:
-    title: Global HTTP Load Balancer Terraform Module
+    title: HTTP Load balancer frontend module
     source:
       repo: https://github.com/terraform-google-modules/terraform-google-lb-http.git
       sourceType: git
-      dir: /modules/dynamic_backends
+      dir: /modules/lb-http-frontend
     version: 12.0.0
     actuationTool:
       flavor: Terraform
@@ -69,113 +69,6 @@ spec:
       - name: address
         description: Existing IPv4 address to use (the actual IP address value)
         varType: string
-      - name: backends
-        description: Map backend indices to list of backend maps.
-        varType: |-
-          map(object({
-              port                    = optional(number)
-              project                 = optional(string)
-              protocol                = optional(string)
-              port_name               = optional(string)
-              description             = optional(string)
-              enable_cdn              = optional(bool)
-              compression_mode        = optional(string)
-              security_policy         = optional(string, null)
-              edge_security_policy    = optional(string, null)
-              custom_request_headers  = optional(list(string))
-              custom_response_headers = optional(list(string))
-
-              timeout_sec                     = optional(number)
-              connection_draining_timeout_sec = optional(number)
-              session_affinity                = optional(string)
-              affinity_cookie_ttl_sec         = optional(number)
-              locality_lb_policy              = optional(string)
-
-              health_check = optional(object({
-                host                = optional(string)
-                request_path        = optional(string)
-                request             = optional(string)
-                response            = optional(string)
-                port                = optional(number)
-                port_name           = optional(string)
-                proxy_header        = optional(string)
-                port_specification  = optional(string)
-                protocol            = optional(string)
-                check_interval_sec  = optional(number)
-                timeout_sec         = optional(number)
-                healthy_threshold   = optional(number)
-                unhealthy_threshold = optional(number)
-                logging             = optional(bool)
-              }))
-
-              log_config = object({
-                enable      = optional(bool)
-                sample_rate = optional(number)
-              })
-
-              groups = list(object({
-                group       = string
-                description = optional(string)
-
-                balancing_mode               = optional(string)
-                capacity_scaler              = optional(number)
-                max_connections              = optional(number)
-                max_connections_per_instance = optional(number)
-                max_connections_per_endpoint = optional(number)
-                max_rate                     = optional(number)
-                max_rate_per_instance        = optional(number)
-                max_rate_per_endpoint        = optional(number)
-                max_utilization              = optional(number)
-              }))
-              iap_config = optional(object({
-                enable               = bool
-                oauth2_client_id     = optional(string)
-                oauth2_client_secret = optional(string)
-              }))
-              cdn_policy = optional(object({
-                cache_mode                   = optional(string)
-                signed_url_cache_max_age_sec = optional(string)
-                default_ttl                  = optional(number)
-                max_ttl                      = optional(number)
-                client_ttl                   = optional(number)
-                negative_caching             = optional(bool)
-                negative_caching_policy = optional(object({
-                  code = optional(number)
-                  ttl  = optional(number)
-                }))
-                serve_while_stale = optional(number)
-                cache_key_policy = optional(object({
-                  include_host           = optional(bool)
-                  include_protocol       = optional(bool)
-                  include_query_string   = optional(bool)
-                  query_string_blacklist = optional(list(string))
-                  query_string_whitelist = optional(list(string))
-                  include_http_headers   = optional(list(string))
-                  include_named_cookies  = optional(list(string))
-                }))
-                bypass_cache_on_request_headers = optional(list(string))
-              }))
-              outlier_detection = optional(object({
-                base_ejection_time = optional(object({
-                  seconds = number
-                  nanos   = optional(number)
-                }))
-                consecutive_errors                    = optional(number)
-                consecutive_gateway_failure           = optional(number)
-                enforcing_consecutive_errors          = optional(number)
-                enforcing_consecutive_gateway_failure = optional(number)
-                enforcing_success_rate                = optional(number)
-                interval = optional(object({
-                  seconds = number
-                  nanos   = optional(number)
-                }))
-                max_ejection_percent        = optional(number)
-                success_rate_minimum_hosts  = optional(number)
-                success_rate_request_volume = optional(number)
-                success_rate_stdev_factor   = optional(number)
-              }))
-            }))
-        required: true
       - name: certificate
         description: Content of the SSL certificate. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true`
         varType: string
@@ -205,16 +98,6 @@ spec:
         description: Enable IPv6 address on the CDN load-balancer
         varType: bool
         defaultValue: false
-      - name: firewall_networks
-        description: Names of the networks to create firewall rules in
-        varType: list(string)
-        defaultValue:
-          - default
-      - name: firewall_projects
-        description: Names of the projects to create firewall rules in
-        varType: list(string)
-        defaultValue:
-          - default
       - name: http_forward
         description: Set to `false` to disable HTTP port 80 forward
         varType: bool
@@ -244,7 +127,7 @@ spec:
       - name: load_balancing_scheme
         description: Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_SELF_MANAGED for traffic director)
         varType: string
-        defaultValue: EXTERNAL
+        defaultValue: EXTERNAL_MANAGED
       - name: managed_ssl_certificate_domains
         description: Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true`
         varType: list(string)
@@ -260,7 +143,7 @@ spec:
       - name: private_key
         description: Content of the private SSL key. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true`
         varType: string
-      - name: project
+      - name: project_id
         description: The project to deploy to, if not set the default provider project is used.
         varType: string
         required: true
@@ -288,34 +171,46 @@ spec:
       - name: ssl_policy
         description: Selfink to SSL Policy
         varType: string
-      - name: target_service_accounts
-        description: List of target service accounts for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified.
-        varType: list(string)
+      - name: url_map_input
+        description: List of host, path and backend service for creating url_map
+        varType: |-
+          list(object({
+              host : string
+              path : string
+              backend_service : string
+            }))
         defaultValue: []
-      - name: target_tags
-        description: List of target tags for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified.
-        varType: list(string)
-        defaultValue: []
-      - name: url_map
+        connections:
+          source:
+            source: github.com/GoogleCloudPlatform/terraform-google-lb-http//modules/lb-http-backend
+            version: ">= 12.0"
+          spec:
+            outputExpr: backend_service_info
+      - name: url_map_resource_uri
         description: The url_map resource to use. Default is to send all traffic to first backend.
         varType: string
     outputs:
-      - name: backend_services
-        description: The backend service resources.
       - name: external_ip
         description: The external IPv4 assigned to the global fowarding rule.
+        type: string
       - name: external_ipv6_address
         description: The external IPv6 assigned to the global fowarding rule.
+        type: string
       - name: http_proxy
         description: The HTTP proxy used by this module.
+        type: string
       - name: https_proxy
         description: The HTTPS proxy used by this module.
+        type: string
       - name: ipv6_enabled
         description: Whether IPv6 configuration is enabled on this load-balancer
+        type: bool
       - name: ssl_certificate_created
         description: The SSL certificate create from key/pem
+        type: string
       - name: url_map
         description: The default URL map used by this module.
+        type: string
   requirements:
     roles:
       - level: Project
