@@ -1,0 +1,114 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: blueprints.cloud.google.com/v1alpha1
+kind: BlueprintMetadata
+metadata:
+  name: terraform-google-lb-http-backend-display
+  annotations:
+    config.kubernetes.io/local-config: "true"
+spec:
+  info:
+    title: HTTP Load balancer backend module
+    source:
+      repo: https://github.com/terraform-google-modules/terraform-google-lb-http.git
+      sourceType: git
+      dir: /modules/backend
+  ui:
+    input:
+      variables:
+        affinity_cookie_ttl_sec:
+          name: affinity_cookie_ttl_sec
+          title: Affinity Cookie Ttl Sec
+        cdn_policy:
+          name: cdn_policy
+          title: Cdn Policy
+        compression_mode:
+          name: compression_mode
+          title: Compression Mode
+        connection_draining_timeout_sec:
+          name: connection_draining_timeout_sec
+          title: Connection Draining Timeout Sec
+        custom_request_headers:
+          name: custom_request_headers
+          title: Custom Request Headers
+        custom_response_headers:
+          name: custom_response_headers
+          title: Custom Response Headers
+        description:
+          name: description
+          title: Description
+        edge_security_policy:
+          name: edge_security_policy
+          title: Edge Security Policy
+        enable_cdn:
+          name: enable_cdn
+          title: Enable Cdn
+        firewall_networks:
+          name: firewall_networks
+          title: Firewall Networks
+        firewall_projects:
+          name: firewall_projects
+          title: Firewall Projects
+        groups:
+          name: groups
+          title: Groups
+        health_check:
+          name: health_check
+          title: Health Check
+        host_path_mappings:
+          name: host_path_mappings
+          title: Host Path Mappings
+        iap_config:
+          name: iap_config
+          title: Iap Config
+        load_balancing_scheme:
+          name: load_balancing_scheme
+          title: Load Balancing Scheme
+        locality_lb_policy:
+          name: locality_lb_policy
+          title: Locality Lb Policy
+        log_config:
+          name: log_config
+          title: Log Config
+        name:
+          name: name
+          title: Name
+        outlier_detection:
+          name: outlier_detection
+          title: Outlier Detection
+        port_name:
+          name: port_name
+          title: Port Name
+        project_id:
+          name: project_id
+          title: Project Id
+        protocol:
+          name: protocol
+          title: Protocol
+        security_policy:
+          name: security_policy
+          title: Security Policy
+        serverless_neg_backends:
+          name: serverless_neg_backends
+          title: Serverless Neg Backends
+        session_affinity:
+          name: session_affinity
+          title: Session Affinity
+        target_service_accounts:
+          name: target_service_accounts
+          title: Target Service Accounts
+        target_tags:
+          name: target_tags
+          title: Target Tags
