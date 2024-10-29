@@ -15,7 +15,7 @@
 apiVersion: blueprints.cloud.google.com/v1alpha1
 kind: BlueprintMetadata
 metadata:
-  name: terraform-google-lb-http-lb-http-frontend-display
+  name: terraform-google-lb-http-frontend-display
   annotations:
     config.kubernetes.io/local-config: "true"
 spec:
@@ -24,7 +24,7 @@ spec:
     source:
       repo: https://github.com/terraform-google-modules/terraform-google-lb-http.git
       sourceType: git
-      dir: /modules/lb-http-frontend
+      dir: /modules/frontend
   ui:
     input:
       variables:
@@ -49,9 +49,6 @@ spec:
         create_url_map:
           name: create_url_map
           title: Create Url Map
-        edge_security_policy:
-          name: edge_security_policy
-          title: Edge Security Policy
         enable_ipv6:
           name: enable_ipv6
           title: Enable Ipv6
@@ -100,9 +97,6 @@ spec:
         random_certificate_suffix:
           name: random_certificate_suffix
           title: Random Certificate Suffix
-        security_policy:
-          name: security_policy
-          title: Security Policy
         server_tls_policy:
           name: server_tls_policy
           title: Server Tls Policy

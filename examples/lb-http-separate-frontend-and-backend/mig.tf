@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,12 +39,12 @@ module "mig1_template" {
     email  = ""
     scopes = ["cloud-platform"]
   }
-  name_prefix          = "${var.network_prefix}-group1"
+  name_prefix          = "lb-http-separate-frontend-and-backend-group1"
   startup_script       = data.template_file.group-startup-script.rendered
   source_image_family  = "ubuntu-2004-lts"
   source_image_project = "ubuntu-os-cloud"
   tags = [
-    "${var.network_prefix}-group1",
+    "lb-http-separate-frontend-and-backend-group1",
     module.cloud-nat-group1.router_name
   ]
 }
@@ -53,9 +53,9 @@ module "mig1" {
   source            = "terraform-google-modules/vm/google//modules/mig"
   version           = "~> 12.0"
   instance_template = module.mig1_template.self_link
-  region            = var.group1_region
-  hostname          = "${var.network_prefix}-group1"
-  target_size       = var.target_size
+  region            = "us-west1"
+  hostname          = "lb-http-separate-frontend-and-backend-group1"
+  target_size       = 2
   named_ports = [{
     name = "http",
     port = 80
@@ -71,10 +71,10 @@ module "mig2_template" {
     email  = ""
     scopes = ["cloud-platform"]
   }
-  name_prefix    = "${var.network_prefix}-group2"
+  name_prefix    = "lb-http-separate-frontend-and-backend-group2"
   startup_script = data.template_file.group-startup-script.rendered
   tags = [
-    "${var.network_prefix}-group2",
+    "lb-http-separate-frontend-and-backend-group2",
     module.cloud-nat-group2.router_name
   ]
 }
@@ -83,9 +83,9 @@ module "mig2" {
   source            = "terraform-google-modules/vm/google//modules/mig"
   version           = "~> 12.0"
   instance_template = module.mig2_template.self_link
-  region            = var.group2_region
-  hostname          = "${var.network_prefix}-group2"
-  target_size       = var.target_size
+  region            = "us-east1"
+  hostname          = "lb-http-separate-frontend-and-backend-group2"
+  target_size       = 2
   named_ports = [{
     name = "http",
     port = 80

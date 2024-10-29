@@ -2,8 +2,8 @@
 
 [![button](http://gstatic.com/cloudssh/images/open-btn.png)](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/GoogleCloudPlatform/terraform-google-lb-http&working_dir=examples/lb-http-separate-frontend-and-backend&page=shell&tutorial=README.md)
 
-This example creates a global HTTP forwarding rule to forward traffic to instance groups in the us-west1 and us-east1 regions. The `google_compute_backend_service` and its dependencies are created as part of `lb-http-backend` module.
-The forwarding rules and its dependecies are created as part of `lb-http-frontend` modules.
+This example creates a global HTTP forwarding rule to forward traffic to instance groups in the us-west1 and us-east1 regions. The `google_compute_backend_service` and its dependencies are created as part of `backend` module.
+The forwarding rules and its dependecies are created as part of `frontend` modules.
 
 ## Change to the example directory
 
@@ -83,11 +83,7 @@ terraform destroy
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| group1\_region | n/a | `string` | `"us-west1"` | no |
-| group2\_region | n/a | `string` | `"us-east1"` | no |
-| network\_prefix | n/a | `string` | `"lb-http-separate-frontend-and-backend"` | no |
 | project\_id | n/a | `string` | n/a | yes |
-| target\_size | n/a | `number` | `2` | no |
 
 ## Outputs
 

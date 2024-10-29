@@ -1,5 +1,5 @@
 # HTTP Load balancer frontend module
-This module creates `HTTP(S) forwarding rule` and its dependencies. This modules doesn't create `google_compute_backend_service` which can be created by using `modules/lb-http-frontend`. The separation of the modules makes it easier for creating backend and frontend resources independent of each other. The logical separation helps in improved maintainability.
+This module creates `HTTP(S) forwarding rule` and its dependencies. This modules doesn't create `google_compute_backend_service` which can be created by using `modules/frontend`. The separation of the modules makes it easier for creating backend and frontend resources independent of each other. The logical separation helps in improved maintainability.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs

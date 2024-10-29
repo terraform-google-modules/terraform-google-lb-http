@@ -1,5 +1,5 @@
 # HTTP Load balancer backend module
-This module creates `google_compute_backend_service` resource and its dependencies. This module can be used with `modules/lb-http-frontend`. The separation of the modules makes it easier for creating backend and frontend resources independent of each other. The logical separation helps in improved maintainability.
+This module creates `google_compute_backend_service` resource and its dependencies. This module can be used with `modules/frontend`. The separation of the modules makes it easier for creating backend and frontend resources independent of each other. The logical separation helps in improved maintainability.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs

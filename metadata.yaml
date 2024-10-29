@@ -31,12 +31,12 @@ spec:
     description: {}
   content:
     subBlueprints:
+      - name: backend
+        location: modules/backend
       - name: dynamic_backends
         location: modules/dynamic_backends
-      - name: lb-http-backend
-        location: modules/lb-http-backend
-      - name: lb-http-frontend
-        location: modules/lb-http-frontend
+      - name: frontend
+        location: modules/frontend
       - name: serverless_negs
         location: modules/serverless_negs
     examples:
@@ -58,6 +58,8 @@ spec:
         location: examples/https-gke
       - name: https-redirect
         location: examples/https-redirect
+      - name: lb-http-separate-frontend-and-backend
+        location: examples/lb-http-separate-frontend-and-backend
       - name: mig-nat-http-lb
         location: examples/mig-nat-http-lb
       - name: multi-backend-multi-mig-bucket-https-lb

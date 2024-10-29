@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,4 @@
 
 variable "project_id" {
   type = string
-}
-
-variable "target_size" {
-  type    = number
-  default = 2
-}
-
-variable "group1_region" {
-  type    = string
-  default = "us-west1"
-}
-
-variable "group2_region" {
-  type    = string
-  default = "us-east1"
-}
-
-variable "network_prefix" {
-  type    = string
-  default = "lb-http-separate-frontend-and-backend"
 }
