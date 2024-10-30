@@ -239,8 +239,11 @@ variable "security_policy" {
 
 variable "host_path_mappings" {
   description = "The list of host/path for which traffic could be sent to the backend service"
-  type        = list(object({ host : string, path : string }))
-  default     = [{ host : "*", path : "/*" }]
+  type = list(object({
+    host = string
+    path = string
+  }))
+  default = [{ host : "*", path : "/*" }]
 }
 
 variable "firewall_networks" {

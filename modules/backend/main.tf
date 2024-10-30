@@ -169,22 +169,22 @@ resource "google_compute_region_network_endpoint_group" "serverless_negs" {
   dynamic "cloud_run" {
     for_each = each.value.type == "cloud-run" ? [1] : []
     content {
-      service = each.value.service.name
+      service = each.value.service_name
     }
   }
 
   dynamic "cloud_function" {
     for_each = each.value.type == "cloud-function" ? [1] : []
     content {
-      function = each.value.service.name
+      function = each.value.service_name
     }
   }
 
   dynamic "app_engine" {
     for_each = each.value.type == "app-engine" ? [1] : []
     content {
-      service = each.value.service.name
-      version = each.value.service.version
+      service = each.value.service_name
+      version = each.value.service_version
     }
   }
 

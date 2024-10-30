@@ -33,7 +33,7 @@ This module creates `HTTP(S) forwarding rule` and its dependencies. This modules
 | ssl | Set to `true` to enable SSL support. If `true` then at least one of these are required: 1) `ssl_certificates` OR 2) `create_ssl_certificate` set to `true` and `private_key/certificate` OR  3) `managed_ssl_certificate_domains`, OR 4) `certificate_map` | `bool` | `false` | no |
 | ssl\_certificates | SSL cert self\_link list. Requires `ssl` to be set to `true` | `list(string)` | `[]` | no |
 | ssl\_policy | Selfink to SSL Policy | `string` | `null` | no |
-| url\_map\_input | List of host, path and backend service for creating url\_map | <pre>list(object({<br>    host : string<br>    path : string<br>    backend_service : string<br>  }))</pre> | `[]` | no |
+| url\_map\_input | List of host, path and backend service for creating url\_map | <pre>list(object({<br>    host            = string<br>    path            = string<br>    backend_service = string<br>  }))</pre> | `[]` | no |
 | url\_map\_resource\_uri | The url\_map resource to use. Default is to send all traffic to first backend. | `string` | `null` | no |
 
 ## Outputs

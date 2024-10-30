@@ -64,9 +64,9 @@ variable "create_url_map" {
 variable "url_map_input" {
   description = "List of host, path and backend service for creating url_map"
   type = list(object({
-    host : string
-    path : string
-    backend_service : string
+    host            = string
+    path            = string
+    backend_service = string
   }))
   default = []
 }
