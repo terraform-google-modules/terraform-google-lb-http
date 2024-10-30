@@ -151,7 +151,7 @@ spec:
             }))
         defaultValue: []
         connections:
-          source:
+        - source:
             source: github.com/terraform-google-modules/terraform-google-vm//modules/mig
             version: ~> 12.0
           spec:
@@ -167,11 +167,11 @@ spec:
             }))
         defaultValue: []
         connections:
-          source:
+        - source:
             source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
-            version: ~> 0.12
+            version: ~> 0.13
           spec:
-            outputExpr: '{"region": location, "service_name": service_name, "type": "cloud-run"}'
+            outputExpr: '{"region": location, "service_name": service_name, "type": "cloud-run", "service_version": ""}'
       - name: iap_config
         description: Settings for enabling Cloud Identity Aware Proxy Structure.
         varType: |-
@@ -258,7 +258,11 @@ spec:
         varType: string
       - name: host_path_mappings
         description: The list of host/path for which traffic could be sent to the backend service
-        varType: "list(object({ host : string, path : string }))"
+        varType: |-
+          list(object({
+              host = string
+              path = string
+            }))
         defaultValue:
           - host: "*"
             path: /*
@@ -287,8 +291,8 @@ spec:
           - list
           - - object
             - host: string
-            - path: string
-            - backend_service: string
+              path: string
+              backend_service: string
   requirements:
     roles:
       - level: Project
