@@ -301,6 +301,7 @@ variable "http_keep_alive_timeout_sec" {
 }
 
 variable "host_rules" {
+  description = "Defines host rules for URL mapping, associating hosts with specific path matchers."
   type = list(object({
     hosts        = list(string)
     path_matcher = string
@@ -308,6 +309,7 @@ variable "host_rules" {
 }
 
 variable "path_matchers" {
+  description = "Specifies path matchers, including default service and detailed path rules for routing."
   type = list(object({
     name            = string
     default_service = string
