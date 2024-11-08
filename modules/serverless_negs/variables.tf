@@ -299,3 +299,21 @@ variable "http_keep_alive_timeout_sec" {
   type        = number
   default     = null
 }
+
+variable "host_rules" {
+  type = list(object({
+    hosts        = list(string)
+    path_matcher = string
+  }))
+}
+
+variable "path_matchers" {
+  type = list(object({
+    name            = string
+    default_service = string
+    path_rules = list(object({
+      paths   = list(string)
+      service = string
+    }))
+  }))
+}
