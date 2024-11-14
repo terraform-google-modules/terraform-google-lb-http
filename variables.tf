@@ -275,6 +275,15 @@ variable "https_redirect" {
   default     = false
 }
 
+variable "https_redirect_domains" {
+  type    = list(string)
+  default = []
+  validation {
+    condition     = alltrue([for domain in var.https_redirect_domains : domain != ""])
+    error_message = "The variable \"https_redirect_domains\" must not contain an empty string. Use an empty list ([]) if no domains are provided."
+  }
+}
+
 variable "random_certificate_suffix" {
   description = "Bool to enable/disable random certificate name generation. Set and keep this to true if you need to change the SSL cert."
   type        = bool
