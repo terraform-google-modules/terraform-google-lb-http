@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -151,11 +151,11 @@ spec:
             }))
         defaultValue: []
         connections:
-        - source:
-            source: github.com/terraform-google-modules/terraform-google-vm//modules/mig
-            version: ~> 12.0
-          spec:
-            outputExpr: '{"group": instance_group}'
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-vm//modules/mig
+              version: ">= 12.0"
+            spec:
+              outputExpr: "{\"group\": instance_group, \"description\": \"Input created by connection\", \"balancing_mode\": \"UTILIZATION\", \"capacity_scaler\": 1.0, \"max_connections\": 1000, \"max_connections_per_instance\": 1000, \"max_connections_per_endpoint\": 1000, \"max_rate\": 1000, \"max_rate_per_instance\": 100, \"max_rate_per_endpoint\": 100, \"max_utilization\": 0.8}"
       - name: serverless_neg_backends
         description: The list of serverless backend which serves the traffic.
         varType: |-
@@ -167,11 +167,11 @@ spec:
             }))
         defaultValue: []
         connections:
-        - source:
-            source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
-            version: ~> 0.13
-          spec:
-            outputExpr: '{"region": location, "service_name": service_name, "type": "cloud-run", "service_version": ""}'
+          - source:
+              source: github.com/GoogleCloudPlatform/terraform-google-cloud-run//modules/v2
+              version: ">= 0.13"
+            spec:
+              outputExpr: "{\"region\": location, \"service_name\": service_name, \"type\": \"cloud-run\", \"service_version\": \"\"}"
       - name: iap_config
         description: Settings for enabling Cloud Identity Aware Proxy Structure.
         varType: |-
@@ -290,18 +290,18 @@ spec:
         type:
           - list
           - - object
-            - host: string
+            - backend_service: string
+              host: string
               path: string
-              backend_service: string
   requirements:
     roles:
       - level: Project
         roles:
-          - roles/owner
-          - roles/storage.admin
+          - roles/compute.xpnAdmin
       - level: Project
         roles:
-          - roles/compute.xpnAdmin
+          - roles/owner
+          - roles/storage.admin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
