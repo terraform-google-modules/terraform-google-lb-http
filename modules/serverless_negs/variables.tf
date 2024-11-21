@@ -78,6 +78,7 @@ variable "backends" {
     edge_security_policy    = optional(string, null)
     custom_request_headers  = optional(list(string))
     custom_response_headers = optional(list(string))
+    health_checks           = optional(list(string))
 
     connection_draining_timeout_sec = optional(number)
     session_affinity                = optional(string)
