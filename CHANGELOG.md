@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.0.0...v12.1.0) (2024-12-05)
+
+
+### Features
+
+* Add frontend and backend modules ([#461](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/461)) ([05fdae5](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/05fdae5f8cb5789d15204382b3586e1f04acf61f))
+
+
+### Bug Fixes
+
+* update metadata and fix neg creation in modules/backend ([#463](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/463)) ([1ed89f0](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/1ed89f07c779a563ad153893e26aad3a4d495275))
+* updated iap_config behavior to match TPG 6.0 ([#469](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/469)) ([279c8e8](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/279c8e877f854f082adf9ca83f8b3ad00c62e4ff))
+
 ## [12.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v11.1.0...v12.0.0) (2024-09-17)
 
 
