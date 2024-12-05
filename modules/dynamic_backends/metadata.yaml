@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-lb-http.git
       sourceType: git
       dir: /modules/dynamic_backends
-    version: 12.0.0
+    version: 12.1.0
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
