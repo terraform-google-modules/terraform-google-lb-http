@@ -32,7 +32,7 @@ data "template_file" "group-startup-script" {
 
 module "mig1_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "~> 12.0"
+  version    = "~> 13.0"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.group1.self_link
   service_account = {
@@ -51,7 +51,7 @@ module "mig1_template" {
 
 module "mig1" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 12.0"
+  version           = "~> 13.0"
   instance_template = module.mig1_template.self_link
   region            = "us-west1"
   hostname          = "lb-http-separate-frontend-and-backend-group1"
@@ -64,7 +64,7 @@ module "mig1" {
 
 module "mig2_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "~> 12.0"
+  version    = "~> 13.0"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.group2.self_link
   service_account = {
@@ -81,7 +81,7 @@ module "mig2_template" {
 
 module "mig2" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 12.0"
+  version           = "~> 13.0"
   instance_template = module.mig2_template.self_link
   region            = "us-east1"
   hostname          = "lb-http-separate-frontend-and-backend-group2"
