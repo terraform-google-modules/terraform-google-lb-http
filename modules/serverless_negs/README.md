@@ -81,6 +81,7 @@ module "lb-http" {
 | create\_url\_map | Set to `false` if url\_map variable is provided. | `bool` | `true` | no |
 | edge\_security\_policy | The resource URL for the edge security policy to associate with the backend service | `string` | `null` | no |
 | enable\_ipv6 | Enable IPv6 address on the CDN load-balancer | `bool` | `false` | no |
+| host\_rules | n/a | <pre>list(object({<br>    hosts        = list(string)<br>    path_matcher = string<br>  }))</pre> | n/a | yes |
 | http\_forward | Set to `false` to disable HTTP port 80 forward | `bool` | `true` | no |
 | http\_keep\_alive\_timeout\_sec | Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds). | `number` | `null` | no |
 | http\_port | The port for the HTTP load balancer | `number` | `80` | no |
@@ -92,6 +93,7 @@ module "lb-http" {
 | managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` | `list(string)` | `[]` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |
 | network | Network for INTERNAL\_SELF\_MANAGED load balancing scheme | `string` | `"default"` | no |
+| path\_matchers | n/a | <pre>list(object({<br>    name            = string<br>    default_service = string<br>    path_rules = list(object({<br>      paths   = list(string)<br>      service = string<br>    }))<br>  }))</pre> | n/a | yes |
 | private\_key | Content of the private SSL key. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true` | `string` | `null` | no |
 | project | The project to deploy to, if not set the default provider project is used. | `string` | n/a | yes |
 | quic | Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only. | `bool` | `null` | no |
