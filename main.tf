@@ -168,6 +168,10 @@ resource "google_compute_url_map" "default" {
   count           = var.create_url_map ? 1 : 0
   name            = "${var.name}-url-map"
   default_service = google_compute_backend_service.default[keys(var.backends)[0]].self_link
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "google_compute_url_map" "https_redirect" {
