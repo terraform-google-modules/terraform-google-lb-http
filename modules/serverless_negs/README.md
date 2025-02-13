@@ -15,21 +15,22 @@ intended for Terraform 0.12.x is [v4.5.0](https://registry.terraform.io/modules/
 
 ## Version
 
-Current version is 9.0. Upgrade guides:
+Current version is 12.0. Upgrade guides:
 
-- [2.X -> 3.0](/docs/upgrading-v2.0.0-v3.0.0.md)
-- [3.X -> 4.0](/docs/upgrading_to_v4.0.md)
-- [6.X -> 7.0](/docs/upgrading_to_v7.0.md)
-- [7.X -> 8.0](/docs/upgrading_to_v8.0.md)
-- [8.X -> 9.0](/docs/upgrading_to_v9.0.md)
-- [9.X -> 10.0](/docs/upgrading_to_v10.0.md)
+- [2.X -> 3.0](https://github.com/terraform-google-modules/terraform-google-lb-http/blob/master/docs/upgrading_to_v3.0.0.md)
+- [3.X -> 4.0](https://github.com/terraform-google-modules/terraform-google-lb-http/blob/master/docs/upgrading_to_v4.0.md)
+- [6.X -> 7.0](https://github.com/terraform-google-modules/terraform-google-lb-http/blob/master/docs/upgrading_to_v7.0.md)
+- [7.X -> 8.0](https://github.com/terraform-google-modules/terraform-google-lb-http/blob/master/docs/upgrading_to_v8.0.md)
+- [8.X -> 9.0](https://github.com/terraform-google-modules/terraform-google-lb-http/blob/master/docs/upgrading_to_v9.0.md)
+- [9.X -> 10.0](https://github.com/terraform-google-modules/terraform-google-lb-http/blob/master/docs/upgrading_to_v10.0.md)
+- [10.X -> 11.0](https://github.com/terraform-google-modules/terraform-google-lb-http/blob/master/docs/upgrading_to_v11.0.md)
 
 ## Usage
 
 ```HCL
 module "lb-http" {
   source            = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
-  version           = "~> 9.0"
+  version           = "~> 12.0"
 
   project           = "my-project-id"
   name              = "my-lb"
@@ -91,6 +92,8 @@ module "lb-http" {
 | load\_balancing\_scheme | Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL\_MANAGED for Envoy-based load balancer, and INTERNAL\_SELF\_MANAGED for traffic director) | `string` | `"EXTERNAL"` | no |
 | managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` | `list(string)` | `[]` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |
+| name\_prefixes | Map of resource name prefixes allowing name customization. `null` values fallback to module defaults. | <pre>object({<br>    address                    = optional(string, null)<br>    address_ipv6               = optional(string, null)<br>    certificate                = optional(string, null)<br>    http_forwarding_rule       = optional(string, null)<br>    http_ipv6_forwarding_rule  = optional(string, null)<br>    https_forwarding_rule      = optional(string, null)<br>    https_ipv6_forwarding_rule = optional(string, null)<br>    target_http_proxy          = optional(string, null)<br>    target_https_proxy         = optional(string, null)<br>    url_map                    = optional(string, null)<br>    url_map_https_redirect     = optional(string, null)<br>    backend_service            = optional(string, null)<br>    health_check               = optional(string, null)<br>  })</pre> | `{}` | no |
+| name\_suffixes | Map of suffixes to the created resource names. | <pre>object({<br>    address                    = optional(string, "-address")<br>    address_ipv6               = optional(string, "-ipv6-address")<br>    certificate                = optional(string, "-cert")<br>    http_forwarding_rule       = optional(string, "")<br>    http_ipv6_forwarding_rule  = optional(string, "-ipv6-http")<br>    https_forwarding_rule      = optional(string, "-https")<br>    https_ipv6_forwarding_rule = optional(string, "-ipv6-https")<br>    target_http_proxy          = optional(string, "-http-proxy")<br>    target_https_proxy         = optional(string, "-https-proxy")<br>    url_map                    = optional(string, "-url-map")<br>    url_map_https_redirect     = optional(string, "-https-redirect")<br>    backend_service            = optional(string, "")<br>    health_check               = optional(string, "")<br>  })</pre> | `{}` | no |
 | network | Network for INTERNAL\_SELF\_MANAGED load balancing scheme | `string` | `"default"` | no |
 | private\_key | Content of the private SSL key. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true` | `string` | `null` | no |
 | project | The project to deploy to, if not set the default provider project is used. | `string` | n/a | yes |
