@@ -42,7 +42,7 @@ Current version is 12.0. Upgrade guides:
 ```HCL
 module "gce-lb-http" {
   source            = "GoogleCloudPlatform/lb-http/google"
-  version           = "~> 9.0"
+  version           = "~> 12.0"
 
   project           = "my-project-id"
   name              = "group-http-lb"

@@ -17,20 +17,20 @@ intended for Terraform 0.12.x is [v4.5.0](https://registry.terraform.io/modules/
 
 Current version is 12.0. Upgrade guides:
 
-- [2.X -> 3.0](/docs/upgrading-v2.0.0-v3.0.0.md)
-- [3.X -> 4.0](/docs/upgrading_to_v4.0.md)
-- [6.X -> 7.0](/docs/upgrading_to_v7.0.md)
-- [7.X -> 8.0](/docs/upgrading_to_v8.0.md)
-- [8.X -> 9.0](/docs/upgrading_to_v9.0.md)
-- [9.X -> 10.0](/docs/upgrading_to_v10.0.md)
-- [10.X -> 11.0](/docs/upgrading_to_v11.0.md)
+- [2.X -> 3.0](https://github.com/terraform-google-modules/terraform-google-lb-http/blob/master/docs/upgrading_to_v3.0.0.md)
+- [3.X -> 4.0](https://github.com/terraform-google-modules/terraform-google-lb-http/blob/master/docs/upgrading_to_v4.0.md)
+- [6.X -> 7.0](https://github.com/terraform-google-modules/terraform-google-lb-http/blob/master/docs/upgrading_to_v7.0.md)
+- [7.X -> 8.0](https://github.com/terraform-google-modules/terraform-google-lb-http/blob/master/docs/upgrading_to_v8.0.md)
+- [8.X -> 9.0](https://github.com/terraform-google-modules/terraform-google-lb-http/blob/master/docs/upgrading_to_v9.0.md)
+- [9.X -> 10.0](https://github.com/terraform-google-modules/terraform-google-lb-http/blob/master/docs/upgrading_to_v10.0.md)
+- [10.X -> 11.0](https://github.com/terraform-google-modules/terraform-google-lb-http/blob/master/docs/upgrading_to_v11.0.md)
 
 ## Usage
 
 ```HCL
 module "lb-http" {
   source            = "GoogleCloudPlatform/lb-http/google//modules/serverless_negs"
-  version           = "~> 9.0"
+  version           = "~> 12.0"
 
   project           = "my-project-id"
   name              = "my-lb"
