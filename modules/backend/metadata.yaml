@@ -155,7 +155,7 @@ spec:
               source: github.com/terraform-google-modules/terraform-google-vm//modules/mig
               version: ">= 12.0"
             spec:
-              outputExpr: "{\"group\": instance_group, \"description\": \"Input created by connection\", \"balancing_mode\": \"UTILIZATION\", \"capacity_scaler\": 1.0, \"max_connections\": 1000, \"max_connections_per_instance\": 1000, \"max_connections_per_endpoint\": 1000, \"max_rate\": 1000, \"max_rate_per_instance\": 100, \"max_rate_per_endpoint\": 100, \"max_utilization\": 0.8}"
+              outputExpr: "{\"group\": instance_group, \"description\": \"Input created by connection\"}"
       - name: serverless_neg_backends
         description: The list of serverless backend which serves the traffic.
         varType: |-
