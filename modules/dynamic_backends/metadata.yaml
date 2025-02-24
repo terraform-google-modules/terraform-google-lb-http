@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,6 +50,8 @@ spec:
         location: examples/https-gke
       - name: https-redirect
         location: examples/https-redirect
+      - name: lb-http-separate-frontend-and-backend
+        location: examples/lb-http-separate-frontend-and-backend
       - name: mig-nat-http-lb
         location: examples/mig-nat-http-lb
       - name: multi-backend-multi-mig-bucket-https-lb
@@ -66,9 +68,50 @@ spec:
         location: examples/user-managed-google-managed-ssl
   interfaces:
     variables:
+      - name: project
+        description: The project to deploy to, if not set the default provider project is used.
+        varType: string
+        required: true
+      - name: name
+        description: Name for the forwarding rule and prefix for supporting resources
+        varType: string
+        required: true
+      - name: create_address
+        description: Create a new global IPv4 address
+        varType: bool
+        defaultValue: true
       - name: address
         description: Existing IPv4 address to use (the actual IP address value)
         varType: string
+      - name: enable_ipv6
+        description: Enable IPv6 address on the CDN load-balancer
+        varType: bool
+        defaultValue: false
+      - name: create_ipv6_address
+        description: Allocate a new IPv6 address. Conflicts with "ipv6_address" - if both specified, "create_ipv6_address" takes precedence.
+        varType: bool
+        defaultValue: false
+      - name: ipv6_address
+        description: An existing IPv6 address to use (the actual IP address value)
+        varType: string
+      - name: firewall_networks
+        description: Names of the networks to create firewall rules in
+        varType: list(string)
+        defaultValue:
+          - default
+      - name: firewall_projects
+        description: Names of the projects to create firewall rules in
+        varType: list(string)
+        defaultValue:
+          - default
+      - name: target_tags
+        description: List of target tags for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified.
+        varType: list(string)
+        defaultValue: []
+      - name: target_service_accounts
+        description: List of target service accounts for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified.
+        varType: list(string)
+        defaultValue: []
       - name: backends
         description: Map backend indices to list of backend maps.
         varType: |-
@@ -176,67 +219,62 @@ spec:
               }))
             }))
         required: true
-      - name: certificate
-        description: Content of the SSL certificate. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true`
-        varType: string
-      - name: certificate_map
-        description: Certificate Map ID in format projects/{project}/locations/global/certificateMaps/{name}. Identifies a certificate map associated with the given target proxy.  Requires `ssl` to be set to `true`
-        varType: string
-      - name: create_address
-        description: Create a new global IPv4 address
+      - name: create_url_map
+        description: Set to `false` if url_map variable is provided.
         varType: bool
         defaultValue: true
-      - name: create_ipv6_address
-        description: Allocate a new IPv6 address. Conflicts with "ipv6_address" - if both specified, "create_ipv6_address" takes precedence.
+      - name: url_map
+        description: The url_map resource to use. Default is to send all traffic to first backend.
+        varType: string
+      - name: http_forward
+        description: Set to `false` to disable HTTP port 80 forward
+        varType: bool
+        defaultValue: true
+      - name: ssl
+        description: "Set to `true` to enable SSL support. If `true` then at least one of these are required: 1) `ssl_certificates` OR 2) `create_ssl_certificate` set to `true` and `private_key/certificate` OR  3) `managed_ssl_certificate_domains`, OR 4) `certificate_map`"
         varType: bool
         defaultValue: false
       - name: create_ssl_certificate
         description: If `true`, Create certificate using `private_key/certificate`
         varType: bool
         defaultValue: false
-      - name: create_url_map
-        description: Set to `false` if url_map variable is provided.
+      - name: ssl_certificates
+        description: SSL cert self_link list. Requires `ssl` to be set to `true`
+        varType: list(string)
+        defaultValue: []
+      - name: private_key
+        description: Content of the private SSL key. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true`
+        varType: string
+      - name: certificate
+        description: Content of the SSL certificate. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true`
+        varType: string
+      - name: managed_ssl_certificate_domains
+        description: Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true`
+        varType: list(string)
+        defaultValue: []
+      - name: certificate_map
+        description: Certificate Map ID in format projects/{project}/locations/global/certificateMaps/{name}. Identifies a certificate map associated with the given target proxy.  Requires `ssl` to be set to `true`
+        varType: string
+      - name: ssl_policy
+        description: Selfink to SSL Policy
+        varType: string
+      - name: quic
+        description: Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only.
         varType: bool
-        defaultValue: true
       - name: edge_security_policy
         description: The resource URL for the edge security policy to associate with the backend service
         varType: string
-      - name: enable_ipv6
-        description: Enable IPv6 address on the CDN load-balancer
-        varType: bool
-        defaultValue: false
-      - name: firewall_networks
-        description: Names of the networks to create firewall rules in
-        varType: list(string)
-        defaultValue:
-          - default
-      - name: firewall_projects
-        description: Names of the projects to create firewall rules in
-        varType: list(string)
-        defaultValue:
-          - default
-      - name: http_forward
-        description: Set to `false` to disable HTTP port 80 forward
-        varType: bool
-        defaultValue: true
-      - name: http_keep_alive_timeout_sec
-        description: Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds).
-        varType: number
-      - name: http_port
-        description: The port for the HTTP load balancer
-        varType: number
-        defaultValue: 80
-      - name: https_port
-        description: The port for the HTTPS load balancer
-        varType: number
-        defaultValue: 443
+      - name: security_policy
+        description: The resource URL for the security policy to associate with the backend service
+        varType: string
       - name: https_redirect
         description: Set to `true` to enable https redirect on the lb.
         varType: bool
         defaultValue: false
-      - name: ipv6_address
-        description: An existing IPv6 address to use (the actual IP address value)
-        varType: string
+      - name: random_certificate_suffix
+        description: Bool to enable/disable random certificate name generation. Set and keep this to true if you need to change the SSL cert.
+        varType: bool
+        defaultValue: false
       - name: labels
         description: The labels to attach to resources created by this module
         varType: map(string)
@@ -245,60 +283,24 @@ spec:
         description: Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_SELF_MANAGED for traffic director)
         varType: string
         defaultValue: EXTERNAL
-      - name: managed_ssl_certificate_domains
-        description: Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true`
-        varType: list(string)
-        defaultValue: []
-      - name: name
-        description: Name for the forwarding rule and prefix for supporting resources
-        varType: string
-        required: true
       - name: network
         description: Network for INTERNAL_SELF_MANAGED load balancing scheme
         varType: string
         defaultValue: default
-      - name: private_key
-        description: Content of the private SSL key. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true`
-        varType: string
-      - name: project
-        description: The project to deploy to, if not set the default provider project is used.
-        varType: string
-        required: true
-      - name: quic
-        description: Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only.
-        varType: bool
-      - name: random_certificate_suffix
-        description: Bool to enable/disable random certificate name generation. Set and keep this to true if you need to change the SSL cert.
-        varType: bool
-        defaultValue: false
-      - name: security_policy
-        description: The resource URL for the security policy to associate with the backend service
-        varType: string
       - name: server_tls_policy
         description: The resource URL for the server TLS policy to associate with the https proxy service
         varType: string
-      - name: ssl
-        description: "Set to `true` to enable SSL support. If `true` then at least one of these are required: 1) `ssl_certificates` OR 2) `create_ssl_certificate` set to `true` and `private_key/certificate` OR  3) `managed_ssl_certificate_domains`, OR 4) `certificate_map`"
-        varType: bool
-        defaultValue: false
-      - name: ssl_certificates
-        description: SSL cert self_link list. Requires `ssl` to be set to `true`
-        varType: list(string)
-        defaultValue: []
-      - name: ssl_policy
-        description: Selfink to SSL Policy
-        varType: string
-      - name: target_service_accounts
-        description: List of target service accounts for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified.
-        varType: list(string)
-        defaultValue: []
-      - name: target_tags
-        description: List of target tags for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified.
-        varType: list(string)
-        defaultValue: []
-      - name: url_map
-        description: The url_map resource to use. Default is to send all traffic to first backend.
-        varType: string
+      - name: http_port
+        description: The port for the HTTP load balancer
+        varType: number
+        defaultValue: 80
+      - name: https_port
+        description: The port for the HTTPS load balancer
+        varType: number
+        defaultValue: 443
+      - name: http_keep_alive_timeout_sec
+        description: Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds).
+        varType: number
     outputs:
       - name: backend_services
         description: The backend service resources.
@@ -320,11 +322,14 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/owner
-          - roles/storage.admin
+          - roles/compute.xpnAdmin
       - level: Project
         roles:
-          - roles/compute.xpnAdmin
+          - roles/storage.admin
+          - roles/compute.admin
+          - roles/run.admin
+          - roles/iam.serviceAccountUser
+          - roles/certificatemanager.owner
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
@@ -333,3 +338,10 @@ spec:
       - run.googleapis.com
       - iam.googleapis.com
       - certificatemanager.googleapis.com
+    providerVersions:
+      - source: hashicorp/google
+        version: ">= 6.0, < 7"
+      - source: hashicorp/google-beta
+        version: ">= 6.0, < 7"
+      - source: hashicorp/random
+        version: ">= 2.1"

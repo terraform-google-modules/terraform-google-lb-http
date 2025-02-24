@@ -35,6 +35,11 @@ locals {
       s.path => s.backend_service if s.host == host
     }
   }
+
+  # Find a backend service to be used for url_map in absence of host "*" and path "/*"
+  first_host            = try(keys(local.backend_services_by_host)[0], null)
+  first_path            = try(keys(local.backend_services_by_host[local.first_host])[0], null)
+  first_backend_service = try(local.backend_services_by_host[local.first_host][local.first_path], null)
 }
 
 ### IPv4 block ###
@@ -187,7 +192,7 @@ resource "google_compute_url_map" "default" {
   provider        = google-beta
   project         = var.project_id
   name            = "${var.name}-url-map"
-  default_service = local.backend_services_by_host["*"]["/*"]
+  default_service = lookup(lookup(local.backend_services_by_host, "*", {}), "/*", local.first_backend_service)
 
   dynamic "host_rule" {
     for_each = local.backend_services_by_host
@@ -201,10 +206,10 @@ resource "google_compute_url_map" "default" {
     for_each = local.backend_services_by_host
     content {
       name            = path_matcher.key == "*" ? "default" : replace(path_matcher.key, ".", "")
-      default_service = path_matcher.value["/*"]
+      default_service = path_matcher.value[contains(keys(path_matcher.value), "/*") ? "/*" : keys(path_matcher.value)[0]]
 
       dynamic "path_rule" {
-        for_each = path_matcher.value
+        for_each = { for k, v in path_matcher.value : k => v if k != "/*" }
         content {
           paths   = [path_rule.key]
           service = path_rule.value
