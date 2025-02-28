@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.1.1](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.1.0...v12.1.1) (2025-02-28)
+
+
+### Bug Fixes
+
+* Update connection metadata to change version from ~&gt; 12.0 to ^12.0 ([#486](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/486)) ([ed01820](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/ed018203b9bd2ed474fe776f34c002dd2d83758c))
+
 ## [12.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.0.0...v12.1.0) (2025-02-24)
 
 
