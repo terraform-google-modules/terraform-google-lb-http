@@ -286,6 +286,6 @@ resource "google_compute_firewall" "default-hc" {
 
   allow {
     protocol = "tcp"
-    ports    = [var.health_check.port]
+    ports    = var.health_check.port != null ? [var.health_check.port] : null
   }
 }

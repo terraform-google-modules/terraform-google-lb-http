@@ -82,6 +82,8 @@ spec:
         name:
           name: name
           title: Name
+          regexValidation: ^[a-z][a-z0-9-]{0,34}[a-z0-9]$
+          validation: Use lowercase letters, numbers, and hyphens. Start with a letter and end with letter/number. Must be 36 characters or fewer.
         network:
           name: network
           title: Network
