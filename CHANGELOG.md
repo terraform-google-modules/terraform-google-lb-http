@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.1.2](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.1.1...v12.1.2) (2025-03-05)
+
+
+### Bug Fixes
+
+* support providing null port for creating firewall to support USE_SERVING_PORT ([#488](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/488)) ([12caacc](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/12caaccb16b7ee4cfb38181c12a5b08769cf4955))
+
 ## [12.1.1](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.1.0...v12.1.1) (2025-02-28)
 
 
