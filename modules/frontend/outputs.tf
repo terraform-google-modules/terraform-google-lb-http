@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+output "ip_address_http_internal" {
+  description = "The internal/external IP addresses assigned to the HTTP forwarding rules."
+  value = [for rule in google_compute_global_forwarding_rule.http_internal : rule.ip_address]
+}
+
 output "external_ip" {
   description = "The external IPv4 assigned to the global fowarding rule."
   value       = local.address
