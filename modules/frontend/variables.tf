@@ -162,7 +162,7 @@ variable "load_balancing_scheme" {
 }
 
 variable "network" {
-  description = "Network for INTERNAL_SELF_MANAGED load balancing scheme"
+  description = "Network for INTERNAL_SELF_MANAGED/INTERNAL_MANAGED load balancing scheme"
   type        = string
   default     = "default"
 }
@@ -197,4 +197,10 @@ variable "http_keep_alive_timeout_sec" {
   description = "Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds)."
   type        = number
   default     = null
+}
+
+variable "internal_forwarding_rule_subnetworks" {
+  description = "Subnetworks for internal forwarding rules."
+  type = list(string)
+  default = []
 }
