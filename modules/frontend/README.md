@@ -21,7 +21,7 @@ This module creates `HTTP(S) forwarding rule` and its dependencies. This modules
 | https\_redirect | Set to `true` to enable https redirect on the lb. | `bool` | `false` | no |
 | ipv6\_address | An existing IPv6 address to use (the actual IP address value) | `string` | `null` | no |
 | labels | The labels to attach to resources created by this module | `map(string)` | `{}` | no |
-| load\_balancing\_scheme | Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL\_MANAGED for Envoy-based load balancer, and INTERNAL\_SELF\_MANAGED for traffic director) | `string` | `"EXTERNAL_MANAGED"` | no |
+| load\_balancing\_scheme | Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL\_MANAGED for Envoy-based load balancer, INTERNAL\_SELF\_MANAGED for traffic director and INTERNAL_MANAGED for cross-regional internal Envoy-based load balancer) | `string` | `"EXTERNAL_MANAGED"` | no |
 | managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` | `list(string)` | `[]` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |
 | network | Network for INTERNAL\_SELF\_MANAGED load balancing scheme | `string` | `"default"` | no |
@@ -40,6 +40,7 @@ This module creates `HTTP(S) forwarding rule` and its dependencies. This modules
 
 | Name | Description |
 |------|-------------|
+| ip\_address\_http\_internal\_managed| The internal IPv4s assigned to the global internal fowarding rules. |
 | external\_ip | The external IPv4 assigned to the global fowarding rule. |
 | external\_ipv6\_address | The external IPv6 assigned to the global fowarding rule. |
 | http\_proxy | The HTTP proxy used by this module. |
