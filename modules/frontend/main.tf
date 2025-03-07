@@ -24,8 +24,8 @@ locals {
 
 
   is_internal_self_managed = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED"
-  is_internal_managed = var.load_balancing_scheme == "INTERNAL_MANAGED"
-  internal_network    = local.is_internal_self_managed || local.is_internal_managed ? var.network : null
+  is_internal_managed      = var.load_balancing_scheme == "INTERNAL_MANAGED"
+  internal_network         = local.is_internal_self_managed || local.is_internal_managed ? var.network : null
 
   # Create a map with hosts as keys and empty lists as initial values
   hosts = toset([for service in var.url_map_input : service.host])
@@ -68,7 +68,7 @@ resource "google_compute_global_forwarding_rule" "http_internal_managed" {
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
   network               = local.internal_network
-  subnetwork = var.internal_forwarding_rule_subnetworks[count.index]
+  subnetwork            = var.internal_forwarding_rule_subnetworks[count.index]
 }
 
 resource "google_compute_global_forwarding_rule" "https" {
@@ -95,7 +95,7 @@ resource "google_compute_global_forwarding_rule" "https_internal_managed" {
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
   network               = local.internal_network
-  subnetwork = var.internal_forwarding_rule_subnetworks[count.index]
+  subnetwork            = var.internal_forwarding_rule_subnetworks[count.index]
 }
 
 resource "google_compute_global_address" "default" {
@@ -133,7 +133,7 @@ resource "google_compute_global_forwarding_rule" "http_ipv6_internal_managed" {
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
   network               = local.internal_network
-  subnetwork = var.internal_forwarding_rule_subnetworks[count.index]
+  subnetwork            = var.internal_forwarding_rule_subnetworks[count.index]
 }
 
 resource "google_compute_global_forwarding_rule" "https_ipv6" {
