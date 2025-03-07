@@ -23,8 +23,9 @@ locals {
   create_http_forward = var.http_forward || var.https_redirect
 
 
-  is_internal         = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED" || var.load_balancing_scheme == "INTERNAL_MANAGED"
-  internal_network    = local.is_internal ? var.network : null
+  is_internal_self_managed = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED"
+  is_internal_managed = var.load_balancing_scheme == "INTERNAL_MANAGED"
+  internal_network    = local.is_internal_self_managed || local.is_internal_managed ? var.network : null
 
   # Create a map with hosts as keys and empty lists as initial values
   hosts = toset([for service in var.url_map_input : service.host])
@@ -46,7 +47,7 @@ locals {
 resource "google_compute_global_forwarding_rule" "http" {
   provider              = google-beta
   project               = var.project_id
-  count                 = local.create_http_forward && !local.is_internal ? 1 : 0
+  count                 = local.create_http_forward && !local.is_internal_managed ? 1 : 0
   name                  = var.name
   target                = google_compute_target_http_proxy.default[0].self_link
   ip_address            = local.address
@@ -56,12 +57,12 @@ resource "google_compute_global_forwarding_rule" "http" {
   network               = local.internal_network
 }
 
-resource "google_compute_global_forwarding_rule" "http_internal" {
-  count = local.create_http_forward && local.is_internal ? length(var.internal_forwarding_rule_subnetworks) : 0
+resource "google_compute_global_forwarding_rule" "http_internal_managed" {
+  count = local.create_http_forward && local.is_internal_managed ? length(var.internal_forwarding_rule_subnetworks) : 0
 
   provider              = google-beta
   project               = var.project_id
-  name                  = "${var.name}-http-internal-${count.index}"
+  name                  = "${var.name}-http-internal-managed-${count.index}"
   target                = google_compute_target_http_proxy.default[0].self_link
   port_range            = var.http_port
   labels                = var.labels
@@ -73,7 +74,7 @@ resource "google_compute_global_forwarding_rule" "http_internal" {
 resource "google_compute_global_forwarding_rule" "https" {
   provider              = google-beta
   project               = var.project_id
-  count                 = var.ssl && !local.is_internal ? 1 : 0
+  count                 = var.ssl && !local.is_internal_managed ? 1 : 0
   name                  = "${var.name}-https"
   target                = google_compute_target_https_proxy.default[0].self_link
   ip_address            = local.address
@@ -83,12 +84,12 @@ resource "google_compute_global_forwarding_rule" "https" {
   network               = local.internal_network
 }
 
-resource "google_compute_global_forwarding_rule" "https_internal" {
-  count = var.ssl && local.is_internal ? length(var.internal_forwarding_rule_subnetworks) : 0
+resource "google_compute_global_forwarding_rule" "https_internal_managed" {
+  count = var.ssl && local.is_internal_managed ? length(var.internal_forwarding_rule_subnetworks) : 0
 
   provider              = google-beta
   project               = var.project_id
-  name                  = "${var.name}-https-internal-${count.index}"
+  name                  = "${var.name}-https-internal-managed-${count.index}"
   target                = google_compute_target_https_proxy.default[0].self_link
   port_range            = var.https_port
   labels                = var.labels
@@ -99,7 +100,7 @@ resource "google_compute_global_forwarding_rule" "https_internal" {
 
 resource "google_compute_global_address" "default" {
   provider   = google-beta
-  count      = local.is_internal ? 0 : var.create_address ? 1 : 0
+  count      = local.is_internal_self_managed ? 0 : var.create_address ? 1 : 0
   project    = var.project_id
   name       = "${var.name}-address"
   ip_version = "IPV4"
@@ -111,7 +112,7 @@ resource "google_compute_global_address" "default" {
 resource "google_compute_global_forwarding_rule" "http_ipv6" {
   provider              = google-beta
   project               = var.project_id
-  count                 = (var.enable_ipv6 && local.create_http_forward && !local.is_internal) ? 1 : 0
+  count                 = (var.enable_ipv6 && local.create_http_forward && !local.is_internal_managed) ? 1 : 0
   name                  = "${var.name}-ipv6-http"
   target                = google_compute_target_http_proxy.default[0].self_link
   ip_address            = local.ipv6_address
@@ -121,12 +122,12 @@ resource "google_compute_global_forwarding_rule" "http_ipv6" {
   network               = local.internal_network
 }
 
-resource "google_compute_global_forwarding_rule" "http_ipv6_internal" {
-  count = var.enable_ipv6 && local.create_http_forward && local.is_internal ? length(var.internal_forwarding_rule_subnetworks) : 0
+resource "google_compute_global_forwarding_rule" "http_ipv6_internal_managed" {
+  count = var.enable_ipv6 && local.create_http_forward && local.is_internal_managed ? length(var.internal_forwarding_rule_subnetworks) : 0
 
   provider              = google-beta
   project               = var.project_id
-  name                  = "${var.name}-ipv6-http-internal"
+  name                  = "${var.name}-http-ipv6-internal-managed-${count.index}"
   target                = google_compute_target_http_proxy.default[0].self_link
   port_range            = "80"
   labels                = var.labels
@@ -138,7 +139,7 @@ resource "google_compute_global_forwarding_rule" "http_ipv6_internal" {
 resource "google_compute_global_forwarding_rule" "https_ipv6" {
   provider              = google-beta
   project               = var.project_id
-  count                 = var.enable_ipv6 && var.ssl && !local.is_internal ? 1 : 0
+  count                 = var.enable_ipv6 && var.ssl && !local.is_internal_managed ? 1 : 0
   name                  = "${var.name}-ipv6-https"
   target                = google_compute_target_https_proxy.default[0].self_link
   ip_address            = local.ipv6_address
@@ -148,12 +149,12 @@ resource "google_compute_global_forwarding_rule" "https_ipv6" {
   network               = local.internal_network
 }
 
-resource "google_compute_global_forwarding_rule" "https_ipv6_internal" {
-  count = var.enable_ipv6 && var.ssl && local.is_internal ? length(var.internal_forwarding_rule_subnetworks) : 0
+resource "google_compute_global_forwarding_rule" "https_ipv6_internal)managed" {
+  count = var.enable_ipv6 && var.ssl && local.is_internal_managed ? length(var.internal_forwarding_rule_subnetworks) : 0
 
   provider              = google-beta
   project               = var.project_id
-  name                  = "${var.name}-ipv6-https-internal-${count.index}"
+  name                  = "${var.name}-https-ipv6-internal-managed-${count.index}"
   target                = google_compute_target_https_proxy.default[0].self_link
   port_range            = "443"
   labels                = var.labels
@@ -164,7 +165,7 @@ resource "google_compute_global_forwarding_rule" "https_ipv6_internal" {
 
 resource "google_compute_global_address" "default_ipv6" {
   provider   = google-beta
-  count      = local.is_internal ? 0 : (var.enable_ipv6 && var.create_ipv6_address) ? 1 : 0
+  count      = local.is_internal_self_managed ? 0 : (var.enable_ipv6 && var.create_ipv6_address) ? 1 : 0
   project    = var.project_id
   name       = "${var.name}-ipv6-address"
   ip_version = "IPV6"
