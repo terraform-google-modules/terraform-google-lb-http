@@ -143,7 +143,7 @@ module "frontend-service-a" {
   project_id   = var.project_id
   location     = var.subnet_region_a
   service_name = "fs-a"
-  containers   = [{ "env_vars" : { "TARGET_IP" : module.internal-lb-http-frontend.ip_address_http_internal[0] }, "ports" = { "container_port" = 80, "name" = "http1" }, "container_name" = "", "container_image" = "gcr.io/design-center-container-repo/redirect-traffic:latest-2002" }]
+  containers   = [{ "env_vars" : { "TARGET_IP" : module.internal-lb-http-frontend.ip_address_http_internal_managed[0] }, "ports" = { "container_port" = 80, "name" = "http1" }, "container_name" = "", "container_image" = "gcr.io/design-center-container-repo/redirect-traffic:latest-2002" }]
   members      = ["allUsers"]
   vpc_access = {
     connector = google_vpc_access_connector.internal_lb_vpc_connector.id
@@ -161,7 +161,7 @@ module "frontend-service-b" {
   project_id   = var.project_id
   location     = var.subnet_region_a
   service_name = "fs-b"
-  containers   = [{ "env_vars" : { "TARGET_IP" : module.internal-lb-http-frontend.ip_address_http_internal[1] }, "ports" = { "container_port" = 80, "name" = "http1" }, "container_name" = "", "container_image" = "gcr.io/design-center-container-repo/redirect-traffic:latest-2002" }]
+  containers   = [{ "env_vars" : { "TARGET_IP" : module.internal-lb-http-frontend.ip_address_http_internal_managed[1] }, "ports" = { "container_port" = 80, "name" = "http1" }, "container_name" = "", "container_image" = "gcr.io/design-center-container-repo/redirect-traffic:latest-2002" }]
   members      = ["allUsers"]
   vpc_access = {
     connector = google_vpc_access_connector.internal_lb_vpc_connector.id
