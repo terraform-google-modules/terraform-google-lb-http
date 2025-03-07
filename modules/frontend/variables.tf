@@ -201,6 +201,6 @@ variable "http_keep_alive_timeout_sec" {
 
 variable "internal_forwarding_rule_subnetworks" {
   description = "Subnetworks for internal forwarding rules."
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }

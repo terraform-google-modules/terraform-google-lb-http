@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 variable "project_id" {
   type = string
 }
 
 variable "backend_region_a" {
-  type    = string
+  type = string
 }
 
 variable "backend_region_b" {
-  type    = string
+  type = string
 }
 
 variable "subnet_region_a" {
