@@ -28,7 +28,7 @@ resource "google_compute_backend_service" "default" {
   description                     = var.description
   connection_draining_timeout_sec = var.connection_draining_timeout_sec
   enable_cdn                      = var.enable_cdn
-  compression_mode                = var.compression_mode
+  compression_mode                = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED" || var.load_balancing_scheme == "INTERNAL_MANAGED" ? null : var.compression_mode
   custom_request_headers          = var.custom_request_headers
   custom_response_headers         = var.custom_response_headers
   session_affinity                = var.session_affinity
