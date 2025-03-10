@@ -19,22 +19,22 @@ variable "project_id" {
 }
 
 variable "backend_region_a" {
-  type = string
+  type    = string
   default = "us-east1"
 }
 
 variable "backend_region_b" {
-  type = string
+  type    = string
   default = "us-south1"
 }
 
 variable "subnet_region_a" {
-  type = string
+  type    = string
   default = "us-central1"
 }
 
 variable "subnet_region_b" {
-  type = string
+  type    = string
   default = "us-west1"
 }
 
