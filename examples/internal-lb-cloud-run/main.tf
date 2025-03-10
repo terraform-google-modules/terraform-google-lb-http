@@ -103,7 +103,6 @@ module "internal-lb-http-backend" {
   enable_cdn            = false
   load_balancing_scheme = "INTERNAL_MANAGED"
   locality_lb_policy    = "RANDOM"
-  compression_mode      = "DISABLED"
   serverless_neg_backends = [
     { region : var.backend_region_a, type : "cloud-run", service_name : module.backend-service-region-a.service_name },
     { region : var.backend_region_b, type : "cloud-run", service_name : module.backend-service-region-b.service_name }
