@@ -57,12 +57,12 @@ resource "google_compute_global_forwarding_rule" "http" {
   network               = local.internal_network
 }
 
-resource "google_compute_global_forwarding_rule" "http_internal_managed" {
+resource "google_compute_global_forwarding_rule" "internal_managed_http" {
   count = local.create_http_forward && local.is_internal_managed ? length(var.internal_forwarding_rule_subnetworks) : 0
 
   provider              = google-beta
   project               = var.project_id
-  name                  = "${var.name}-http-internal-managed-${count.index}"
+  name                  = "${var.name}-internal-managed-http-${count.index}"
   target                = google_compute_target_http_proxy.default[0].self_link
   port_range            = var.http_port
   labels                = var.labels
@@ -84,12 +84,12 @@ resource "google_compute_global_forwarding_rule" "https" {
   network               = local.internal_network
 }
 
-resource "google_compute_global_forwarding_rule" "https_internal_managed" {
+resource "google_compute_global_forwarding_rule" "internal_managed_https" {
   count = var.ssl && local.is_internal_managed ? length(var.internal_forwarding_rule_subnetworks) : 0
 
   provider              = google-beta
   project               = var.project_id
-  name                  = "${var.name}-https-internal-managed-${count.index}"
+  name                  = "${var.name}-internal-managed-https-${count.index}"
   target                = google_compute_target_https_proxy.default[0].self_link
   port_range            = var.https_port
   labels                = var.labels
@@ -122,12 +122,12 @@ resource "google_compute_global_forwarding_rule" "http_ipv6" {
   network               = local.internal_network
 }
 
-resource "google_compute_global_forwarding_rule" "http_ipv6_internal_managed" {
+resource "google_compute_global_forwarding_rule" "internal_managed_http_ipv6" {
   count = var.enable_ipv6 && local.create_http_forward && local.is_internal_managed ? length(var.internal_forwarding_rule_subnetworks) : 0
 
   provider              = google-beta
   project               = var.project_id
-  name                  = "${var.name}-http-ipv6-internal-managed-${count.index}"
+  name                  = "${var.name}-internal-managed-http-ipv6-${count.index}"
   target                = google_compute_target_http_proxy.default[0].self_link
   port_range            = "80"
   labels                = var.labels
@@ -149,12 +149,12 @@ resource "google_compute_global_forwarding_rule" "https_ipv6" {
   network               = local.internal_network
 }
 
-resource "google_compute_global_forwarding_rule" "https_ipv6_internal)managed" {
+resource "google_compute_global_forwarding_rule" "internal_managed_https_ipv6" {
   count = var.enable_ipv6 && var.ssl && local.is_internal_managed ? length(var.internal_forwarding_rule_subnetworks) : 0
 
   provider              = google-beta
   project               = var.project_id
-  name                  = "${var.name}-https-ipv6-internal-managed-${count.index}"
+  name                  = "${var.name}-internal-managed-https-ipv6-${count.index}"
   target                = google_compute_target_https_proxy.default[0].self_link
   port_range            = "443"
   labels                = var.labels
