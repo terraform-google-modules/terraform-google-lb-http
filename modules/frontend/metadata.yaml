@@ -50,6 +50,8 @@ spec:
         location: examples/https-gke
       - name: https-redirect
         location: examples/https-redirect
+      - name: internal-lb-cloud-run
+        location: examples/internal-lb-cloud-run
       - name: lb-http-separate-frontend-and-backend
         location: examples/lb-http-separate-frontend-and-backend
       - name: mig-nat-http-lb
@@ -168,7 +170,7 @@ spec:
         varType: string
         defaultValue: EXTERNAL_MANAGED
       - name: network
-        description: Network for INTERNAL_SELF_MANAGED load balancing scheme
+        description: Network for INTERNAL_SELF_MANAGED/INTERNAL_MANAGED load balancing scheme
         varType: string
         defaultValue: default
       - name: server_tls_policy
@@ -185,6 +187,10 @@ spec:
       - name: http_keep_alive_timeout_sec
         description: Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds).
         varType: number
+      - name: internal_forwarding_rule_subnetworks
+        description: List of fully-qualified subnetwork IDs (e.g., projects/my-project/regions/us-central1/subnetworks/my-subnet).
+        varType: list(string)
+        defaultValue: []
     outputs:
       - name: external_ip
         description: The external IPv4 assigned to the global fowarding rule.
@@ -198,6 +204,10 @@ spec:
       - name: https_proxy
         description: The HTTPS proxy used by this module.
         type: string
+      - name: ip_address_internal_managed_http
+        description: The internal/external IP addresses assigned to the HTTP forwarding rules.
+      - name: ip_address_internal_managed_https
+        description: The internal/external IP addresses assigned to the HTTPS forwarding rules.
       - name: ipv6_enabled
         description: Whether IPv6 configuration is enabled on this load-balancer
         type: bool
