@@ -200,7 +200,7 @@ variable "http_keep_alive_timeout_sec" {
 }
 
 variable "internal_forwarding_rule_subnetworks" {
-  description = "Subnetworks for internal forwarding rules."
+  description = "List of fully-qualified subnetwork IDs (e.g., projects/my-project/regions/us-central1/subnetworks/my-subnet)."
   type        = list(string)
   default     = []
 }
