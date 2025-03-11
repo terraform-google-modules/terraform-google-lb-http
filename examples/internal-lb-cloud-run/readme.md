@@ -16,9 +16,5 @@ The forwarding rules and its dependecies are created as part of `frontend` modul
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | project\_id | n/a | `string` | n/a | yes |
-| backend_region_a | n/a | `string` | `"us-east1"` | no |
-| backend_region_b | n/a | `string` | `"us-south1"` | no |
-| subnet_region_a | n/a | `string` | `"us-central1"` | no |
-| subnet_region_b | n/a | `string` | `"us-west1"` | no |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

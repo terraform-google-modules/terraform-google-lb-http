@@ -50,6 +50,8 @@ spec:
         location: examples/https-gke
       - name: https-redirect
         location: examples/https-redirect
+      - name: internal-lb-cloud-run
+        location: examples/internal-lb-cloud-run
       - name: lb-http-separate-frontend-and-backend
         location: examples/lb-http-separate-frontend-and-backend
       - name: mig-nat-http-lb
