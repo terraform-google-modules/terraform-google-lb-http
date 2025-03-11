@@ -32,7 +32,7 @@ resource "google_compute_subnetwork" "internal_lb_subnet_a" {
   name          = "int-lb-subnet-a"
   ip_cidr_range = "10.1.2.0/24"
   network       = google_compute_network.internal_lb_network.id
-  region        = var.subnet_region_a
+  region        = "us-east1"
   project       = var.project_id
   depends_on    = [google_compute_network.internal_lb_network]
 }
@@ -42,7 +42,7 @@ resource "google_compute_subnetwork" "internal_lb_proxy_only_a" {
   ip_cidr_range = "10.129.0.0/23"
   network       = google_compute_network.internal_lb_network.id
   purpose       = "GLOBAL_MANAGED_PROXY"
-  region        = var.subnet_region_a
+  region        = "us-east1"
   project       = var.project_id
   role          = "ACTIVE"
   depends_on    = [google_compute_network.internal_lb_network]
@@ -52,7 +52,7 @@ resource "google_compute_subnetwork" "internal_lb_subnet_b" {
   name          = "int-lb-subnet-b"
   ip_cidr_range = "10.1.3.0/24"
   network       = google_compute_network.internal_lb_network.id
-  region        = var.subnet_region_b
+  region        = "us-south1"
   project       = var.project_id
   depends_on    = [google_compute_network.internal_lb_network]
 }
@@ -62,7 +62,7 @@ resource "google_compute_subnetwork" "internal_lb_proxy_only_b" {
   ip_cidr_range = "10.130.0.0/23"
   network       = google_compute_network.internal_lb_network.id
   purpose       = "GLOBAL_MANAGED_PROXY"
-  region        = var.subnet_region_b
+  region        = "us-south1"
   project       = var.project_id
   role          = "ACTIVE"
   depends_on    = [google_compute_network.internal_lb_network]
@@ -72,7 +72,7 @@ module "backend-service-region-a" {
   source                        = "GoogleCloudPlatform/cloud-run/google//modules/v2"
   version                       = "~> 0.16.3"
   project_id                    = var.project_id
-  location                      = var.backend_region_a
+  location                      = "us-central1"
   service_name                  = "bs-a"
   containers                    = [{ "container_name" = "", "container_image" = "gcr.io/cloudrun/hello" }]
   members                       = ["allUsers"]
@@ -85,7 +85,7 @@ module "backend-service-region-b" {
   source                        = "GoogleCloudPlatform/cloud-run/google//modules/v2"
   version                       = "~> 0.16.3"
   project_id                    = var.project_id
-  location                      = var.backend_region_b
+  location                      = "us-west1"
   service_name                  = "bs-b"
   containers                    = [{ "container_name" = "", "container_image" = "gcr.io/cloudrun/hello" }]
   members                       = ["allUsers"]
@@ -104,8 +104,8 @@ module "internal-lb-http-backend" {
   load_balancing_scheme = "INTERNAL_MANAGED"
   locality_lb_policy    = "RANDOM"
   serverless_neg_backends = [
-    { region : var.backend_region_a, type : "cloud-run", service_name : module.backend-service-region-a.service_name },
-    { region : var.backend_region_b, type : "cloud-run", service_name : module.backend-service-region-b.service_name }
+    { region : "us-central1", type : "cloud-run", service_name : module.backend-service-region-a.service_name },
+    { region : "us-west1", type : "cloud-run", service_name : module.backend-service-region-b.service_name }
   ]
 }
 
@@ -129,7 +129,7 @@ resource "google_vpc_access_connector" "internal_lb_vpc_connector" {
   provider       = google-beta
   project        = var.project_id
   name           = "int-lb-vpc-connector"
-  region         = var.subnet_region_a
+  region         = "us-east1"
   ip_cidr_range  = "10.8.0.0/28"
   network        = google_compute_network.internal_lb_network.name
   max_throughput = 500
@@ -140,7 +140,7 @@ module "frontend-service-a" {
   source       = "GoogleCloudPlatform/cloud-run/google//modules/v2"
   version      = "~> 0.16.3"
   project_id   = var.project_id
-  location     = var.subnet_region_a
+  location     = "us-east1"
   service_name = "fs-a"
   containers   = [{ "env_vars" : { "TARGET_IP" : module.internal-lb-http-frontend.ip_address_internal_managed_http[0] }, "ports" = { "container_port" = 80, "name" = "http1" }, "container_name" = "", "container_image" = "gcr.io/design-center-container-repo/redirect-traffic:latest-2002" }]
   members      = ["allUsers"]
@@ -158,7 +158,7 @@ module "frontend-service-b" {
   source       = "GoogleCloudPlatform/cloud-run/google//modules/v2"
   version      = "~> 0.16.3"
   project_id   = var.project_id
-  location     = var.subnet_region_a
+  location     = "us-east1"
   service_name = "fs-b"
   containers   = [{ "env_vars" : { "TARGET_IP" : module.internal-lb-http-frontend.ip_address_internal_managed_http[1] }, "ports" = { "container_port" = 80, "name" = "http1" }, "container_name" = "", "container_image" = "gcr.io/design-center-container-repo/redirect-traffic:latest-2002" }]
   members      = ["allUsers"]
