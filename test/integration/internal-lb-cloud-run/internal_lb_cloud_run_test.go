@@ -16,7 +16,6 @@ package internal_lb_cloud_run
 
 import (
 	"testing"
-	"fmt"
 
 	"net/http"
 
