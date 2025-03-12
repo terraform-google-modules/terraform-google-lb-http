@@ -95,8 +95,8 @@ module "backend-service-region-b" {
 }
 
 module "internal-lb-http-backend" {
-  source = "../../modules/backend" # use registry 
-  #version = "~> 12.1.1"
+  source = "terraform-google-modules/lb-http/google//modules/frontend"
+  version = "~> 12.1.1"
 
   project_id            = var.project_id
   name                  = "int-lb-http-backend"
@@ -110,8 +110,8 @@ module "internal-lb-http-backend" {
 }
 
 module "internal-lb-http-frontend" {
-  source = "../../modules/frontend" # use registry
-  #version = "~> 12.1.1"
+  source = "terraform-google-modules/lb-http/google//modules/frontend"
+  version = "~> 12.1.1"
 
   project_id            = var.project_id
   name                  = "int-lb-http-frontend"
