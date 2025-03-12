@@ -20,7 +20,8 @@ locals {
     "roles/compute.admin",
     "roles/run.admin",
     "roles/iam.serviceAccountUser",
-    "roles/certificatemanager.owner"
+    "roles/certificatemanager.owner",
+    "roles/owner"
   ]
   int_required_folder_roles = [
     "roles/compute.xpnAdmin"
