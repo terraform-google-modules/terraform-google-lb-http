@@ -332,6 +332,7 @@ spec:
           - roles/run.admin
           - roles/iam.serviceAccountUser
           - roles/certificatemanager.owner
+          - roles/owner
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
