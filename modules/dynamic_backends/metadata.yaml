@@ -340,6 +340,7 @@ spec:
       - run.googleapis.com
       - iam.googleapis.com
       - certificatemanager.googleapis.com
+      - vpcaccess.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6.0, < 7"
