@@ -130,7 +130,7 @@ steps:
   # Internal cross regional http load balancer with cloud-run
 - id: apply internal-lb-http
   waitFor:
-    - init-all
+    - create
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestInternalLbCloudRun --stage apply --verbose']
 - id: verify internal-lb-http
