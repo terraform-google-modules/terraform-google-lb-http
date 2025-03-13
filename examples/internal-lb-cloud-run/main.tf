@@ -122,7 +122,7 @@ module "internal-lb-http-frontend" {
     google_compute_subnetwork.internal_lb_subnet_a.id,
     google_compute_subnetwork.internal_lb_subnet_b.id
   ]
-  #depends_on = [google_compute_subnetwork.internal_lb_proxy_only_a, google_compute_subnetwork.internal_lb_proxy_only_b, google_compute_subnetwork.internal_lb_subnet_a, google_compute_network.internal_lb_subnet_b]
+  depends_on = [google_compute_subnetwork.internal_lb_proxy_only_a, google_compute_subnetwork.internal_lb_proxy_only_b]
 }
 
 resource "google_vpc_access_connector" "internal_lb_vpc_connector" {
