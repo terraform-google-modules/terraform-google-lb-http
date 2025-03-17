@@ -229,7 +229,8 @@ spec:
           - roles/run.admin
           - roles/iam.serviceAccountUser
           - roles/certificatemanager.owner
-          - roles/owner
+          - roles/vpcaccess.admin
+          - roles/iam.serviceAccountCreator
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
