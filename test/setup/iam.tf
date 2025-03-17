@@ -19,7 +19,7 @@ locals {
     "roles/storage.admin",
     "roles/compute.admin",
     "roles/run.admin",
-    "roles/iam.serviceAccountUser",    
+    "roles/iam.serviceAccountUser",
     "roles/certificatemanager.owner",
     "roles/vpcaccess.admin",
     "roles/iam.serviceAccountCreator"
