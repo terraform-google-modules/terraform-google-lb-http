@@ -333,7 +333,7 @@ spec:
           - roles/iam.serviceAccountUser
           - roles/certificatemanager.owner
           - roles/vpcaccess.admin
-          - roles/iam.serviceAccountCreator
+          - roles/iam.serviceAccountAdmin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com

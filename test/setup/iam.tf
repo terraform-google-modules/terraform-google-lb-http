@@ -22,7 +22,7 @@ locals {
     "roles/iam.serviceAccountUser",
     "roles/certificatemanager.owner",
     "roles/vpcaccess.admin",
-    "roles/iam.serviceAccountCreator"
+    "roles/iam.serviceAccountAdmin"
   ]
   int_required_folder_roles = [
     "roles/compute.xpnAdmin"
