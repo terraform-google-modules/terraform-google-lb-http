@@ -199,12 +199,6 @@ variable "http_keep_alive_timeout_sec" {
   default     = null
 }
 
-variable "internal_forwarding_rule_subnetworks" {
-  description = "List of fully-qualified subnetwork IDs (e.g., projects/my-project/regions/us-central1/subnetworks/my-subnet)."
-  type        = list(string)
-  default     = []
-}
-
 variable "internal_forwarding_rule_configs" {
   description = "Map of internal managed forwarding rule configs. One of 'address' or 'subnetwork' is required for each."
   type = map(object({

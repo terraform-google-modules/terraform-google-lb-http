@@ -187,10 +187,14 @@ spec:
       - name: http_keep_alive_timeout_sec
         description: Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds).
         varType: number
-      - name: internal_forwarding_rule_subnetworks
-        description: List of fully-qualified subnetwork IDs (e.g., projects/my-project/regions/us-central1/subnetworks/my-subnet).
-        varType: list(string)
-        defaultValue: []
+      - name: internal_forwarding_rule_configs
+        description: Map of internal managed forwarding rule configs. One of 'address' or 'subnetwork' is required for each.
+        varType: |-
+          map(object({
+              address    = optional(string)
+              subnetwork = optional(string)
+            }))
+        defaultValue: {}
     outputs:
       - name: external_ip
         description: The external IPv4 assigned to the global fowarding rule.
