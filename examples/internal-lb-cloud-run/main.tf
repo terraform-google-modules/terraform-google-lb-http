@@ -22,50 +22,48 @@ provider "google-beta" {
   project = var.project_id
 }
 
-resource "google_compute_network" "internal_lb_network" {
-  name                    = "int-lb-network"
-  auto_create_subnetworks = "false"
-  project                 = var.project_id
+module "internal-lb-network" {
+  source                  = "terraform-google-modules/network/google//modules/vpc"
+  version                 = "~> 10.0.0"
+  project_id              = var.project_id
+  network_name            = "int-lb-network"
+  auto_create_subnetworks = false
 }
 
-resource "google_compute_subnetwork" "internal_lb_subnet_a" {
-  name          = "int-lb-subnet-a"
-  ip_cidr_range = "10.1.2.0/24"
-  network       = google_compute_network.internal_lb_network.id
-  region        = "us-east1"
-  project       = var.project_id
-  depends_on    = [google_compute_network.internal_lb_network]
-}
+module "internal-lb-subnet" {
+  source  = "terraform-google-modules/network/google//modules/subnets"
+  version = "~> 10.0.0"
 
-resource "google_compute_subnetwork" "internal_lb_proxy_only_a" {
-  name          = "int-lb-proxy-only-subnet-a"
-  ip_cidr_range = "10.129.0.0/23"
-  network       = google_compute_network.internal_lb_network.id
-  purpose       = "GLOBAL_MANAGED_PROXY"
-  region        = "us-east1"
-  project       = var.project_id
-  role          = "ACTIVE"
-  depends_on    = [google_compute_network.internal_lb_network]
-}
+  subnets = [
+    {
+      subnet_name   = "int-lb-subnet-a"
+      subnet_ip     = "10.1.2.0/24"
+      subnet_region = "us-east1"
+    },
+    {
+      subnet_name   = "int-lb-proxy-only-subnet-a"
+      subnet_ip     = "10.129.0.0/23"
+      subnet_region = "us-east1"
+      purpose       = "GLOBAL_MANAGED_PROXY"
+      role          = "ACTIVE"
+    },
+    {
+      subnet_name   = "int-lb-subnet-b"
+      subnet_ip     = "10.1.3.0/24"
+      subnet_region = "us-south1"
+    },
+    {
+      subnet_name   = "int-lb-proxy-only-subnet-b",
+      subnet_ip     = "10.130.0.0/23"
+      subnet_region = "us-south1"
+      purpose       = "GLOBAL_MANAGED_PROXY"
+      role          = "ACTIVE"
+    }
+  ]
 
-resource "google_compute_subnetwork" "internal_lb_subnet_b" {
-  name          = "int-lb-subnet-b"
-  ip_cidr_range = "10.1.3.0/24"
-  network       = google_compute_network.internal_lb_network.id
-  region        = "us-south1"
-  project       = var.project_id
-  depends_on    = [google_compute_network.internal_lb_network]
-}
-
-resource "google_compute_subnetwork" "internal_lb_proxy_only_b" {
-  name          = "int-lb-proxy-only-subnet-b"
-  ip_cidr_range = "10.130.0.0/23"
-  network       = google_compute_network.internal_lb_network.id
-  purpose       = "GLOBAL_MANAGED_PROXY"
-  region        = "us-south1"
-  project       = var.project_id
-  role          = "ACTIVE"
-  depends_on    = [google_compute_network.internal_lb_network]
+  network_name = module.internal-lb-network.network_name
+  project_id   = var.project_id
+  depends_on   = [module.internal-lb-network]
 }
 
 module "backend-service-region-a" {
@@ -116,17 +114,16 @@ module "internal-lb-http-frontend" {
   project_id            = var.project_id
   name                  = "int-lb-http-frontend"
   url_map_input         = module.internal-lb-http-backend.backend_service_info
-  network               = google_compute_network.internal_lb_network.name
+  network               = module.internal-lb-network.network_name
   load_balancing_scheme = "INTERNAL_MANAGED"
   internal_forwarding_rule_configs = {
     "1" : {
-      "subnetwork" : google_compute_subnetwork.internal_lb_subnet_a.id
+      "subnetwork" : module.internal-lb-subnet.subnets["us-east1/int-lb-subnet-a"].id
     },
     "2" : {
-      "subnetwork" : google_compute_subnetwork.internal_lb_subnet_b.id
+      "subnetwork" : module.internal-lb-subnet.subnets["us-south1/int-lb-subnet-b"].id
     }
   }
-  depends_on = [google_compute_subnetwork.internal_lb_proxy_only_a, google_compute_subnetwork.internal_lb_proxy_only_b]
 }
 
 resource "google_vpc_access_connector" "internal_lb_vpc_connector" {
@@ -135,7 +132,7 @@ resource "google_vpc_access_connector" "internal_lb_vpc_connector" {
   name           = "int-lb-vpc-connector"
   region         = "us-east1"
   ip_cidr_range  = "10.8.0.0/28"
-  network        = google_compute_network.internal_lb_network.name
+  network        = module.internal-lb-network.network_name
   max_throughput = 500
   min_throughput = 300
 }
