@@ -95,8 +95,8 @@ module "backend-service-region-b" {
 }
 
 module "internal-lb-http-backend" {
-  source  = "terraform-google-modules/lb-http/google//modules/backend"
-  version = "~> 12.0"
+  source = "../../modules/backend"
+  #version = "~> 12.0"
 
   project_id            = var.project_id
   name                  = "int-lb-http-backend"
@@ -110,18 +110,22 @@ module "internal-lb-http-backend" {
 }
 
 module "internal-lb-http-frontend" {
-  source  = "terraform-google-modules/lb-http/google//modules/frontend"
-  version = "~> 12.0"
+  source = "../../modules/frontend"
+  #version = "~> 12.0"
 
   project_id            = var.project_id
   name                  = "int-lb-http-frontend"
   url_map_input         = module.internal-lb-http-backend.backend_service_info
   network               = google_compute_network.internal_lb_network.name
   load_balancing_scheme = "INTERNAL_MANAGED"
-  internal_forwarding_rule_subnetworks = [
-    google_compute_subnetwork.internal_lb_subnet_a.id,
-    google_compute_subnetwork.internal_lb_subnet_b.id
-  ]
+  internal_forwarding_rule_configs = {
+    "1" : {
+      "subnetwork" : google_compute_subnetwork.internal_lb_subnet_a.id
+    },
+    "2" : {
+      "subnetwork" : google_compute_subnetwork.internal_lb_subnet_b.id
+    }
+  }
   depends_on = [google_compute_subnetwork.internal_lb_proxy_only_a, google_compute_subnetwork.internal_lb_proxy_only_b]
 }
 

@@ -204,3 +204,12 @@ variable "internal_forwarding_rule_subnetworks" {
   type        = list(string)
   default     = []
 }
+
+variable "internal_forwarding_rule_configs" {
+  description = "Map of internal managed forwarding rule configs. One of 'address' or 'subnetwork' is required for each."
+  type = map(object({
+    address    = optional(string)
+    subnetwork = optional(string)
+  }))
+  default = {}
+}
