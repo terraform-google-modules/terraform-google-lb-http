@@ -199,11 +199,11 @@ variable "http_keep_alive_timeout_sec" {
   default     = null
 }
 
-variable "internal_forwarding_rule_configs" {
-  description = "Map of internal managed forwarding rule configs. One of 'address' or 'subnetwork' is required for each."
-  type = map(object({
+variable "internal_forwarding_rules_config" {
+  description = "List of internal managed forwarding rules config. One of 'address' or 'subnetwork' is required for each."
+  type = list(object({
     address    = optional(string)
     subnetwork = optional(string)
   }))
-  default = {}
+  default = []
 }

@@ -116,14 +116,14 @@ module "internal-lb-http-frontend" {
   url_map_input         = module.internal-lb-http-backend.backend_service_info
   network               = module.internal-lb-network.network_name
   load_balancing_scheme = "INTERNAL_MANAGED"
-  internal_forwarding_rule_configs = {
-    "1" : {
+  internal_forwarding_rules_config = [
+    {
       "subnetwork" : module.internal-lb-subnet.subnets["us-east1/int-lb-subnet-a"].id
     },
-    "2" : {
+    {
       "subnetwork" : module.internal-lb-subnet.subnets["us-south1/int-lb-subnet-b"].id
     }
-  }
+  ]
 }
 
 resource "google_vpc_access_connector" "internal_lb_vpc_connector" {
