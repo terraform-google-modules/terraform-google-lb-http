@@ -22,10 +22,10 @@ This module creates `HTTP(S) forwarding rule` and its dependencies. This modules
 | internal\_forwarding\_rules\_config | List of internal managed forwarding rules config. One of 'address' or 'subnetwork' is required for each. It is only applicable for internal load balancer | <pre>list(object({<br>    region     = string<br>    address    = optional(string)<br>    subnetwork = optional(string)<br>  }))</pre> | `[]` | no |
 | ipv6\_address | An existing IPv6 address to use (the actual IP address value) | `string` | `null` | no |
 | labels | The labels to attach to resources created by this module | `map(string)` | `{}` | no |
-| load\_balancing\_scheme | Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL\_MANAGED for Envoy-based load balancer, and INTERNAL\_MANAGED for internal load balancer) | `string` | `"EXTERNAL_MANAGED"` | no |
+| load\_balancing\_scheme | Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL\_MANAGED for Envoy-based load balancer, INTERNAL\_MANAGED for internal load balancer and INTERNAL\_SELF\_MANAGED for traffic director) | `string` | `"EXTERNAL_MANAGED"` | no |
 | managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` | `list(string)` | `[]` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |
-| network | Network for INTERNAL\_MANAGED load balancing scheme | `string` | `"default"` | no |
+| network | Network for internal load balancer | `string` | `"default"` | no |
 | private\_key | Content of the private SSL key. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true` | `string` | `null` | no |
 | project\_id | The project to deploy to, if not set the default provider project is used. | `string` | n/a | yes |
 | quic | Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only. | `bool` | `null` | no |

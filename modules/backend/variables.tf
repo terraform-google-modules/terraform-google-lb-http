@@ -26,7 +26,7 @@ variable "project_id" {
 }
 
 variable "load_balancing_scheme" {
-  description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_MANAGED for internal load balancer)"
+  description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, INTERNAL_MANAGED for internal load balancer and INTERNAL_SELF_MANAGED for traffic director)"
   type        = string
   default     = "EXTERNAL_MANAGED"
 }
