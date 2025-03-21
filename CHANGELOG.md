@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.1.3](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.1.2...v12.1.3) (2025-03-21)
+
+
+### Features
+
+* support for internal cross-regional load balancer ([#490](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/490)) ([6200076](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/62000761ea7926f4caa8b3a1c915a571c2139bde))
+
 ## [12.1.2](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.1.1...v12.1.2) (2025-03-05)
 
 
