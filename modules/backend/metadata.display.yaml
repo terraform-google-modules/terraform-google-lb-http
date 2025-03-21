@@ -77,6 +77,11 @@ spec:
         load_balancing_scheme:
           name: load_balancing_scheme
           title: Load Balancing Scheme
+          enumValueLabels:
+            - label: EXTERNAL_MANAGED
+              value: EXTERNAL_MANAGED
+            - label: INTERNAL_MANAGED
+              value: INTERNAL_MANAGED
         locality_lb_policy:
           name: locality_lb_policy
           title: Locality Lb Policy

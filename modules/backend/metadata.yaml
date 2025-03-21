@@ -50,6 +50,8 @@ spec:
         location: examples/https-gke
       - name: https-redirect
         location: examples/https-redirect
+      - name: internal-lb-cloud-run
+        location: examples/internal-lb-cloud-run
       - name: lb-http-separate-frontend-and-backend
         location: examples/lb-http-separate-frontend-and-backend
       - name: mig-nat-http-lb
@@ -77,7 +79,7 @@ spec:
         varType: string
         required: true
       - name: load_balancing_scheme
-        description: Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_SELF_MANAGED for traffic director).
+        description: Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, INTERNAL_MANAGED for internal load balancer and INTERNAL_SELF_MANAGED for traffic director)
         varType: string
         defaultValue: EXTERNAL_MANAGED
       - name: protocol
@@ -305,6 +307,8 @@ spec:
           - roles/run.admin
           - roles/iam.serviceAccountUser
           - roles/certificatemanager.owner
+          - roles/vpcaccess.admin
+          - roles/iam.serviceAccountAdmin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
@@ -313,6 +317,7 @@ spec:
       - run.googleapis.com
       - iam.googleapis.com
       - certificatemanager.googleapis.com
+      - vpcaccess.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6.0, < 7"

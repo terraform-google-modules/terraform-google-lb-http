@@ -156,13 +156,13 @@ variable "labels" {
 }
 
 variable "load_balancing_scheme" {
-  description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_SELF_MANAGED for traffic director)"
+  description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, INTERNAL_MANAGED for internal load balancer and INTERNAL_SELF_MANAGED for traffic director)"
   type        = string
   default     = "EXTERNAL_MANAGED"
 }
 
 variable "network" {
-  description = "Network for INTERNAL_SELF_MANAGED load balancing scheme"
+  description = "Network for internal load balancer"
   type        = string
   default     = "default"
 }
@@ -197,4 +197,14 @@ variable "http_keep_alive_timeout_sec" {
   description = "Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds)."
   type        = number
   default     = null
+}
+
+variable "internal_forwarding_rules_config" {
+  description = "List of internal managed forwarding rules config. One of 'address' or 'subnetwork' is required for each. It is only applicable for internal load balancer"
+  type = list(object({
+    region     = string
+    address    = optional(string)
+    subnetwork = optional(string)
+  }))
+  default = []
 }
