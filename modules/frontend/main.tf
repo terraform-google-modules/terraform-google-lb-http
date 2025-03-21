@@ -59,7 +59,7 @@ resource "google_compute_global_forwarding_rule" "http" {
 
 resource "google_compute_global_forwarding_rule" "internal_managed_http" {
   for_each = local.create_http_forward && local.is_internal_managed ? {
-    for index, config in var.internal_forwarding_rules_config : index => config
+    for config in var.internal_forwarding_rules_config : config.region => config
   } : {}
 
   provider              = google-beta
@@ -89,7 +89,7 @@ resource "google_compute_global_forwarding_rule" "https" {
 
 resource "google_compute_global_forwarding_rule" "internal_managed_https" {
   for_each = var.ssl && local.is_internal_managed ? {
-    for index, config in var.internal_forwarding_rules_config : index => config
+    for config in var.internal_forwarding_rules_config : config.region => config
   } : {}
 
   provider              = google-beta
@@ -130,7 +130,7 @@ resource "google_compute_global_forwarding_rule" "http_ipv6" {
 
 resource "google_compute_global_forwarding_rule" "internal_managed_http_ipv6" {
   for_each = var.enable_ipv6 && local.create_http_forward && local.is_internal_managed ? {
-    for index, config in var.internal_forwarding_rules_config : index => config
+    for config in var.internal_forwarding_rules_config : config.region => config
   } : {}
 
   provider              = google-beta
@@ -159,7 +159,7 @@ resource "google_compute_global_forwarding_rule" "https_ipv6" {
 
 resource "google_compute_global_forwarding_rule" "internal_managed_https_ipv6" {
   for_each = var.enable_ipv6 && var.ssl && local.is_internal_managed ? {
-    for index, config in var.internal_forwarding_rules_config : index => config
+    for config in var.internal_forwarding_rules_config : config.region => config
   } : {}
 
   provider              = google-beta

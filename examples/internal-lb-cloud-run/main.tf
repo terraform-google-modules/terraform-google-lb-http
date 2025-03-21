@@ -118,9 +118,11 @@ module "internal-lb-http-frontend" {
   load_balancing_scheme = "INTERNAL_MANAGED"
   internal_forwarding_rules_config = [
     {
+      "region" : "us-east1",
       "subnetwork" : module.internal-lb-subnet.subnets["us-east1/int-lb-subnet-a"].id
     },
     {
+      "region" : "us-south1",
       "subnetwork" : module.internal-lb-subnet.subnets["us-south1/int-lb-subnet-b"].id
     }
   ]
