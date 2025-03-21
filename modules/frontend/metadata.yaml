@@ -166,11 +166,11 @@ spec:
         varType: map(string)
         defaultValue: {}
       - name: load_balancing_scheme
-        description: Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_SELF_MANAGED for traffic director)
+        description: Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_MANAGED for internal load balancer)
         varType: string
         defaultValue: EXTERNAL_MANAGED
       - name: network
-        description: Network for INTERNAL_SELF_MANAGED/INTERNAL_MANAGED load balancing scheme
+        description: Network for INTERNAL_MANAGED load balancing scheme
         varType: string
         defaultValue: default
       - name: server_tls_policy
@@ -188,9 +188,10 @@ spec:
         description: Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds).
         varType: number
       - name: internal_forwarding_rules_config
-        description: List of internal managed forwarding rules config. One of 'address' or 'subnetwork' is required for each.
+        description: List of internal managed forwarding rules config. One of 'address' or 'subnetwork' is required for each. It is only applicable for internal load balancer
         varType: |-
           list(object({
+              region     = string
               address    = optional(string)
               subnetwork = optional(string)
             }))
