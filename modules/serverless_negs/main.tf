@@ -201,7 +201,7 @@ resource "google_compute_backend_service" "default" {
   session_affinity                = lookup(each.value, "session_affinity", null)
   affinity_cookie_ttl_sec         = lookup(each.value, "affinity_cookie_ttl_sec", null)
   locality_lb_policy              = lookup(each.value, "locality_lb_policy", null)
-
+  health_checks                   = lookup(each.value, "health_checks", [])
 
   # To achieve a null backend edge_security_policy, set each.value.edge_security_policy to "" (empty string), otherwise, it fallsback to var.edge_security_policy.
   edge_security_policy = each.value["edge_security_policy"] == "" ? null : (each.value["edge_security_policy"] == null ? var.edge_security_policy : each.value.edge_security_policy)
