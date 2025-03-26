@@ -211,8 +211,14 @@ spec:
         type: string
       - name: ip_address_internal_managed_http
         description: The internal/external IP addresses assigned to the HTTP forwarding rules.
+        type:
+          - list
+          - string
       - name: ip_address_internal_managed_https
         description: The internal/external IP addresses assigned to the HTTPS forwarding rules.
+        type:
+          - list
+          - string
       - name: ipv6_enabled
         description: Whether IPv6 configuration is enabled on this load-balancer
         type: bool
