@@ -140,6 +140,11 @@ variable "serverless_neg_backends" {
     service_version = optional(string)
   }))
   default = []
+
+  validation {
+    condition     = length(distinct([for backend in var.serverless_neg_backends : backend.region])) == length(var.serverless_neg_backends)
+    error_message = "The 'region' within each 'serverless_neg_backends' block must be unique."
+  }
 }
 
 variable "iap_config" {
