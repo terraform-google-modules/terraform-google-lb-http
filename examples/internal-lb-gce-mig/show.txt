@@ -1,0 +1,1069 @@
+# google_vpc_access_connector.internal_lb_vpc_connector:
+resource "google_vpc_access_connector" "internal_lb_vpc_connector" {
+    connected_projects = []
+    id                 = "projects/ajay-dm-testing/locations/us-east1/connectors/int-lb-vpc-connector"
+    ip_cidr_range      = "10.8.0.0/28"
+    machine_type       = "e2-micro"
+    max_instances      = 5
+    max_throughput     = 500
+    min_instances      = 3
+    min_throughput     = 300
+    name               = "int-lb-vpc-connector"
+    network            = "int-lb-network"
+    project            = "ajay-dm-testing"
+    region             = "us-east1"
+    self_link          = "projects/ajay-dm-testing/locations/us-east1/connectors/int-lb-vpc-connector"
+    state              = "READY"
+}
+
+
+# module.frontend-service-a.google_cloud_run_v2_service.main:
+resource "google_cloud_run_v2_service" "main" {
+    conditions              = [
+        {
+            execution_reason     = ""
+            last_transition_time = "2025-04-02T17:33:07.072752Z"
+            message              = ""
+            reason               = ""
+            revision_reason      = ""
+            severity             = ""
+            state                = "CONDITION_SUCCEEDED"
+            type                 = "RoutesReady"
+        },
+        {
+            execution_reason     = ""
+            last_transition_time = "2025-04-02T17:33:05.863895Z"
+            message              = ""
+            reason               = ""
+            revision_reason      = ""
+            severity             = ""
+            state                = "CONDITION_SUCCEEDED"
+            type                 = "ConfigurationsReady"
+        },
+    ]
+    create_time             = "2025-04-02T17:32:52.414439Z"
+    creator                 = "pawansaggu@google.com"
+    default_uri_disabled    = false
+    deletion_protection     = false
+    effective_annotations   = {}
+    effective_labels        = {
+        "goog-terraform-provisioned" = "true"
+    }
+    etag                    = "\"CMTptb8GENisz8UB/cHJvamVjdHMvYWpheS1kbS10ZXN0aW5nL2xvY2F0aW9ucy91cy1lYXN0MS9zZXJ2aWNlcy9mcy1h\""
+    generation              = "1"
+    id                      = "projects/ajay-dm-testing/locations/us-east1/services/fs-a"
+    ingress                 = "INGRESS_TRAFFIC_ALL"
+    invoker_iam_disabled    = false
+    last_modifier           = "pawansaggu@google.com"
+    latest_created_revision = "projects/ajay-dm-testing/locations/us-east1/services/fs-a/revisions/fs-a-00001-v6z"
+    latest_ready_revision   = "projects/ajay-dm-testing/locations/us-east1/services/fs-a/revisions/fs-a-00001-v6z"
+    launch_stage            = "GA"
+    location                = "us-east1"
+    name                    = "fs-a"
+    observed_generation     = "1"
+    project                 = "ajay-dm-testing"
+    reconciling             = false
+    terminal_condition      = [
+        {
+            execution_reason     = ""
+            last_transition_time = "2025-04-02T17:33:07.105575Z"
+            message              = ""
+            reason               = ""
+            revision_reason      = ""
+            severity             = ""
+            state                = "CONDITION_SUCCEEDED"
+            type                 = "Ready"
+        },
+    ]
+    terraform_labels        = {
+        "goog-terraform-provisioned" = "true"
+    }
+    traffic_statuses        = [
+        {
+            percent  = 100
+            revision = ""
+            tag      = ""
+            type     = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+            uri      = ""
+        },
+    ]
+    uid                     = "95940286-d124-423b-817d-4d6d56eee679"
+    update_time             = "2025-04-02T17:32:52.414439Z"
+    uri                     = "https://fs-a-e6hvzdnvtq-ue.a.run.app"
+    urls                    = [
+        "https://fs-a-1016840587463.us-east1.run.app",
+        "https://fs-a-e6hvzdnvtq-ue.a.run.app",
+    ]
+
+    template {
+        execution_environment            = "EXECUTION_ENVIRONMENT_GEN2"
+        gpu_zonal_redundancy_disabled    = false
+        max_instance_request_concurrency = 80
+        service_account                  = "fs-a-us-east1-sa@ajay-dm-testing.iam.gserviceaccount.com"
+        session_affinity                 = false
+        timeout                          = "300s"
+
+        containers {
+            build_info = []
+            image      = "gcr.io/design-center-container-repo/redirect-traffic:latest-2002"
+
+            env {
+                name  = "TARGET_IP"
+                value = "10.1.3.4"
+            }
+
+            ports {
+                container_port = 80
+                name           = "http1"
+            }
+
+            resources {
+                cpu_idle          = true
+                limits            = {
+                    "cpu"    = "1000m"
+                    "memory" = "512Mi"
+                }
+                startup_cpu_boost = false
+            }
+
+            startup_probe {
+                failure_threshold     = 1
+                initial_delay_seconds = 0
+                period_seconds        = 240
+                timeout_seconds       = 240
+
+                tcp_socket {
+                    port = 80
+                }
+            }
+        }
+
+        scaling {
+            max_instance_count = 100
+            min_instance_count = 0
+        }
+
+        vpc_access {
+            connector = "projects/ajay-dm-testing/locations/us-east1/connectors/int-lb-vpc-connector"
+            egress    = "ALL_TRAFFIC"
+        }
+    }
+
+    traffic {
+        percent = 100
+        type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+    }
+}
+
+# module.frontend-service-a.google_cloud_run_v2_service_iam_member.authorize["allUsers"]:
+resource "google_cloud_run_v2_service_iam_member" "authorize" {
+    etag     = "BwYxzwyHpXg="
+    id       = "projects/ajay-dm-testing/locations/us-east1/services/fs-a/roles/run.invoker/allUsers"
+    location = "us-east1"
+    member   = "allUsers"
+    name     = "projects/ajay-dm-testing/locations/us-east1/services/fs-a"
+    project  = "ajay-dm-testing"
+    role     = "roles/run.invoker"
+}
+
+# module.frontend-service-a.google_service_account.sa[0]:
+resource "google_service_account" "sa" {
+    account_id   = "fs-a-us-east1-sa"
+    disabled     = false
+    display_name = "Service account for fs-a in us-east1"
+    email        = "fs-a-us-east1-sa@ajay-dm-testing.iam.gserviceaccount.com"
+    id           = "projects/ajay-dm-testing/serviceAccounts/fs-a-us-east1-sa@ajay-dm-testing.iam.gserviceaccount.com"
+    member       = "serviceAccount:fs-a-us-east1-sa@ajay-dm-testing.iam.gserviceaccount.com"
+    name         = "projects/ajay-dm-testing/serviceAccounts/fs-a-us-east1-sa@ajay-dm-testing.iam.gserviceaccount.com"
+    project      = "ajay-dm-testing"
+    unique_id    = "110495645426254899844"
+}
+
+
+# module.frontend-service-b.google_cloud_run_v2_service.main:
+resource "google_cloud_run_v2_service" "main" {
+    conditions              = [
+        {
+            execution_reason     = ""
+            last_transition_time = "2025-04-02T17:33:07.058716Z"
+            message              = ""
+            reason               = ""
+            revision_reason      = ""
+            severity             = ""
+            state                = "CONDITION_SUCCEEDED"
+            type                 = "RoutesReady"
+        },
+        {
+            execution_reason     = ""
+            last_transition_time = "2025-04-02T17:33:05.854591Z"
+            message              = ""
+            reason               = ""
+            revision_reason      = ""
+            severity             = ""
+            state                = "CONDITION_SUCCEEDED"
+            type                 = "ConfigurationsReady"
+        },
+    ]
+    create_time             = "2025-04-02T17:32:52.366619Z"
+    creator                 = "pawansaggu@google.com"
+    default_uri_disabled    = false
+    deletion_protection     = false
+    effective_annotations   = {}
+    effective_labels        = {
+        "goog-terraform-provisioned" = "true"
+    }
+    etag                    = "\"CMTptb8GEPjS6K4B/cHJvamVjdHMvYWpheS1kbS10ZXN0aW5nL2xvY2F0aW9ucy91cy1lYXN0MS9zZXJ2aWNlcy9mcy1i\""
+    generation              = "1"
+    id                      = "projects/ajay-dm-testing/locations/us-east1/services/fs-b"
+    ingress                 = "INGRESS_TRAFFIC_ALL"
+    invoker_iam_disabled    = false
+    last_modifier           = "pawansaggu@google.com"
+    latest_created_revision = "projects/ajay-dm-testing/locations/us-east1/services/fs-b/revisions/fs-b-00001-24l"
+    latest_ready_revision   = "projects/ajay-dm-testing/locations/us-east1/services/fs-b/revisions/fs-b-00001-24l"
+    launch_stage            = "GA"
+    location                = "us-east1"
+    name                    = "fs-b"
+    observed_generation     = "1"
+    project                 = "ajay-dm-testing"
+    reconciling             = false
+    terminal_condition      = [
+        {
+            execution_reason     = ""
+            last_transition_time = "2025-04-02T17:33:07.100090Z"
+            message              = ""
+            reason               = ""
+            revision_reason      = ""
+            severity             = ""
+            state                = "CONDITION_SUCCEEDED"
+            type                 = "Ready"
+        },
+    ]
+    terraform_labels        = {
+        "goog-terraform-provisioned" = "true"
+    }
+    traffic_statuses        = [
+        {
+            percent  = 100
+            revision = ""
+            tag      = ""
+            type     = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+            uri      = ""
+        },
+    ]
+    uid                     = "d8e32756-0100-401f-ae81-cd5de39a5ddf"
+    update_time             = "2025-04-02T17:32:52.366619Z"
+    uri                     = "https://fs-b-e6hvzdnvtq-ue.a.run.app"
+    urls                    = [
+        "https://fs-b-1016840587463.us-east1.run.app",
+        "https://fs-b-e6hvzdnvtq-ue.a.run.app",
+    ]
+
+    template {
+        execution_environment            = "EXECUTION_ENVIRONMENT_GEN2"
+        gpu_zonal_redundancy_disabled    = false
+        max_instance_request_concurrency = 80
+        service_account                  = "fs-b-us-east1-sa@ajay-dm-testing.iam.gserviceaccount.com"
+        session_affinity                 = false
+        timeout                          = "300s"
+
+        containers {
+            build_info = []
+            image      = "gcr.io/design-center-container-repo/redirect-traffic:latest-2002"
+
+            env {
+                name  = "TARGET_IP"
+                value = "10.1.2.4"
+            }
+
+            ports {
+                container_port = 80
+                name           = "http1"
+            }
+
+            resources {
+                cpu_idle          = true
+                limits            = {
+                    "cpu"    = "1000m"
+                    "memory" = "512Mi"
+                }
+                startup_cpu_boost = false
+            }
+
+            startup_probe {
+                failure_threshold     = 1
+                initial_delay_seconds = 0
+                period_seconds        = 240
+                timeout_seconds       = 240
+
+                tcp_socket {
+                    port = 80
+                }
+            }
+        }
+
+        scaling {
+            max_instance_count = 100
+            min_instance_count = 0
+        }
+
+        vpc_access {
+            connector = "projects/ajay-dm-testing/locations/us-east1/connectors/int-lb-vpc-connector"
+            egress    = "ALL_TRAFFIC"
+        }
+    }
+
+    traffic {
+        percent = 100
+        type    = "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"
+    }
+}
+
+# module.frontend-service-b.google_cloud_run_v2_service_iam_member.authorize["allUsers"]:
+resource "google_cloud_run_v2_service_iam_member" "authorize" {
+    etag     = "BwYxzwyFhWM="
+    id       = "projects/ajay-dm-testing/locations/us-east1/services/fs-b/roles/run.invoker/allUsers"
+    location = "us-east1"
+    member   = "allUsers"
+    name     = "projects/ajay-dm-testing/locations/us-east1/services/fs-b"
+    project  = "ajay-dm-testing"
+    role     = "roles/run.invoker"
+}
+
+# module.frontend-service-b.google_service_account.sa[0]:
+resource "google_service_account" "sa" {
+    account_id   = "fs-b-us-east1-sa"
+    disabled     = false
+    display_name = "Service account for fs-b in us-east1"
+    email        = "fs-b-us-east1-sa@ajay-dm-testing.iam.gserviceaccount.com"
+    id           = "projects/ajay-dm-testing/serviceAccounts/fs-b-us-east1-sa@ajay-dm-testing.iam.gserviceaccount.com"
+    member       = "serviceAccount:fs-b-us-east1-sa@ajay-dm-testing.iam.gserviceaccount.com"
+    name         = "projects/ajay-dm-testing/serviceAccounts/fs-b-us-east1-sa@ajay-dm-testing.iam.gserviceaccount.com"
+    project      = "ajay-dm-testing"
+    unique_id    = "112453066558953501153"
+}
+
+
+# module.instance-template-region-a.google_compute_instance_template.tpl:
+resource "google_compute_instance_template" "tpl" {
+    can_ip_forward          = false
+    creation_timestamp      = "2025-04-02T10:29:59.924-07:00"
+    effective_labels        = {
+        "goog-terraform-provisioned" = "true"
+    }
+    id                      = "projects/ajay-dm-testing/global/instanceTemplates/instance-template-region-a-20250402172959064200000001"
+    machine_type            = "n1-standard-1"
+    metadata_fingerprint    = "1xFNrMnFqhA="
+    metadata_startup_script = <<-EOT
+        #! /bin/bash
+            sudo apt-get update
+            sudo apt-get install apache2 -y
+            sudo a2ensite default-ssl
+            sudo a2enmod ssl
+            vm_hostname="$(curl -H "Metadata-Flavor:Google" \
+            http://169.254.169.254/computeMetadata/v1/instance/name)"
+            sudo echo "Page served from: $vm_hostname" | \
+            tee /var/www/html/index.html
+            sudo systemctl restart apache2
+    EOT
+    name                    = "instance-template-region-a-20250402172959064200000001"
+    name_prefix             = "instance-template-region-a-"
+    project                 = "ajay-dm-testing"
+    region                  = "us-east1"
+    resource_policies       = []
+    self_link               = "https://www.googleapis.com/compute/beta/projects/ajay-dm-testing/global/instanceTemplates/instance-template-region-a-20250402172959064200000001"
+    self_link_unique        = "https://www.googleapis.com/compute/beta/projects/ajay-dm-testing/global/instanceTemplates/instance-template-region-a-20250402172959064200000001?uniqueId=6627423111098714872"
+    tags                    = [
+        "load-balanced-backend",
+    ]
+    terraform_labels        = {
+        "goog-terraform-provisioned" = "true"
+    }
+
+    advanced_machine_features {
+        enable_nested_virtualization = false
+        enable_uefi_networking       = false
+        threads_per_core             = 0
+        visible_core_count           = 0
+    }
+
+    confidential_instance_config {
+        enable_confidential_compute = false
+    }
+
+    disk {
+        auto_delete            = true
+        boot                   = true
+        device_name            = "persistent-disk-0"
+        disk_size_gb           = 100
+        disk_type              = "pd-standard"
+        interface              = "SCSI"
+        mode                   = "READ_WRITE"
+        provisioned_iops       = 0
+        provisioned_throughput = 0
+        resource_policies      = []
+        source_image           = "projects/debian-cloud/global/images/family/debian-12"
+        type                   = "PERSISTENT"
+    }
+
+    network_interface {
+        internal_ipv6_prefix_length = 0
+        name                        = "nic0"
+        network                     = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/networks/int-lb-network"
+        queue_count                 = 0
+        subnetwork                  = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/regions/us-east1/subnetworks/int-lb-subnet-a"
+        subnetwork_project          = "ajay-dm-testing"
+
+        access_config {
+            network_tier = "PREMIUM"
+        }
+    }
+
+    network_performance_config {
+        total_egress_bandwidth_tier = "DEFAULT"
+    }
+
+    scheduling {
+        automatic_restart          = true
+        availability_domain        = 0
+        host_error_timeout_seconds = 0
+        min_node_cpus              = 0
+        on_host_maintenance        = "MIGRATE"
+        preemptible                = false
+        provisioning_model         = "STANDARD"
+    }
+
+    service_account {
+        email  = "instance-template-region-a--sa@ajay-dm-testing.iam.gserviceaccount.com"
+        scopes = [
+            "https://www.googleapis.com/auth/cloud-platform",
+        ]
+    }
+}
+
+# module.instance-template-region-a.google_service_account.sa[0]:
+resource "google_service_account" "sa" {
+    account_id   = "instance-template-region-a--sa"
+    disabled     = false
+    display_name = "Service account for instance-template-region-a in us-east1"
+    email        = "instance-template-region-a--sa@ajay-dm-testing.iam.gserviceaccount.com"
+    id           = "projects/ajay-dm-testing/serviceAccounts/instance-template-region-a--sa@ajay-dm-testing.iam.gserviceaccount.com"
+    member       = "serviceAccount:instance-template-region-a--sa@ajay-dm-testing.iam.gserviceaccount.com"
+    name         = "projects/ajay-dm-testing/serviceAccounts/instance-template-region-a--sa@ajay-dm-testing.iam.gserviceaccount.com"
+    project      = "ajay-dm-testing"
+    unique_id    = "107582880543508748347"
+}
+
+
+# module.instance-template-region-b.google_compute_instance_template.tpl:
+resource "google_compute_instance_template" "tpl" {
+    can_ip_forward          = false
+    creation_timestamp      = "2025-04-02T10:30:00.325-07:00"
+    effective_labels        = {
+        "goog-terraform-provisioned" = "true"
+    }
+    id                      = "projects/ajay-dm-testing/global/instanceTemplates/instance-template-region-b-20250402172959791800000002"
+    machine_type            = "n1-standard-1"
+    metadata_fingerprint    = "1xFNrMnFqhA="
+    metadata_startup_script = <<-EOT
+        #! /bin/bash
+            sudo apt-get update
+            sudo apt-get install apache2 -y
+            sudo a2ensite default-ssl
+            sudo a2enmod ssl
+            vm_hostname="$(curl -H "Metadata-Flavor:Google" \
+            http://169.254.169.254/computeMetadata/v1/instance/name)"
+            sudo echo "Page served from: $vm_hostname" | \
+            tee /var/www/html/index.html
+            sudo systemctl restart apache2
+    EOT
+    name                    = "instance-template-region-b-20250402172959791800000002"
+    name_prefix             = "instance-template-region-b-"
+    project                 = "ajay-dm-testing"
+    region                  = "us-central1"
+    resource_policies       = []
+    self_link               = "https://www.googleapis.com/compute/beta/projects/ajay-dm-testing/global/instanceTemplates/instance-template-region-b-20250402172959791800000002"
+    self_link_unique        = "https://www.googleapis.com/compute/beta/projects/ajay-dm-testing/global/instanceTemplates/instance-template-region-b-20250402172959791800000002?uniqueId=5819980572394572536"
+    tags                    = [
+        "load-balanced-backend",
+    ]
+    terraform_labels        = {
+        "goog-terraform-provisioned" = "true"
+    }
+
+    advanced_machine_features {
+        enable_nested_virtualization = false
+        enable_uefi_networking       = false
+        threads_per_core             = 0
+        visible_core_count           = 0
+    }
+
+    confidential_instance_config {
+        enable_confidential_compute = false
+    }
+
+    disk {
+        auto_delete            = true
+        boot                   = true
+        device_name            = "persistent-disk-0"
+        disk_size_gb           = 100
+        disk_type              = "pd-standard"
+        interface              = "SCSI"
+        mode                   = "READ_WRITE"
+        provisioned_iops       = 0
+        provisioned_throughput = 0
+        resource_policies      = []
+        source_image           = "projects/debian-cloud/global/images/family/debian-12"
+        type                   = "PERSISTENT"
+    }
+
+    network_interface {
+        internal_ipv6_prefix_length = 0
+        name                        = "nic0"
+        network                     = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/networks/int-lb-network"
+        queue_count                 = 0
+        subnetwork                  = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/regions/us-central1/subnetworks/int-lb-subnet-b"
+        subnetwork_project          = "ajay-dm-testing"
+
+        access_config {
+            network_tier = "PREMIUM"
+        }
+    }
+
+    network_performance_config {
+        total_egress_bandwidth_tier = "DEFAULT"
+    }
+
+    scheduling {
+        automatic_restart          = true
+        availability_domain        = 0
+        host_error_timeout_seconds = 0
+        min_node_cpus              = 0
+        on_host_maintenance        = "MIGRATE"
+        preemptible                = false
+        provisioning_model         = "STANDARD"
+    }
+
+    service_account {
+        email  = "instance-template-region-b--sa@ajay-dm-testing.iam.gserviceaccount.com"
+        scopes = [
+            "https://www.googleapis.com/auth/cloud-platform",
+        ]
+    }
+}
+
+# module.instance-template-region-b.google_service_account.sa[0]:
+resource "google_service_account" "sa" {
+    account_id   = "instance-template-region-b--sa"
+    disabled     = false
+    display_name = "Service account for instance-template-region-b in us-central1"
+    email        = "instance-template-region-b--sa@ajay-dm-testing.iam.gserviceaccount.com"
+    id           = "projects/ajay-dm-testing/serviceAccounts/instance-template-region-b--sa@ajay-dm-testing.iam.gserviceaccount.com"
+    member       = "serviceAccount:instance-template-region-b--sa@ajay-dm-testing.iam.gserviceaccount.com"
+    name         = "projects/ajay-dm-testing/serviceAccounts/instance-template-region-b--sa@ajay-dm-testing.iam.gserviceaccount.com"
+    project      = "ajay-dm-testing"
+    unique_id    = "114696083560990847295"
+}
+
+
+# module.internal-lb-http-backend.google_compute_backend_service.default:
+resource "google_compute_backend_service" "default" {
+    affinity_cookie_ttl_sec         = 0
+    connection_draining_timeout_sec = 300
+    creation_timestamp              = "2025-04-02T10:30:29.225-07:00"
+    enable_cdn                      = false
+    fingerprint                     = "PTeruO4ktmY="
+    generated_id                    = 6559375444557221000
+    health_checks                   = [
+        "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/healthChecks/int-lb-http-backend-hc",
+    ]
+    id                              = "projects/ajay-dm-testing/global/backendServices/int-lb-http-backend"
+    load_balancing_scheme           = "INTERNAL_MANAGED"
+    name                            = "int-lb-http-backend"
+    port_name                       = "http"
+    project                         = "ajay-dm-testing"
+    protocol                        = "HTTP"
+    self_link                       = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/backendServices/int-lb-http-backend"
+    session_affinity                = "NONE"
+    timeout_sec                     = 30
+
+    backend {
+        balancing_mode               = "UTILIZATION"
+        capacity_scaler              = 1
+        group                        = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/regions/us-central1/instanceGroups/mig-group-region-b-mig"
+        max_connections              = 0
+        max_connections_per_endpoint = 0
+        max_connections_per_instance = 0
+        max_rate                     = 0
+        max_rate_per_endpoint        = 0
+        max_rate_per_instance        = 0
+        max_utilization              = 0
+    }
+    backend {
+        balancing_mode               = "UTILIZATION"
+        capacity_scaler              = 1
+        group                        = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/regions/us-east1/instanceGroups/mig-group-region-a-mig"
+        max_connections              = 0
+        max_connections_per_endpoint = 0
+        max_connections_per_instance = 0
+        max_rate                     = 0
+        max_rate_per_endpoint        = 0
+        max_rate_per_instance        = 0
+        max_utilization              = 0
+    }
+
+    log_config {
+        enable      = true
+        sample_rate = 1
+    }
+}
+
+# module.internal-lb-http-backend.google_compute_firewall.default-hc[0]:
+resource "google_compute_firewall" "default-hc" {
+    creation_timestamp = "2025-04-02T10:29:44.244-07:00"
+    destination_ranges = []
+    direction          = "INGRESS"
+    disabled           = false
+    id                 = "projects/ajay-dm-testing/global/firewalls/int-lb-http-backend-hc-0"
+    name               = "int-lb-http-backend-hc-0"
+    network            = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/networks/int-lb-network"
+    priority           = 1000
+    project            = "ajay-dm-testing"
+    self_link          = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/firewalls/int-lb-http-backend-hc-0"
+    source_ranges      = [
+        "130.211.0.0/22",
+        "35.191.0.0/16",
+    ]
+    target_tags        = [
+        "load-balanced-backend",
+    ]
+
+    allow {
+        ports    = []
+        protocol = "tcp"
+    }
+}
+
+# module.internal-lb-http-backend.google_compute_health_check.default[0]:
+resource "google_compute_health_check" "default" {
+    check_interval_sec  = 5
+    creation_timestamp  = "2025-04-02T10:29:21.962-07:00"
+    healthy_threshold   = 2
+    id                  = "projects/ajay-dm-testing/global/healthChecks/int-lb-http-backend-hc"
+    name                = "int-lb-http-backend-hc"
+    project             = "ajay-dm-testing"
+    self_link           = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/healthChecks/int-lb-http-backend-hc"
+    timeout_sec         = 5
+    type                = "HTTP"
+    unhealthy_threshold = 2
+
+    http_health_check {
+        port               = 0
+        port_specification = "USE_SERVING_PORT"
+        proxy_header       = "NONE"
+        request_path       = "/"
+    }
+
+    log_config {
+        enable = false
+    }
+}
+
+
+# module.internal-lb-http-frontend.google_compute_global_forwarding_rule.internal_managed_http["us-central1"]:
+resource "google_compute_global_forwarding_rule" "internal_managed_http" {
+    allow_psc_global_access = false
+    effective_labels        = {}
+    forwarding_rule_id      = 29000262240750200
+    id                      = "projects/ajay-dm-testing/global/forwardingRules/int-lb-http-frontend-internal-managed-http-us-central1"
+    ip_address              = "10.1.3.4"
+    ip_protocol             = "TCP"
+    label_fingerprint       = "42WmSpB8rSM="
+    load_balancing_scheme   = "INTERNAL_MANAGED"
+    name                    = "int-lb-http-frontend-internal-managed-http-us-central1"
+    network                 = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/networks/int-lb-network"
+    network_tier            = "PREMIUM"
+    port_range              = "80-80"
+    project                 = "ajay-dm-testing"
+    self_link               = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/forwardingRules/int-lb-http-frontend-internal-managed-http-us-central1"
+    subnetwork              = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/regions/us-central1/subnetworks/int-lb-subnet-b"
+    target                  = "https://www.googleapis.com/compute/beta/projects/ajay-dm-testing/global/targetHttpProxies/int-lb-http-frontend-http-proxy"
+    terraform_labels        = {}
+}
+
+# module.internal-lb-http-frontend.google_compute_global_forwarding_rule.internal_managed_http["us-east1"]:
+resource "google_compute_global_forwarding_rule" "internal_managed_http" {
+    allow_psc_global_access = false
+    effective_labels        = {}
+    forwarding_rule_id      = 5556395066479660000
+    id                      = "projects/ajay-dm-testing/global/forwardingRules/int-lb-http-frontend-internal-managed-http-us-east1"
+    ip_address              = "10.1.2.4"
+    ip_protocol             = "TCP"
+    label_fingerprint       = "42WmSpB8rSM="
+    load_balancing_scheme   = "INTERNAL_MANAGED"
+    name                    = "int-lb-http-frontend-internal-managed-http-us-east1"
+    network                 = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/networks/int-lb-network"
+    network_tier            = "PREMIUM"
+    port_range              = "80-80"
+    project                 = "ajay-dm-testing"
+    self_link               = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/forwardingRules/int-lb-http-frontend-internal-managed-http-us-east1"
+    subnetwork              = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/regions/us-east1/subnetworks/int-lb-subnet-a"
+    target                  = "https://www.googleapis.com/compute/beta/projects/ajay-dm-testing/global/targetHttpProxies/int-lb-http-frontend-http-proxy"
+    terraform_labels        = {}
+}
+
+# module.internal-lb-http-frontend.google_compute_target_http_proxy.default[0]:
+resource "google_compute_target_http_proxy" "default" {
+    creation_timestamp          = "2025-04-02T10:31:55.439-07:00"
+    http_keep_alive_timeout_sec = 0
+    id                          = "projects/ajay-dm-testing/global/targetHttpProxies/int-lb-http-frontend-http-proxy"
+    name                        = "int-lb-http-frontend-http-proxy"
+    project                     = "ajay-dm-testing"
+    proxy_bind                  = false
+    proxy_id                    = 3660876778706094600
+    self_link                   = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/targetHttpProxies/int-lb-http-frontend-http-proxy"
+    url_map                     = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/urlMaps/int-lb-http-frontend-url-map"
+}
+
+# module.internal-lb-http-frontend.google_compute_url_map.default[0]:
+resource "google_compute_url_map" "default" {
+    creation_timestamp = "2025-04-02T10:31:43.278-07:00"
+    default_service    = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/backendServices/int-lb-http-backend"
+    fingerprint        = "lHDj00c2BDU="
+    id                 = "projects/ajay-dm-testing/global/urlMaps/int-lb-http-frontend-url-map"
+    map_id             = 4719105872322678000
+    name               = "int-lb-http-frontend-url-map"
+    project            = "ajay-dm-testing"
+    self_link          = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/urlMaps/int-lb-http-frontend-url-map"
+
+    host_rule {
+        hosts        = [
+            "*",
+        ]
+        path_matcher = "default"
+    }
+
+    path_matcher {
+        default_service = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/backendServices/int-lb-http-backend"
+        name            = "default"
+    }
+}
+
+
+# module.internal-lb-network.google_compute_network.network:
+resource "google_compute_network" "network" {
+    auto_create_subnetworks                   = false
+    bgp_always_compare_med                    = false
+    bgp_best_path_selection_mode              = "LEGACY"
+    delete_default_routes_on_create           = false
+    enable_ula_internal_ipv6                  = false
+    id                                        = "projects/ajay-dm-testing/global/networks/int-lb-network"
+    mtu                                       = 0
+    name                                      = "int-lb-network"
+    network_firewall_policy_enforcement_order = "AFTER_CLASSIC_FIREWALL"
+    network_id                                = "1016644793868012830"
+    numeric_id                                = "1016644793868012830"
+    project                                   = "ajay-dm-testing"
+    routing_mode                              = "GLOBAL"
+    self_link                                 = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/networks/int-lb-network"
+}
+
+
+# module.internal-lb-subnet.google_compute_subnetwork.subnetwork["us-central1/int-lb-proxy-only-subnet-b"]:
+resource "google_compute_subnetwork" "subnetwork" {
+    creation_timestamp         = "2025-04-02T10:29:45.167-07:00"
+    enable_flow_logs           = false
+    gateway_address            = "10.130.0.1"
+    id                         = "projects/ajay-dm-testing/regions/us-central1/subnetworks/int-lb-proxy-only-subnet-b"
+    ip_cidr_range              = "10.130.0.0/23"
+    name                       = "int-lb-proxy-only-subnet-b"
+    network                    = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/networks/int-lb-network"
+    private_ip_google_access   = false
+    private_ipv6_google_access = "DISABLE_GOOGLE_ACCESS"
+    project                    = "ajay-dm-testing"
+    purpose                    = "GLOBAL_MANAGED_PROXY"
+    region                     = "us-central1"
+    role                       = "ACTIVE"
+    self_link                  = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/regions/us-central1/subnetworks/int-lb-proxy-only-subnet-b"
+    state                      = "READY"
+    subnetwork_id              = 3434960270575848000
+}
+
+# module.internal-lb-subnet.google_compute_subnetwork.subnetwork["us-central1/int-lb-subnet-b"]:
+resource "google_compute_subnetwork" "subnetwork" {
+    creation_timestamp         = "2025-04-02T10:29:45.115-07:00"
+    enable_flow_logs           = false
+    gateway_address            = "10.1.3.1"
+    id                         = "projects/ajay-dm-testing/regions/us-central1/subnetworks/int-lb-subnet-b"
+    ip_cidr_range              = "10.1.3.0/24"
+    name                       = "int-lb-subnet-b"
+    network                    = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/networks/int-lb-network"
+    private_ip_google_access   = false
+    private_ipv6_google_access = "DISABLE_GOOGLE_ACCESS"
+    project                    = "ajay-dm-testing"
+    purpose                    = "PRIVATE"
+    region                     = "us-central1"
+    self_link                  = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/regions/us-central1/subnetworks/int-lb-subnet-b"
+    stack_type                 = "IPV4_ONLY"
+    subnetwork_id              = 1116993835700898600
+}
+
+# module.internal-lb-subnet.google_compute_subnetwork.subnetwork["us-east1/int-lb-proxy-only-subnet-a"]:
+resource "google_compute_subnetwork" "subnetwork" {
+    creation_timestamp         = "2025-04-02T10:29:45.205-07:00"
+    enable_flow_logs           = false
+    gateway_address            = "10.129.0.1"
+    id                         = "projects/ajay-dm-testing/regions/us-east1/subnetworks/int-lb-proxy-only-subnet-a"
+    ip_cidr_range              = "10.129.0.0/23"
+    name                       = "int-lb-proxy-only-subnet-a"
+    network                    = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/networks/int-lb-network"
+    private_ip_google_access   = false
+    private_ipv6_google_access = "DISABLE_GOOGLE_ACCESS"
+    project                    = "ajay-dm-testing"
+    purpose                    = "GLOBAL_MANAGED_PROXY"
+    region                     = "us-east1"
+    role                       = "ACTIVE"
+    self_link                  = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/regions/us-east1/subnetworks/int-lb-proxy-only-subnet-a"
+    state                      = "READY"
+    subnetwork_id              = 5472668565989543000
+}
+
+# module.internal-lb-subnet.google_compute_subnetwork.subnetwork["us-east1/int-lb-subnet-a"]:
+resource "google_compute_subnetwork" "subnetwork" {
+    creation_timestamp         = "2025-04-02T10:29:45.259-07:00"
+    enable_flow_logs           = false
+    gateway_address            = "10.1.2.1"
+    id                         = "projects/ajay-dm-testing/regions/us-east1/subnetworks/int-lb-subnet-a"
+    ip_cidr_range              = "10.1.2.0/24"
+    name                       = "int-lb-subnet-a"
+    network                    = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/networks/int-lb-network"
+    private_ip_google_access   = false
+    private_ipv6_google_access = "DISABLE_GOOGLE_ACCESS"
+    project                    = "ajay-dm-testing"
+    purpose                    = "PRIVATE"
+    region                     = "us-east1"
+    self_link                  = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/regions/us-east1/subnetworks/int-lb-subnet-a"
+    stack_type                 = "IPV4_ONLY"
+    subnetwork_id              = 2637718790300814000
+}
+
+
+# module.mig-region-a.data.google_compute_zones.available:
+data "google_compute_zones" "available" {
+    id      = "projects/ajay-dm-testing/regions/us-east1"
+    names   = [
+        "us-east1-b",
+        "us-east1-c",
+        "us-east1-d",
+    ]
+    project = "ajay-dm-testing"
+    region  = "us-east1"
+}
+
+# module.mig-region-a.google_compute_region_instance_group_manager.mig:
+resource "google_compute_region_instance_group_manager" "mig" {
+    base_instance_name               = "mig-group-region-a"
+    creation_timestamp               = "2025-04-02T10:30:03.724-07:00"
+    distribution_policy_target_shape = "EVEN"
+    distribution_policy_zones        = [
+        "us-east1-b",
+        "us-east1-c",
+        "us-east1-d",
+    ]
+    fingerprint                      = "SE7N9RV6Lx0="
+    id                               = "projects/ajay-dm-testing/regions/us-east1/instanceGroupManagers/mig-group-region-a-mig"
+    instance_group                   = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/regions/us-east1/instanceGroups/mig-group-region-a-mig"
+    instance_group_manager_id        = 386300876517591800
+    list_managed_instances_results   = "PAGELESS"
+    name                             = "mig-group-region-a-mig"
+    project                          = "ajay-dm-testing"
+    region                           = "us-east1"
+    self_link                        = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/regions/us-east1/instanceGroupManagers/mig-group-region-a-mig"
+    status                           = [
+        {
+            all_instances_config = [
+                {
+                    current_revision = "2025-04-02T17:30:03.727937Z"
+                    effective        = true
+                },
+            ]
+            is_stable            = false
+            stateful             = [
+                {
+                    has_stateful_config  = false
+                    per_instance_configs = [
+                        {
+                            all_effective = true
+                        },
+                    ]
+                },
+            ]
+            version_target       = [
+                {
+                    is_reached = true
+                },
+            ]
+        },
+    ]
+    target_size                      = 2
+    target_stopped_size              = 0
+    target_suspended_size            = 0
+    wait_for_instances               = false
+    wait_for_instances_status        = "STABLE"
+
+    all_instances_config {}
+
+    instance_lifecycle_policy {
+        default_action_on_failure = "REPAIR"
+        force_update_on_repair    = "NO"
+        on_failed_health_check    = "DEFAULT_ACTION"
+    }
+
+    named_port {
+        name = "http"
+        port = 80
+    }
+
+    standby_policy {
+        initial_delay_sec = 0
+        mode              = "MANUAL"
+    }
+
+    timeouts {
+        create = "5m"
+        delete = "15m"
+        update = "5m"
+    }
+
+    update_policy {
+        instance_redistribution_type = "PROACTIVE"
+        max_surge_fixed              = 3
+        max_surge_percent            = 0
+        max_unavailable_fixed        = 3
+        max_unavailable_percent      = 0
+        min_ready_sec                = 0
+        minimal_action               = "REPLACE"
+        replacement_method           = "SUBSTITUTE"
+        type                         = "OPPORTUNISTIC"
+    }
+
+    version {
+        instance_template = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/instanceTemplates/instance-template-region-a-20250402172959064200000001"
+        name              = "mig-group-region-a-mig-version-0"
+    }
+}
+
+
+# module.mig-region-b.data.google_compute_zones.available:
+data "google_compute_zones" "available" {
+    id      = "projects/ajay-dm-testing/regions/us-central1"
+    names   = [
+        "us-central1-a",
+        "us-central1-b",
+        "us-central1-c",
+        "us-central1-f",
+    ]
+    project = "ajay-dm-testing"
+    region  = "us-central1"
+}
+
+# module.mig-region-b.google_compute_region_instance_group_manager.mig:
+resource "google_compute_region_instance_group_manager" "mig" {
+    base_instance_name               = "mig-group-region-b"
+    creation_timestamp               = "2025-04-02T10:30:03.567-07:00"
+    distribution_policy_target_shape = "EVEN"
+    distribution_policy_zones        = [
+        "us-central1-a",
+        "us-central1-b",
+        "us-central1-c",
+        "us-central1-f",
+    ]
+    fingerprint                      = "sCIe3IZSe5c="
+    id                               = "projects/ajay-dm-testing/regions/us-central1/instanceGroupManagers/mig-group-region-b-mig"
+    instance_group                   = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/regions/us-central1/instanceGroups/mig-group-region-b-mig"
+    instance_group_manager_id        = 5684760493516967000
+    list_managed_instances_results   = "PAGELESS"
+    name                             = "mig-group-region-b-mig"
+    project                          = "ajay-dm-testing"
+    region                           = "us-central1"
+    self_link                        = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/regions/us-central1/instanceGroupManagers/mig-group-region-b-mig"
+    status                           = [
+        {
+            all_instances_config = [
+                {
+                    current_revision = "2025-04-02T17:30:03.569800Z"
+                    effective        = true
+                },
+            ]
+            is_stable            = false
+            stateful             = [
+                {
+                    has_stateful_config  = false
+                    per_instance_configs = [
+                        {
+                            all_effective = true
+                        },
+                    ]
+                },
+            ]
+            version_target       = [
+                {
+                    is_reached = true
+                },
+            ]
+        },
+    ]
+    target_size                      = 2
+    target_stopped_size              = 0
+    target_suspended_size            = 0
+    wait_for_instances               = false
+    wait_for_instances_status        = "STABLE"
+
+    all_instances_config {}
+
+    instance_lifecycle_policy {
+        default_action_on_failure = "REPAIR"
+        force_update_on_repair    = "NO"
+        on_failed_health_check    = "DEFAULT_ACTION"
+    }
+
+    named_port {
+        name = "http"
+        port = 80
+    }
+
+    standby_policy {
+        initial_delay_sec = 0
+        mode              = "MANUAL"
+    }
+
+    timeouts {
+        create = "5m"
+        delete = "15m"
+        update = "5m"
+    }
+
+    update_policy {
+        instance_redistribution_type = "PROACTIVE"
+        max_surge_fixed              = 4
+        max_surge_percent            = 0
+        max_unavailable_fixed        = 4
+        max_unavailable_percent      = 0
+        min_ready_sec                = 0
+        minimal_action               = "REPLACE"
+        replacement_method           = "SUBSTITUTE"
+        type                         = "OPPORTUNISTIC"
+    }
+
+    version {
+        instance_template = "https://www.googleapis.com/compute/v1/projects/ajay-dm-testing/global/instanceTemplates/instance-template-region-b-20250402172959791800000002"
+        name              = "mig-group-region-b-mig-version-0"
+    }
+}
+
+
+Outputs:
+
+external_cloudrun_uris = [
+    "https://fs-a-e6hvzdnvtq-ue.a.run.app",
+    "https://fs-b-e6hvzdnvtq-ue.a.run.app",
+]

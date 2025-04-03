@@ -1,4 +1,4 @@
-# HTTP Internal Regional Load Balancer Example
+# HTTP Internal Cross-Regional Load Balancer Example
 
 This example creates a simple application with below components.
 
@@ -16,5 +16,11 @@ The forwarding rules and its dependecies are created as part of `frontend` modul
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | project\_id | n/a | `string` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| external\_cloudrun\_uris | The uris of the publicaly accesible cloud-run services |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
