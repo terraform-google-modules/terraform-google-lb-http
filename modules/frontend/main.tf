@@ -88,6 +88,7 @@ resource "google_compute_global_forwarding_rule" "internal_managed_http" {
   network               = local.internal_network
   subnetwork            = each.value.subnetwork
   ip_address            = each.value.address
+  depends_on            = [google_compute_subnetwork.proxy_only]
 }
 
 resource "google_compute_global_forwarding_rule" "https" {
@@ -118,6 +119,7 @@ resource "google_compute_global_forwarding_rule" "internal_managed_https" {
   network               = local.internal_network
   subnetwork            = each.value.subnetwork
   ip_address            = each.value.address
+  depends_on            = [google_compute_subnetwork.proxy_only]
 }
 
 resource "google_compute_global_address" "default" {
@@ -158,6 +160,7 @@ resource "google_compute_global_forwarding_rule" "internal_managed_http_ipv6" {
   load_balancing_scheme = var.load_balancing_scheme
   subnetwork            = each.value.subnetwork
   ip_address            = each.value.address
+  depends_on            = [google_compute_subnetwork.proxy_only]
 }
 
 resource "google_compute_global_forwarding_rule" "https_ipv6" {
@@ -187,6 +190,7 @@ resource "google_compute_global_forwarding_rule" "internal_managed_https_ipv6" {
   load_balancing_scheme = var.load_balancing_scheme
   subnetwork            = each.value.subnetwork
   ip_address            = each.value.address
+  depends_on            = [google_compute_subnetwork.proxy_only]
 }
 
 resource "google_compute_global_address" "default_ipv6" {
