@@ -200,11 +200,13 @@ variable "http_keep_alive_timeout_sec" {
 }
 
 variable "internal_forwarding_rules_config" {
-  description = "List of internal managed forwarding rules config. One of 'address' or 'subnetwork' is required for each. It is only applicable for internal load balancer"
+  description = "List of internal managed forwarding rules config. One of 'address' or 'subnetwork' is required for each. If 'create_proxy_only_subnet' is true, 'proxy_only_subnet_ip' is required. It is only applicable for internal load balancer."
   type = list(object({
-    region     = string
-    address    = optional(string)
-    subnetwork = optional(string)
+    region                   = string
+    address                  = optional(string)
+    subnetwork               = optional(string)
+    create_proxy_only_subnet = bool
+    proxy_only_subnet_ip     = optional(string)
   }))
   default = []
 }

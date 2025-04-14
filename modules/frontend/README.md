@@ -19,7 +19,7 @@ This module creates `HTTP(S) forwarding rule` and its dependencies. This modules
 | http\_port | The port for the HTTP load balancer | `number` | `80` | no |
 | https\_port | The port for the HTTPS load balancer | `number` | `443` | no |
 | https\_redirect | Set to `true` to enable https redirect on the lb. | `bool` | `false` | no |
-| internal\_forwarding\_rules\_config | List of internal managed forwarding rules config. One of 'address' or 'subnetwork' is required for each. It is only applicable for internal load balancer | <pre>list(object({<br>    region     = string<br>    address    = optional(string)<br>    subnetwork = optional(string)<br>  }))</pre> | `[]` | no |
+| internal\_forwarding\_rules\_config | List of internal managed forwarding rules config. One of 'address' or 'subnetwork' is required for each. If 'create\_proxy\_only\_subnet' is true, 'proxy\_only\_subnet\_ip' is required. It is only applicable for internal load balancer. | <pre>list(object({<br>    region                   = string<br>    address                  = optional(string)<br>    subnetwork               = optional(string)<br>    create_proxy_only_subnet = bool<br>    proxy_only_subnet_ip     = optional(string)<br>  }))</pre> | `[]` | no |
 | ipv6\_address | An existing IPv6 address to use (the actual IP address value) | `string` | `null` | no |
 | labels | The labels to attach to resources created by this module | `map(string)` | `{}` | no |
 | load\_balancing\_scheme | Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL\_MANAGED for Envoy-based load balancer, INTERNAL\_MANAGED for internal load balancer and INTERNAL\_SELF\_MANAGED for traffic director) | `string` | `"EXTERNAL_MANAGED"` | no |

@@ -43,6 +43,22 @@ locals {
   first_backend_service = try(local.backend_services_by_host[local.first_host][local.first_path], null)
 }
 
+resource "google_compute_subnetwork" "proxy_only" {
+  for_each = {
+    for index, config in var.internal_forwarding_rules_config : index => config
+    if config.create_proxy_only_subnet == true
+  }
+
+  name          = "${var.name}-proxy-only-subnet-${each.value.region}"
+  ip_cidr_range = each.value.proxy_only_subnet_ip
+  network       = var.network
+  purpose       = "GLOBAL_MANAGED_PROXY"
+  region        = each.value.region
+  project       = var.project_id
+  role          = "ACTIVE"
+}
+
+
 ### IPv4 block ###
 resource "google_compute_global_forwarding_rule" "http" {
   provider              = google-beta

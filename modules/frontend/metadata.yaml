@@ -190,12 +190,14 @@ spec:
         description: Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds).
         varType: number
       - name: internal_forwarding_rules_config
-        description: List of internal managed forwarding rules config. One of 'address' or 'subnetwork' is required for each. It is only applicable for internal load balancer
+        description: List of internal managed forwarding rules config. One of 'address' or 'subnetwork' is required for each. If 'create_proxy_only_subnet' is true, 'proxy_only_subnet_ip' is required. It is only applicable for internal load balancer.
         varType: |-
           list(object({
-              region     = string
-              address    = optional(string)
-              subnetwork = optional(string)
+              region                   = string
+              address                  = optional(string)
+              subnetwork               = optional(string)
+              create_proxy_only_subnet = bool
+              proxy_only_subnet_ip     = optional(string)
             }))
         defaultValue: []
     outputs:
