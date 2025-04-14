@@ -119,11 +119,13 @@ module "internal-lb-http-frontend" {
   internal_forwarding_rules_config = [
     {
       "region" : "us-east1",
-      "subnetwork" : module.internal-lb-subnet.subnets["us-east1/int-lb-subnet-a"].id
+      "subnetwork" : module.internal-lb-subnet.subnets["us-east1/int-lb-subnet-a"].id,
+      "create_proxy_only_subnet" : false,
     },
     {
       "region" : "us-south1",
-      "subnetwork" : module.internal-lb-subnet.subnets["us-south1/int-lb-subnet-b"].id
+      "subnetwork" : module.internal-lb-subnet.subnets["us-south1/int-lb-subnet-b"].id,
+      "create_proxy_only_subnet" : false,
     }
   ]
 }
