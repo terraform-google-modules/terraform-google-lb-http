@@ -31,7 +31,7 @@ module "internal-lb-network" {
 }
 
 module "internal-lb-subnet" {
-  source = "terraform-google-modules/network/google//modules/subnets"
+  source  = "terraform-google-modules/network/google//modules/subnets"
   version = "~> 10.0.0"
 
   subnets = [
