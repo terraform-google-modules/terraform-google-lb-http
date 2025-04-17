@@ -120,12 +120,10 @@ module "internal-lb-http-frontend" {
     {
       "region" : "us-east1",
       "subnetwork" : module.internal-lb-subnet.subnets["us-east1/int-lb-subnet-a"].id,
-      "create_proxy_only_subnet" : false,
     },
     {
       "region" : "us-south1",
       "subnetwork" : module.internal-lb-subnet.subnets["us-south1/int-lb-subnet-b"].id,
-      "create_proxy_only_subnet" : false,
     }
   ]
 }
