@@ -278,5 +278,5 @@ variable "target_service_accounts" {
 variable "firewall_source_ranges" {
   description = "Source ranges for the global Application Load Balancer's proxies. This list should contain the `ip_cidr_range` of each GLOBAL_MANAGED_PROXY subnet."
   type        = list(string)
-  default     = ["10.129.0.0/23"]
+  default     = ["10.127.0.0/23"]
 }
