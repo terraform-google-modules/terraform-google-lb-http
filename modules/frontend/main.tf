@@ -45,11 +45,11 @@ locals {
 
 resource "google_compute_subnetwork" "proxy_only" {
   for_each = {
-    for index, config in var.internal_forwarding_rules_config : index => config
+    for index, config in var.internal_forwarding_rules_config : config.region => config
     if config.create_proxy_only_subnet == true
   }
 
-  name          = "${var.name}-proxy-only-subnet-${each.value.region}"
+  name          = "${var.name}-proxy-only-subnet-${each.key}"
   ip_cidr_range = each.value.proxy_only_subnet_ip
   network       = var.network
   purpose       = "GLOBAL_MANAGED_PROXY"
