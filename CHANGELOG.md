@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [12.2.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.1.4...v12.2.0) (2025-04-21)
+
+
+### Features
+
+* added example for cross regional internal lb with gce mig as backend ([#500](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/500)) ([cfd456f](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/cfd456f494e0646fe17842b5cd92683755f24bfa))
+
+
+### Bug Fixes
+
+* added root visibility for ip_address_internal_managed_http and http variables ([#499](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/499)) ([231c762](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/231c7626aa2b7a6293bcd0646b3adbf83c60d7f7))
+
 ## [12.1.4](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.1.3...v12.1.4) (2025-03-26)
 
 
