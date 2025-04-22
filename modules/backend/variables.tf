@@ -140,6 +140,11 @@ variable "serverless_neg_backends" {
     service_version = optional(string)
   }))
   default = []
+
+  validation {
+    condition     = length(distinct([for backend in var.serverless_neg_backends : backend.region])) == length(var.serverless_neg_backends)
+    error_message = "The 'region' within each 'serverless_neg_backends' block must be unique."
+  }
 }
 
 variable "iap_config" {
@@ -268,4 +273,10 @@ variable "target_service_accounts" {
   description = "List of target service accounts for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified."
   type        = list(string)
   default     = []
+}
+
+variable "firewall_source_ranges" {
+  description = "Source ranges for the global Application Load Balancer's proxies. This list should contain the `ip_cidr_range` of each GLOBAL_MANAGED_PROXY subnet."
+  type        = list(string)
+  default     = ["10.127.0.0/23"]
 }

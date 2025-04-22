@@ -143,6 +143,21 @@ steps:
     - verify internal-lb-http
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestInternalLbCloudRun --stage teardown --verbose']
+- id: apply internal-lb-http gce-mig
+  waitFor:
+    - create
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestInternalLbGCEMIG --stage apply --verbose']
+- id: verify internal-lb-http gce-mig
+  waitFor:
+    - apply internal-lb-http gce-mig
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'sleep 360 && cft test run TestInternalLbGCEMIG --stage verify --verbose']
+- id: teardown internal-lb-http gce-mig
+  waitFor:
+    - verify internal-lb-http gce-mig
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestInternalLbGCEMIG --stage teardown --verbose']
 tags:
 - 'ci'
 - 'integration'

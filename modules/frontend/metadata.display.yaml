@@ -128,3 +128,7 @@ spec:
           visibility: VISIBILITY_ROOT
         external_ipv6_address:
           visibility: VISIBILITY_ROOT
+        ip_address_internal_managed_http:
+          visibility: VISIBILITY_ROOT
+        ip_address_internal_managed_https:
+          visibility: VISIBILITY_ROOT

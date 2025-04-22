@@ -52,6 +52,8 @@ spec:
         location: examples/https-redirect
       - name: internal-lb-cloud-run
         location: examples/internal-lb-cloud-run
+      - name: internal-lb-gce-mig
+        location: examples/internal-lb-gce-mig
       - name: lb-http-separate-frontend-and-backend
         location: examples/lb-http-separate-frontend-and-backend
       - name: mig-nat-http-lb
@@ -170,7 +172,7 @@ spec:
         varType: string
         defaultValue: EXTERNAL_MANAGED
       - name: network
-        description: Network for internal load balancer
+        description: VPC network for the forwarding rule. The VPC network should have exactly one GLOBAL_MANAGED_PROXY subnetwork for every region where the forwarding rule is to be configured. Please go to the subnets tab of your VPC network and check if a GLOBAL_MANAGED_PROXY subnet exists under the `Reserved proxy-only subnets for load balancing` section. If a GLOBAL_MANAGED_PROXY subnet doesn't exist, create one for each required region.
         varType: string
         defaultValue: default
       - name: server_tls_policy

@@ -52,6 +52,8 @@ spec:
         location: examples/https-redirect
       - name: internal-lb-cloud-run
         location: examples/internal-lb-cloud-run
+      - name: internal-lb-gce-mig
+        location: examples/internal-lb-gce-mig
       - name: lb-http-separate-frontend-and-backend
         location: examples/lb-http-separate-frontend-and-backend
       - name: mig-nat-http-lb
@@ -286,6 +288,11 @@ spec:
         description: List of target service accounts for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified.
         varType: list(string)
         defaultValue: []
+      - name: firewall_source_ranges
+        description: Source ranges for the global Application Load Balancer's proxies. This list should contain the `ip_cidr_range` of each GLOBAL_MANAGED_PROXY subnet.
+        varType: list(string)
+        defaultValue:
+          - 10.127.0.0/23
     outputs:
       - name: backend_service_info
         description: Host, path and backend service mapping

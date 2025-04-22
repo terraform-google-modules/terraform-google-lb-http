@@ -61,7 +61,7 @@ resource "google_compute_backend_service" "default" {
   dynamic "backend" {
     for_each = toset(var.serverless_neg_backends)
     content {
-      group = google_compute_region_network_endpoint_group.serverless_negs["neg-${var.name}-${backend.value.region}"].id
+      group = google_compute_region_network_endpoint_group.serverless_negs["neg-${var.name}-${backend.value.service_name}-${backend.value.region}"].id
     }
   }
 
@@ -157,7 +157,7 @@ resource "google_compute_backend_service" "default" {
 
 resource "google_compute_region_network_endpoint_group" "serverless_negs" {
   for_each = { for serverless_neg_backend in var.serverless_neg_backends :
-  "neg-${var.name}-${serverless_neg_backend.region}" => serverless_neg_backend }
+  "neg-${var.name}-${serverless_neg_backend.service_name}-${serverless_neg_backend.region}" => serverless_neg_backend }
 
 
   provider              = google-beta
@@ -287,5 +287,26 @@ resource "google_compute_firewall" "default-hc" {
   allow {
     protocol = "tcp"
     ports    = var.health_check.port != null ? [var.health_check.port] : null
+  }
+}
+
+resource "google_compute_firewall" "allow_proxy" {
+  count         = var.health_check != null ? length(var.firewall_networks) : 0
+  project       = length(var.firewall_networks) == 1 && var.firewall_projects[0] == "default" ? var.project_id : var.firewall_projects[count.index]
+  name          = "${var.name}-fw-allow-proxies-${count.index}"
+  network       = var.firewall_networks[count.index]
+  source_ranges = var.firewall_source_ranges
+  target_tags   = length(var.target_tags) > 0 ? var.target_tags : null
+  allow {
+    ports    = ["443"]
+    protocol = "tcp"
+  }
+  allow {
+    ports    = ["80"]
+    protocol = "tcp"
+  }
+  allow {
+    ports    = ["8080"]
+    protocol = "tcp"
   }
 }
