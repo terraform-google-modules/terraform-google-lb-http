@@ -81,6 +81,7 @@ spec:
               value: EXTERNAL_MANAGED
             - label: INTERNAL_MANAGED
               value: INTERNAL_MANAGED
+          level: 1
         managed_ssl_certificate_domains:
           name: managed_ssl_certificate_domains
           title: Managed Ssl Certificate Domains

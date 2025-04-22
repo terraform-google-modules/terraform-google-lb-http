@@ -82,6 +82,7 @@ spec:
               value: EXTERNAL_MANAGED
             - label: INTERNAL_MANAGED
               value: INTERNAL_MANAGED
+          level: 1
         locality_lb_policy:
           name: locality_lb_policy
           title: Locality Lb Policy
