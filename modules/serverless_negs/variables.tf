@@ -67,6 +67,15 @@ variable "backends" {
     ])
     error_message = "serverless_neg_backend type should be either 'cloud-run' or 'cloud-function' or 'app-engine'."
   }
+  validation {
+    condition = alltrue([
+      for backend_key, backend_value in var.backends : (
+        (backend_value.groups != null && backend_value.serverless_neg_backends == null) ||
+        (backend_value.groups == null && backend_value.serverless_neg_backends != null)
+    )])
+    error_message = "Either groups or serverless_neg_backends should be provided."
+  }
+
   type = map(object({
     project                 = optional(string)
     protocol                = optional(string)
@@ -84,20 +93,18 @@ variable "backends" {
     affinity_cookie_ttl_sec         = optional(number)
     locality_lb_policy              = optional(string)
 
-
     log_config = object({
       enable      = optional(bool)
       sample_rate = optional(number)
     })
 
-    groups = list(object({
+    groups = optional(list(object({
       group       = string
       description = optional(string)
+    })))
 
-    }))
-
-    // serverless_neg_backends is mutually exclusive to groups.There can only be one serverless neg per region
-    // with one of cloud-run, cloud-functions and app-engine as service.
+    // serverless_neg_backends is mutually exclusive to groups. There can only be one serverless NEG per region
+    // with one of cloud-run, cloud-functions and app-engine as type.
     serverless_neg_backends = optional(list(object({
       region  = string,
       type    = string, // cloud-run, cloud-function and app-engine
