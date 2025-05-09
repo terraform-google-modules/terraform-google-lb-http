@@ -50,10 +50,14 @@ module "lb-http" {
         sample_rate = 1.0
       }
 
-      groups = [
+      serverless_neg_backends = [
         {
-          # Your serverless service should have a NEG created that's referenced here.
-          group = google_compute_region_network_endpoint_group.default.id
+          region  = "us-central1"
+          type    = "cloud-run"
+          service = {
+            name    = "your-cloud-run-service-name"
+            version = "latest"
+          }
         }
       ]
 
