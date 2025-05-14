@@ -37,6 +37,11 @@ spec:
         compression_mode:
           name: compression_mode
           title: Compression Mode
+          enumValueLabels:
+            - label: AUTOMATIC
+              value: AUTOMATIC
+            - label: DISABLED
+              value: DISABLED
         connection_draining_timeout_sec:
           name: connection_draining_timeout_sec
           title: Connection Draining Timeout Sec
