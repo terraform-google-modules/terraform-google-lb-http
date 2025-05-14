@@ -433,7 +433,7 @@ resource "google_compute_health_check" "default" {
 }
 
 resource "google_compute_firewall" "default-hc" {
-  count   = length(var.firewall_networks)
+  count = length(var.firewall_networks) && (length(local.health_checked_backends) > 0) ? 1 : 0
   project = length(var.firewall_networks) == 1 && var.firewall_projects[0] == "default" ? var.project : var.firewall_projects[count.index]
   name    = "${var.name}-hc-${count.index}"
   network = var.firewall_networks[count.index]
