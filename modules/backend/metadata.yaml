@@ -44,6 +44,8 @@ spec:
         location: examples/cross-project-mig-backend
       - name: dynamic-backend
         location: examples/dynamic-backend
+      - name: external-lb-backend-bucket
+        location: examples/external-lb-backend-bucket
       - name: gke-node-port
         location: examples/https-gke/gke-node-port
       - name: https-gke
@@ -176,6 +178,16 @@ spec:
               version: ">= 0.13"
             spec:
               outputExpr: "{\"region\": location, \"service_name\": service_name, \"type\": \"cloud-run\", \"service_version\": \"\"}"
+      - name: backend_bucket_name
+        description: The name of GCS bucket which serves the traffic.
+        varType: string
+        defaultValue: ""
+        connections:
+          - source:
+              source: github.com/terraform-google-modules/terraform-google-cloud-storage//modules/simple_bucket
+              version: ">= 8.0"
+            spec:
+              outputExpr: name
       - name: iap_config
         description: Settings for enabling Cloud Identity Aware Proxy Structure.
         varType: |-
