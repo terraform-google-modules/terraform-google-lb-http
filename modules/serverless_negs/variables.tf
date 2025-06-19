@@ -299,3 +299,43 @@ variable "http_keep_alive_timeout_sec" {
   type        = number
   default     = null
 }
+
+variable "name_suffixes" {
+  description = "Map of suffixes to the created resource names."
+  type = object({
+    address                    = optional(string, "-address")
+    address_ipv6               = optional(string, "-ipv6-address")
+    certificate                = optional(string, "-cert")
+    http_forwarding_rule       = optional(string, "")
+    http_ipv6_forwarding_rule  = optional(string, "-ipv6-http")
+    https_forwarding_rule      = optional(string, "-https")
+    https_ipv6_forwarding_rule = optional(string, "-ipv6-https")
+    target_http_proxy          = optional(string, "-http-proxy")
+    target_https_proxy         = optional(string, "-https-proxy")
+    url_map                    = optional(string, "-url-map")
+    url_map_https_redirect     = optional(string, "-https-redirect")
+    backend_service            = optional(string, "")
+    health_check               = optional(string, "")
+  })
+  default = {}
+}
+
+variable "name_prefixes" {
+  description = "Map of resource name prefixes allowing name customization. `null` values fallback to module defaults."
+  type = object({
+    address                    = optional(string, null)
+    address_ipv6               = optional(string, null)
+    certificate                = optional(string, null)
+    http_forwarding_rule       = optional(string, null)
+    http_ipv6_forwarding_rule  = optional(string, null)
+    https_forwarding_rule      = optional(string, null)
+    https_ipv6_forwarding_rule = optional(string, null)
+    target_http_proxy          = optional(string, null)
+    target_https_proxy         = optional(string, null)
+    url_map                    = optional(string, null)
+    url_map_https_redirect     = optional(string, null)
+    backend_service            = optional(string, null)
+    health_check               = optional(string, null)
+  })
+  default = {}
+}
