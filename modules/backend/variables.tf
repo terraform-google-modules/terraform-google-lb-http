@@ -147,6 +147,12 @@ variable "serverless_neg_backends" {
   }
 }
 
+variable "backend_bucket_name" {
+  description = "The name of GCS bucket which serves the traffic."
+  type        = string
+  default     = ""
+}
+
 variable "iap_config" {
   description = "Settings for enabling Cloud Identity Aware Proxy Structure."
   type = object({

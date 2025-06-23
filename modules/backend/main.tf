@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
+locals {
+  is_backend_bucket = var.backend_bucket_name != null && var.backend_bucket_name != ""
+}
+
 resource "google_compute_backend_service" "default" {
   provider = google-beta
+  count    = !local.is_backend_bucket ? 1 : 0
 
   project = var.project_id
   name    = var.name
@@ -308,5 +313,54 @@ resource "google_compute_firewall" "allow_proxy" {
   allow {
     ports    = ["8080"]
     protocol = "tcp"
+  }
+}
+
+resource "google_compute_backend_bucket" "default" {
+  provider = google-beta
+  count    = local.is_backend_bucket ? 1 : 0
+
+  project     = var.project_id
+  name        = var.name
+  bucket_name = var.backend_bucket_name
+  enable_cdn  = var.enable_cdn
+
+  description = var.description
+
+  # CDN policy configuration, if CDN is enabled
+  dynamic "cdn_policy" {
+    for_each = var.enable_cdn ? [1] : []
+    content {
+      cache_mode                   = var.cdn_policy.cache_mode
+      signed_url_cache_max_age_sec = var.cdn_policy.signed_url_cache_max_age_sec
+      default_ttl                  = var.cdn_policy.default_ttl
+      max_ttl                      = var.cdn_policy.max_ttl
+      client_ttl                   = var.cdn_policy.client_ttl
+      negative_caching             = var.cdn_policy.negative_caching
+      serve_while_stale            = var.cdn_policy.serve_while_stale
+
+      dynamic "negative_caching_policy" {
+        for_each = var.cdn_policy.negative_caching_policy != null ? [1] : []
+        content {
+          code = var.cdn_policy.negative_caching_policy.code
+          ttl  = var.cdn_policy.negative_caching_policy.ttl
+        }
+      }
+
+      dynamic "cache_key_policy" {
+        for_each = var.cdn_policy.cache_key_policy != null ? [1] : []
+        content {
+          query_string_whitelist = var.cdn_policy.cache_key_policy.query_string_whitelist
+          include_http_headers   = var.cdn_policy.cache_key_policy.include_http_headers
+        }
+      }
+
+      dynamic "bypass_cache_on_request_headers" {
+        for_each = var.cdn_policy.bypass_cache_on_request_headers != null && try(length(var.cdn_policy.bypass_cache_on_request_headers), 0) > 0 ? toset(var.cdn_policy.bypass_cache_on_request_headers) : []
+        content {
+          header_name = bypass_cache_on_request_headers.value
+        }
+      }
+    }
   }
 }
