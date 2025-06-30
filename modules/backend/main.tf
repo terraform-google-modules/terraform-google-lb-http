@@ -15,7 +15,8 @@
  */
 
 locals {
-  is_backend_bucket = var.backend_bucket_name != null && var.backend_bucket_name != ""
+  is_backend_bucket       = var.backend_bucket_name != null && var.backend_bucket_name != ""
+  serverless_neg_backends = is_backend_bucket ? [] : var.serverless_neg_backends
 }
 
 resource "google_compute_backend_service" "default" {
@@ -161,7 +162,7 @@ resource "google_compute_backend_service" "default" {
 }
 
 resource "google_compute_region_network_endpoint_group" "serverless_negs" {
-  for_each = { for serverless_neg_backend in var.serverless_neg_backends :
+  for_each = { for serverless_neg_backend in local.serverless_neg_backends :
   "neg-${var.name}-${serverless_neg_backend.service_name}-${serverless_neg_backend.region}" => serverless_neg_backend }
 
 

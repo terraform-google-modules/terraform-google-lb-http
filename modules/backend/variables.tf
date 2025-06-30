@@ -188,7 +188,13 @@ variable "cdn_policy" {
       include_named_cookies  = optional(list(string))
     }))
   })
-  default = {}
+  default = {
+    cache_mode                   = "CACHE_ALL_STATIC"
+    default_ttl                  = 3600
+    client_ttl                   = 3600
+    max_ttl                      = 86400
+    signed_url_cache_max_age_sec = 0
+  }
 }
 
 variable "outlier_detection" {
