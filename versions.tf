@@ -33,11 +33,11 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-lb-http/v12.2.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http/v13.0.0"
   }
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-lb-http/v12.2.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http/v13.0.0"
   }
 
 }
