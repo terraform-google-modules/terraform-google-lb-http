@@ -224,7 +224,12 @@ spec:
                 include_named_cookies  = optional(list(string))
               }))
             })
-        defaultValue: {}
+        defaultValue:
+          cache_mode: CACHE_ALL_STATIC
+          client_ttl: 3600
+          default_ttl: 3600
+          max_ttl: 86400
+          signed_url_cache_max_age_sec: 0
       - name: outlier_detection
         description: Settings controlling eviction of unhealthy hosts from the load balancing pool.
         varType: |-
