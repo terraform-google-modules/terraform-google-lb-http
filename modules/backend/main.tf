@@ -16,7 +16,7 @@
 
 locals {
   is_backend_bucket       = var.backend_bucket_name != null && var.backend_bucket_name != ""
-  serverless_neg_backends = is_backend_bucket ? [] : var.serverless_neg_backends
+  serverless_neg_backends = local.is_backend_bucket ? [] : var.serverless_neg_backends
 }
 
 resource "google_compute_backend_service" "default" {

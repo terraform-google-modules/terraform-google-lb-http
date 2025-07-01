@@ -116,7 +116,7 @@ spec:
         connections:
           - source:
               source: github.com/terraform-google-modules/terraform-google-lb-http//modules/backend
-              version: ^12.0
+              version: ">= 12.0"
             spec:
               outputExpr: backend_service_info
       - name: url_map_resource_uri
