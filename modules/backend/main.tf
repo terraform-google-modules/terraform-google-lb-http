@@ -14,8 +14,14 @@
  * limitations under the License.
  */
 
+locals {
+  is_backend_bucket       = var.backend_bucket_name != null && var.backend_bucket_name != ""
+  serverless_neg_backends = local.is_backend_bucket ? [] : var.serverless_neg_backends
+}
+
 resource "google_compute_backend_service" "default" {
   provider = google-beta
+  count    = !local.is_backend_bucket ? 1 : 0
 
   project = var.project_id
   name    = var.name
@@ -28,7 +34,7 @@ resource "google_compute_backend_service" "default" {
   description                     = var.description
   connection_draining_timeout_sec = var.connection_draining_timeout_sec
   enable_cdn                      = var.enable_cdn
-  compression_mode                = var.compression_mode
+  compression_mode                = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED" || var.load_balancing_scheme == "INTERNAL_MANAGED" ? null : var.compression_mode
   custom_request_headers          = var.custom_request_headers
   custom_response_headers         = var.custom_response_headers
   session_affinity                = var.session_affinity
@@ -61,7 +67,7 @@ resource "google_compute_backend_service" "default" {
   dynamic "backend" {
     for_each = toset(var.serverless_neg_backends)
     content {
-      group = google_compute_region_network_endpoint_group.serverless_negs["neg-${var.name}-${backend.value.region}"].id
+      group = google_compute_region_network_endpoint_group.serverless_negs["neg-${var.name}-${backend.value.service_name}-${backend.value.region}"].id
     }
   }
 
@@ -156,8 +162,8 @@ resource "google_compute_backend_service" "default" {
 }
 
 resource "google_compute_region_network_endpoint_group" "serverless_negs" {
-  for_each = { for serverless_neg_backend in var.serverless_neg_backends :
-  "neg-${var.name}-${serverless_neg_backend.region}" => serverless_neg_backend }
+  for_each = { for serverless_neg_backend in local.serverless_neg_backends :
+  "neg-${var.name}-${serverless_neg_backend.service_name}-${serverless_neg_backend.region}" => serverless_neg_backend }
 
 
   provider              = google-beta
@@ -286,6 +292,76 @@ resource "google_compute_firewall" "default-hc" {
 
   allow {
     protocol = "tcp"
-    ports    = [var.health_check.port]
+    ports    = var.health_check.port != null ? [var.health_check.port] : null
+  }
+}
+
+resource "google_compute_firewall" "allow_proxy" {
+  count         = var.health_check != null ? length(var.firewall_networks) : 0
+  project       = length(var.firewall_networks) == 1 && var.firewall_projects[0] == "default" ? var.project_id : var.firewall_projects[count.index]
+  name          = "${var.name}-fw-allow-proxies-${count.index}"
+  network       = var.firewall_networks[count.index]
+  source_ranges = var.firewall_source_ranges
+  target_tags   = length(var.target_tags) > 0 ? var.target_tags : null
+  allow {
+    ports    = ["443"]
+    protocol = "tcp"
+  }
+  allow {
+    ports    = ["80"]
+    protocol = "tcp"
+  }
+  allow {
+    ports    = ["8080"]
+    protocol = "tcp"
+  }
+}
+
+resource "google_compute_backend_bucket" "default" {
+  provider = google-beta
+  count    = local.is_backend_bucket ? 1 : 0
+
+  project     = var.project_id
+  name        = var.name
+  bucket_name = var.backend_bucket_name
+  enable_cdn  = var.enable_cdn
+
+  description = var.description
+
+  # CDN policy configuration, if CDN is enabled
+  dynamic "cdn_policy" {
+    for_each = var.enable_cdn ? [1] : []
+    content {
+      cache_mode                   = var.cdn_policy.cache_mode
+      signed_url_cache_max_age_sec = var.cdn_policy.signed_url_cache_max_age_sec
+      default_ttl                  = var.cdn_policy.default_ttl
+      max_ttl                      = var.cdn_policy.max_ttl
+      client_ttl                   = var.cdn_policy.client_ttl
+      negative_caching             = var.cdn_policy.negative_caching
+      serve_while_stale            = var.cdn_policy.serve_while_stale
+
+      dynamic "negative_caching_policy" {
+        for_each = var.cdn_policy.negative_caching_policy != null ? [1] : []
+        content {
+          code = var.cdn_policy.negative_caching_policy.code
+          ttl  = var.cdn_policy.negative_caching_policy.ttl
+        }
+      }
+
+      dynamic "cache_key_policy" {
+        for_each = var.cdn_policy.cache_key_policy != null ? [1] : []
+        content {
+          query_string_whitelist = var.cdn_policy.cache_key_policy.query_string_whitelist
+          include_http_headers   = var.cdn_policy.cache_key_policy.include_http_headers
+        }
+      }
+
+      dynamic "bypass_cache_on_request_headers" {
+        for_each = var.cdn_policy.bypass_cache_on_request_headers != null && try(length(var.cdn_policy.bypass_cache_on_request_headers), 0) > 0 ? toset(var.cdn_policy.bypass_cache_on_request_headers) : []
+        content {
+          header_name = bypass_cache_on_request_headers.value
+        }
+      }
+    }
   }
 }

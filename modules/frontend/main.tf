@@ -23,8 +23,9 @@ locals {
   create_http_forward = var.http_forward || var.https_redirect
 
 
-  is_internal      = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED"
-  internal_network = local.is_internal ? var.network : null
+  is_internal_self_managed = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED"
+  is_internal_managed      = var.load_balancing_scheme == "INTERNAL_MANAGED"
+  internal_network         = local.is_internal_self_managed || local.is_internal_managed ? var.network : null
 
   # Create a map with hosts as keys and empty lists as initial values
   hosts = toset([for service in var.url_map_input : service.host])
@@ -35,13 +36,18 @@ locals {
       s.path => s.backend_service if s.host == host
     }
   }
+
+  # Find a backend service to be used for url_map in absence of host "*" and path "/*"
+  first_host            = try(keys(local.backend_services_by_host)[0], null)
+  first_path            = try(keys(local.backend_services_by_host[local.first_host])[0], null)
+  first_backend_service = try(local.backend_services_by_host[local.first_host][local.first_path], null)
 }
 
 ### IPv4 block ###
 resource "google_compute_global_forwarding_rule" "http" {
   provider              = google-beta
   project               = var.project_id
-  count                 = local.create_http_forward ? 1 : 0
+  count                 = local.create_http_forward && !local.is_internal_managed ? 1 : 0
   name                  = var.name
   target                = google_compute_target_http_proxy.default[0].self_link
   ip_address            = local.address
@@ -51,10 +57,27 @@ resource "google_compute_global_forwarding_rule" "http" {
   network               = local.internal_network
 }
 
+resource "google_compute_global_forwarding_rule" "internal_managed_http" {
+  for_each = local.create_http_forward && local.is_internal_managed ? {
+    for config in var.internal_forwarding_rules_config : config.region => config
+  } : {}
+
+  provider              = google-beta
+  project               = var.project_id
+  name                  = "${var.name}-internal-managed-http-${each.key}"
+  target                = google_compute_target_http_proxy.default[0].self_link
+  port_range            = var.http_port
+  labels                = var.labels
+  load_balancing_scheme = var.load_balancing_scheme
+  network               = local.internal_network
+  subnetwork            = each.value.subnetwork
+  ip_address            = each.value.address
+}
+
 resource "google_compute_global_forwarding_rule" "https" {
   provider              = google-beta
   project               = var.project_id
-  count                 = var.ssl ? 1 : 0
+  count                 = var.ssl && !local.is_internal_managed ? 1 : 0
   name                  = "${var.name}-https"
   target                = google_compute_target_https_proxy.default[0].self_link
   ip_address            = local.address
@@ -64,9 +87,26 @@ resource "google_compute_global_forwarding_rule" "https" {
   network               = local.internal_network
 }
 
+resource "google_compute_global_forwarding_rule" "internal_managed_https" {
+  for_each = var.ssl && local.is_internal_managed ? {
+    for config in var.internal_forwarding_rules_config : config.region => config
+  } : {}
+
+  provider              = google-beta
+  project               = var.project_id
+  name                  = "${var.name}-internal-managed-https-${each.key}"
+  target                = google_compute_target_https_proxy.default[0].self_link
+  port_range            = var.https_port
+  labels                = var.labels
+  load_balancing_scheme = var.load_balancing_scheme
+  network               = local.internal_network
+  subnetwork            = each.value.subnetwork
+  ip_address            = each.value.address
+}
+
 resource "google_compute_global_address" "default" {
   provider   = google-beta
-  count      = local.is_internal ? 0 : var.create_address ? 1 : 0
+  count      = local.is_internal_self_managed || local.is_internal_managed ? 0 : var.create_address ? 1 : 0
   project    = var.project_id
   name       = "${var.name}-address"
   ip_version = "IPV4"
@@ -78,7 +118,7 @@ resource "google_compute_global_address" "default" {
 resource "google_compute_global_forwarding_rule" "http_ipv6" {
   provider              = google-beta
   project               = var.project_id
-  count                 = (var.enable_ipv6 && local.create_http_forward) ? 1 : 0
+  count                 = (var.enable_ipv6 && local.create_http_forward && !local.is_internal_managed) ? 1 : 0
   name                  = "${var.name}-ipv6-http"
   target                = google_compute_target_http_proxy.default[0].self_link
   ip_address            = local.ipv6_address
@@ -88,10 +128,26 @@ resource "google_compute_global_forwarding_rule" "http_ipv6" {
   network               = local.internal_network
 }
 
+resource "google_compute_global_forwarding_rule" "internal_managed_http_ipv6" {
+  for_each = var.enable_ipv6 && local.create_http_forward && local.is_internal_managed ? {
+    for config in var.internal_forwarding_rules_config : config.region => config
+  } : {}
+
+  provider              = google-beta
+  project               = var.project_id
+  name                  = "${var.name}-internal-managed-http-ipv6-${each.key}"
+  target                = google_compute_target_http_proxy.default[0].self_link
+  port_range            = "80"
+  labels                = var.labels
+  load_balancing_scheme = var.load_balancing_scheme
+  subnetwork            = each.value.subnetwork
+  ip_address            = each.value.address
+}
+
 resource "google_compute_global_forwarding_rule" "https_ipv6" {
   provider              = google-beta
   project               = var.project_id
-  count                 = var.enable_ipv6 && var.ssl ? 1 : 0
+  count                 = var.enable_ipv6 && var.ssl && !local.is_internal_managed ? 1 : 0
   name                  = "${var.name}-ipv6-https"
   target                = google_compute_target_https_proxy.default[0].self_link
   ip_address            = local.ipv6_address
@@ -101,9 +157,25 @@ resource "google_compute_global_forwarding_rule" "https_ipv6" {
   network               = local.internal_network
 }
 
+resource "google_compute_global_forwarding_rule" "internal_managed_https_ipv6" {
+  for_each = var.enable_ipv6 && var.ssl && local.is_internal_managed ? {
+    for config in var.internal_forwarding_rules_config : config.region => config
+  } : {}
+
+  provider              = google-beta
+  project               = var.project_id
+  name                  = "${var.name}-internal-managed-https-ipv6-${each.key}"
+  target                = google_compute_target_https_proxy.default[0].self_link
+  port_range            = "443"
+  labels                = var.labels
+  load_balancing_scheme = var.load_balancing_scheme
+  subnetwork            = each.value.subnetwork
+  ip_address            = each.value.address
+}
+
 resource "google_compute_global_address" "default_ipv6" {
   provider   = google-beta
-  count      = local.is_internal ? 0 : (var.enable_ipv6 && var.create_ipv6_address) ? 1 : 0
+  count      = local.is_internal_self_managed || local.is_internal_managed ? 0 : (var.enable_ipv6 && var.create_ipv6_address) ? 1 : 0
   project    = var.project_id
   name       = "${var.name}-ipv6-address"
   ip_version = "IPV6"
@@ -187,7 +259,7 @@ resource "google_compute_url_map" "default" {
   provider        = google-beta
   project         = var.project_id
   name            = "${var.name}-url-map"
-  default_service = local.backend_services_by_host["*"]["/*"]
+  default_service = lookup(lookup(local.backend_services_by_host, "*", {}), "/*", local.first_backend_service)
 
   dynamic "host_rule" {
     for_each = local.backend_services_by_host
@@ -201,10 +273,10 @@ resource "google_compute_url_map" "default" {
     for_each = local.backend_services_by_host
     content {
       name            = path_matcher.key == "*" ? "default" : replace(path_matcher.key, ".", "")
-      default_service = path_matcher.value["/*"]
+      default_service = path_matcher.value[contains(keys(path_matcher.value), "/*") ? "/*" : keys(path_matcher.value)[0]]
 
       dynamic "path_rule" {
-        for_each = path_matcher.value
+        for_each = { for k, v in path_matcher.value : k => v if k != "/*" }
         content {
           paths   = [path_rule.key]
           service = path_rule.value

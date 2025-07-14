@@ -37,6 +37,11 @@ spec:
         compression_mode:
           name: compression_mode
           title: Compression Mode
+          enumValueLabels:
+            - label: AUTOMATIC
+              value: AUTOMATIC
+            - label: DISABLED
+              value: DISABLED
         connection_draining_timeout_sec:
           name: connection_draining_timeout_sec
           title: Connection Draining Timeout Sec
@@ -70,12 +75,18 @@ spec:
         host_path_mappings:
           name: host_path_mappings
           title: Host Path Mappings
+          level: 1
         iap_config:
           name: iap_config
           title: Iap Config
         load_balancing_scheme:
           name: load_balancing_scheme
           title: Load Balancing Scheme
+          enumValueLabels:
+            - label: EXTERNAL_MANAGED
+              value: EXTERNAL_MANAGED
+            - label: INTERNAL_MANAGED
+              value: INTERNAL_MANAGED
         locality_lb_policy:
           name: locality_lb_policy
           title: Locality Lb Policy
@@ -85,6 +96,8 @@ spec:
         name:
           name: name
           title: Name
+          regexValidation: ^[a-z][a-z0-9-]{0,40}[a-z0-9]$
+          validation: Use lowercase letters, numbers, and hyphens. Start with a letter and end with letter/number. Must be 42 characters or fewer.
         outlier_detection:
           name: outlier_detection
           title: Outlier Detection

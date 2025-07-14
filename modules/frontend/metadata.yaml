@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-lb-http.git
       sourceType: git
       dir: /modules/frontend
-    version: 12.0.0
+    version: 12.2.0
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
@@ -44,12 +44,18 @@ spec:
         location: examples/cross-project-mig-backend
       - name: dynamic-backend
         location: examples/dynamic-backend
+      - name: external-lb-backend-bucket
+        location: examples/external-lb-backend-bucket
       - name: gke-node-port
         location: examples/https-gke/gke-node-port
       - name: https-gke
         location: examples/https-gke
       - name: https-redirect
         location: examples/https-redirect
+      - name: internal-lb-cloud-run
+        location: examples/internal-lb-cloud-run
+      - name: internal-lb-gce-mig
+        location: examples/internal-lb-gce-mig
       - name: lb-http-separate-frontend-and-backend
         location: examples/lb-http-separate-frontend-and-backend
       - name: mig-nat-http-lb
@@ -110,7 +116,7 @@ spec:
         connections:
           - source:
               source: github.com/terraform-google-modules/terraform-google-lb-http//modules/backend
-              version: ~> 12.0
+              version: ">= 12.0"
             spec:
               outputExpr: backend_service_info
       - name: url_map_resource_uri
@@ -164,11 +170,11 @@ spec:
         varType: map(string)
         defaultValue: {}
       - name: load_balancing_scheme
-        description: Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_SELF_MANAGED for traffic director)
+        description: Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, INTERNAL_MANAGED for internal load balancer and INTERNAL_SELF_MANAGED for traffic director)
         varType: string
         defaultValue: EXTERNAL_MANAGED
       - name: network
-        description: Network for INTERNAL_SELF_MANAGED load balancing scheme
+        description: VPC network for the forwarding rule. The VPC network should have exactly one GLOBAL_MANAGED_PROXY subnetwork for every region where the forwarding rule is to be configured. Please go to the subnets tab of your VPC network and check if a GLOBAL_MANAGED_PROXY subnet exists under the `Reserved proxy-only subnets for load balancing` section. If a GLOBAL_MANAGED_PROXY subnet doesn't exist, create one for each required region.
         varType: string
         defaultValue: default
       - name: server_tls_policy
@@ -185,6 +191,15 @@ spec:
       - name: http_keep_alive_timeout_sec
         description: Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds).
         varType: number
+      - name: internal_forwarding_rules_config
+        description: List of internal managed forwarding rules config. One of 'address' or 'subnetwork' is required for each. It is only applicable for internal load balancer
+        varType: |-
+          list(object({
+              region     = string
+              address    = optional(string)
+              subnetwork = optional(string)
+            }))
+        defaultValue: []
     outputs:
       - name: external_ip
         description: The external IPv4 assigned to the global fowarding rule.
@@ -198,6 +213,16 @@ spec:
       - name: https_proxy
         description: The HTTPS proxy used by this module.
         type: string
+      - name: ip_address_internal_managed_http
+        description: The internal/external IP addresses assigned to the HTTP forwarding rules.
+        type:
+          - list
+          - string
+      - name: ip_address_internal_managed_https
+        description: The internal/external IP addresses assigned to the HTTPS forwarding rules.
+        type:
+          - list
+          - string
       - name: ipv6_enabled
         description: Whether IPv6 configuration is enabled on this load-balancer
         type: bool
@@ -211,11 +236,16 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/owner
-          - roles/storage.admin
+          - roles/compute.xpnAdmin
       - level: Project
         roles:
-          - roles/compute.xpnAdmin
+          - roles/storage.admin
+          - roles/compute.admin
+          - roles/run.admin
+          - roles/iam.serviceAccountUser
+          - roles/certificatemanager.owner
+          - roles/vpcaccess.admin
+          - roles/iam.serviceAccountAdmin
     services:
       - cloudresourcemanager.googleapis.com
       - storage-api.googleapis.com
@@ -224,6 +254,7 @@ spec:
       - run.googleapis.com
       - iam.googleapis.com
       - certificatemanager.googleapis.com
+      - vpcaccess.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6.0, < 7"

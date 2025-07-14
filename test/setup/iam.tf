@@ -16,8 +16,13 @@
 
 locals {
   int_required_project_roles = [
-    "roles/owner",
-    "roles/storage.admin"
+    "roles/storage.admin",
+    "roles/compute.admin",
+    "roles/run.admin",
+    "roles/iam.serviceAccountUser",
+    "roles/certificatemanager.owner",
+    "roles/vpcaccess.admin",
+    "roles/iam.serviceAccountAdmin"
   ]
   int_required_folder_roles = [
     "roles/compute.xpnAdmin"
