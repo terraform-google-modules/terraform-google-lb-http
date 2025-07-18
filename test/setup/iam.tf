@@ -15,15 +15,55 @@
  */
 
 locals {
-  int_required_project_roles = [
-    "roles/storage.admin",
-    "roles/compute.admin",
-    "roles/run.admin",
-    "roles/iam.serviceAccountUser",
-    "roles/certificatemanager.owner",
-    "roles/vpcaccess.admin",
-    "roles/iam.serviceAccountAdmin"
-  ]
+  per_module_roles = {
+    root = [
+      "roles/storage.admin",
+      "roles/compute.admin",
+      "roles/run.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/certificatemanager.owner",
+      "roles/vpcaccess.admin",
+      "roles/iam.serviceAccountAdmin"
+    ]
+    backend = [
+      "roles/storage.admin",
+      "roles/compute.admin",
+      "roles/run.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/certificatemanager.owner",
+      "roles/vpcaccess.admin",
+      "roles/iam.serviceAccountAdmin"
+    ]
+    dynamic_backends = [
+      "roles/storage.admin",
+      "roles/compute.admin",
+      "roles/run.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/certificatemanager.owner",
+      "roles/vpcaccess.admin",
+      "roles/iam.serviceAccountAdmin"
+    ]
+    frontend = [
+      "roles/storage.admin",
+      "roles/compute.admin",
+      "roles/run.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/certificatemanager.owner",
+      "roles/vpcaccess.admin",
+      "roles/iam.serviceAccountAdmin"
+    ]
+    serverless_negs = [
+      "roles/storage.admin",
+      "roles/compute.admin",
+      "roles/run.admin",
+      "roles/iam.serviceAccountUser",
+      "roles/certificatemanager.owner",
+      "roles/vpcaccess.admin",
+      "roles/iam.serviceAccountAdmin"
+    ]
+  }
+
+  int_required_project_roles = tolist(toset(flatten(values(local.per_module_roles))))
   int_required_folder_roles = [
     "roles/compute.xpnAdmin"
   ]
