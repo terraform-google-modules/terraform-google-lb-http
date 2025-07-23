@@ -42,6 +42,7 @@ This module creates `google_compute_backend_service` resource and its dependenci
 
 | Name | Description |
 |------|-------------|
+| apphub\_service\_uri | Service URI in CAIS style to be used by Apphub. |
 | backend\_service\_info | Host, path and backend service mapping |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

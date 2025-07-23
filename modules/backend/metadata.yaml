@@ -311,6 +311,14 @@ spec:
         defaultValue:
           - 10.127.0.0/23
     outputs:
+      - name: apphub_service_uri
+        description: Service URI in CAIS style to be used by Apphub.
+        type:
+          - list
+          - - object
+            - location: string
+              service_id: string
+              service_uri: string
       - name: backend_service_info
         description: Host, path and backend service mapping
         type:
