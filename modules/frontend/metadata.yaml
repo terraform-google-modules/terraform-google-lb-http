@@ -244,22 +244,11 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/iam.serviceAccountAdmin
-          - roles/storage.admin
+          - roles/compute.loadBalancerAdmin
           - roles/compute.admin
-          - roles/run.admin
-          - roles/iam.serviceAccountUser
-          - roles/certificatemanager.owner
-          - roles/vpcaccess.admin
     services:
       - certificatemanager.googleapis.com
-      - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
-      - iam.googleapis.com
-      - run.googleapis.com
-      - serviceusage.googleapis.com
-      - storage-api.googleapis.com
-      - vpcaccess.googleapis.com
     providerVersions:
       - source: hashicorp/google
         version: ">= 6.0, < 7"
