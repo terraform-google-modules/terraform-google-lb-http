@@ -26,12 +26,8 @@ locals {
       "roles/iam.serviceAccountAdmin"
     ]
     backend = [
-      "roles/storage.admin",
       "roles/compute.admin",
-      "roles/run.admin",
       "roles/iam.serviceAccountUser",
-      "roles/certificatemanager.owner",
-      "roles/vpcaccess.admin",
       "roles/iam.serviceAccountAdmin"
     ]
     dynamic_backends = [
@@ -44,13 +40,8 @@ locals {
       "roles/iam.serviceAccountAdmin"
     ]
     frontend = [
-      "roles/storage.admin",
       "roles/compute.admin",
-      "roles/run.admin",
-      "roles/iam.serviceAccountUser",
-      "roles/certificatemanager.owner",
-      "roles/vpcaccess.admin",
-      "roles/iam.serviceAccountAdmin"
+      "roles/compute.loadBalancerAdmin",
     ]
     serverless_negs = [
       "roles/storage.admin",
