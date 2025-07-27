@@ -44,7 +44,7 @@ resource "google_compute_backend_service" "default" {
   security_policy                 = var.security_policy
   timeout_sec                     = var.timeout_sec
 
-  health_checks = var.health_check != null ? google_compute_health_check.default[*].self_link : null
+  health_checks = var.health_check != null ? google_compute_health_check.default[*].self_link : ( var.health_check_self_link != null ? [var.health_check_self_link] : [] )
 
   dynamic "backend" {
     for_each = toset(var.groups)
