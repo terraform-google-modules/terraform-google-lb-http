@@ -60,10 +60,12 @@ output "ssl_certificate_created" {
 }
 
 output "apphub_service_uri" {
-  value = {
+  value = [
+    {
       service_uri = "//compute.googleapis.com/${google_compute_forwarding_rule.default[0].id}"
-      service_id  = substr("${google_compute_forwarding_rule.default[0].name}-${md5("global-${var.project_id}")}", 0, 63)
+      service_id  = substr("${google_compute_forwarding_rule.default[0].name}-${md5("global-lb-${var.project_id}")}", 0, 63)
       location    = "global"
-  }
+    }
+  ]
   description = "Service URI in CAIS style to be used by Apphub."
 }
