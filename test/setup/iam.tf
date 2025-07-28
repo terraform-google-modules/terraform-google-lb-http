@@ -27,6 +27,10 @@ locals {
     ]
     backend = [
       "roles/compute.admin",
+      "roles/storage.admin",
+      "roles/run.admin",
+      "roles/compute.networkAdmin",
+      "roles/iap.admin",
       "roles/iam.serviceAccountUser",
       "roles/iam.serviceAccountAdmin"
     ]
@@ -41,7 +45,9 @@ locals {
     ]
     frontend = [
       "roles/compute.admin",
-      "roles/compute.loadBalancerAdmin",
+      "roles/certificatemanager.admin",
+      "roles/iap.admin",
+      "roles/iam.serviceAccountUser"
     ]
     serverless_negs = [
       "roles/storage.admin",

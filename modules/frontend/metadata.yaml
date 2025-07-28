@@ -236,8 +236,10 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/compute.loadBalancerAdmin
           - roles/compute.admin
+          - roles/certificatemanager.admin
+          - roles/iap.admin
+          - roles/iam.serviceAccountUser
     services:
       - certificatemanager.googleapis.com
       - compute.googleapis.com
