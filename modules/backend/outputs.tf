@@ -34,8 +34,8 @@ output "backend_service_info" {
 output "apphub_service_uri" {
   value = [
     {
-      service_uri = "//compute.googleapis.com/${google_compute_forwarding_rule.default[0].id}"
-      service_id  = substr("${google_compute_forwarding_rule.default[0].name}-${md5("global-be-service-${var.project_id}")}", 0, 63)
+      service_uri = "//compute.googleapis.com/${google_compute_backend_service.default[0].id}"
+      service_id  = substr("${google_compute_backend_service.default[0].name}-${md5("global-be-service-${var.project_id}")}", 0, 63)
       location    = "global"
     }
   ]
