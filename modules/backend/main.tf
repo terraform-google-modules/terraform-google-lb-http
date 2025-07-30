@@ -365,3 +365,8 @@ resource "google_compute_backend_bucket" "default" {
     }
   }
 }
+
+moved {
+  from = google_compute_region_network_endpoint_group.serverless_negs["neg-${var.name}-${OLD_SERVICE_NAME}-${OLD_REGION}"]
+  to   = google_compute_region_network_endpoint_group.serverless_negs["neg-${var.name}-${OLD_REGION}-${substr(md5(OLD_SERVICE_NAME), 0, 4)}"]
+}
