@@ -115,7 +115,7 @@ spec:
         defaultValue: []
         connections:
           - source:
-              source: github.com/amrkk123/terraform-google-lb-http//modules/backend
+              source: github.com/terraform-google-modules/terraform-google-lb-http//modules/backend
               version: ">= 12.0"
             spec:
               outputExpr: backend_service_info
