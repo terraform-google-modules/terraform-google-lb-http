@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [13.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.2.0...v13.0.0) (2025-07-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* Adding  regex validation for service name and adding apphub ([#522](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/522))
+* update default for cdn_policy and do not create serverless neg ([#516](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/516))
+
+### Features
+
+* update default for cdn_policy and do not create serverless neg ([#516](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/516)) ([6e7e878](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/6e7e87834ad1beb504cfeb31388f06ce38fd15f9))
+
+
+### Bug Fixes
+
+* Adding  regex validation for service name and adding apphub ([#522](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/522)) ([687152d](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/687152d0fdf64e68ef81c274b71a05028f9b015e))
+
 ## [12.2.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.1.4...v12.2.0) (2025-06-23)
 
 
