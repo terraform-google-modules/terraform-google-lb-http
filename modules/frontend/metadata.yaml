@@ -201,6 +201,14 @@ spec:
             }))
         defaultValue: []
     outputs:
+      - name: apphub_service_uri
+        description: Service URI in CAIS style to be used by Apphub.
+        type:
+          - list
+          - - object
+            - location: string
+              service_id: string
+              service_uri: string
       - name: external_ip
         description: The external IPv4 assigned to the global fowarding rule.
         type: string
