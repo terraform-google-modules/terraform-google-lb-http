@@ -46,6 +46,7 @@ locals {
     frontend = [
       "roles/compute.admin",
       "roles/iap.admin",
+      "roles/certificatemanager.owner",
       "roles/iam.serviceAccountUser"
     ]
     serverless_negs = [

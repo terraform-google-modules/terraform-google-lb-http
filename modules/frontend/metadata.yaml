@@ -236,9 +236,10 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/certificatemanager.owner
+          - roles/iam.serviceAccountUser
           - roles/compute.admin
           - roles/iap.admin
-          - roles/iam.serviceAccountUser
     services:
       - certificatemanager.googleapis.com
       - compute.googleapis.com
