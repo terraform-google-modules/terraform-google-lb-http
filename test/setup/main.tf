@@ -28,6 +28,9 @@ locals {
     ]
     backend = [
       "compute.googleapis.com",
+      "run.googleapis.com",
+      "storage-api.googleapis.com",
+      "vpcaccess.googleapis.com",
       "cloudresourcemanager.googleapis.com",
     ]
     dynamic_backends = [
@@ -42,6 +45,8 @@ locals {
     ]
     frontend = [
       "compute.googleapis.com",
+      "storage-api.googleapis.com",
+      "run.googleapis.com",
       "certificatemanager.googleapis.com",
     ]
     serverless_negs = [

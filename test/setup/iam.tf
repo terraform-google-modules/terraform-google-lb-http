@@ -45,6 +45,7 @@ locals {
     ]
     frontend = [
       "roles/compute.admin",
+      "roles/storage.admin",
       "roles/iap.admin",
       "roles/certificatemanager.owner",
       "roles/iam.serviceAccountUser"
