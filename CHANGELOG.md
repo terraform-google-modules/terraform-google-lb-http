@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [13.0.1](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v13.0.0...v13.0.1) (2025-07-31)
+
+
+### Bug Fixes
+
+* fixing outputs.tf for backend for apphub check ([#525](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/525)) ([03d405c](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/03d405c29f6939fa5983db1dd8aa054f32e2a3ed))
+
 ## [13.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.2.0...v13.0.0) (2025-07-30)
 
 
