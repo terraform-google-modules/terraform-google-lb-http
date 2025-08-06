@@ -15,13 +15,11 @@
  */
 
 module "lb-backend-iap" {
-#  source  = "terraform-google-modules/lb-http/google//modules/backend"
-#  version = "~> 12.0"
+  source  = "terraform-google-modules/lb-http/google//modules/backend"
+  version = "~> 12.0"
 
-  source = "../../modules/backend"
-  
-  project_id          = var.project_id
-  name                = "backend-with-iap"
+  project_id = var.project_id
+  name       = "backend-with-iap"
   iap_config = {
     iap_members = ["user:test@test.test"]
   }
