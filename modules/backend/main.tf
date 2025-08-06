@@ -80,10 +80,10 @@ resource "google_compute_backend_service" "default" {
   }
 
   dynamic "iap" {
-    for_each = var.iap_config.enable ? [1] : []
+    for_each = length(var.iap_config.iap_members) > 0 ? [1] : []
     content {
       oauth2_client_id     = lookup(var.iap_config, "oauth2_client_id", "")
-      enabled              = var.iap_config.enable
+      enabled              = length(var.iap_config.iap_members) > 0
       oauth2_client_secret = lookup(var.iap_config, "oauth2_client_secret", "")
     }
   }
@@ -365,3 +365,12 @@ resource "google_compute_backend_bucket" "default" {
     }
   }
 }
+
+resource "google_iap_web_backend_service_iam_member" "member" {
+  for_each            = toset(var.iap_config.iap_members)
+  project             = google_compute_backend_service.default[0].project
+  web_backend_service = google_compute_backend_service.default[0].name
+  role                = "roles/iap.httpsResourceAccessor"
+  member              = each.value
+}
+

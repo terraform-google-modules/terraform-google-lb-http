@@ -63,5 +63,6 @@ module "project-ci-lb-http-1" {
     "iam.googleapis.com",
     "certificatemanager.googleapis.com",
     "vpcaccess.googleapis.com",
+    "iap.googleapis.com",
   ]
 }
