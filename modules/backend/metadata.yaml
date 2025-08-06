@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-lb-http.git
       sourceType: git
       dir: /modules/backend
-    version: 12.2.0
+    version: 13.0.1
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
@@ -229,7 +229,7 @@ spec:
           client_ttl: 3600
           default_ttl: 3600
           max_ttl: 86400
-          signed_url_cache_max_age_sec: 0
+          signed_url_cache_max_age_sec: "0"
       - name: outlier_detection
         description: Settings controlling eviction of unhealthy hosts from the load balancing pool.
         varType: |-
@@ -311,6 +311,14 @@ spec:
         defaultValue:
           - 10.127.0.0/23
     outputs:
+      - name: apphub_service_uri
+        description: Service URI in CAIS style to be used by Apphub.
+        type:
+          - list
+          - - object
+            - location: string
+              service_id: string
+              service_uri: string
       - name: backend_service_info
         description: Host, path and backend service mapping
         type:

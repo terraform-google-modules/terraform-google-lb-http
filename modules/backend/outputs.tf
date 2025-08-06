@@ -30,3 +30,16 @@ output "backend_service_info" {
     ] : []
   )
 }
+
+output "apphub_service_uri" {
+  value = concat(
+    !local.is_backend_bucket ? [
+      {
+        service_uri = "//compute.googleapis.com/${google_compute_backend_service.default[0].id}"
+        service_id  = substr("${google_compute_backend_service.default[0].name}-${md5("global-be-service-${var.project_id}")}", 0, 63)
+        location    = "global"
+      }
+    ] : [],
+  )
+  description = "Service URI in CAIS style to be used by Apphub."
+}

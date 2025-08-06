@@ -193,7 +193,7 @@ variable "cdn_policy" {
     default_ttl                  = 3600
     client_ttl                   = 3600
     max_ttl                      = 86400
-    signed_url_cache_max_age_sec = 0
+    signed_url_cache_max_age_sec = "0"
   }
 }
 
