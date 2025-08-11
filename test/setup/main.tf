@@ -14,6 +14,54 @@
  * limitations under the License.
  */
 
+locals {
+  per_module_services = {
+    root = [
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "compute.googleapis.com",
+      "run.googleapis.com",
+      "iam.googleapis.com",
+      "certificatemanager.googleapis.com",
+      "vpcaccess.googleapis.com",
+    ]
+    backend = [
+      "compute.googleapis.com",
+      "run.googleapis.com",
+      "storage-api.googleapis.com",
+      "vpcaccess.googleapis.com",
+      "cloudresourcemanager.googleapis.com",
+    ]
+    dynamic_backends = [
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "compute.googleapis.com",
+      "run.googleapis.com",
+      "iam.googleapis.com",
+      "certificatemanager.googleapis.com",
+      "vpcaccess.googleapis.com",
+    ]
+    frontend = [
+      "compute.googleapis.com",
+      "storage-api.googleapis.com",
+      "run.googleapis.com",
+      "certificatemanager.googleapis.com",
+    ]
+    serverless_negs = [
+      "cloudresourcemanager.googleapis.com",
+      "storage-api.googleapis.com",
+      "serviceusage.googleapis.com",
+      "compute.googleapis.com",
+      "run.googleapis.com",
+      "iam.googleapis.com",
+      "certificatemanager.googleapis.com",
+      "vpcaccess.googleapis.com",
+    ]
+  }
+}
+
 module "project-ci-lb-http" {
   source  = "terraform-google-modules/project-factory/google"
   version = "~> 17.0"
@@ -28,16 +76,7 @@ module "project-ci-lb-http" {
   disable_services_on_destroy = false
   deletion_policy             = "DELETE"
 
-  activate_apis = [
-    "cloudresourcemanager.googleapis.com",
-    "storage-api.googleapis.com",
-    "serviceusage.googleapis.com",
-    "compute.googleapis.com",
-    "run.googleapis.com",
-    "iam.googleapis.com",
-    "certificatemanager.googleapis.com",
-    "vpcaccess.googleapis.com",
-  ]
+  activate_apis = tolist(toset(flatten(values(local.per_module_services))))
 }
 
 module "project-ci-lb-http-1" {
@@ -54,14 +93,5 @@ module "project-ci-lb-http-1" {
   disable_services_on_destroy = false
   deletion_policy             = "DELETE"
 
-  activate_apis = [
-    "cloudresourcemanager.googleapis.com",
-    "storage-api.googleapis.com",
-    "serviceusage.googleapis.com",
-    "compute.googleapis.com",
-    "run.googleapis.com",
-    "iam.googleapis.com",
-    "certificatemanager.googleapis.com",
-    "vpcaccess.googleapis.com",
-  ]
+  activate_apis = tolist(toset(flatten(values(local.per_module_services))))
 }
