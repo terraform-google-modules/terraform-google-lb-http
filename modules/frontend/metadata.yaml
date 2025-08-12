@@ -250,8 +250,6 @@ spec:
           - roles/storage.admin
           - roles/iap.admin
           - roles/certificatemanager.owner
-          - roles/vpcaccess.admin
-          - roles/iam.serviceAccountAdmin
           - roles/iam.serviceAccountUser
     services:
       - certificatemanager.googleapis.com

@@ -330,14 +330,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/storage.admin
-          - roles/compute.admin
           - roles/run.admin
           - roles/iam.serviceAccountUser
           - roles/certificatemanager.owner
           - roles/vpcaccess.admin
           - roles/iam.serviceAccountAdmin
-          - roles/iap.admin
+          - roles/storage.admin
+          - roles/compute.admin
     services:
       - certificatemanager.googleapis.com
       - cloudresourcemanager.googleapis.com
