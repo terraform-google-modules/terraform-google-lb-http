@@ -154,13 +154,13 @@ variable "backend_bucket_name" {
 }
 
 variable "iap_config" {
-  description = "Settings for enabling Cloud Identity Aware Proxy Structure and Users/SAs to be given IAP HttpResourceAccessor access to the service."
+  description = "Settings for enabling Cloud Identity Aware Proxy and Users/SAs to be given IAP HttpResourceAccessor access to the service."
   type = object({
     iap_members          = list(string)
     oauth2_client_id     = optional(string)
     oauth2_client_secret = optional(string)
   })
-  default = null
+  default = { iap_members = [] }
 }
 
 variable "cdn_policy" {

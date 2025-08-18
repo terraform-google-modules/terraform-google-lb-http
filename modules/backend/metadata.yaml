@@ -191,13 +191,15 @@ spec:
             spec:
               outputExpr: name
       - name: iap_config
-        description: Settings for enabling Cloud Identity Aware Proxy Structure and Users/SAs to be given IAP HttpResourceAccessor access to the service.
+        description: Settings for enabling Cloud Identity Aware Proxy and Users/SAs to be given IAP HttpResourceAccessor access to the service.
         varType: |-
           object({
               iap_members          = list(string)
               oauth2_client_id     = optional(string)
               oauth2_client_secret = optional(string)
             })
+        defaultValue:
+          iap_members: []
       - name: cdn_policy
         description: Cloud CDN configuration for this BackendService.
         varType: |-
@@ -331,13 +333,13 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/iam.serviceAccountUser
           - roles/iam.serviceAccountAdmin
           - roles/compute.admin
           - roles/storage.admin
           - roles/run.admin
           - roles/compute.networkAdmin
           - roles/iap.admin
-          - roles/iam.serviceAccountUser
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
