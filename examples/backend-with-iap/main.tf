@@ -21,6 +21,7 @@ module "lb-backend-iap" {
   project_id = var.project_id
   name       = "backend-with-iap"
   iap_config = {
+    enable      = true
     iap_members = ["user:test@test.test"]
   }
 }

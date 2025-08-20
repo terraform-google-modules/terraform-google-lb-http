@@ -68,8 +68,8 @@ module "cloud-nat-group2" {
 }
 
 module "lb-http-backend" {
-  source     = "terraform-google-modules/lb-http/google//modules/backend"
-  version    = "~> 12.0"
+  source  = "terraform-google-modules/lb-http/google//modules/backend"
+  version = "~> 12.0"
 
   project_id = var.project_id
   name       = "backend-lb"
@@ -105,7 +105,7 @@ module "lb-http-backend" {
   ]
 
   iap_config = {
-    iap_members = []
+    enable = false
   }
 }
 

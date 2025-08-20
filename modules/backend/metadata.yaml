@@ -32,8 +32,8 @@ spec:
     description: {}
   content:
     examples:
-      - name: backend-with-IAP
-        location: examples/backend-with-IAP
+      - name: backend-with-iap
+        location: examples/backend-with-iap
       - name: cdn-policy
         location: examples/cdn-policy
       - name: certificate-map
@@ -194,11 +194,13 @@ spec:
         description: Settings for enabling Cloud Identity Aware Proxy and Users/SAs to be given IAP HttpResourceAccessor access to the service.
         varType: |-
           object({
-              iap_members          = list(string)
+              enable               = bool
               oauth2_client_id     = optional(string)
               oauth2_client_secret = optional(string)
+              iap_members          = list(string)
             })
         defaultValue:
+          enable: false
           iap_members: []
       - name: cdn_policy
         description: Cloud CDN configuration for this BackendService.
@@ -333,13 +335,13 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/compute.networkAdmin
+          - roles/iap.admin
           - roles/iam.serviceAccountUser
           - roles/iam.serviceAccountAdmin
           - roles/compute.admin
           - roles/storage.admin
           - roles/run.admin
-          - roles/compute.networkAdmin
-          - roles/iap.admin
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com

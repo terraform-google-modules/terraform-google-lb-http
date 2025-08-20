@@ -32,8 +32,8 @@ spec:
     description: {}
   content:
     examples:
-      - name: backend-with-IAP
-        location: examples/backend-with-IAP
+      - name: backend-with-iap
+        location: examples/backend-with-iap
       - name: cdn-policy
         location: examples/cdn-policy
       - name: certificate-map
@@ -246,11 +246,11 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/iam.serviceAccountUser
           - roles/compute.admin
           - roles/storage.admin
           - roles/iap.admin
           - roles/certificatemanager.owner
-          - roles/iam.serviceAccountUser
     services:
       - certificatemanager.googleapis.com
       - compute.googleapis.com

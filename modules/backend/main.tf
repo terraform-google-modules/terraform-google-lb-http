@@ -80,10 +80,10 @@ resource "google_compute_backend_service" "default" {
   }
 
   dynamic "iap" {
-    for_each = length(var.iap_config.iap_members) > 0 ? [1] : []
+    for_each = var.iap_config.enable ? [1] : []
     content {
       oauth2_client_id     = lookup(var.iap_config, "oauth2_client_id", "")
-      enabled              = length(var.iap_config.iap_members) > 0
+      enabled              = var.iap_config.enable
       oauth2_client_secret = lookup(var.iap_config, "oauth2_client_secret", "")
     }
   }
