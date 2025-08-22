@@ -21,20 +21,18 @@ import (
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/tft"
 	"github.com/stretchr/testify/assert"
 	"github.com/GoogleCloudPlatform/cloud-foundation-toolkit/infra/blueprint-test/pkg/gcloud"
-
-	//test "github.com/terraform-google-modules/terraform-google-lb-http/test/integration"
 )
 
 func TestLbBackendServiceIap(t *testing.T) {
 	backendServiceWithIAP := tft.NewTFBlueprintTest(t)
 
 	backendServiceWithIAP.DefineVerify(func(assert *assert.Assertions) {
-		
+
 		projectID := backendServiceWithIAP.GetTFSetupStringOutput("project_id")
 		serviceName := backendServiceWithIAP.GetStringOutput("service_name")
-		
+
 		backendServiceDescribeCmd := gcloud.Run(t, "compute backend-services describe", gcloud.WithCommonArgs([]string{serviceName, "--project", projectID, "--global", "--format", "json"}))
-		
+
 		//verify IAP is enabled in backend-services
 		iapConfig := backendServiceDescribeCmd.Get("iap").Map()
 		assert.Equal("true", iapConfig["enabled"].String(), fmt.Sprintf("IAP should be enabled"))
