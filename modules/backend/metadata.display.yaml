@@ -85,11 +85,12 @@ spec:
         iap_config:
           name: iap_config
           title: Iap Config
-        iap_members:
-          name: iap_members
-          title: Iap Members
-          regexValidation: ^(?:allUsers|allAuthenticatedUsers)$|^((?:user|group|serviceAccount):(?:[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|(?:domain:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})|(?:projectOwner|projectEditor|projectViewer):[a-z][a-z0-9-]{0,28}[a-z0-9])$
-          validation: Must be allUsers, allAuthenticatedUsers, or a service account in the format serviceAccount:email@example.com. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_backend_service_iam#google_iap_web_backend_service_iam_member).
+          properties:
+            iap_members:
+              name: iap_members
+              title: Iap Members
+              regexValidation: ^(?:allUsers|allAuthenticatedUsers)$|^((?:user|group|serviceAccount):(?:[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|(?:domain:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})|(?:projectOwner|projectEditor|projectViewer):[a-z][a-z0-9-]{0,28}[a-z0-9])$
+              validation: Must be allUsers, allAuthenticatedUsers, or a service account in the format serviceAccount:email@example.com. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_backend_service_iam#google_iap_web_backend_service_iam_member).
         load_balancing_scheme:
           name: load_balancing_scheme
           title: Load Balancing Scheme
