@@ -163,22 +163,22 @@ steps:
   waitFor:
     - teardown internal-lb-http gce-mig
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/backend-with-iap --stage init --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceIap --stage init --verbose']
 - id: apply backend-with-iap
   waitFor:
     - init backend-with-iap
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/backend-with-iap --stage apply --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceIap --stage apply --verbose']
 - id: verify backend-with-iap
   waitFor:
     - apply backend-with-iap
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/backend-with-iap --stage verify --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceIap --stage verify --verbose']
 - id: teardown backend-with-iap
   waitFor:
     - verify backend-with-iap
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/backend-with-iap --stage teardown --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceIap --stage teardown --verbose']
 tags:
 - 'ci'
 - 'integration'

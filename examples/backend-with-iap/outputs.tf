@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
-output "load-balancer-ip" {
-  value = module.lb-frontend.external_ip
+
+output "project_id" {
+  value       = module.lb-backend-iap.project_id
+  description = "Project ID of the service"
+}
+
+output "service_name" {
+  value       = module.lb-backend-iap.service_name
+  description = "Name of the created service"
 }

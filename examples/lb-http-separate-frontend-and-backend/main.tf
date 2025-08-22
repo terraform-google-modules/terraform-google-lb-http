@@ -106,7 +106,6 @@ module "lb-http-backend" {
 
   iap_config = {
     enable = false
-    iap_members = []
   }
 }
 

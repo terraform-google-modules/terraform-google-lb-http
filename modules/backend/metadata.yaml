@@ -197,11 +197,10 @@ spec:
               enable               = bool
               oauth2_client_id     = optional(string)
               oauth2_client_secret = optional(string)
-              iap_members          = list(string)
+              iap_members          = optional(list(string))
             })
         defaultValue:
           enable: false
-          iap_members: []
       - name: cdn_policy
         description: Cloud CDN configuration for this BackendService.
         varType: |-
@@ -331,17 +330,21 @@ spec:
             - backend_service: string
               host: string
               path: string
+      - name: project_id
+        description: Project ID of the service
+      - name: service_name
+        description: Name of the created service
   requirements:
     roles:
       - level: Project
         roles:
+          - roles/iam.serviceAccountUser
           - roles/iam.serviceAccountAdmin
           - roles/compute.admin
           - roles/storage.admin
           - roles/run.admin
           - roles/compute.networkAdmin
           - roles/iap.admin
-          - roles/iam.serviceAccountUser
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com

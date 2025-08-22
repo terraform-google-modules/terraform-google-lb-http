@@ -159,9 +159,9 @@ variable "iap_config" {
     enable               = bool
     oauth2_client_id     = optional(string)
     oauth2_client_secret = optional(string)
-    iap_members          = list(string)
+    iap_members          = optional(list(string))
   })
-  default = { enable = false, iap_members = [] }
+  default = { enable = false }
 }
 
 variable "cdn_policy" {
