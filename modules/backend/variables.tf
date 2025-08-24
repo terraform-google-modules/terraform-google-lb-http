@@ -222,7 +222,7 @@ variable "outlier_detection" {
 }
 
 variable "health_check" {
-  description = "Input for creating HttpHealthCheck or HttpsHealthCheck resource for health checking this BackendService. A health check must be specified unless the backend service uses an internet or serverless NEG as a backend."
+  description = "Input for creating HttpHealthCheck or HttpsHealthCheck resource for health checking this BackendService. Either health_check or health_check_self_link must be specidied unless the backend service uses an internet or serverless NEG as a backend."
   type = object({
     host                = optional(string, null)
     request_path        = optional(string, null)
@@ -240,6 +240,12 @@ variable "health_check" {
     logging             = optional(bool, false)
   })
   default = null
+}
+
+variable "health_check_self_link" {
+  description = "Self link of an existing health check. Either health_check or health_check_self_link must be specidied unless the backend service uses an internet or serverless NEG as a backend."
+  type        = string
+  default     = null
 }
 
 variable "edge_security_policy" {
