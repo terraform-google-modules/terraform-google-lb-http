@@ -32,7 +32,8 @@ locals {
       "roles/compute.networkAdmin",
       "roles/iap.admin",
       "roles/iam.serviceAccountUser",
-      "roles/iam.serviceAccountAdmin"
+      "roles/iam.serviceAccountAdmin",
+      "roles/iap.admin"
     ]
     dynamic_backends = [
       "roles/storage.admin",

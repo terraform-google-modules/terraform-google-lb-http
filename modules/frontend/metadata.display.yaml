@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -67,6 +67,9 @@ spec:
         https_redirect:
           name: https_redirect
           title: Https Redirect
+        internal_forwarding_rules_config:
+          name: internal_forwarding_rules_config
+          title: Internal Forwarding Rules Config
         ipv6_address:
           name: ipv6_address
           title: Ipv6 Address

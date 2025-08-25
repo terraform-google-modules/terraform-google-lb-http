@@ -17,6 +17,7 @@
 locals {
   is_backend_bucket       = var.backend_bucket_name != null && var.backend_bucket_name != ""
   serverless_neg_backends = local.is_backend_bucket ? [] : var.serverless_neg_backends
+  iap_access_members      = var.iap_config.enable ? coalesce(var.iap_config.iap_members, []) : []
 }
 
 resource "google_compute_backend_service" "default" {
@@ -365,3 +366,12 @@ resource "google_compute_backend_bucket" "default" {
     }
   }
 }
+
+resource "google_iap_web_backend_service_iam_member" "member" {
+  for_each            = toset(local.iap_access_members)
+  project             = google_compute_backend_service.default[0].project
+  web_backend_service = google_compute_backend_service.default[0].name
+  role                = "roles/iap.httpsResourceAccessor"
+  member              = each.value
+}
+
