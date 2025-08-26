@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,6 +31,9 @@ spec:
         affinity_cookie_ttl_sec:
           name: affinity_cookie_ttl_sec
           title: Affinity Cookie Ttl Sec
+        backend_bucket_name:
+          name: backend_bucket_name
+          title: Backend Bucket Name
         cdn_policy:
           name: cdn_policy
           title: Cdn Policy
@@ -66,6 +69,9 @@ spec:
         firewall_projects:
           name: firewall_projects
           title: Firewall Projects
+        firewall_source_ranges:
+          name: firewall_source_ranges
+          title: Firewall Source Ranges
         groups:
           name: groups
           title: Groups
@@ -79,6 +85,12 @@ spec:
         iap_config:
           name: iap_config
           title: Iap Config
+          properties:
+            iap_members:
+              name: iap_members
+              title: Iap Members
+              regexValidation: ^(?:allUsers|allAuthenticatedUsers)$|^((?:user|group|serviceAccount):(?:[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})|(?:domain:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})|(?:projectOwner|projectEditor|projectViewer):[a-z][a-z0-9-]{0,28}[a-z0-9])$
+              validation: Must be allUsers, allAuthenticatedUsers, or a service account in the format serviceAccount:email@example.com. [More info](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/iap_web_backend_service_iam#google_iap_web_backend_service_iam_member).
         load_balancing_scheme:
           name: load_balancing_scheme
           title: Load Balancing Scheme
@@ -125,3 +137,6 @@ spec:
         target_tags:
           name: target_tags
           title: Target Tags
+        timeout_sec:
+          name: timeout_sec
+          title: Timeout Sec
