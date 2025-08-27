@@ -43,13 +43,3 @@ output "apphub_service_uri" {
   )
   description = "Service URI in CAIS style to be used by Apphub."
 }
-
-output "project_id" {
-  value       = var.project_id
-  description = "Project ID of the service"
-}
-
-output "service_name" {
-  value       = var.name
-  description = "Name of the created service"
-}

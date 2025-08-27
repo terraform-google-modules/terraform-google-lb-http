@@ -330,10 +330,6 @@ spec:
             - backend_service: string
               host: string
               path: string
-      - name: project_id
-        description: Project ID of the service
-      - name: service_name
-        description: Name of the created service
   requirements:
     roles:
       - level: Project
