@@ -40,6 +40,8 @@ spec:
       - name: serverless_negs
         location: modules/serverless_negs
     examples:
+      - name: backend-with-iap
+        location: examples/backend-with-iap
       - name: cdn-policy
         location: examples/cdn-policy
       - name: certificate-map
@@ -336,13 +338,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/run.admin
           - roles/iam.serviceAccountUser
           - roles/certificatemanager.owner
           - roles/vpcaccess.admin
           - roles/iam.serviceAccountAdmin
           - roles/storage.admin
           - roles/compute.admin
+          - roles/run.admin
     services:
       - certificatemanager.googleapis.com
       - cloudresourcemanager.googleapis.com
