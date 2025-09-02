@@ -37,6 +37,51 @@ spec:
         cdn_policy:
           name: cdn_policy
           title: Cdn Policy
+          properties:
+            signed_url_cache_max_age_sec:
+              name: signed_url_cache_max_age_sec
+              title: Signed URL Cache Max Age Sec
+              regexValidation: "^[0-9]+$"
+              validation: Must be a non-negative integer representing the maximum cache age in seconds, for example 0, 300, or 3600. Only numeric digits are allowed
+            cache_mode:
+              name: cache_mode
+              title: Cache Mode
+              enumValueLabels:
+                - label: CACHE_ALL_STATIC
+                  value: CACHE_ALL_STATIC
+                - label: USE_ORIGIN_HEADERS
+                  value: USE_ORIGIN_HEADERS
+                - label: FORCE_CACHE_ALL
+                  value: FORCE_CACHE_ALL
+            bypass_cache_on_request_headers:
+              name: bypass_cache_on_request_headers
+              title: Bypass Cache On Request Headers
+              regexValidation: ^[A-Za-z][A-Za-z0-9-]{0,62}$
+              validation: "Must be a valid HTTP header name: start with a letter, contain only letters [A–Z, a–z], digits [0–9], or hyphens [-], and be at most 63 characters long"
+            cache_key_policy:
+              name: cache_key_policy
+              title: Cache Key Policy
+              properties:
+                query_string_blacklist:
+                  name: query_string_blacklist
+                  title: Query String Blacklist
+                  regexValidation: ^[a-zA-Z0-9_-]+$
+                  validation: Must only contain letters (a–z, A–Z), numbers (0–9), underscores (_), or hyphens (-)
+                query_string_whitelist:
+                  name: query_string_whitelist
+                  title: Query String Whitelist
+                  regexValidation: ^[a-zA-Z0-9_-]+$
+                  validation: Must only contain letters (a–z, A–Z), numbers (0–9), underscores (_), or hyphens (-)
+                include_http_headers:
+                  name: include_http_headers
+                  title: Include Http Headers
+                  regexValidation: ^[A-Za-z][A-Za-z0-9-]{0,62}$
+                  validation: "Must be a valid HTTP header name: start with a letter, contain only letters [A–Z, a–z], digits [0–9], or hyphens [-], and be at most 63 characters long"
+                include_named_cookies:
+                  name: include_named_cookies
+                  title: Include Named Cookies
+                  regexValidation: "^[A-Za-z0-9!#%&'*+.^_|~-]{1,63}$"
+                  validation: "Must be a valid cookie name: 1–63 characters, containing only letters [A–Z, a–z], digits [0–9], and the special characters [! # % & ' * + . ^ _ | ~ -]"
         compression_mode:
           name: compression_mode
           title: Compression Mode
@@ -51,9 +96,13 @@ spec:
         custom_request_headers:
           name: custom_request_headers
           title: Custom Request Headers
+          regexValidation: ^[A-Za-z][A-Za-z0-9-]{0,62}$
+          validation: "Must be a valid HTTP header name: start with a letter, contain only letters [A–Z, a–z], digits [0–9], or hyphens [-], and be at most 63 characters long"
         custom_response_headers:
           name: custom_response_headers
           title: Custom Response Headers
+          regexValidation: ^[A-Za-z][A-Za-z0-9-]{0,62}$
+          validation: "Must be a valid HTTP header name: start with a letter, contain only letters [A–Z, a–z], digits [0–9], or hyphens [-], and be at most 63 characters long"
         description:
           name: description
           title: Description
@@ -66,18 +115,93 @@ spec:
         firewall_networks:
           name: firewall_networks
           title: Firewall Networks
+          regexValidation: "^(projects/[a-z][a-z0-9-]{4,28}[a-z0-9]/global/networks/[a-zA-Z0-9-_]+|[a-zA-Z0-9-_]+)$"
+          validation: Network must be a valid network name or a full resource path.
         firewall_projects:
           name: firewall_projects
           title: Firewall Projects
+          regexValidation: ^[a-z][a-z0-9-]{4,28}[a-z0-9]$
+          validation: Project ID must be 6 to 30 characters, consist of lowercase letters, numbers, and hyphens, and start with a letter
         firewall_source_ranges:
           name: firewall_source_ranges
           title: Firewall Source Ranges
+          regexValidation: "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]).){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])/([0-9]|[1-2][0-9]|3[0-2])$"
+          validation: Must be a valid CIDR range
         groups:
           name: groups
           title: Groups
+          properties:
+            balancing_mode:
+              name: balancing_mode
+              title: Balancing Mode
+              enumValueLabels:
+                - label: CONNECTION
+                  value: CONNECTION
+                - label: RATE
+                  value: RATE
+                - label: UTILIZATION
+                  value: UTILIZATION
+                - label: CUSTOM_METRICS
+                  value: CUSTOM_METRICS
         health_check:
           name: health_check
           title: Health Check
+          properties:
+            host:
+              name: host
+              title: Host
+              regexValidation: "^(([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?[.])+[a-zA-Z]{2,63}|[0-9]{1,3}([.][0-9]{1,3}){3}|(\\[?[A-Fa-f0-9:]+\\]?))$"
+              validation: Must be a valid hostname (RFC 1035), IPv4 address, or IPv6 address
+            request_path:
+              name: request_path
+              title: Request Path
+              regexValidation: "^/.*$"
+              validation: Must start with a forward slash `/` and can include any valid path characters.
+            request:
+              name: request
+              title: Request
+              regexValidation: "^[ -~]*$"
+              validation: Must contain only ASCII characters
+            response:
+              name: response
+              title: Response
+              regexValidation: "^[ -~]*$"
+              validation: Must contain only ASCII characters
+            port_name:
+              name: port_name
+              title: Port Name
+              regexValidation: ^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$
+              validation: Must start with a lowercase letter, contain only lowercase letters, digits, or hyphens, and end with a letter or digit
+            proxy_header:
+              name: proxy_header
+              title: Proxy Header
+              enumValueLabels:
+                - label: NONE
+                  value: NONE
+                - label: PROXY_V1
+                  value: PROXY_V1
+            port_specification:
+              name: port_specification
+              title: Port Specification
+              enumValueLabels:
+                - label: USE_FIXED_PORT
+                  value: USE_FIXED_PORT
+                - label: USE_NAMED_PORT
+                  value: USE_NAMED_PORT
+                - label: USE_SERVING_PORT
+                  value: USE_SERVING_PORT
+            protocol:
+              name: protocol
+              title: Protocol
+              enumValueLabels:
+                - label: HTTP
+                  value: HTTP
+                - label: HTTPS
+                  value: HTTPS
+                - label: HTTP2
+                  value: HTTP2
+                - label: TCP
+                  value: TCP
         host_path_mappings:
           name: host_path_mappings
           title: Host Path Mappings
@@ -102,6 +226,23 @@ spec:
         locality_lb_policy:
           name: locality_lb_policy
           title: Locality Lb Policy
+          enumValueLabels:
+            - label: ROUND_ROBIN
+              value: ROUND_ROBIN
+            - label: LEAST_REQUEST
+              value: LEAST_REQUEST
+            - label: RING_HASH
+              value: RING_HASH
+            - label: RANDOM
+              value: RANDOM
+            - label: ORIGINAL_DESTINATION
+              value: ORIGINAL_DESTINATION
+            - label: MAGLEV
+              value: MAGLEV
+            - label: WEIGHTED_MAGLEV
+              value: WEIGHTED_MAGLEV
+            - label: WEIGHTED_ROUND_ROBIN
+              value: WEIGHTED_ROUND_ROBIN
         log_config:
           name: log_config
           title: Log Config
@@ -116,24 +257,72 @@ spec:
         port_name:
           name: port_name
           title: Port Name
+          regexValidation: ^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$
+          validation: Must start with a lowercase letter, contain only lowercase letters, digits, or hyphens, and end with a letter or digit
         project_id:
           name: project_id
           title: Project Id
         protocol:
           name: protocol
           title: Protocol
+          enumValueLabels:
+            - label: HTTP
+              value: HTTP
+            - label: HTTPS
+              value: HTTPS
+            - label: HTTP2
+              value: HTTP2
+            - label: TCP
+              value: TCP
         security_policy:
           name: security_policy
           title: Security Policy
+          regexValidation: "^(projects/[a-z][a-z0-9-]{4,28}[a-z0-9]/global/securityPolicies/[a-z0-9-]+|[a-z0-9-]+)$"
+          validation: Must be a valid security policy name or full resource path in the format "projects/{project}/global/securityPolicies/{policy}"
         serverless_neg_backends:
           name: serverless_neg_backends
           title: Serverless Neg Backends
+          properties:
+            type:
+              name: type
+              title: Type
+              enumValueLabels:
+                - label: Cloud Run
+                  value: cloud-run
+                - label: Cloud Function
+                  value: cloud-function
+                - label: App Engine
+                  value: app-engine
+            service_name:
+              name: service_name
+              title: Service Name
+              regexValidation: ^[a-z]([-a-z0-9]{0,61}[a-z0-9])?$
+              validation: Must be a valid service name (lowercase, hyphens, numbers, up to 63 chars).
         session_affinity:
           name: session_affinity
           title: Session Affinity
+          enumValueLabels:
+            - label: NONE
+              value: NONE
+            - label: CLIENT_IP
+              value: CLIENT_IP
+            - label: CLIENT_IP_PORT_PROTO
+              value: CLIENT_IP_PORT_PROTO
+            - label: CLIENT_IP_PROTO
+              value: CLIENT_IP_PROTO
+            - label: GENERATED_COOKIE
+              value: GENERATED_COOKIE
+            - label: HEADER_FIELD
+              value: HEADER_FIELD
+            - label: HTTP_COOKIE
+              value: HTTP_COOKIE
+            - label: STRONG_COOKIE_AFFINITY
+              value: STRONG_COOKIE_AFFINITY
         target_service_accounts:
           name: target_service_accounts
           title: Target Service Accounts
+          regexValidation: ^[a-z][a-z0-9-]{4,28}[a-z0-9]@[a-z][a-z0-9-]{4,28}[a-z0-9].iam.gserviceaccount.com$
+          validation: Service account email must be in the format {account-id}@{project-id}.iam.gserviceaccount.com
         target_tags:
           name: target_tags
           title: Target Tags
