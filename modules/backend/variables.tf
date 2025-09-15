@@ -147,6 +147,19 @@ variable "serverless_neg_backends" {
   }
 }
 
+variable "psc_neg_backends" {
+  description = "The list of Private Service Connect backends which serve the traffic."
+  type = list(object({
+    name               = string
+    region             = string
+    psc_target_service = string
+    network            = string
+    subnetwork         = string
+    default_port       = optional(string)
+  }))
+  default = []
+}
+
 variable "backend_bucket_name" {
   description = "The name of GCS bucket which serves the traffic."
   type        = string

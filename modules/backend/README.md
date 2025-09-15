@@ -31,6 +31,7 @@ This module creates `google_compute_backend_service` resource and its dependenci
 | port\_name | Name of backend port. The same name should appear in the instance groups referenced by this service. Required when the load balancing scheme is EXTERNAL. | `string` | `"http"` | no |
 | project\_id | The project to deploy to, if not set the default provider project is used. | `string` | n/a | yes |
 | protocol | The protocol this BackendService uses to communicate with backends. | `string` | `"HTTP"` | no |
+| psc\_neg\_backends | The list of Private Service Connect backends which serve the traffic. | <pre>list(object({<br>    name               = string<br>    region             = string<br>    psc_target_service = string<br>    network            = string<br>    subnetwork         = string<br>    default_port       = optional(string)<br>  }))</pre> | `[]` | no |
 | security\_policy | The resource URL for the security policy to associate with the backend service | `string` | `null` | no |
 | serverless\_neg\_backends | The list of serverless backend which serves the traffic. | <pre>list(object({<br>    region          = string<br>    type            = string // cloud-run, cloud-function, and app-engine<br>    service_name    = string<br>    service_version = optional(string)<br>  }))</pre> | `[]` | no |
 | session\_affinity | Type of session affinity to use. Possible values are: NONE, CLIENT\_IP, CLIENT\_IP\_PORT\_PROTO, CLIENT\_IP\_PROTO, GENERATED\_COOKIE, HEADER\_FIELD, HTTP\_COOKIE, STRONG\_COOKIE\_AFFINITY. | `string` | `null` | no |
@@ -44,5 +45,6 @@ This module creates `google_compute_backend_service` resource and its dependenci
 |------|-------------|
 | apphub\_service\_uri | Service URI in CAIS style to be used by Apphub. |
 | backend\_service\_info | Host, path and backend service mapping |
+| psc\_negs | Private Service Connect backends that were created for this backend service |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

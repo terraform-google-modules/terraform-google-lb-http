@@ -43,3 +43,10 @@ output "apphub_service_uri" {
   )
   description = "Service URI in CAIS style to be used by Apphub."
 }
+
+output "psc_negs" {
+  description = "Private Service Connect backends that were created for this backend service"
+  value = !local.is_backend_bucket ? [
+    for mapping in var.psc_neg_backends : "projects/${var.project_id}/regions/${mapping.region}/networkEndpointGroups/${mapping.name}"
+  ] : []
+}
