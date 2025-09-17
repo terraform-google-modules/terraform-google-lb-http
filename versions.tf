@@ -20,11 +20,11 @@ terraform {
 
     google = {
       source  = "hashicorp/google"
-      version = ">= 4.84, < 7"
+      version = ">= 6.0, < 7"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 4.84, < 7"
+      version = ">= 6.0, < 7"
     }
     random = {
       source  = "hashicorp/random"
@@ -32,11 +32,11 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-lb-http/v11.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http/v13.1.0"
   }
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-lb-http/v11.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http/v13.1.0"
   }
 
 }

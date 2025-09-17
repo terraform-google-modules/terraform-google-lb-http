@@ -20,11 +20,11 @@ terraform {
 
     google = {
       source  = "hashicorp/google"
-      version = ">= 4.84, < 6"
+      version = ">= 6.0, < 7"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 4.84, < 6"
+      version = ">= 6.0, < 7"
     }
     random = {
       source  = "hashicorp/random"
@@ -34,21 +34,21 @@ terraform {
 
   provider_meta "google" {
     {% if serverless %}
-    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v11.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v13.1.0"
     {% elif dynamic_backends %}
-    module_name = "blueprints/terraform/terraform-google-lb-http:dynamic_backends/v11.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http:dynamic_backends/v13.1.0"
     {% else %}
-    module_name = "blueprints/terraform/terraform-google-lb-http/v11.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http/v13.1.0"
     {% endif %}
   }
 
   provider_meta "google-beta" {
     {% if serverless %}
-    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v11.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http:serverless_negs/v13.1.0"
     {% elif dynamic_backends %}
-    module_name = "blueprints/terraform/terraform-google-lb-http:dynamic_backends/v11.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http:dynamic_backends/v13.1.0"
     {% else %}
-    module_name = "blueprints/terraform/terraform-google-lb-http/v11.1.0"
+    module_name = "blueprints/terraform/terraform-google-lb-http/v13.1.0"
     {% endif %}
   }
 

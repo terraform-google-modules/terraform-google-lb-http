@@ -5,6 +5,111 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [13.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v13.0.1...v13.1.0) (2025-09-02)
+
+
+### Features
+
+* Added IAP Principals terraform resource for backend-service ([#533](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/533)) ([ad5d851](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/ad5d851008c89acbe96049398e459f9224a3c98f))
+* per module requirements configs for lb-http ([#520](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/520)) ([97c69e6](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/97c69e61548e1b16cf0d92057f29a4aff14863f6))
+
+
+### Bug Fixes
+
+* added missing validations ([#530](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/530)) ([71cae26](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/71cae265b908589037f541ef28c859df57ac9be1))
+
+## [13.0.1](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v13.0.0...v13.0.1) (2025-07-31)
+
+
+### Bug Fixes
+
+* fixing outputs.tf for backend for apphub check ([#525](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/525)) ([03d405c](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/03d405c29f6939fa5983db1dd8aa054f32e2a3ed))
+
+## [13.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.2.0...v13.0.0) (2025-07-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* Adding  regex validation for service name and adding apphub ([#522](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/522))
+* update default for cdn_policy and do not create serverless neg ([#516](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/516))
+
+### Features
+
+* update default for cdn_policy and do not create serverless neg ([#516](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/516)) ([6e7e878](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/6e7e87834ad1beb504cfeb31388f06ce38fd15f9))
+
+
+### Bug Fixes
+
+* Adding  regex validation for service name and adding apphub ([#522](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/522)) ([687152d](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/687152d0fdf64e68ef81c274b71a05028f9b015e))
+
+## [12.2.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.1.4...v12.2.0) (2025-06-23)
+
+
+### Features
+
+* add support for backend bucket to modules/backend ([#511](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/511)) ([1789d55](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/1789d55be2c337d4d04216a959182d1d695134d1))
+* added example for cross regional internal lb with gce mig as backend ([#500](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/500)) ([cfd456f](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/cfd456f494e0646fe17842b5cd92683755f24bfa))
+
+
+### Bug Fixes
+
+* added root visibility for ip_address_internal_managed_http and http variables ([#499](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/499)) ([231c762](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/231c7626aa2b7a6293bcd0646b3adbf83c60d7f7))
+* Adding enumValueLabels for compression mode ([#510](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/510)) ([6d6664b](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/6d6664b941e2275f041f86678f4ce6ce868b8abc))
+
+## [12.1.4](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.1.3...v12.1.4) (2025-03-26)
+
+
+### Bug Fixes
+
+* added types for ip_address_internal_managed_http and https output variables ([#495](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/495)) ([dd61bed](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/dd61bedf3bbdb1fbf9561609399a37c61f9aec5f))
+
+## [12.1.3](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.1.2...v12.1.3) (2025-03-21)
+
+
+### Features
+
+* support for internal cross-regional load balancer ([#490](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/490)) ([6200076](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/62000761ea7926f4caa8b3a1c915a571c2139bde))
+
+## [12.1.2](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.1.1...v12.1.2) (2025-03-05)
+
+
+### Bug Fixes
+
+* support providing null port for creating firewall to support USE_SERVING_PORT ([#488](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/488)) ([12caacc](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/12caaccb16b7ee4cfb38181c12a5b08769cf4955))
+
+## [12.1.1](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.1.0...v12.1.1) (2025-02-28)
+
+
+### Bug Fixes
+
+* Update connection metadata to change version from ~&gt; 12.0 to ^12.0 ([#486](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/486)) ([ed01820](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/ed018203b9bd2ed474fe776f34c002dd2d83758c))
+
+## [12.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.0.0...v12.1.0) (2025-02-24)
+
+
+### Features
+
+* Add frontend and backend modules ([#461](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/461)) ([05fdae5](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/05fdae5f8cb5789d15204382b3586e1f04acf61f))
+* update connection metadata and url_map creation in modules/frontend ([#471](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/471)) ([fe77470](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/fe774703ed363862ec5d801b4290e4b9133b392f))
+
+
+### Bug Fixes
+
+* update metadata and fix neg creation in modules/backend ([#463](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/463)) ([1ed89f0](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/1ed89f07c779a563ad153893e26aad3a4d495275))
+* updated iap_config behavior to match TPG 6.0 ([#469](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/469)) ([279c8e8](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/279c8e877f854f082adf9ca83f8b3ad00c62e4ff))
+
+## [12.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v11.1.0...v12.0.0) (2024-09-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* **TPG >=6.0:** added iap.enabled for v6 upgrade ([#453](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/453))
+
+### Features
+
+* Add creating serverless negs inside module/serverless-negs itself ([#438](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/438)) ([ec0b73b](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/ec0b73b05238d70e310bb35b28fce3dddea962f3))
+* **TPG >=6.0:** added iap.enabled for v6 upgrade ([#453](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/453)) ([c8db02c](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/c8db02c9a1f349744a12b3e51243c418ae069e01))
+
 ## [11.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v11.0.0...v11.1.0) (2024-05-29)
 
 

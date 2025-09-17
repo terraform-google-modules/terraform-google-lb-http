@@ -271,7 +271,6 @@ resource "google_compute_backend_service" "default" {
       oauth2_client_secret = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_secret", null)
       oauth2_client_secret_sha256  = lookup(lookup(each.value, "iap_config", {}), "oauth2_client_secret_sha256", null)
     }
-  }
 
   dynamic "cdn_policy" {
     for_each = each.value.enable_cdn ? [1] : []

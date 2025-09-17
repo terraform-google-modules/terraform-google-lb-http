@@ -40,7 +40,7 @@ data "template_file" "group3-startup-script" {
 
 module "mig1_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "~> 11.1"
+  version    = "~> 12.0"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.group1.self_link
   service_account = {
@@ -49,7 +49,7 @@ module "mig1_template" {
   }
   name_prefix          = "${var.network_name}-group1"
   startup_script       = data.template_file.group1-startup-script.rendered
-  source_image_family  = "ubuntu-2004-lts"
+  source_image_family  = "ubuntu-2204-lts"
   source_image_project = "ubuntu-os-cloud"
   tags = [
     "${var.network_name}-group1",
@@ -59,7 +59,7 @@ module "mig1_template" {
 
 module "mig1" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 11.1"
+  version           = "~> 12.0"
   instance_template = module.mig1_template.self_link
   region            = var.group1_region
   hostname          = "${var.network_name}-group1"
@@ -72,7 +72,7 @@ module "mig1" {
 
 module "mig2_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "~> 11.1"
+  version    = "~> 12.0"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.group2.self_link
   service_account = {
@@ -81,7 +81,7 @@ module "mig2_template" {
   }
   name_prefix          = "${var.network_name}-group2"
   startup_script       = data.template_file.group2-startup-script.rendered
-  source_image_family  = "ubuntu-2004-lts"
+  source_image_family  = "ubuntu-2204-lts"
   source_image_project = "ubuntu-os-cloud"
   tags = [
     "${var.network_name}-group2",
@@ -91,7 +91,7 @@ module "mig2_template" {
 
 module "mig2" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 11.1"
+  version           = "~> 12.0"
   instance_template = module.mig2_template.self_link
   region            = var.group2_region
   hostname          = "${var.network_name}-group2"
@@ -105,7 +105,7 @@ module "mig2" {
 
 module "mig3_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "~> 11.1"
+  version    = "~> 12.0"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.group3.self_link
   service_account = {
@@ -114,7 +114,7 @@ module "mig3_template" {
   }
   name_prefix          = "${var.network_name}-group3"
   startup_script       = data.template_file.group3-startup-script.rendered
-  source_image_family  = "ubuntu-2004-lts"
+  source_image_family  = "ubuntu-2204-lts"
   source_image_project = "ubuntu-os-cloud"
   tags = [
     "${var.network_name}-group3",
@@ -124,7 +124,7 @@ module "mig3_template" {
 
 module "mig3" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 11.1"
+  version           = "~> 12.0"
   instance_template = module.mig3_template.self_link
   region            = var.group3_region
   hostname          = "${var.network_name}-group3"

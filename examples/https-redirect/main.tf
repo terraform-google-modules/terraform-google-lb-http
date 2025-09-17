@@ -60,7 +60,7 @@ data "template_file" "group-startup-script" {
 
 module "mig_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "~> 11.1"
+  version    = "~> 12.0"
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.default.self_link
   service_account = {
@@ -68,7 +68,7 @@ module "mig_template" {
     scopes = ["cloud-platform"]
   }
   name_prefix          = var.network_name
-  source_image_family  = "ubuntu-2004-lts"
+  source_image_family  = "ubuntu-2204-lts"
   source_image_project = "ubuntu-os-cloud"
   startup_script       = data.template_file.group-startup-script.rendered
   tags = [
@@ -79,7 +79,7 @@ module "mig_template" {
 
 module "mig" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 11.1"
+  version           = "~> 12.0"
   instance_template = module.mig_template.self_link
   region            = var.region
   hostname          = var.network_name
@@ -93,7 +93,7 @@ module "mig" {
 # [START cloudloadbalancing_ext_http_gce_http_redirect]
 module "gce-lb-http" {
   source            = "terraform-google-modules/lb-http/google"
-  version           = "~> 10.0"
+  version           = "~> 12.0"
   name              = "ci-https-redirect"
   project           = var.project
   target_tags       = [var.network_name]
