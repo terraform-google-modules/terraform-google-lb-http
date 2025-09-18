@@ -155,7 +155,7 @@ variable "psc_neg_backends" {
     psc_target_service = string
     network            = string
     subnetwork         = string
-    default_port       = optional(string)
+    producer_port      = optional(string)
   }))
   default = []
 }

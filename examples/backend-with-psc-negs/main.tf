@@ -134,6 +134,7 @@ module "lb-backend-psc-neg" {
     psc_target_service = google_compute_service_attachment.minimal_sa.self_link
     network            = module.psc-neg-network.network_name
     subnetwork         = module.psc-neg-subnet.subnets["us-central1/psc-neg-subnet-a"].name
+    producer_port      = "80"
   }]
 
   depends_on = [google_compute_service_attachment.minimal_sa]

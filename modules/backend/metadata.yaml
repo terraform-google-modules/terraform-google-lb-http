@@ -191,7 +191,7 @@ spec:
               psc_target_service = string
               network            = string
               subnetwork         = string
-              default_port       = optional(string)
+              producer_port      = optional(string)
             }))
         defaultValue: []
       - name: backend_bucket_name
@@ -350,13 +350,13 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/iap.admin
           - roles/iam.serviceAccountUser
           - roles/iam.serviceAccountAdmin
           - roles/compute.admin
           - roles/storage.admin
           - roles/run.admin
           - roles/compute.networkAdmin
-          - roles/iap.admin
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com

@@ -222,6 +222,9 @@ resource "google_compute_region_network_endpoint_group" "psc_negs" {
   network               = each.value.network
   subnetwork            = each.value.subnetwork
 
+  psc_data {
+    producer_port = try(each.value.producer_port, null)
+  }
 
   lifecycle {
     create_before_destroy = true
