@@ -62,12 +62,18 @@ spec:
         http_keep_alive_timeout_sec:
           name: http_keep_alive_timeout_sec
           title: Http Keep Alive Timeout Sec
+          min: 5
+          max: 1200
         http_port:
           name: http_port
           title: Http Port
+          min: 1
+          max: 65535
         https_port:
           name: https_port
           title: Https Port
+          min: 1
+          max: 65535
         https_redirect:
           name: https_redirect
           title: Https Redirect
