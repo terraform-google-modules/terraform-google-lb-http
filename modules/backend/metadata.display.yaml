@@ -31,6 +31,8 @@ spec:
         affinity_cookie_ttl_sec:
           name: affinity_cookie_ttl_sec
           title: Affinity Cookie Ttl Sec
+          min: 0
+          max: 86400
         backend_bucket_name:
           name: backend_bucket_name
           title: Backend Bucket Name
@@ -38,6 +40,26 @@ spec:
           name: cdn_policy
           title: Cdn Policy
           properties:
+            default_ttl:
+              name: default_ttl
+              title: Default Ttl
+              min: 0
+              max: 86400
+            max_ttl:
+              name: max_ttl
+              title: Max Ttl
+              min: 0
+              max: 31622400
+            client_ttl:
+              name: client_ttl
+              title: Client Ttl
+              min: 0
+              max: 31622400
+            serve_while_stale:
+              name: serve_while_stale
+              title: Serve While Stale
+              min: 0
+              max: 604800
             signed_url_cache_max_age_sec:
               name: signed_url_cache_max_age_sec
               title: Signed URL Cache Max Age Sec
@@ -58,6 +80,15 @@ spec:
               title: Bypass Cache On Request Headers
               regexValidation: ^[A-Za-z][A-Za-z0-9-]{0,62}$
               validation: "Must be a valid HTTP header name: start with a letter, contain only letters [A–Z, a–z], digits [0–9], or hyphens [-], and be at most 63 characters long"
+            negative_caching_policy:
+              name: negative_caching_policy
+              title: Negative Caching Policy
+              properties:
+                ttl:
+                  name: ttl
+                  title: Ttl
+                  min: 0
+                  max: 1800
             cache_key_policy:
               name: cache_key_policy
               title: Cache Key Policy
@@ -93,6 +124,8 @@ spec:
         connection_draining_timeout_sec:
           name: connection_draining_timeout_sec
           title: Connection Draining Timeout Sec
+          min: 0
+          max: 3600
         custom_request_headers:
           name: custom_request_headers
           title: Custom Request Headers
@@ -143,10 +176,45 @@ spec:
                   value: UTILIZATION
                 - label: CUSTOM_METRICS
                   value: CUSTOM_METRICS
+            capacity_scaler:
+              name: capacity_scaler
+              title: Capacity Scaler
+              min: 0.0
+              max: 1.0
+            max_utilization:
+              name: max_utilization
+              title: Max Utilization
+              min: 0.0
+              max: 1.0
         health_check:
           name: health_check
           title: Health Check
           properties:
+            port:
+              name: port
+              title: Port
+              min: 1
+              max: 65535
+            check_interval_sec:
+              name: check_interval_sec
+              title: Check Interval Sec
+              min: 1
+              max: 300
+            timeout_sec:
+              name: timeout_sec
+              title: Timeout Sec
+              min: 1
+              max: 300
+            healthy_threshold:
+              name: healthy_threshold
+              title: Healthy Threshold
+              min: 1
+              max: 10
+            unhealthy_threshold:
+              name: unhealthy_threshold
+              title: Unhealthy Threshold
+              min: 1
+              max: 10
             host:
               name: host
               title: Host
@@ -246,6 +314,12 @@ spec:
         log_config:
           name: log_config
           title: Log Config
+          properties:
+            sample_rate:
+              name: sample_rate
+              title: Sample Rate
+              min: 0.0
+              max: 1.0
         name:
           name: name
           title: Name
@@ -254,6 +328,47 @@ spec:
         outlier_detection:
           name: outlier_detection
           title: Outlier Detection
+          properties:
+            consecutive_errors:
+              name: consecutive_errors
+              title: Consecutive Errors
+              min: 1
+            consecutive_gateway_failure:
+              name: consecutive_gateway_failure
+              title: Consecutive Gateway Failure
+              min: 1
+            enforcing_consecutive_errors:
+              name: enforcing_consecutive_errors
+              title: Enforcing Consecutive Errors
+              min: 0
+            base_ejection_time:
+              name: base_ejection_time
+              title: Base Ejection Time
+              properties:
+                seconds:
+                  name: seconds
+                  title: Seconds
+                  min: 0
+                  max: 315576000000
+                nanos:
+                  name: nanos
+                  title: Nanos
+                  min: 0
+                  max: 999999999
+            interval:
+              name: interval
+              title: Interval
+              properties:
+                seconds:
+                  name: seconds
+                  title: Seconds
+                  min: 0
+                  max: 315576000000
+                nanos:
+                  name: nanos
+                  title: Nanos
+                  min: 0
+                  max: 999999999
         port_name:
           name: port_name
           title: Port Name
@@ -329,3 +444,5 @@ spec:
         timeout_sec:
           name: timeout_sec
           title: Timeout Sec
+          min: 1
+          max: 2147483647
