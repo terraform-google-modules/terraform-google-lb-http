@@ -82,19 +82,6 @@ steps:
 - id: certificate-map-example-teardown
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestAll/examples/certificate-map --stage teardown --verbose']
-# backend-with-psc-negs example
-- id: backend-with-psc-negs-example-init
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage init --verbose']
-- id: backend-with-psc-negs-example-apply
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage apply --verbose']
-- id: backend-with-psc-negs-example-verify
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage verify --verbose']
-- id: cbackend-with-psc-negs-example-teardown
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage teardown --verbose']
 # managed-manual-certificates example
 - id: user-managed-google-managed-ssl-example-init
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
@@ -192,6 +179,27 @@ steps:
     - verify backend-with-iap
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceIap --stage teardown --verbose']
+  # backend-with-psc-negs example
+- id: init backend-with-psc-negs
+  waitFor:
+    - teardown teardown backend-with-iap
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage init --verbose']
+- id: apply backend-with-psc-negs
+  waitFor:
+    - init backend-with-psc-negs
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage apply --verbose']
+- id: verify backend-with-psc-negs
+  waitFor:
+    - apply backend-with-psc-negs
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage verify --verbose']
+- id: teardown init backend-with-psc-negs
+  waitFor:
+    - verify backend-with-psc-negs
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage teardown --verbose']
 tags:
 - 'ci'
 - 'integration'
