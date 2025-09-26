@@ -182,7 +182,7 @@ steps:
   # backend-with-psc-negs example
 - id: init backend-with-psc-negs
   waitFor:
-    - teardown teardown backend-with-iap
+    - teardown backend-with-iap
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage init --verbose']
 - id: apply backend-with-psc-negs
@@ -195,7 +195,7 @@ steps:
     - apply backend-with-psc-negs
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage verify --verbose']
-- id: teardown init backend-with-psc-negs
+- id: teardown backend-with-psc-negs
   waitFor:
     - verify backend-with-psc-negs
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
