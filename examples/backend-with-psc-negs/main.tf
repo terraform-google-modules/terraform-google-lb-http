@@ -17,7 +17,7 @@
 
 module "producer-network" {
   source                  = "terraform-google-modules/network/google//modules/vpc"
-  version                 = "~> 10.0.0"
+  version                 = "~> 12.0.0"
   project_id              = var.project_id
   network_name            = "producer-network"
   auto_create_subnetworks = false
@@ -25,7 +25,7 @@ module "producer-network" {
 
 module "producer-subnet" {
   source  = "terraform-google-modules/network/google//modules/subnets"
-  version = "~> 10.0.0"
+  version = "~> 12.0.0"
 
   subnets = [
     {
@@ -98,7 +98,7 @@ resource "google_compute_service_attachment" "minimal_sa" {
 
 module "psc-neg-network" {
   source                  = "terraform-google-modules/network/google//modules/vpc"
-  version                 = "~> 10.0.0"
+  version                 = "~> 12.0.0"
   project_id              = var.project_id
   network_name            = "psc-neg-network"
   auto_create_subnetworks = false
@@ -106,7 +106,7 @@ module "psc-neg-network" {
 
 module "psc-neg-subnet" {
   source  = "terraform-google-modules/network/google//modules/subnets"
-  version = "~> 10.0.0"
+  version = "~> 12.0.0"
 
   subnets = [
     {
