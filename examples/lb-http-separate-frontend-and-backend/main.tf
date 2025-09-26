@@ -69,7 +69,7 @@ module "cloud-nat-group2" {
 
 module "lb-http-backend" {
   source  = "terraform-google-modules/lb-http/google//modules/backend"
-  version = "~> 12.0"
+  version = "~> 13.0"
 
   project_id = var.project_id
   name       = "backend-lb"
@@ -111,7 +111,7 @@ module "lb-http-backend" {
 
 module "lb-http-frontend" {
   source        = "terraform-google-modules/lb-http/google//modules/frontend"
-  version       = "~> 12.0"
+  version       = "~> 13.0"
   project_id    = var.project_id
   name          = "frontend-lb"
   url_map_input = module.lb-http-backend.backend_service_info
