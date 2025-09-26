@@ -34,6 +34,8 @@ spec:
     examples:
       - name: backend-with-iap
         location: examples/backend-with-iap
+      - name: backend-with-psc-negs
+        location: examples/backend-with-psc-negs
       - name: cdn-policy
         location: examples/cdn-policy
       - name: certificate-map

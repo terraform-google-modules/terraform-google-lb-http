@@ -34,6 +34,8 @@ spec:
     examples:
       - name: backend-with-iap
         location: examples/backend-with-iap
+      - name: backend-with-psc-negs
+        location: examples/backend-with-psc-negs
       - name: cdn-policy
         location: examples/cdn-policy
       - name: certificate-map
@@ -294,13 +296,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/iam.serviceAccountUser
           - roles/certificatemanager.owner
           - roles/vpcaccess.admin
           - roles/iam.serviceAccountAdmin
           - roles/storage.admin
           - roles/compute.admin
           - roles/run.admin
+          - roles/iam.serviceAccountUser
     services:
       - certificatemanager.googleapis.com
       - cloudresourcemanager.googleapis.com
