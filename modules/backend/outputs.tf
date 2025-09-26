@@ -45,8 +45,8 @@ output "apphub_service_uri" {
 }
 
 output "psc_negs" {
-  description = "Private Service Connect backends that were created for this backend service"
   value = !local.is_backend_bucket ? [
-    for mapping in var.psc_neg_backends : "projects/${var.project_id}/regions/${mapping.region}/networkEndpointGroups/${mapping.name}"
+    for neg_key, neg in google_compute_region_network_endpoint_group.psc_negs : neg.self_link
   ] : []
+  description = "Private Service Connect backends that were created for this backend service"
 }

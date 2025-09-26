@@ -128,9 +128,8 @@ module "lb-backend-psc-neg" {
   project_id = var.project_id
   name       = "backend-with-psc-negs"
   psc_neg_backends = [{
-    name               = "psc_backend"
-    region             = "us-central1"
     name               = "test-psc-1"
+    region             = "us-central1"
     psc_target_service = google_compute_service_attachment.minimal_sa.self_link
     network            = module.psc-neg-network.network_name
     subnetwork         = module.psc-neg-subnet.subnets["us-central1/psc-neg-subnet-a"].name

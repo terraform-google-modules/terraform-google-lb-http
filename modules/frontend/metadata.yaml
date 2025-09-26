@@ -248,11 +248,11 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/compute.admin
           - roles/storage.admin
           - roles/iap.admin
           - roles/certificatemanager.owner
           - roles/iam.serviceAccountUser
+          - roles/compute.admin
     services:
       - certificatemanager.googleapis.com
       - compute.googleapis.com
