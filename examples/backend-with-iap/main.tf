@@ -16,7 +16,7 @@
 
 module "lb-backend-iap" {
   source  = "terraform-google-modules/lb-http/google//modules/backend"
-  version = "~> 12.0"
+  version = "~> 13.0"
 
   project_id = var.project_id
   name       = "backend-with-iap"
@@ -28,7 +28,7 @@ module "lb-backend-iap" {
 
 module "lb-frontend" {
   source  = "terraform-google-modules/lb-http/google//modules/frontend"
-  version = "~> 12.0"
+  version = "~> 13.0"
 
   project_id    = var.project_id
   name          = "global-lb-fe-bucket"
