@@ -35,7 +35,7 @@ module "lb-backend" {
 
 module "gcs" {
   source  = "terraform-google-modules/cloud-storage/google//modules/simple_bucket"
-  version = "~> 10.0"
+  version = "~> 11.0"
 
   project_id    = var.project_id
   location      = "us-central1"
