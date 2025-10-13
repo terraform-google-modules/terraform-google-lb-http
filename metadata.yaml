@@ -24,7 +24,7 @@ spec:
     source:
       repo: https://github.com/terraform-google-modules/terraform-google-lb-http.git
       sourceType: git
-    version: 13.1.0
+    version: 13.2.0
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
@@ -42,6 +42,8 @@ spec:
     examples:
       - name: backend-with-iap
         location: examples/backend-with-iap
+      - name: backend-with-psc-negs
+        location: examples/backend-with-psc-negs
       - name: cdn-policy
         location: examples/cdn-policy
       - name: certificate-map
@@ -338,13 +340,13 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/run.admin
           - roles/iam.serviceAccountUser
           - roles/certificatemanager.owner
           - roles/vpcaccess.admin
           - roles/iam.serviceAccountAdmin
           - roles/storage.admin
           - roles/compute.admin
-          - roles/run.admin
     services:
       - certificatemanager.googleapis.com
       - cloudresourcemanager.googleapis.com

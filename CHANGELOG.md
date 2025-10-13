@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [13.2.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v13.1.0...v13.2.0) (2025-09-30)
+
+
+### Features
+
+* Adding suport for PSC NEGs in terraform-google-lb-http/modules/backend ([#539](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/539)) ([be52b2d](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/be52b2d1de29e58e82549316141402cd4e08545e))
+
+
+### Bug Fixes
+
+* added missing validations ([#542](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/542)) ([9267bb2](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/9267bb2c43e3397bbf59ee8f639402a7777536fe))
+
 ## [13.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v13.0.1...v13.1.0) (2025-09-02)
 
 

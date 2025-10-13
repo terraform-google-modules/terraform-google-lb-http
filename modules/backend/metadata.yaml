@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-lb-http.git
       sourceType: git
       dir: /modules/backend
-    version: 13.1.0
+    version: 13.2.0
     actuationTool:
       flavor: Terraform
       version: ">= 1.5"
@@ -34,6 +34,8 @@ spec:
     examples:
       - name: backend-with-iap
         location: examples/backend-with-iap
+      - name: backend-with-psc-negs
+        location: examples/backend-with-psc-negs
       - name: cdn-policy
         location: examples/cdn-policy
       - name: certificate-map
@@ -180,6 +182,18 @@ spec:
               version: ">= 0.13"
             spec:
               outputExpr: "{\"region\": location, \"service_name\": service_name, \"type\": \"cloud-run\", \"service_version\": \"\"}"
+      - name: psc_neg_backends
+        description: The list of Private Service Connect backends which serve the traffic.
+        varType: |-
+          list(object({
+              name               = string
+              region             = string
+              psc_target_service = string
+              network            = string
+              subnetwork         = string
+              producer_port      = optional(string)
+            }))
+        defaultValue: []
       - name: backend_bucket_name
         description: The name of GCS bucket which serves the traffic.
         varType: string
@@ -330,6 +344,8 @@ spec:
             - backend_service: string
               host: string
               path: string
+      - name: psc_negs
+        description: Private Service Connect backends that were created for this backend service
   requirements:
     roles:
       - level: Project
