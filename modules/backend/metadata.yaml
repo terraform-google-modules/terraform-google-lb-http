@@ -350,13 +350,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/storage.admin
-          - roles/run.admin
-          - roles/compute.networkAdmin
           - roles/iap.admin
           - roles/iam.serviceAccountUser
           - roles/iam.serviceAccountAdmin
           - roles/compute.admin
+          - roles/storage.admin
+          - roles/run.admin
+          - roles/compute.networkAdmin
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
@@ -366,8 +366,8 @@ spec:
       - vpcaccess.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6.0, < 7"
+        version: ">= 6.0, < 8"
       - source: hashicorp/google-beta
-        version: ">= 6.0, < 7"
+        version: ">= 6.0, < 8"
       - source: hashicorp/random
         version: ">= 2.1"
