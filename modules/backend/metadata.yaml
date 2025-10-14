@@ -28,7 +28,7 @@ spec:
     version: 13.2.0
     actuationTool:
       flavor: Terraform
-      version: ">= 1.3"
+      version: ">= 1.5"
     description: {}
   content:
     examples:
@@ -350,13 +350,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/compute.admin
           - roles/storage.admin
           - roles/run.admin
           - roles/compute.networkAdmin
           - roles/iap.admin
           - roles/iam.serviceAccountUser
           - roles/iam.serviceAccountAdmin
+          - roles/compute.admin
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
