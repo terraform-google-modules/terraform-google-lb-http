@@ -98,7 +98,7 @@ steps:
 # cloudrun implicit serverless negs
 - id: apply cloudrun-implicit
   waitFor:
-    - create
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestCloudrunImplicit --stage apply --verbose']
 - id: verify cloudrun-implicit
@@ -114,7 +114,7 @@ steps:
 # separate frontend and backend module for http load balancer
 - id: apply lb-http-separate-frontend-and-backend
   waitFor:
-    - create
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestSeparateFrontendAndBackend --stage apply --verbose']
 - id: verify lb-http-separate-frontend-and-backend
@@ -130,7 +130,7 @@ steps:
   # Internal cross regional http load balancer with cloud-run
 - id: apply internal-lb-http
   waitFor:
-    - create
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestInternalLbCloudRun --stage apply --verbose']
 - id: verify internal-lb-http
@@ -145,7 +145,7 @@ steps:
   args: ['/bin/bash', '-c', 'cft test run TestInternalLbCloudRun --stage teardown --verbose']
 - id: apply internal-lb-http gce-mig
   waitFor:
-    - create
+    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestInternalLbGCEMIG --stage apply --verbose']
 - id: verify internal-lb-http gce-mig
