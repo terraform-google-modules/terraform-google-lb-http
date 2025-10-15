@@ -22,15 +22,23 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func AssertResponseStatus(t *testing.T, assert *assert.Assertions, url string, statusCode int) {
-	var resStatusCode int
-	resStatusCode, _, _ = httpGetRequest(t, url)
-	assert.Equal(statusCode, resStatusCode)
+func AssertResponseStatus(t *testing.T, assert *assert.Assertions, url string, statusCode int) (body string) {
+	return AssertResponseStatusWithClient(t, assert, nil, url, statusCode)
 }
 
-func httpGetRequest(t *testing.T, url string) (statusCode int, body string, err error) {
+func AssertResponseStatusWithClient(t *testing.T, assert *assert.Assertions, client *http.Client, url string, statusCode int) (body string) {
+	if client == nil {
+		client = &http.Client{}
+	}
+	var resStatusCode int
+	resStatusCode, body = httpGetRequest(t, client, url)
+	assert.Equal(statusCode, resStatusCode)
+	return body
+}
+
+func httpGetRequest(t *testing.T, client *http.Client, url string) (statusCode int, body string) {
 	t.Helper()
-	res, err := http.Get(url)
+	res, err := client.Get(url)
 	if err != nil {
 		t.Fatalf("http get unexpected err: %v", err)
 	}
@@ -40,5 +48,5 @@ func httpGetRequest(t *testing.T, url string) (statusCode int, body string, err 
 	if err != nil {
 		t.Fatalf("reading response body unexpected err: %v", err)
 	}
-	return res.StatusCode, string(buffer), err
+	return res.StatusCode, string(buffer)
 }

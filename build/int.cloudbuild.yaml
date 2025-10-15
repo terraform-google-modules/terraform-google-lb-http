@@ -24,182 +24,198 @@ steps:
   - 'TF_VAR_org_id=$_ORG_ID'
   - 'TF_VAR_folder_id=$_FOLDER_ID'
   - 'TF_VAR_billing_account=$_BILLING_ACCOUNT'
-- id: init-all
-  waitFor:
-    - prepare
+###- id: init-all
+###  waitFor:
+###    - prepare
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run all --stage init --verbose']
+#### cdn-policy example
+###- id: cdn-policy-example-init
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/cdn-policy --stage init --verbose']
+###- id: cdn-policy-example-apply
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/cdn-policy --stage apply --verbose']
+###- id: cdn-policy-example-verify
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/cdn-policy --stage verify --verbose']
+###- id: cdn-policy-example-teardown
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/cdn-policy --stage teardown --verbose']
+#### traffic-director example
+###- id: traffic-director-example-init
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/traffic-director --stage init --verbose']
+###- id: traffic-director-example-apply
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/traffic-director --stage apply --verbose']
+###- id: traffic-director-example-verify
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/traffic-director --stage verify --verbose']
+###- id: traffic-director-example-teardown
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/traffic-director --stage teardown --verbose']
+#### certificate-map example
+###- id: certificate-map-example-init
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/certificate-map --stage init --verbose']
+###- id: certificate-map-example-apply
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/certificate-map --stage apply --verbose']
+###- id: certificate-map-example-verify
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/certificate-map --stage verify --verbose']
+###- id: certificate-map-example-teardown
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/certificate-map --stage teardown --verbose']
+#### managed-manual-certificates example
+###- id: user-managed-google-managed-ssl-example-init
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/user-managed-google-managed-ssl --stage init --verbose']
+###- id: user-managed-google-managed-ssl-example-apply
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/user-managed-google-managed-ssl --stage apply --verbose']
+###- id: user-managed-google-managed-ssl-example-verify
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/user-managed-google-managed-ssl --stage verify --verbose']
+###- id: user-managed-google-managed-ssl-example-teardown
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/user-managed-google-managed-ssl --stage teardown --verbose']
+#### cloudrun implicit serverless negs
+###- id: apply cloudrun-implicit
+###  waitFor:
+###    - init-all
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestCloudrunImplicit --stage apply --verbose']
+###- id: verify cloudrun-implicit
+###  waitFor:
+###    - apply cloudrun-implicit
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'sleep 720 && cft test run TestCloudrunImplicit --stage verify --verbose']
+###- id: teardown cloudrun-implicit
+###  waitFor:
+###    - verify cloudrun-implicit
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestCloudrunImplicit --stage teardown --verbose']
+#### separate frontend and backend module for http load balancer
+###- id: apply lb-http-separate-frontend-and-backend
+###  waitFor:
+###    - init-all
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestSeparateFrontendAndBackend --stage apply --verbose']
+###- id: verify lb-http-separate-frontend-and-backend
+###  waitFor:
+###    - apply lb-http-separate-frontend-and-backend
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'sleep 720 && cft test run TestSeparateFrontendAndBackend --stage verify --verbose']
+###- id: teardown lb-http-separate-frontend-and-backend
+###  waitFor:
+###    - verify lb-http-separate-frontend-and-backend
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestSeparateFrontendAndBackend --stage teardown --verbose']
+###  # Internal cross regional http load balancer with cloud-run
+###- id: apply internal-lb-http
+###  waitFor:
+###    - init-all
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestInternalLbCloudRun --stage apply --verbose']
+###- id: verify internal-lb-http
+###  waitFor:
+###    - apply internal-lb-http
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'sleep 360 && cft test run TestInternalLbCloudRun --stage verify --verbose']
+###- id: teardown internal-lb-http
+###  waitFor:
+###    - verify internal-lb-http
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestInternalLbCloudRun --stage teardown --verbose']
+###- id: apply internal-lb-http gce-mig
+###  waitFor:
+###    - init-all
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestInternalLbGCEMIG --stage apply --verbose']
+###- id: verify internal-lb-http gce-mig
+###  waitFor:
+###    - apply internal-lb-http gce-mig
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'sleep 360 && cft test run TestInternalLbGCEMIG --stage verify --verbose']
+###- id: teardown internal-lb-http gce-mig
+###  waitFor:
+###    - verify internal-lb-http gce-mig
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestInternalLbGCEMIG --stage teardown --verbose']
+  # cloudrun example
+- id: cloudrun
+###  waitFor:
+###    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run all --stage init --verbose']
-- id: create
-  waitFor:
-    - init-all
+  args: ['/bin/bash', '-c', 'cft test run TestCloudRunExplicit --verbose']
+  # multi-mig-http-lb example
+- id: multi-mig-http-lb
+###  waitFor:
+###    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do create']
-- id: converge
+  args: ['/bin/bash', '-c', 'cft test run TestMultiMig --verbose']
+  # multiple-certs example
+- id: multiple-certs
+###  waitFor:
+###    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do converge']
-- id: verify
+  args: ['/bin/bash', '-c', 'cft test run TestMultipleCerts --verbose']
+  # mig-nat-http-lb example
+- id: mig-nat
+###  waitFor:
+###    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && sleep 720 && kitchen_do verify']
-- id: destroy
+  args: ['/bin/bash', '-c', 'cft test run TestMigNat --verbose']
+  # https-redirect example
+- id: https-redirect
+###  waitFor:
+###    - init-all
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'source /usr/local/bin/task_helper_functions.sh && kitchen_do destroy']
-# cdn-policy example
-- id: cdn-policy-example-init
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/cdn-policy --stage init --verbose']
-- id: cdn-policy-example-apply
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/cdn-policy --stage apply --verbose']
-- id: cdn-policy-example-verify
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/cdn-policy --stage verify --verbose']
-- id: cdn-policy-example-teardown
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/cdn-policy --stage teardown --verbose']
-# traffic-director example
-- id: traffic-director-example-init
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/traffic-director --stage init --verbose']
-- id: traffic-director-example-apply
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/traffic-director --stage apply --verbose']
-- id: traffic-director-example-verify
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/traffic-director --stage verify --verbose']
-- id: traffic-director-example-teardown
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/traffic-director --stage teardown --verbose']
-# certificate-map example
-- id: certificate-map-example-init
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/certificate-map --stage init --verbose']
-- id: certificate-map-example-apply
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/certificate-map --stage apply --verbose']
-- id: certificate-map-example-verify
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/certificate-map --stage verify --verbose']
-- id: certificate-map-example-teardown
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/certificate-map --stage teardown --verbose']
-# managed-manual-certificates example
-- id: user-managed-google-managed-ssl-example-init
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/user-managed-google-managed-ssl --stage init --verbose']
-- id: user-managed-google-managed-ssl-example-apply
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/user-managed-google-managed-ssl --stage apply --verbose']
-- id: user-managed-google-managed-ssl-example-verify
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/user-managed-google-managed-ssl --stage verify --verbose']
-- id: user-managed-google-managed-ssl-example-teardown
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/user-managed-google-managed-ssl --stage teardown --verbose']
-# cloudrun implicit serverless negs
-- id: apply cloudrun-implicit
-  waitFor:
-    - init-all
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestCloudrunImplicit --stage apply --verbose']
-- id: verify cloudrun-implicit
-  waitFor:
-    - apply cloudrun-implicit
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'sleep 720 && cft test run TestCloudrunImplicit --stage verify --verbose']
-- id: teardown cloudrun-implicit
-  waitFor:
-    - verify cloudrun-implicit
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestCloudrunImplicit --stage teardown --verbose']
-# separate frontend and backend module for http load balancer
-- id: apply lb-http-separate-frontend-and-backend
-  waitFor:
-    - init-all
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSeparateFrontendAndBackend --stage apply --verbose']
-- id: verify lb-http-separate-frontend-and-backend
-  waitFor:
-    - apply lb-http-separate-frontend-and-backend
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'sleep 720 && cft test run TestSeparateFrontendAndBackend --stage verify --verbose']
-- id: teardown lb-http-separate-frontend-and-backend
-  waitFor:
-    - verify lb-http-separate-frontend-and-backend
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestSeparateFrontendAndBackend --stage teardown --verbose']
-  # Internal cross regional http load balancer with cloud-run
-- id: apply internal-lb-http
-  waitFor:
-    - init-all
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestInternalLbCloudRun --stage apply --verbose']
-- id: verify internal-lb-http
-  waitFor:
-    - apply internal-lb-http
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'sleep 360 && cft test run TestInternalLbCloudRun --stage verify --verbose']
-- id: teardown internal-lb-http
-  waitFor:
-    - verify internal-lb-http
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestInternalLbCloudRun --stage teardown --verbose']
-- id: apply internal-lb-http gce-mig
-  waitFor:
-    - init-all
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestInternalLbGCEMIG --stage apply --verbose']
-- id: verify internal-lb-http gce-mig
-  waitFor:
-    - apply internal-lb-http gce-mig
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'sleep 360 && cft test run TestInternalLbGCEMIG --stage verify --verbose']
-- id: teardown internal-lb-http gce-mig
-  waitFor:
-    - verify internal-lb-http gce-mig
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestInternalLbGCEMIG --stage teardown --verbose']
-  # Backend Service with IAP Enabled
-- id: init backend-with-iap
-  waitFor:
-    - teardown internal-lb-http gce-mig
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceIap --stage init --verbose']
-- id: apply backend-with-iap
-  waitFor:
-    - init backend-with-iap
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceIap --stage apply --verbose']
-- id: verify backend-with-iap
-  waitFor:
-    - apply backend-with-iap
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceIap --stage verify --verbose']
-- id: teardown backend-with-iap
-  waitFor:
-    - verify backend-with-iap
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceIap --stage teardown --verbose']
-  # backend-with-psc-negs example
-- id: init backend-with-psc-negs
-  waitFor:
-    - teardown backend-with-iap
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage init --verbose']
-- id: apply backend-with-psc-negs
-  waitFor:
-    - init backend-with-psc-negs
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage apply --verbose']
-- id: verify backend-with-psc-negs
-  waitFor:
-    - apply backend-with-psc-negs
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage verify --verbose']
-- id: teardown backend-with-psc-negs
-  waitFor:
-    - verify backend-with-psc-negs
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage teardown --verbose']
+  args: ['/bin/bash', '-c', 'cft test run TestHttpsRedirect --verbose']
+###  # Backend Service with IAP Enabled
+###- id: init backend-with-iap
+###  waitFor:
+###    - teardown internal-lb-http gce-mig
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceIap --stage init --verbose']
+###- id: apply backend-with-iap
+###  waitFor:
+###    - init backend-with-iap
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceIap --stage apply --verbose']
+###- id: verify backend-with-iap
+###  waitFor:
+###    - apply backend-with-iap
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceIap --stage verify --verbose']
+###- id: teardown backend-with-iap
+###  waitFor:
+###    - verify backend-with-iap
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceIap --stage teardown --verbose']
+###  # backend-with-psc-negs example
+###- id: init backend-with-psc-negs
+###  waitFor:
+###    - teardown backend-with-iap
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage init --verbose']
+###- id: apply backend-with-psc-negs
+###  waitFor:
+###    - init backend-with-psc-negs
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage apply --verbose']
+###- id: verify backend-with-psc-negs
+###  waitFor:
+###    - apply backend-with-psc-negs
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage verify --verbose']
+###- id: teardown backend-with-psc-negs
+###  waitFor:
+###    - verify backend-with-psc-negs
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestLbBackendServiceWithPscNeg --stage teardown --verbose']
 tags:
 - 'ci'
 - 'integration'
