@@ -144,36 +144,39 @@ steps:
 ###    - verify internal-lb-http gce-mig
 ###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
 ###  args: ['/bin/bash', '-c', 'cft test run TestInternalLbGCEMIG --stage teardown --verbose']
-  # cloudrun example
-- id: cloudrun
+- id: temp-run-the-new-ones
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestMultiMig --verbose ; cft test run TestMultipleCerts --verbose ; cft test run TestMigNat --verbose ; cft test run TestHttpsRedirect --verbose ; cft test run TestCloudRunExplicit --verbose']
+###  # cloudrun example
+###- id: cloudrun
 ###  waitFor:
 ###    - init-all
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestCloudRunExplicit --verbose']
-  # multi-mig-http-lb example
-- id: multi-mig-http-lb
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestCloudRunExplicit --verbose']
+###  # multi-mig-http-lb example
+###- id: multi-mig-http-lb
 ###  waitFor:
 ###    - init-all
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestMultiMig --verbose']
-  # multiple-certs example
-- id: multiple-certs
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestMultiMig --verbose']
+###  # multiple-certs example
+###- id: multiple-certs
 ###  waitFor:
 ###    - init-all
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestMultipleCerts --verbose']
-  # mig-nat-http-lb example
-- id: mig-nat
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestMultipleCerts --verbose']
+###  # mig-nat-http-lb example
+###- id: mig-nat
 ###  waitFor:
 ###    - init-all
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestMigNat --verbose']
-  # https-redirect example
-- id: https-redirect
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestMigNat --verbose']
+###  # https-redirect example
+###- id: https-redirect
 ###  waitFor:
 ###    - init-all
-  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
-  args: ['/bin/bash', '-c', 'cft test run TestHttpsRedirect --verbose']
+###  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+###  args: ['/bin/bash', '-c', 'cft test run TestHttpsRedirect --verbose']
 ###  # Backend Service with IAP Enabled
 ###- id: init backend-with-iap
 ###  waitFor:
