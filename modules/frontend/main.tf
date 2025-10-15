@@ -43,6 +43,22 @@ locals {
   first_backend_service = try(local.backend_services_by_host[local.first_host][local.first_path], null)
 }
 
+resource "google_compute_subnetwork" "proxy_only" {
+  for_each = {
+    for index, config in var.internal_forwarding_rules_config : config.region => config
+    if config.create_proxy_only_subnet == true
+  }
+
+  name          = "${var.name}-proxy-only-subnet-${each.key}"
+  ip_cidr_range = each.value.proxy_only_subnet_ip
+  network       = var.network
+  purpose       = "GLOBAL_MANAGED_PROXY"
+  region        = each.value.region
+  project       = var.project_id
+  role          = "ACTIVE"
+}
+
+
 ### IPv4 block ###
 resource "google_compute_global_forwarding_rule" "http" {
   provider              = google-beta
@@ -72,6 +88,7 @@ resource "google_compute_global_forwarding_rule" "internal_managed_http" {
   network               = local.internal_network
   subnetwork            = each.value.subnetwork
   ip_address            = each.value.address
+  depends_on            = [google_compute_subnetwork.proxy_only]
 }
 
 resource "google_compute_global_forwarding_rule" "https" {
@@ -102,6 +119,7 @@ resource "google_compute_global_forwarding_rule" "internal_managed_https" {
   network               = local.internal_network
   subnetwork            = each.value.subnetwork
   ip_address            = each.value.address
+  depends_on            = [google_compute_subnetwork.proxy_only]
 }
 
 resource "google_compute_global_address" "default" {
@@ -142,6 +160,7 @@ resource "google_compute_global_forwarding_rule" "internal_managed_http_ipv6" {
   load_balancing_scheme = var.load_balancing_scheme
   subnetwork            = each.value.subnetwork
   ip_address            = each.value.address
+  depends_on            = [google_compute_subnetwork.proxy_only]
 }
 
 resource "google_compute_global_forwarding_rule" "https_ipv6" {
@@ -171,6 +190,7 @@ resource "google_compute_global_forwarding_rule" "internal_managed_https_ipv6" {
   load_balancing_scheme = var.load_balancing_scheme
   subnetwork            = each.value.subnetwork
   ip_address            = each.value.address
+  depends_on            = [google_compute_subnetwork.proxy_only]
 }
 
 resource "google_compute_global_address" "default_ipv6" {
