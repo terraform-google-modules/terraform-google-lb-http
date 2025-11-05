@@ -248,11 +248,11 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/storage.admin
+          - roles/iap.admin
           - roles/certificatemanager.owner
           - roles/iam.serviceAccountUser
           - roles/compute.admin
-          - roles/storage.admin
-          - roles/iap.admin
     services:
       - certificatemanager.googleapis.com
       - compute.googleapis.com
@@ -260,8 +260,8 @@ spec:
       - storage-api.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6.0, < 7"
+        version: ">= 6.0, < 8"
       - source: hashicorp/google-beta
-        version: ">= 6.0, < 7"
+        version: ">= 6.0, < 8"
       - source: hashicorp/random
         version: ">= 2.1"
