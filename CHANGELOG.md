@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [14.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v13.2.0...v14.0.0) (2025-11-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* Bump up the terraform version ([#550](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/550))
+
+### Features
+
+* Terraform Google Provider to v7 ([#556](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/556)) ([2f3e7a8](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/2f3e7a85a3f2cc466768306b3dff1be95822f07f))
+
+
+### Bug Fixes
+
+* Bump up the terraform version ([#550](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/550)) ([6445187](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/6445187770778fe391bb92b50026b7c6be99a4ef))
+
 ## [13.2.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v13.1.0...v13.2.0) (2025-09-30)
 
 
