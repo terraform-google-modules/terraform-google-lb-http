@@ -50,14 +50,6 @@ module "cloud-nat" {
   name       = "cloud-nat-lb-http-router"
 }
 
-data "template_file" "group-startup-script" {
-  template = file(format("%s/gceme.sh.tpl", path.module))
-
-  vars = {
-    PROXY_PATH = ""
-  }
-}
-
 module "mig_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
   version    = "~> 12.0"
@@ -68,7 +60,9 @@ module "mig_template" {
     scopes = ["cloud-platform"]
   }
   name_prefix    = var.network_name
-  startup_script = data.template_file.group-startup-script.rendered
+  startup_script = templatefile(format("%s/gceme.sh.tpl", path.module), {
+    PROXY_PATH = ""
+  })
   tags = [
     var.network_name,
     module.cloud-nat.router_name

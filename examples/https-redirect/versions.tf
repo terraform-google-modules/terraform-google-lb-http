@@ -23,9 +23,6 @@ terraform {
     google-beta = {
       source = "hashicorp/google-beta"
     }
-    template = {
-      source = "hashicorp/template"
-    }
     tls = {
       source = "hashicorp/tls"
     }
