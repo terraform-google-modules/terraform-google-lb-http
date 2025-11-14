@@ -33,7 +33,7 @@ resource "google_compute_global_forwarding_rule" "http" {
   provider              = google-beta
   project               = var.project
   count                 = local.create_http_forward ? 1 : 0
-  name                  = var.name
+  name                  = "${var.name_prefixes.http_forwarding_rule != null ? var.name_prefixes.http_forwarding_rule : var.name}${var.name_suffixes.http_forwarding_rule}"
   target                = google_compute_target_http_proxy.default[0].self_link
   ip_address            = local.address
   port_range            = var.http_port
@@ -46,7 +46,7 @@ resource "google_compute_global_forwarding_rule" "https" {
   provider              = google-beta
   project               = var.project
   count                 = var.ssl ? 1 : 0
-  name                  = "${var.name}-https"
+  name                  = "${var.name_prefixes.https_forwarding_rule != null ? var.name_prefixes.https_forwarding_rule : var.name}${var.name_suffixes.https_forwarding_rule}"
   target                = google_compute_target_https_proxy.default[0].self_link
   ip_address            = local.address
   port_range            = var.https_port
@@ -59,7 +59,7 @@ resource "google_compute_global_address" "default" {
   provider   = google-beta
   count      = local.is_internal ? 0 : var.create_address ? 1 : 0
   project    = var.project
-  name       = "${var.name}-address"
+  name       = "${var.name_prefixes.address != null ? var.name_prefixes.address : var.name}${var.name_suffixes.address}"
   ip_version = "IPV4"
   labels     = var.labels
 }
@@ -70,7 +70,7 @@ resource "google_compute_global_forwarding_rule" "http_ipv6" {
   provider              = google-beta
   project               = var.project
   count                 = (var.enable_ipv6 && local.create_http_forward) ? 1 : 0
-  name                  = "${var.name}-ipv6-http"
+  name                  = "${var.name_prefixes.http_ipv6_forwarding_rule != null ? var.name_prefixes.http_ipv6_forwarding_rule : var.name}${var.name_suffixes.http_ipv6_forwarding_rule}"
   target                = google_compute_target_http_proxy.default[0].self_link
   ip_address            = local.ipv6_address
   port_range            = "80"
@@ -83,7 +83,7 @@ resource "google_compute_global_forwarding_rule" "https_ipv6" {
   provider              = google-beta
   project               = var.project
   count                 = var.enable_ipv6 && var.ssl ? 1 : 0
-  name                  = "${var.name}-ipv6-https"
+  name                  = "${var.name_prefixes.https_ipv6_forwarding_rule != null ? var.name_prefixes.https_ipv6_forwarding_rule : var.name}${var.name_suffixes.https_ipv6_forwarding_rule}"
   target                = google_compute_target_https_proxy.default[0].self_link
   ip_address            = local.ipv6_address
   port_range            = "443"
@@ -96,7 +96,7 @@ resource "google_compute_global_address" "default_ipv6" {
   provider   = google-beta
   count      = local.is_internal ? 0 : (var.enable_ipv6 && var.create_ipv6_address) ? 1 : 0
   project    = var.project
-  name       = "${var.name}-ipv6-address"
+  name       = "${var.name_prefixes.address_ipv6 != null ? var.name_prefixes.address_ipv6 : var.name}${var.name_suffixes.address_ipv6}"
   ip_version = "IPV6"
   labels     = var.labels
 }
@@ -106,7 +106,7 @@ resource "google_compute_global_address" "default_ipv6" {
 resource "google_compute_target_http_proxy" "default" {
   project = var.project
   count   = local.create_http_forward ? 1 : 0
-  name    = "${var.name}-http-proxy"
+  name    = "${var.name_prefixes.target_http_proxy != null ? var.name_prefixes.target_http_proxy : var.name}${var.name_suffixes.target_http_proxy}"
   url_map = var.https_redirect == false ? local.url_map : join("", google_compute_url_map.https_redirect[*].self_link)
 }
 
@@ -114,7 +114,7 @@ resource "google_compute_target_http_proxy" "default" {
 resource "google_compute_target_https_proxy" "default" {
   project = var.project
   count   = var.ssl ? 1 : 0
-  name    = "${var.name}-https-proxy"
+  name    = "${var.name_prefixes.target_https_proxy != null ? var.name_prefixes.target_https_proxy : var.name}${var.name_suffixes.target_https_proxy}"
   url_map = local.url_map
 
   ssl_certificates            = compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default[*].self_link, google_compute_managed_ssl_certificate.default[*].self_link, ), )
@@ -151,7 +151,7 @@ resource "google_compute_managed_ssl_certificate" "default" {
   provider = google-beta
   project  = var.project
   count    = var.ssl && length(var.managed_ssl_certificate_domains) > 0 ? 1 : 0
-  name     = var.random_certificate_suffix == true ? random_id.certificate[0].hex : "${var.name}-cert"
+  name     = var.random_certificate_suffix == true ? random_id.certificate[0].hex : "${var.name_prefixes.certificate != null ? var.name_prefixes.certificate : var.name}${var.name_suffixes.certificate}"
 
   lifecycle {
     create_before_destroy = true
@@ -166,14 +166,14 @@ resource "google_compute_url_map" "default" {
   provider        = google-beta
   project         = var.project
   count           = var.create_url_map ? 1 : 0
-  name            = "${var.name}-url-map"
+  name            = "${var.name_prefixes.url_map != null ? var.name_prefixes.url_map : var.name}${var.name_suffixes.url_map}"
   default_service = google_compute_backend_service.default[keys(var.backends)[0]].self_link
 }
 
 resource "google_compute_url_map" "https_redirect" {
   project = var.project
   count   = var.https_redirect ? 1 : 0
-  name    = "${var.name}-https-redirect"
+  name    = "${var.name_prefixes.url_map_https_redirect != null ? var.name_prefixes.url_map_https_redirect : var.name}${var.name_suffixes.url_map_https_redirect}"
   default_url_redirect {
     https_redirect         = true
     redirect_response_code = "MOVED_PERMANENTLY_DEFAULT"
@@ -186,7 +186,7 @@ resource "google_compute_backend_service" "default" {
   for_each = var.backends
 
   project = coalesce(each.value["project"], var.project)
-  name    = "${var.name}-backend-${each.key}"
+  name    = "${var.name_prefixes.backend_service != null ? var.name_prefixes.backend_service : "${var.name}-backend-"}${each.key}${var.name_suffixes.backend_service}"
 
   load_balancing_scheme = var.load_balancing_scheme
 
@@ -329,7 +329,7 @@ resource "google_compute_health_check" "default" {
   provider = google-beta
   for_each = local.health_checked_backends
   project  = coalesce(each.value["project"], var.project)
-  name     = "${var.name}-hc-${each.key}"
+  name     = "${var.name_prefixes.health_check != null ? var.name_prefixes.health_check : "${var.name}-hc"}-${each.key}${var.name_suffixes.health_check}"
 
   check_interval_sec  = lookup(each.value["health_check"], "check_interval_sec", 5)
   timeout_sec         = lookup(each.value["health_check"], "timeout_sec", 5)
@@ -438,7 +438,7 @@ resource "google_compute_health_check" "default" {
 resource "google_compute_firewall" "default-hc" {
   count   = length(var.firewall_networks)
   project = length(var.firewall_networks) == 1 && var.firewall_projects[0] == "default" ? var.project : var.firewall_projects[count.index]
-  name    = "${var.name}-hc-${count.index}"
+  name    = "${var.name_prefixes.health_check != null ? var.name_prefixes.health_check : "${var.name}-hc"}${var.name_suffixes.health_check}-${count.index}"
   network = var.firewall_networks[count.index]
   source_ranges = [
     "130.211.0.0/22",
