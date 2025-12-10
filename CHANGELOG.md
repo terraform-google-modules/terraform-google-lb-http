@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [14.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v14.0.0...v14.1.0) (2025-12-10)
+
+
+### Features
+
+* **frontend:** Add connection for address input ([#562](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/562)) ([66e83a5](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/66e83a5559e5a6d00169d4de50bb40cc127c0431))
+
 ## [14.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v13.2.0...v14.0.0) (2025-11-05)
 
 
