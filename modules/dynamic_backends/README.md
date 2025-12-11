@@ -96,6 +96,7 @@ module "gce-lb-http" {
 | create\_ssl\_certificate | If `true`, Create certificate using `private_key/certificate` | `bool` | `false` | no |
 | create\_url\_map | Set to `false` if url\_map variable is provided. | `bool` | `true` | no |
 | edge\_security\_policy | The resource URL for the edge security policy to associate with the backend service | `string` | `null` | no |
+| enable\_firewall | Enable or disable the health check firewall rule | `bool` | `true` | no |
 | enable\_ipv6 | Enable IPv6 address on the CDN load-balancer | `bool` | `false` | no |
 | firewall\_networks | Names of the networks to create firewall rules in | `list(string)` | <pre>[<br>  "default"<br>]</pre> | no |
 | firewall\_projects | Names of the projects to create firewall rules in | `list(string)` | <pre>[<br>  "default"<br>]</pre> | no |
