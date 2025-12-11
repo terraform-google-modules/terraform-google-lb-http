@@ -15,16 +15,16 @@
  */
 
 terraform {
-  required_version = ">= 1.3"
+  required_version = ">= 1.5"
   required_providers {
 
     google = {
       source  = "hashicorp/google"
-      version = ">= 6.0, < 7"
+      version = ">= 6.0, < 8"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = ">= 6.0, < 7"
+      version = ">= 6.0, < 8"
     }
     random = {
       source  = "hashicorp/random"
@@ -33,11 +33,11 @@ terraform {
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-lb-http:backend/v13.0.1"
+    module_name = "blueprints/terraform/terraform-google-lb-http:backend/v14.1.0"
   }
 
   provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-lb-http:backend/v13.0.1"
+    module_name = "blueprints/terraform/terraform-google-lb-http:backend/v14.1.0"
   }
 
 }

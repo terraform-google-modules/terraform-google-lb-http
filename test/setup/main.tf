@@ -32,6 +32,7 @@ locals {
       "storage-api.googleapis.com",
       "vpcaccess.googleapis.com",
       "cloudresourcemanager.googleapis.com",
+      "iap.googleapis.com",
     ]
     dynamic_backends = [
       "cloudresourcemanager.googleapis.com",

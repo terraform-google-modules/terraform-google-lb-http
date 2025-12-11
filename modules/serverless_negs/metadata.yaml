@@ -25,13 +25,17 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-lb-http.git
       sourceType: git
       dir: /modules/serverless_negs
-    version: 13.0.1
+    version: 14.1.0
     actuationTool:
       flavor: Terraform
       version: ">= 1.3"
     description: {}
   content:
     examples:
+      - name: backend-with-iap
+        location: examples/backend-with-iap
+      - name: backend-with-psc-negs
+        location: examples/backend-with-psc-negs
       - name: cdn-policy
         location: examples/cdn-policy
       - name: certificate-map
@@ -292,13 +296,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/vpcaccess.admin
-          - roles/iam.serviceAccountAdmin
           - roles/storage.admin
           - roles/compute.admin
           - roles/run.admin
           - roles/iam.serviceAccountUser
           - roles/certificatemanager.owner
+          - roles/vpcaccess.admin
+          - roles/iam.serviceAccountAdmin
     services:
       - certificatemanager.googleapis.com
       - cloudresourcemanager.googleapis.com
@@ -310,8 +314,8 @@ spec:
       - vpcaccess.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6.0, < 7"
+        version: ">= 6.0, < 8"
       - source: hashicorp/google-beta
-        version: ">= 6.0, < 7"
+        version: ">= 6.0, < 8"
       - source: hashicorp/random
         version: ">= 2.1"

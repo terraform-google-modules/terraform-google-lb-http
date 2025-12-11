@@ -147,6 +147,19 @@ variable "serverless_neg_backends" {
   }
 }
 
+variable "psc_neg_backends" {
+  description = "The list of Private Service Connect backends which serve the traffic."
+  type = list(object({
+    name               = string
+    region             = string
+    psc_target_service = string
+    network            = string
+    subnetwork         = string
+    producer_port      = optional(string)
+  }))
+  default = []
+}
+
 variable "backend_bucket_name" {
   description = "The name of GCS bucket which serves the traffic."
   type        = string
@@ -154,11 +167,12 @@ variable "backend_bucket_name" {
 }
 
 variable "iap_config" {
-  description = "Settings for enabling Cloud Identity Aware Proxy Structure."
+  description = "Settings for enabling Cloud Identity Aware Proxy and Users/SAs to be given IAP HttpResourceAccessor access to the service."
   type = object({
     enable               = bool
     oauth2_client_id     = optional(string)
     oauth2_client_secret = optional(string)
+    iap_members          = optional(list(string))
   })
   default = { enable = false }
 }
@@ -291,4 +305,11 @@ variable "firewall_source_ranges" {
   description = "Source ranges for the global Application Load Balancer's proxies. This list should contain the `ip_cidr_range` of each GLOBAL_MANAGED_PROXY subnet."
   type        = list(string)
   default     = ["10.127.0.0/23"]
+}
+
+check "backend_neg_type_exclusive" {
+  assert {
+    condition     = length(var.serverless_neg_backends) == 0 || length(var.psc_neg_backends) == 0
+    error_message = "The 'serverless_neg_backends' and 'psc_neg_backends' variables are mutually exclusive. Please specify only one."
+  }
 }
