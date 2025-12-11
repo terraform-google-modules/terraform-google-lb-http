@@ -114,6 +114,10 @@ spec:
         varType: list(string)
         defaultValue:
           - default
+      - name: enable_firewall
+        description: Enable or disable the health check firewall rule
+        varType: bool
+        defaultValue: true
       - name: target_tags
         description: List of target tags for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified.
         varType: list(string)
