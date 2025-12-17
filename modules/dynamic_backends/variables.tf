@@ -66,6 +66,12 @@ variable "firewall_projects" {
   default     = ["default"]
 }
 
+variable "enable_firewall" {
+  description = "Enable or disable the health check firewall rule"
+  type        = bool
+  default     = true
+}
+
 variable "target_tags" {
   description = "List of target tags for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified."
   type        = list(string)
