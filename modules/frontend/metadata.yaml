@@ -225,7 +225,7 @@ spec:
       - name: external_ipv6_address
         description: The external IPv6 assigned to the global fowarding rule.
         type: string
-      - name: forwarding_rules
+      - name: forwarding_rule
         description: The list of forwarding rules created by this module.
         type: list(string)
       - name: http_proxy
