@@ -93,7 +93,7 @@ output "apphub_service_uri" {
   description = "Service URI in CAIS style to be used by Apphub."
 }
 
-output "forwarding_rule" {
+output "forwarding_rules" {
   description = "The list of forwarding rules created by this module."
   value = concat(
     local.create_http_forward && !local.is_internal_managed ? [
