@@ -225,29 +225,14 @@ spec:
       - name: external_ipv6_address
         description: The external IPv6 assigned to the global fowarding rule.
         type: string
-      - name: http_forwarding_rule
-        description: The http forwarding rule created by this module.
-        type: string
-      - name: http_ipv6_forwarding_rule
-        description: The internal managed http IPv6 forwarding rule created by this module.
-        type: string
+      - name: forwarding_rules
+        description: The list of forwarding rules created by this module.
+        type: list(string)
       - name: http_proxy
         description: The HTTP proxy used by this module.
         type: string
-      - name: https_forwarding_rule
-        description: The https forwarding rule created by this module.
-        type: string
-      - name: https_ipv6_forwarding_rule
-        description: The internal managed https ipv6 forwarding rule created by this module
-        type: string
       - name: https_proxy
         description: The HTTPS proxy used by this module.
-        type: string
-      - name: internal_managed_http_forwarding_rule
-        description: The internal managed http forwarding rule created by this module.
-        type: string
-      - name: internal_managed_http_ipv6_forwarding_rule
-        description: The internal managed http IPv6 forwarding rule created by this module.
         type: string
       - name: ip_address_internal_managed_http
         description: The internal/external IP addresses assigned to the HTTP forwarding rules.

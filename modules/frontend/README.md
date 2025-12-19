@@ -44,14 +44,9 @@ This module creates `HTTP(S) forwarding rule` and its dependencies. This modules
 | apphub\_service\_uri | Service URI in CAIS style to be used by Apphub. |
 | external\_ip | The external IPv4 assigned to the global fowarding rule. |
 | external\_ipv6\_address | The external IPv6 assigned to the global fowarding rule. |
-| http\_forwarding\_rule | The http forwarding rule created by this module. |
-| http\_ipv6\_forwarding\_rule | The internal managed http IPv6 forwarding rule created by this module. |
+| forwarding\_rules | The list of forwarding rules created by this module. |
 | http\_proxy | The HTTP proxy used by this module. |
-| https\_forwarding\_rule | The https forwarding rule created by this module. |
-| https\_ipv6\_forwarding\_rule | The internal managed https ipv6 forwarding rule created by this module |
 | https\_proxy | The HTTPS proxy used by this module. |
-| internal\_managed\_http\_forwarding\_rule | The internal managed http forwarding rule created by this module. |
-| internal\_managed\_http\_ipv6\_forwarding\_rule | The internal managed http IPv6 forwarding rule created by this module. |
 | ip\_address\_internal\_managed\_http | The internal/external IP addresses assigned to the HTTP forwarding rules. |
 | ip\_address\_internal\_managed\_https | The internal/external IP addresses assigned to the HTTPS forwarding rules. |
 | ipv6\_enabled | Whether IPv6 configuration is enabled on this load-balancer |

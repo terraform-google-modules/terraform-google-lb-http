@@ -93,32 +93,32 @@ output "apphub_service_uri" {
   description = "Service URI in CAIS style to be used by Apphub."
 }
 
-output "http_forwarding_rule" {
-  description = "The http forwarding rule created by this module."
-  value       = google_compute_global_forwarding_rule.http.self_link
-}
-
-output "https_forwarding_rule" {
-  description = "The https forwarding rule created by this module."
-  value       = google_compute_global_forwarding_rule.https.self_link
-}
-
-output "internal_managed_http_forwarding_rule" {
-  description = "The internal managed http forwarding rule created by this module."
-  value       = google_compute_global_forwarding_rule.internal_managed_http.self_link
-}
-
-output "internal_managed_http_ipv6_forwarding_rule" {
-  description = "The internal managed http IPv6 forwarding rule created by this module."
-  value       = google_compute_global_forwarding_rule.internal_managed_http_ipv6.self_link
-}
-
-output "http_ipv6_forwarding_rule" {
-  description = "The internal managed http IPv6 forwarding rule created by this module."
-  value       = google_compute_global_forwarding_rule.http_ipv6.self_link
-}
-
-output "https_ipv6_forwarding_rule" {
-  description = "The internal managed https ipv6 forwarding rule created by this module"
-  value       = google_compute_global_forwarding_rule.https_ipv6.self_link
+output "forwarding_rule" {
+  description = "The list of forwarding rules created by this module."
+  value = concat(
+    local.create_http_forward && !local.is_internal_managed ? [
+      google_compute_global_forwarding_rule.http[0].self_link
+    ] : [],
+    var.ssl && !local.is_internal_managed ? [
+      google_compute_global_forwarding_rule.https[0].self_link
+    ] : [],
+    (var.enable_ipv6 && local.create_http_forward && !local.is_internal_managed) ? [
+      google_compute_global_forwarding_rule.http_ipv6[0].self_link
+    ] : [],
+    var.enable_ipv6 && var.ssl && !local.is_internal_managed ? [
+      google_compute_global_forwarding_rule.https_ipv6[0].self_link
+    ] : [],
+    local.create_http_forward && local.is_internal_managed ? [
+      google_compute_global_forwarding_rule.internal_managed_http[0].self_link
+    ] : [],
+    var.ssl && local.is_internal_managed ? [
+      google_compute_global_forwarding_rule.internal_managed_https[0].self_link
+    ] : [],
+    (var.enable_ipv6 && local.create_http_forward && local.is_internal_managed) ? [
+      google_compute_global_forwarding_rule.internal_managed_http_ipv6[0].self_link
+    ] : [],
+    var.enable_ipv6 && var.ssl && local.is_internal_managed ? [
+      google_compute_global_forwarding_rule.internal_managed_https_ipv6[0].self_link
+    ] : [],
+  )
 }
