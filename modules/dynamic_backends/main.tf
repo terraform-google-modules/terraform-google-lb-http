@@ -56,13 +56,13 @@ resource "google_compute_global_forwarding_rule" "https" {
 }
 
 resource "google_compute_global_address" "default" {
-  provider   = google-beta
-  count      = local.is_internal ? 0 : var.create_address ? 1 : 0
-  project    = var.project
-  name       = "${var.name}-address"
-  ip_version = "IPV4"
+  provider     = google-beta
+  count        = var.create_address ? 1 : 0
+  project      = var.project
+  name         = "${var.name}-address"
+  ip_version   = "IPV4"
   address_type = local.is_internal ? "INTERNAL" : "EXTERNAL"
-  labels     = var.labels
+  labels       = var.labels
 }
 ### IPv4 block ###
 
