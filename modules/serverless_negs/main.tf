@@ -23,7 +23,7 @@ locals {
   create_http_forward = var.http_forward || var.https_redirect
 
 
-  is_internal = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED" || var.load_balancing_scheme == "INTERNAL_MANAGED"
+  is_internal      = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED" || var.load_balancing_scheme == "INTERNAL_MANAGED"
   internal_network = local.is_internal ? var.network : null
 }
 
@@ -60,6 +60,7 @@ resource "google_compute_global_address" "default" {
   project    = var.project
   name       = "${var.name}-address"
   ip_version = "IPV4"
+  address_type = local.is_internal ? "INTERNAL" : "EXTERNAL"
   labels     = var.labels
 }
 ### IPv4 block ###
