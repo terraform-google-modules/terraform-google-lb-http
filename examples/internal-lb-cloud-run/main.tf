@@ -158,7 +158,7 @@ module "frontend-service-a" {
     min_instance_count    = 0
     manual_instance_count = 0
   }
-  depends_on                    = [google_vpc_access_connector.internal_lb_vpc_connector]
+  depends_on = [google_vpc_access_connector.internal_lb_vpc_connector]
 }
 
 module "frontend-service-b" {
