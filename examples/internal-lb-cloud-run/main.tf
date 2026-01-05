@@ -154,7 +154,11 @@ module "frontend-service-a" {
   ingress                       = "INGRESS_TRAFFIC_ALL"
   cloud_run_deletion_protection = false
   enable_prometheus_sidecar     = false
-  depends_on                    = [google_vpc_access_connector.internal_lb_vpc_connector]
+  service_scaling = {
+    min_instance_count    = 0
+    manual_instance_count = 0
+  }
+  depends_on = [google_vpc_access_connector.internal_lb_vpc_connector]
 }
 
 module "frontend-service-b" {
@@ -172,4 +176,8 @@ module "frontend-service-b" {
   ingress                       = "INGRESS_TRAFFIC_ALL"
   cloud_run_deletion_protection = false
   enable_prometheus_sidecar     = false
+  service_scaling = {
+    min_instance_count    = 0
+    manual_instance_count = 0
+  }
 }

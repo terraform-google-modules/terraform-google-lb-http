@@ -16,14 +16,14 @@
 
 
 locals {
-  address      = var.create_address ? join("", google_compute_global_address.default[*].address) : var.address
-  ipv6_address = var.create_ipv6_address ? join("", google_compute_global_address.default_ipv6[*].address) : var.ipv6_address
+  address      = (var.create_address && !local.is_internal) ? join("", google_compute_global_address.default[*].address) : var.address
+  ipv6_address = (var.create_ipv6_address && !local.is_internal) ? join("", google_compute_global_address.default_ipv6[*].address) : var.ipv6_address
 
   url_map             = var.create_url_map ? join("", google_compute_url_map.default[*].self_link) : var.url_map
   create_http_forward = var.http_forward || var.https_redirect
 
 
-  is_internal      = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED"
+  is_internal      = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED" || var.load_balancing_scheme == "INTERNAL_MANAGED"
   internal_network = local.is_internal ? var.network : null
 }
 
@@ -55,12 +55,13 @@ resource "google_compute_global_forwarding_rule" "https" {
 }
 
 resource "google_compute_global_address" "default" {
-  provider   = google-beta
-  count      = local.is_internal ? 0 : var.create_address ? 1 : 0
-  project    = var.project
-  name       = "${var.name}-address"
-  ip_version = "IPV4"
-  labels     = var.labels
+  provider     = google-beta
+  count        = var.create_address ? 1 : 0
+  project      = var.project
+  name         = "${var.name}-address"
+  ip_version   = "IPV4"
+  address_type = local.is_internal ? "INTERNAL" : "EXTERNAL"
+  labels       = var.labels
 }
 ### IPv4 block ###
 
