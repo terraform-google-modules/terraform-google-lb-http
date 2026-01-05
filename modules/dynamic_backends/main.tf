@@ -16,6 +16,8 @@
 
 
 locals {
+  is_internal = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED" || var.load_balancing_scheme == "INTERNAL_MANAGED"
+
   address      = (var.create_address && !local.is_internal) ? join("", google_compute_global_address.default[*].address) : var.address
   ipv6_address = (var.create_ipv6_address && !local.is_internal) ? join("", google_compute_global_address.default_ipv6[*].address) : var.ipv6_address
 
