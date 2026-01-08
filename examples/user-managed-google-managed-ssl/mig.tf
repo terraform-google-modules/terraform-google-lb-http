@@ -33,7 +33,7 @@ module "mig1_template" {
   }
   name_prefix          = "${var.network_name}-group1"
   startup_script       = data.template_file.group1-startup-script.rendered
-  source_image_family  = "ubuntu-2004-lts"
+  source_image_family  = "ubuntu-2204-lts"
   source_image_project = "ubuntu-os-cloud"
   tags = [
     "${var.network_name}-group1",
