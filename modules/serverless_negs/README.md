@@ -15,7 +15,7 @@ intended for Terraform 0.12.x is [v4.5.0](https://registry.terraform.io/modules/
 
 ## Version
 
-Current version is 9.0. Upgrade guides:
+Current version is 12.0. Upgrade guides:
 
 - [2.X -> 3.0](/docs/upgrading-v2.0.0-v3.0.0.md)
 - [3.X -> 4.0](/docs/upgrading_to_v4.0.md)
@@ -23,6 +23,7 @@ Current version is 9.0. Upgrade guides:
 - [7.X -> 8.0](/docs/upgrading_to_v8.0.md)
 - [8.X -> 9.0](/docs/upgrading_to_v9.0.md)
 - [9.X -> 10.0](/docs/upgrading_to_v10.0.md)
+- [10.X -> 11.0](/docs/upgrading_to_v11.0.md)
 
 ## Usage
 

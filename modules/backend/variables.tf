@@ -26,7 +26,7 @@ variable "project_id" {
 }
 
 variable "load_balancing_scheme" {
-  description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, and INTERNAL_SELF_MANAGED for traffic director)."
+  description = "Load balancing scheme type (EXTERNAL for classic external load balancer, EXTERNAL_MANAGED for Envoy-based load balancer, INTERNAL_MANAGED for internal load balancer and INTERNAL_SELF_MANAGED for traffic director)"
   type        = string
   default     = "EXTERNAL_MANAGED"
 }
@@ -140,14 +140,39 @@ variable "serverless_neg_backends" {
     service_version = optional(string)
   }))
   default = []
+
+  validation {
+    condition     = length(distinct([for backend in var.serverless_neg_backends : backend.region])) == length(var.serverless_neg_backends)
+    error_message = "The 'region' within each 'serverless_neg_backends' block must be unique."
+  }
+}
+
+variable "psc_neg_backends" {
+  description = "The list of Private Service Connect backends which serve the traffic."
+  type = list(object({
+    name               = string
+    region             = string
+    psc_target_service = string
+    network            = string
+    subnetwork         = string
+    producer_port      = optional(string)
+  }))
+  default = []
+}
+
+variable "backend_bucket_name" {
+  description = "The name of GCS bucket which serves the traffic."
+  type        = string
+  default     = ""
 }
 
 variable "iap_config" {
-  description = "Settings for enabling Cloud Identity Aware Proxy Structure."
+  description = "Settings for enabling Cloud Identity Aware Proxy and Users/SAs to be given IAP HttpResourceAccessor access to the service."
   type = object({
     enable               = bool
     oauth2_client_id     = optional(string)
     oauth2_client_secret = optional(string)
+    iap_members          = optional(list(string))
   })
   default = { enable = false }
 }
@@ -177,7 +202,13 @@ variable "cdn_policy" {
       include_named_cookies  = optional(list(string))
     }))
   })
-  default = {}
+  default = {
+    cache_mode                   = "CACHE_ALL_STATIC"
+    default_ttl                  = 3600
+    client_ttl                   = 3600
+    max_ttl                      = 86400
+    signed_url_cache_max_age_sec = "0"
+  }
 }
 
 variable "outlier_detection" {
@@ -268,4 +299,17 @@ variable "target_service_accounts" {
   description = "List of target service accounts for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified."
   type        = list(string)
   default     = []
+}
+
+variable "firewall_source_ranges" {
+  description = "Source ranges for the global Application Load Balancer's proxies. This list should contain the `ip_cidr_range` of each GLOBAL_MANAGED_PROXY subnet."
+  type        = list(string)
+  default     = ["10.127.0.0/23"]
+}
+
+check "backend_neg_type_exclusive" {
+  assert {
+    condition     = length(var.serverless_neg_backends) == 0 || length(var.psc_neg_backends) == 0
+    error_message = "The 'serverless_neg_backends' and 'psc_neg_backends' variables are mutually exclusive. Please specify only one."
+  }
 }

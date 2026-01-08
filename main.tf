@@ -193,7 +193,7 @@ resource "google_compute_url_map" "https_redirect" {
     }
     fault_injection_policy {
       abort {
-        http_status = 404
+        http_status = 403
         percentage  = 100
       }
     }
