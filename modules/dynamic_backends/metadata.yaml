@@ -93,12 +93,6 @@ spec:
       - name: address
         description: Existing IPv4 address to use (the actual IP address value)
         varType: string
-        connections:
-          - source:
-              source: github.com/terraform-google-modules/terraform-google-address
-              version: ~> 4.3
-            spec:
-              outputExpr: addresses[0]
       - name: enable_ipv6
         description: Enable IPv6 address on the CDN load-balancer
         varType: bool
