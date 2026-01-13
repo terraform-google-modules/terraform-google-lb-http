@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,23 @@
  * limitations under the License.
  */
 
-terraform {
-  required_version = ">= 1.3"
-  required_providers {
+module "lb-backend-iap" {
+  source  = "terraform-google-modules/lb-http/google//modules/backend"
+  version = "~> 12.0"
 
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 6.0, < 8"
-    }
-    google-beta = {
-      source  = "hashicorp/google-beta"
-      version = ">= 6.0, < 8"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = ">= 2.1"
-    }
+  project_id = var.project_id
+  name       = "backend-with-iap"
+  iap_config = {
+    enable      = true
+    iap_members = ["user:test@test.test"]
   }
+}
 
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-lb-http/v14.1.0"
-  }
+module "lb-frontend" {
+  source  = "terraform-google-modules/lb-http/google//modules/frontend"
+  version = "~> 12.0"
 
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-lb-http/v14.1.0"
-  }
-
+  project_id    = var.project_id
+  name          = "global-lb-fe-bucket"
+  url_map_input = module.lb-backend-iap.backend_service_info
 }

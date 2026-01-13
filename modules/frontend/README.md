@@ -41,6 +41,7 @@ This module creates `HTTP(S) forwarding rule` and its dependencies. This modules
 
 | Name | Description |
 |------|-------------|
+| apphub\_service\_uri | Service URI in CAIS style to be used by Apphub. |
 | external\_ip | The external IPv4 assigned to the global fowarding rule. |
 | external\_ipv6\_address | The external IPv6 assigned to the global fowarding rule. |
 | http\_proxy | The HTTP proxy used by this module. |

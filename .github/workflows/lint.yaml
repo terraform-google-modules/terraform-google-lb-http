@@ -20,8 +20,11 @@ name: 'lint'
 on:
   workflow_dispatch:
   pull_request:
-    branches:
-      - main
+    types: [opened, edited, reopened, synchronize]
+    branches: [main]
+
+permissions:
+  contents: read
 
 concurrency:
   group: '${{ github.workflow }}-${{ github.head_ref || github.ref }}'
@@ -32,7 +35,7 @@ jobs:
     name: 'lint'
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: 'actions/checkout@v4'
+      - uses: 'actions/checkout@v6'
       - id: variables
         run: |
           MAKEFILE=$(find . -name Makefile -print -quit)
@@ -52,3 +55,23 @@ jobs:
         env:
           ENABLE_BPMETADATA: 1
 
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+      - name: Install commitlint
+        run: |
+          npm install -D @commitlint/cli@20.2.0 @commitlint/config-conventional@20.2.0
+          echo "module.exports = { extends: ['@commitlint/config-conventional'], rules: {'subject-case': [0], 'header-max-length': [0]} };" > commitlint.config.js
+          npx commitlint --version
+      - name: Validate PR commits with commitlint
+        if: github.event_name == 'pull_request'
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: 'echo "$TITLE" | npx commitlint --verbose'

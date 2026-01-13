@@ -58,3 +58,37 @@ output "ssl_certificate_created" {
   description = "The SSL certificate create from key/pem"
   value       = google_compute_ssl_certificate.default[*].self_link
 }
+
+output "apphub_service_uri" {
+  value = concat(
+    local.create_http_forward && !local.is_internal_managed ? [
+      {
+        service_uri = "//compute.googleapis.com/${google_compute_global_forwarding_rule.http[0].id}"
+        service_id  = substr("${google_compute_global_forwarding_rule.http[0].name}-${md5("global-lb-${var.project_id}")}", 0, 63)
+        location    = "global"
+      }
+    ] : [],
+    var.ssl && !local.is_internal_managed ? [
+      {
+        service_uri = "//compute.googleapis.com/${google_compute_global_forwarding_rule.https[0].id}"
+        service_id  = substr("${google_compute_global_forwarding_rule.https[0].name}-${md5("global-lb-${var.project_id}")}", 0, 63)
+        location    = "global"
+      }
+    ] : [],
+    (var.enable_ipv6 && local.create_http_forward && !local.is_internal_managed) ? [
+      {
+        service_uri = "//compute.googleapis.com/${google_compute_global_forwarding_rule.http_ipv6[0].id}"
+        service_id  = substr("${google_compute_global_forwarding_rule.http_ipv6[0].name}-${md5("global-lb-${var.project_id}")}", 0, 63)
+        location    = "global"
+      }
+    ] : [],
+    var.enable_ipv6 && var.ssl && !local.is_internal_managed ? [
+      {
+        service_uri = "//compute.googleapis.com/${google_compute_global_forwarding_rule.https_ipv6[0].id}"
+        service_id  = substr("${google_compute_global_forwarding_rule.https_ipv6[0].name}-${md5("global-lb-${var.project_id}")}", 0, 63)
+        location    = "global"
+      }
+    ] : [],
+  )
+  description = "Service URI in CAIS style to be used by Apphub."
+}

@@ -1,4 +1,4 @@
-# Copyright 2024 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,12 +31,16 @@ spec:
         address:
           name: address
           title: Address
+          regexValidation: "^(0.0.0.0|((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]).){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])|([0-9a-fA-F:]+(/[0-9]{1,3})?)|(https://www.googleapis.com/compute/v1/projects/[a-z][a-z0-9-]{4,28}[a-z0-9]/(global|regions/[a-z0-9-]+)/addresses/[a-z][a-z0-9-]{0,61}[a-z0-9])|(projects/[a-z][a-z0-9-]{4,28}[a-z0-9]/(global|regions/[a-z0-9-]+)/addresses/[a-z][a-z0-9-]{0,61}[a-z0-9])|(regions/[a-z0-9-]+/addresses/[a-z][a-z0-9-]{0,61}[a-z0-9])|(global/addresses/[a-z][a-z0-9-]{0,61}[a-z0-9])|([a-z][a-z0-9-]{0,61}[a-z0-9]))$"
+          validation: "Must be a valid IP address (IPv4, IPv6, or 0.0.0.0) or a Compute Address reference in one of the following formats: https://www.googleapis.com/compute/v1/projects/{project}/(global|regions/{region})/addresses/{name}, projects/{project}/(global|regions/{region})/addresses/{name}, regions/{region}/addresses/{name}, global/addresses/{name}, or {address-name}"
         certificate:
           name: certificate
           title: Certificate
         certificate_map:
           name: certificate_map
           title: Certificate Map
+          regexValidation: "^projects/[a-z][a-z0-9-]{4,28}[a-z0-9]/locations/global/certificateMaps/[a-zA-Z][a-zA-Z0-9-]{0,62}[a-zA-Z0-9]$"
+          validation: "Must be in the format projects/{project}/locations/global/certificateMaps/{name}"
         create_address:
           name: create_address
           title: Create Address
@@ -58,18 +62,29 @@ spec:
         http_keep_alive_timeout_sec:
           name: http_keep_alive_timeout_sec
           title: Http Keep Alive Timeout Sec
+          min: 5
+          max: 1200
         http_port:
           name: http_port
           title: Http Port
+          min: 1
+          max: 65535
         https_port:
           name: https_port
           title: Https Port
+          min: 1
+          max: 65535
         https_redirect:
           name: https_redirect
           title: Https Redirect
+        internal_forwarding_rules_config:
+          name: internal_forwarding_rules_config
+          title: Internal Forwarding Rules Config
         ipv6_address:
           name: ipv6_address
           title: Ipv6 Address
+          regexValidation: ^(([0-9A-Fa-f]{1,4}:){1,7}[0-9A-Fa-f]{1,4}|::1|::)$
+          validation: Must be a valid IPv6 address.
         labels:
           name: labels
           title: Labels
@@ -92,6 +107,8 @@ spec:
         network:
           name: network
           title: Network
+          regexValidation: "^(projects/[a-z][a-z0-9-]{4,28}[a-z0-9]/global/networks/[a-zA-Z0-9-_]+|[a-zA-Z0-9-_]+)$"
+          validation: Network must be a valid network name or a full resource path.
         private_key:
           name: private_key
           title: Private Key
@@ -101,24 +118,53 @@ spec:
         quic:
           name: quic
           title: Quic
+          enumValueLabels:
+            - label: ENABLE
+              value: ENABLE
+            - label: DISABLE
+              value: DISABLE
+            - label: NONE
+              value: NONE
         random_certificate_suffix:
           name: random_certificate_suffix
           title: Random Certificate Suffix
         server_tls_policy:
           name: server_tls_policy
           title: Server Tls Policy
+          regexValidation: "^projects/[a-z0-9][-a-z0-9]{4,28}[a-z0-9]/locations/[a-z0-9-]+/serverTlsPolicies/[a-z]([-a-z0-9]{0,61}[a-z0-9])$"
+          validation: Must be a valid server TLS policy full resource URL.
         ssl:
           name: ssl
           title: Ssl
         ssl_certificates:
           name: ssl_certificates
           title: Ssl Certificates
+          regexValidation: "^(https://www.googleapis.com/compute/v1/)?projects/[a-z0-9][-a-z0-9]{4,28}[a-z0-9]/global/sslCertificates/[a-z]([-a-z0-9]{0,61}[a-z0-9])$|^[a-z]([-a-z0-9]{0,61}[a-z0-9])$"
+          validation: Must be a valid SSL certificate resource URL.
         ssl_policy:
           name: ssl_policy
           title: Ssl Policy
+          regexValidation: "^(https://www.googleapis.com/compute/v1/)?projects/[a-z0-9][-a-z0-9]{4,28}[a-z0-9]/global/sslPolicies/[a-z]([-a-z0-9]{0,61}[a-z0-9])$|^[a-z]([-a-z0-9]{0,61}[a-z0-9])$"
+          validation: Must be a valid SSL policy name or full resource URL.
         url_map_input:
           name: url_map_input
           title: Url Map Input
+          properties:
+            host:
+              name: host
+              title: Host
+              regexValidation: "^([*]|([*][.])?[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?([.][a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)+)$"
+              validation: "Must be a valid host pattern: a fully qualified domain name (e.g., example.com), or a wildcard in the first component only (e.g., *.example.com). Must contain only lowercase letters, digits, hyphens (-), and dots (.), and be 1–255 characters long"
+            path:
+              name: path
+              title: Path
+              regexValidation: "^(.*)$"
+              validation: Path values must start with "/"
+            backend_service:
+              name: backend_service
+              title: Backend Service
+              regexValidation: "^projects/[a-z][a-z0-9-]{4,28}[a-z0-9]/global/(backendServices|backendBuckets)/[a-z]([a-z0-9-]{0,61}[a-z0-9])?$"
+              validation: Must be a reference to a global backend service or backend bucket in the format [projects/{project}/global/backendServices/{name}] or [projects/{project}/global/backendBuckets/{name}]
         url_map_resource_uri:
           name: url_map_resource_uri
           title: Url Map Resource Uri

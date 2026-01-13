@@ -5,6 +5,78 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [14.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v14.0.0...v14.1.0) (2025-12-10)
+
+
+### Features
+
+* **frontend:** Add connection for address input ([#562](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/562)) ([66e83a5](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/66e83a5559e5a6d00169d4de50bb40cc127c0431))
+
+## [14.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v13.2.0...v14.0.0) (2025-11-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* Bump up the terraform version ([#550](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/550))
+
+### Features
+
+* Terraform Google Provider to v7 ([#556](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/556)) ([2f3e7a8](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/2f3e7a85a3f2cc466768306b3dff1be95822f07f))
+
+
+### Bug Fixes
+
+* Bump up the terraform version ([#550](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/550)) ([6445187](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/6445187770778fe391bb92b50026b7c6be99a4ef))
+
+## [13.2.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v13.1.0...v13.2.0) (2025-09-30)
+
+
+### Features
+
+* Adding suport for PSC NEGs in terraform-google-lb-http/modules/backend ([#539](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/539)) ([be52b2d](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/be52b2d1de29e58e82549316141402cd4e08545e))
+
+
+### Bug Fixes
+
+* added missing validations ([#542](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/542)) ([9267bb2](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/9267bb2c43e3397bbf59ee8f639402a7777536fe))
+
+## [13.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v13.0.1...v13.1.0) (2025-09-02)
+
+
+### Features
+
+* Added IAP Principals terraform resource for backend-service ([#533](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/533)) ([ad5d851](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/ad5d851008c89acbe96049398e459f9224a3c98f))
+* per module requirements configs for lb-http ([#520](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/520)) ([97c69e6](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/97c69e61548e1b16cf0d92057f29a4aff14863f6))
+
+
+### Bug Fixes
+
+* added missing validations ([#530](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/530)) ([71cae26](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/71cae265b908589037f541ef28c859df57ac9be1))
+
+## [13.0.1](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v13.0.0...v13.0.1) (2025-07-31)
+
+
+### Bug Fixes
+
+* fixing outputs.tf for backend for apphub check ([#525](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/525)) ([03d405c](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/03d405c29f6939fa5983db1dd8aa054f32e2a3ed))
+
+## [13.0.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.2.0...v13.0.0) (2025-07-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* Adding  regex validation for service name and adding apphub ([#522](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/522))
+* update default for cdn_policy and do not create serverless neg ([#516](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/516))
+
+### Features
+
+* update default for cdn_policy and do not create serverless neg ([#516](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/516)) ([6e7e878](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/6e7e87834ad1beb504cfeb31388f06ce38fd15f9))
+
+
+### Bug Fixes
+
+* Adding  regex validation for service name and adding apphub ([#522](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/522)) ([687152d](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/687152d0fdf64e68ef81c274b71a05028f9b015e))
+
 ## [12.2.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v12.1.4...v12.2.0) (2025-06-23)
 
 

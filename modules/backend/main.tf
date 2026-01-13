@@ -17,6 +17,8 @@
 locals {
   is_backend_bucket       = var.backend_bucket_name != null && var.backend_bucket_name != ""
   serverless_neg_backends = local.is_backend_bucket ? [] : var.serverless_neg_backends
+  psc_neg_backends        = local.is_backend_bucket ? [] : var.psc_neg_backends
+  iap_access_members      = var.iap_config.enable ? coalesce(var.iap_config.iap_members, []) : []
 }
 
 resource "google_compute_backend_service" "default" {
@@ -67,7 +69,14 @@ resource "google_compute_backend_service" "default" {
   dynamic "backend" {
     for_each = toset(var.serverless_neg_backends)
     content {
-      group = google_compute_region_network_endpoint_group.serverless_negs["neg-${var.name}-${backend.value.service_name}-${backend.value.region}"].id
+      group = google_compute_region_network_endpoint_group.serverless_negs["neg-${var.name}-${backend.value.region}-${substr(md5(backend.value.service_name), 0, 4)}"].id
+    }
+  }
+
+  dynamic "backend" {
+    for_each = toset(var.psc_neg_backends)
+    content {
+      group = google_compute_region_network_endpoint_group.psc_negs[backend.value.name].id
     }
   }
 
@@ -163,7 +172,7 @@ resource "google_compute_backend_service" "default" {
 
 resource "google_compute_region_network_endpoint_group" "serverless_negs" {
   for_each = { for serverless_neg_backend in local.serverless_neg_backends :
-  "neg-${var.name}-${serverless_neg_backend.service_name}-${serverless_neg_backend.region}" => serverless_neg_backend }
+  "neg-${var.name}-${serverless_neg_backend.region}-${substr(md5(serverless_neg_backend.service_name), 0, 4)}" => serverless_neg_backend }
 
 
   provider              = google-beta
@@ -192,6 +201,29 @@ resource "google_compute_region_network_endpoint_group" "serverless_negs" {
       service = each.value.service_name
       version = each.value.service_version
     }
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "google_compute_region_network_endpoint_group" "psc_negs" {
+  for_each = { for psc_neg_backend in local.psc_neg_backends :
+    psc_neg_backend.name => psc_neg_backend
+  }
+
+  provider              = google-beta
+  project               = var.project_id
+  name                  = each.key
+  network_endpoint_type = "PRIVATE_SERVICE_CONNECT"
+  region                = each.value.region
+  psc_target_service    = each.value.psc_target_service
+  network               = each.value.network
+  subnetwork            = each.value.subnetwork
+
+  psc_data {
+    producer_port = try(each.value.producer_port, null)
   }
 
   lifecycle {
@@ -365,3 +397,12 @@ resource "google_compute_backend_bucket" "default" {
     }
   }
 }
+
+resource "google_iap_web_backend_service_iam_member" "member" {
+  for_each            = toset(local.iap_access_members)
+  project             = google_compute_backend_service.default[0].project
+  web_backend_service = google_compute_backend_service.default[0].name
+  role                = "roles/iap.httpsResourceAccessor"
+  member              = each.value
+}
+
