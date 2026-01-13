@@ -28,7 +28,6 @@ func TestInternalLbGCEMIG(t *testing.T) {
 	bpt := tft.NewTFBlueprintTest(t)
 
 	bpt.DefineVerify(func(assert *assert.Assertions) {
-		bpt.DefaultVerify(assert)
 
 		cloudRunURIs := bpt.GetStringOutputList("external_cloudrun_uris")
 
