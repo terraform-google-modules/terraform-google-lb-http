@@ -1,14 +1,3 @@
-variable "project_id" {
-  description = "GCP project ID"
-  type        = string
-}
-
-variable "default_region" {
-  description = "Default region used for the provider"
-  type        = string
-  default     = "us-central1"
-}
-
 variable "regions" {
   description = "Regions to create backend groups (MIGs)"
   type        = map(string)
