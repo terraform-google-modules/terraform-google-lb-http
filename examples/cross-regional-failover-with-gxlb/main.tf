@@ -1,3 +1,18 @@
+terraform {
+  required_version = ">= 1.3.0"
+
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 5.0"
+    }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = ">= 5.0"
+    }
+  }
+}
+
 resource "google_compute_network" "global_lb_network" {
   name                    = "global-lb-network"
   auto_create_subnetworks = false
