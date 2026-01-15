@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [14.2.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v14.1.0...v14.2.0) (2026-01-14)
+
+
+### Features
+
+* **dynamic_backends:** Add connection for address input ([#565](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/565)) ([38b6df5](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/38b6df58cdca03ef63a98a9b50f4a1af456a0a0f))
+* **serverless_negs:** Add connection for address input ([#566](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/566)) ([d7d5b37](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/d7d5b379b7fe5c6c1d95e6a00493d20a52cc856d))
+
+
+### Bug Fixes
+
+* **internal-lb-cloud-run:** Refactor TestInternalLbCloudRun verification ([#576](https://github.com/terraform-google-modules/terraform-google-lb-http/issues/576)) ([5bc04f0](https://github.com/terraform-google-modules/terraform-google-lb-http/commit/5bc04f0b1ba3cc5429f28ea7b098c75d22e60eef))
+
 ## [14.1.0](https://github.com/terraform-google-modules/terraform-google-lb-http/compare/v14.0.0...v14.1.0) (2025-12-10)
 
 
