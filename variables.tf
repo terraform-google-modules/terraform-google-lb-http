@@ -299,6 +299,16 @@ variable "network" {
   default     = "default"
 }
 
+variable "network_tier" {
+  description = "Network tier for the forwarding rule."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.network_tier == null || contains(["PREMIUM", "STANDARD"], var.network_tier)
+    error_message = "Network tier must be PREMIUM or STANDARD."
+  }
+}
+
 variable "server_tls_policy" {
   description = "The resource URL for the server TLS policy to associate with the https proxy service"
   type        = string

@@ -110,6 +110,7 @@ module "gce-lb-http" {
 | managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` | `list(string)` | `[]` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |
 | network | Network for INTERNAL\_SELF\_MANAGED load balancing scheme | `string` | `"default"` | no |
+| network\_tier | Network tier for the forwarding rule. | `string` | `null` | no |
 | private\_key | Content of the private SSL key. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true` | `string` | `null` | no |
 | project | The project to deploy to, if not set the default provider project is used. | `string` | n/a | yes |
 | quic | Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only. | `bool` | `null` | no |

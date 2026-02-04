@@ -261,6 +261,9 @@ spec:
         description: Network for INTERNAL_SELF_MANAGED load balancing scheme
         varType: string
         defaultValue: default
+      - name: network_tier
+        description: Network tier for the forwarding rule.
+        varType: string
       - name: server_tls_policy
         description: The resource URL for the server TLS policy to associate with the https proxy service
         varType: string
