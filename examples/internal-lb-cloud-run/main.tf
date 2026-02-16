@@ -24,7 +24,7 @@ provider "google-beta" {
 
 module "internal-lb-network" {
   source                  = "terraform-google-modules/network/google//modules/vpc"
-  version                 = "~> 10.0.0"
+  version                 = "~> 15.2.0"
   project_id              = var.project_id
   network_name            = "int-lb-network"
   auto_create_subnetworks = false
@@ -32,7 +32,7 @@ module "internal-lb-network" {
 
 module "internal-lb-subnet" {
   source  = "terraform-google-modules/network/google//modules/subnets"
-  version = "~> 10.0.0"
+  version = "~> 15.2.0"
 
   subnets = [
     {
