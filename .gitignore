@@ -45,6 +45,7 @@ crash.log
 credentials.json
 
 **/.terraform/
+**/.terraform.d/
 **/backend.tf
 **/values-*.yaml
 **/*.tfplan
@@ -52,3 +53,6 @@ credentials.json
 
 # tf lock file
 .terraform.lock.hcl
+
+# intellij
+**/.idea/*
