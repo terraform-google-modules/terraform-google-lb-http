@@ -73,7 +73,7 @@ resource "google_compute_router" "default" {
 
 module "cloud-nat" {
   source     = "terraform-google-modules/cloud-nat/google"
-  version    = "~> 5.0"
+  version    = "~> 7.0"
   router     = google_compute_router.default.name
   project_id = var.project_id
   region     = var.region
