@@ -48,7 +48,7 @@ module "producer-subnet" {
 
 module "gce-ilb" {
   source  = "GoogleCloudPlatform/lb-internal/google"
-  version = "~> 6.0"
+  version = "~> 8.0"
   project = var.project_id
   region  = "us-central1"
   name    = "group2-ilb"
