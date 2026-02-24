@@ -65,7 +65,7 @@ locals {
 
 module "project-ci-lb-http" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 17.0"
+  version = "~> 18.0"
 
   name                        = "ci-int-lb-http"
   random_project_id           = true
@@ -82,7 +82,7 @@ module "project-ci-lb-http" {
 
 module "project-ci-lb-http-1" {
   source  = "terraform-google-modules/project-factory/google"
-  version = "~> 17.0"
+  version = "~> 18.0"
 
   name                        = "ci-int-lb-http-1"
   random_project_id           = true
