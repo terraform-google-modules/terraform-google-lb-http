@@ -65,7 +65,7 @@ locals {
 
 module "gce-lb-https" {
   source  = "terraform-google-modules/lb-http/google"
-  version = "~> 12.0"
+  version = "~> 14.0"
 
   name                            = var.network_name
   project                         = var.project_id

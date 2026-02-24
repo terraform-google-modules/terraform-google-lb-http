@@ -32,7 +32,7 @@ resource "google_compute_managed_ssl_certificate" "frontend" {
 
 module "load_balancer" {
   source  = "terraform-google-modules/lb-http/google//modules/dynamic_backends"
-  version = "~> 12.0"
+  version = "~> 14.0"
 
   name                        = "dynamic-backend-lb"
   project                     = var.project
