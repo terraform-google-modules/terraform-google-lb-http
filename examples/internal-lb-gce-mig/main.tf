@@ -220,7 +220,7 @@ resource "google_vpc_access_connector" "internal_lb_vpc_connector" {
 
 module "frontend-service-a" {
   source       = "GoogleCloudPlatform/cloud-run/google//modules/v2"
-  version      = "~> 0.16.3"
+  version      = "~> 0.25.0"
   project_id   = var.project_id
   location     = "us-east1"
   service_name = "fs-gce-a"
@@ -238,7 +238,7 @@ module "frontend-service-a" {
 
 module "frontend-service-b" {
   source       = "GoogleCloudPlatform/cloud-run/google//modules/v2"
-  version      = "~> 0.16.3"
+  version      = "~> 0.25.0"
   project_id   = var.project_id
   location     = "us-east1"
   service_name = "fs-gce-b"

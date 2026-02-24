@@ -68,7 +68,7 @@ module "internal-lb-subnet" {
 
 module "backend-service-region-a" {
   source                        = "GoogleCloudPlatform/cloud-run/google//modules/v2"
-  version                       = "~> 0.16.3"
+  version                       = "~> 0.25.0"
   project_id                    = var.project_id
   location                      = "us-central1"
   service_name                  = "bs-a"
@@ -81,7 +81,7 @@ module "backend-service-region-a" {
 
 module "backend-service-region-b" {
   source                        = "GoogleCloudPlatform/cloud-run/google//modules/v2"
-  version                       = "~> 0.16.3"
+  version                       = "~> 0.25.0"
   project_id                    = var.project_id
   location                      = "us-west1"
   service_name                  = "bs-b"
@@ -141,7 +141,7 @@ resource "google_vpc_access_connector" "internal_lb_vpc_connector" {
 
 module "frontend-service-a" {
   source       = "GoogleCloudPlatform/cloud-run/google//modules/v2"
-  version      = "~> 0.16.3"
+  version      = "~> 0.25.0"
   project_id   = var.project_id
   location     = "us-east1"
   service_name = "fs-a"
@@ -159,7 +159,7 @@ module "frontend-service-a" {
 
 module "frontend-service-b" {
   source       = "GoogleCloudPlatform/cloud-run/google//modules/v2"
-  version      = "~> 0.16.3"
+  version      = "~> 0.25.0"
   project_id   = var.project_id
   location     = "us-east1"
   service_name = "fs-b"
