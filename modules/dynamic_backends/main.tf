@@ -40,6 +40,7 @@ resource "google_compute_global_forwarding_rule" "http" {
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
   network               = local.internal_network
+  network_tier          = var.network_tier
 }
 
 resource "google_compute_global_forwarding_rule" "https" {
@@ -53,6 +54,7 @@ resource "google_compute_global_forwarding_rule" "https" {
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
   network               = local.internal_network
+  network_tier          = var.network_tier
 }
 
 resource "google_compute_global_address" "default" {
@@ -77,6 +79,7 @@ resource "google_compute_global_forwarding_rule" "http_ipv6" {
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
   network               = local.internal_network
+  network_tier          = var.network_tier
 }
 
 resource "google_compute_global_forwarding_rule" "https_ipv6" {
@@ -90,6 +93,7 @@ resource "google_compute_global_forwarding_rule" "https_ipv6" {
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
   network               = local.internal_network
+  network_tier          = var.network_tier
 }
 
 resource "google_compute_global_address" "default_ipv6" {

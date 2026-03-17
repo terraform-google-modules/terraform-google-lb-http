@@ -26,6 +26,7 @@ This module creates `HTTP(S) forwarding rule` and its dependencies. This modules
 | managed\_ssl\_certificate\_domains | Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true` | `list(string)` | `[]` | no |
 | name | Name for the forwarding rule and prefix for supporting resources | `string` | n/a | yes |
 | network | VPC network for the forwarding rule. The VPC network should have exactly one GLOBAL\_MANAGED\_PROXY subnetwork for every region where the forwarding rule is to be configured. Please go to the subnets tab of your VPC network and check if a GLOBAL\_MANAGED\_PROXY subnet exists under the `Reserved proxy-only subnets for load balancing` section. If a GLOBAL\_MANAGED\_PROXY subnet doesn't exist, create one for each required region. | `string` | `"default"` | no |
+| network\_tier | Network tier for the forwarding rule. | `string` | `null` | no |
 | private\_key | Content of the private SSL key. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true` | `string` | `null` | no |
 | project\_id | The project to deploy to, if not set the default provider project is used. | `string` | n/a | yes |
 | quic | Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only. | `bool` | `null` | no |
