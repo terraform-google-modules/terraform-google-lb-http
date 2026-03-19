@@ -256,10 +256,13 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
-  iap {
-    enabled              = try(each.value["iap_config"], null) == null ? false : lookup(try(each.value["iap_config"], {}), "enable", false)
-    oauth2_client_id     = try(each.value["iap_config"], null) == null ? null : lookup(each.value["iap_config"], "oauth2_client_id")
-    oauth2_client_secret = try(each.value["iap_config"], null) == null ? null : lookup(each.value["iap_config"], "oauth2_client_secret")
+  dynamic "iap" {
+    for_each = try(each.value["iap_config"], null) != null ? [each.value["iap_config"]] : []
+    content {
+      enabled              = lookup(iap.value, "enable", false)
+      oauth2_client_id     = lookup(iap.value, "oauth2_client_id", null)
+      oauth2_client_secret = lookup(iap.value, "oauth2_client_secret", null)
+    }
   }
 
   dynamic "cdn_policy" {
