@@ -384,6 +384,16 @@ resource "google_compute_region_network_endpoint_group" "serverless_negs" {
     }
   }
 
+  dynamic "serverless_deployment" {
+    for_each = each.value.type == "serverless-deployment" ? [1] : []
+    content {
+      platform = each.value.service.platform
+      resource = each.value.service.name
+      version  = each.value.service.version
+      url_mask = each.value.service.url_mask
+    }
+  }
+
   lifecycle {
     create_before_destroy = true
   }
