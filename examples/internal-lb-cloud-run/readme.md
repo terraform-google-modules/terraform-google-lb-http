@@ -21,6 +21,6 @@ The forwarding rules and its dependecies are created as part of `frontend` modul
 
 | Name | Description |
 |------|-------------|
-| external\_cloudrun\_uris | The uris of the publicaly accesible cloud-run services |
+| external\_cloudrun\_uris | List of URIs for the frontend Cloud Run services |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
