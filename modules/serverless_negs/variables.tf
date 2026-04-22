@@ -62,10 +62,10 @@ variable "backends" {
       for backend_key, backend_value in var.backends :
       alltrue([
         for neg_backend in backend_value.serverless_neg_backends :
-        contains(["cloud-run", "cloud-function", "app-engine"], neg_backend.type)
+        contains(["cloud-run", "cloud-function", "app-engine", "serverless-deployment"], neg_backend.type)
       ])
     ])
-    error_message = "serverless_neg_backend type should be either 'cloud-run' or 'cloud-function' or 'app-engine'."
+    error_message = "serverless_neg_backend type should be either 'cloud-run' or 'cloud-function' or 'app-engine' or 'serverless-deployment'."
   }
   type = map(object({
     project                 = optional(string)
@@ -97,11 +97,11 @@ variable "backends" {
     }))
 
     // serverless_neg_backends is mutually exclusive to groups.There can only be one serverless neg per region
-    // with one of cloud-run, cloud-functions and app-engine as service.
+    // with one of cloud-run, cloud-functions, app-engine and serverless-deployment as service.
     serverless_neg_backends = optional(list(object({
       region  = string,
-      type    = string, // cloud-run, cloud-function and app-engine
-      service = object({ name : string, version : optional(string) })
+      type    = string, // cloud-run, cloud-function, app-engine and serverless-deployment
+      service = object({ name : string, version : optional(string), platform : optional(string), url_mask : optional(string) })
     })), [])
 
     iap_config = optional(object({

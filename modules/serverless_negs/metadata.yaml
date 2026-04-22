@@ -137,11 +137,11 @@ spec:
               }))
 
               // serverless_neg_backends is mutually exclusive to groups.There can only be one serverless neg per region
-              // with one of cloud-run, cloud-functions and app-engine as service.
+              // with one of cloud-run, cloud-functions, app-engine and serverless-deployment as service.
               serverless_neg_backends = optional(list(object({
                 region  = string,
-                type    = string, // cloud-run, cloud-function and app-engine
-                service = object({ name : string, version : optional(string) })
+                type    = string, // cloud-run, cloud-function, app-engine and serverless-deployment
+                service = object({ name : string, version : optional(string), platform : optional(string), url_mask : optional(string) })
               })), [])
 
               iap_config = optional(object({
@@ -296,13 +296,13 @@ spec:
     roles:
       - level: Project
         roles:
+          - roles/certificatemanager.owner
+          - roles/vpcaccess.admin
+          - roles/iam.serviceAccountAdmin
           - roles/storage.admin
           - roles/compute.admin
           - roles/run.admin
           - roles/iam.serviceAccountUser
-          - roles/certificatemanager.owner
-          - roles/vpcaccess.admin
-          - roles/iam.serviceAccountAdmin
     services:
       - certificatemanager.googleapis.com
       - cloudresourcemanager.googleapis.com
