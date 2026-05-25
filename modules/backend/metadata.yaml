@@ -52,6 +52,8 @@ spec:
         location: examples/external-lb-backend-bucket
       - name: gke-node-port
         location: examples/https-gke/gke-node-port
+      - name: gke-node-port
+        location: examples/pqc-https-gke/gke-node-port
       - name: https-gke
         location: examples/https-gke
       - name: https-redirect
@@ -70,6 +72,8 @@ spec:
         location: examples/multi-mig-http-lb
       - name: multiple-certs
         location: examples/multiple-certs
+      - name: pqc-https-gke
+        location: examples/pqc-https-gke
       - name: shared-vpc
         location: examples/shared-vpc
       - name: traffic-director
