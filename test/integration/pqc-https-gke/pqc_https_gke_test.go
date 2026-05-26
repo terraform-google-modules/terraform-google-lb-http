@@ -74,6 +74,5 @@ func TestPqcHttpsGke(t *testing.T) {
 		fmt.Println("Baseline infrastructure validation successful! (PQC validation skipped)")
 	})
 
-	// Execute the test (Init, Apply, Verify, Destroy)
 	bpt.Test()
 }
