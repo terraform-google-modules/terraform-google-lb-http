@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-output "load-balancer-ip" {
-  value = module.example.load-balancer-ip
+output "load_balancer_ip" {
+  value = module.example.load_balancer_ip
 }
 
 output "ssl_policy_name" {

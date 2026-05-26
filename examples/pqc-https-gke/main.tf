@@ -32,7 +32,7 @@ resource "google_compute_ssl_policy" "main" {
 }
 
 
-module "gce-lb-https" {
+module "gce_lb_https" {
   source  = "terraform-google-modules/lb-http/google"
   version = "~> 12.0"
 
@@ -49,7 +49,7 @@ module "gce-lb-https" {
   target_tags = [var.target_tags]
 
   // Use custom url map.
-  url_map        = google_compute_url_map.my-url-map.self_link
+  url_map        = google_compute_url_map.my_url_map.self_link
   create_url_map = false
 
   // Get selfLink URLs for the actual instance groups (not the manager) of the existing GKE cluster:
@@ -118,10 +118,10 @@ module "gce-lb-https" {
 
 }
 
-resource "google_compute_url_map" "my-url-map" {
+resource "google_compute_url_map" "my_url_map" {
   // note that this is the name of the load balancer
   name            = var.name
-  default_service = module.gce-lb-https.backend_services["default"].self_link
+  default_service = module.gce_lb_https.backend_services["default"].self_link
 
   host_rule {
     hosts        = ["*"]
@@ -130,7 +130,7 @@ resource "google_compute_url_map" "my-url-map" {
 
   path_matcher {
     name            = "allpaths"
-    default_service = module.gce-lb-https.backend_services["default"].self_link
+    default_service = module.gce_lb_https.backend_services["default"].self_link
 
     path_rule {
       paths = [
@@ -142,20 +142,20 @@ resource "google_compute_url_map" "my-url-map" {
   }
 }
 
-resource "random_id" "assets-bucket" {
+resource "random_id" "assets_bucket" {
   prefix      = "${data.google_client_config.current.project}-lb-assets-"
   byte_length = 2
 }
 
 resource "google_compute_backend_bucket" "assets" {
-  name        = random_id.assets-bucket.hex
+  name        = random_id.assets_bucket.hex
   description = "Contains static resources for example app"
   bucket_name = google_storage_bucket.assets.name
   enable_cdn  = true
 }
 
 resource "google_storage_bucket" "assets" {
-  name     = random_id.assets-bucket.hex
+  name     = random_id.assets_bucket.hex
   location = "US"
 
   // delete bucket and contents on destroy.
@@ -172,7 +172,7 @@ resource "google_storage_bucket_object" "image" {
 }
 
 // Make object public readable.
-resource "google_storage_object_acl" "image-acl" {
+resource "google_storage_object_acl" "image_acl" {
   bucket         = google_storage_bucket.assets.name
   object         = google_storage_bucket_object.image.name
   predefined_acl = "publicRead"

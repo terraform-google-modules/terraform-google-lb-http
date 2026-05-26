@@ -120,8 +120,8 @@ terraform destroy
 
 | Name | Description |
 |------|-------------|
-| load-balancer-ip | n/a |
-| load-balancer-ipv6 | The IPv6 address of the load-balancer, if enabled; else "undefined" |
+| load_balancer_ip | n/a |
+| load_balancer_ipv6 | The IPv6 address of the load-balancer, if enabled; else "undefined" |
 | project\_id | The project ID |
 | ssl\_policy\_name | The name of the SSL policy with PQC enabled |
 

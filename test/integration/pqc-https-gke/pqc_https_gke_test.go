@@ -36,7 +36,7 @@ func TestPqcHttpsGke(t *testing.T) {
 		bpt.DefaultVerify(assert)
 
 		// Get outputs from the deployed infrastructure
-		loadBalancerIp := bpt.GetStringOutput("load-balancer-ip")
+		loadBalancerIp := bpt.GetStringOutput("load_balancer_ip")
 		// sslPolicyName := bpt.GetStringOutput("ssl_policy_name")
 		// projectId := bpt.GetStringOutput("project_id")
 
