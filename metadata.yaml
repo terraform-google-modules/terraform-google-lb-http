@@ -63,6 +63,7 @@ spec:
       - name: pqc-gke-node-port
         location: examples/pqc-https-gke/gke-node-port
       - name: https-gke
+
         location: examples/https-gke
       - name: https-redirect
         location: examples/https-redirect

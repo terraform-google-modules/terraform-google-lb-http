@@ -108,20 +108,20 @@ terraform destroy
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| backend | Map backend indices to list of backend maps. | `any` | n/a | yes |
-| name | n/a | `string` | `"tf-lb-https-gke"` | no |
-| network\_name | n/a | `string` | `"default"` | no |
-| project | n/a | `string` | n/a | yes |
-| service\_port | n/a | `string` | `"30000"` | no |
-| service\_port\_name | n/a | `string` | `"http"` | no |
-| target\_tags | n/a | `string` | `"tf-lb-https-gke"` | no |
+| backend | The instance group to add to the backend | `string` | n/a | yes |
+| name | The name for the load balancer and associated resources | `string` | `"tf-lb-https-gke"` | no |
+| network\_name | The name of the network to create the load balancer in | `string` | `"default"` | no |
+| project | The project ID | `string` | n/a | yes |
+| service\_port | The port on the node to connect to | `string` | `"30000"` | no |
+| service\_port\_name | The name of the port on the node to connect to | `string` | `"http"` | no |
+| target\_tags | The target tags for the firewall rules | `string` | `"tf-lb-https-gke"` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| load_balancer_ip | n/a |
-| load_balancer_ipv6 | The IPv6 address of the load-balancer, if enabled; else "undefined" |
+| load\_balancer\_ip | The external IPv4 address of the load balancer |
+| load\_balancer\_ipv6 | The IPv6 address of the load-balancer, if enabled; else "undefined" |
 | project\_id | The project ID |
 | ssl\_policy\_name | The name of the SSL policy with PQC enabled |
 

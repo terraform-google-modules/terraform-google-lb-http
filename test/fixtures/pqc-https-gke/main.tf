@@ -39,8 +39,9 @@ resource "google_compute_subnetwork" "default" {
 
 module "mig_template" {
   source     = "terraform-google-modules/vm/google//modules/instance_template"
-  version    = "~> 12.0"
+  version    = "~> 15.0"
   project_id = var.project_id
+  region     = var.region
   network    = google_compute_network.default.self_link
   subnetwork = google_compute_subnetwork.default.self_link
   service_account = {
@@ -54,7 +55,7 @@ module "mig_template" {
 
 module "mig" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 12.0"
+  version           = "~> 15.0"
   project_id        = var.project_id
   instance_template = module.mig_template.self_link
   region            = var.region

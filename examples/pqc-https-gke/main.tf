@@ -25,15 +25,15 @@ provider "google-beta" {
 data "google_client_config" "current" {}
 
 resource "google_compute_ssl_policy" "main" {
-  name    = "${var.name}-pqc-policy"
-  profile = "MODERN"
+  name                      = "${var.name}-pqc-policy"
+  profile                   = "MODERN"
   post_quantum_key_exchange = "ENABLED"
-  min_tls_version = "TLS_1_2"
+  min_tls_version           = "TLS_1_2"
 }
 
 
 module "gce_lb_https" {
-  source  = "../../"
+  source = "../../"
 
   project                = var.project
   name                   = var.name
