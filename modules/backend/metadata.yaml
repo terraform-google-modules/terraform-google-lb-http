@@ -52,7 +52,7 @@ spec:
         location: examples/external-lb-backend-bucket
       - name: gke-node-port
         location: examples/https-gke/gke-node-port
-      - name: gke-node-port
+      - name: pqc-gke-node-port
         location: examples/pqc-https-gke/gke-node-port
       - name: https-gke
         location: examples/https-gke

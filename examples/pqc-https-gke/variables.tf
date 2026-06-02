@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2026 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,29 +15,41 @@
  */
 
 variable "name" {
-  default = "tf-lb-https-gke"
+  description = "The name for the load balancer and associated resources"
+  type        = string
+  default     = "tf-lb-https-gke"
 }
 
 variable "service_port" {
-  default = "30000"
+  description = "The port on the node to connect to"
+  type        = string
+  default     = "30000"
 }
 
 variable "service_port_name" {
-  default = "http"
+  description = "The name of the port on the node to connect to"
+  type        = string
+  default     = "http"
 }
 
 variable "target_tags" {
-  default = "tf-lb-https-gke"
+  description = "The target tags for the firewall rules"
+  type        = string
+  default     = "tf-lb-https-gke"
 }
 
 variable "backend" {
-  description = "Map backend indices to list of backend maps."
+  description = "The instance group to add to the backend"
+  type        = string
 }
 
 variable "network_name" {
-  default = "default"
+  description = "The name of the network to create the load balancer in"
+  type        = string
+  default     = "default"
 }
 
 variable "project" {
-  type = string
+  description = "The project ID"
+  type        = string
 }

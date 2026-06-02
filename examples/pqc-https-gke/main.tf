@@ -27,14 +27,13 @@ data "google_client_config" "current" {}
 resource "google_compute_ssl_policy" "main" {
   name    = "${var.name}-pqc-policy"
   profile = "MODERN"
-  # post_quantum_key_exchange = "ENABLED"
+  post_quantum_key_exchange = "ENABLED"
   min_tls_version = "TLS_1_2"
 }
 
 
 module "gce_lb_https" {
-  source  = "terraform-google-modules/lb-http/google"
-  version = "~> 12.0"
+  source  = "../../"
 
   project                = var.project
   name                   = var.name
@@ -45,19 +44,12 @@ module "gce_lb_https" {
   firewall_networks      = [var.network_name]
   ssl_policy             = google_compute_ssl_policy.main.id
 
-  // Make sure when you create the cluster that you provide the `--tags` argument to add the appropriate `target_tags` referenced in the http module.
   target_tags = [var.target_tags]
 
-  // Use custom url map.
+
   url_map        = google_compute_url_map.my_url_map.self_link
   create_url_map = false
 
-  // Get selfLink URLs for the actual instance groups (not the manager) of the existing GKE cluster:
-  //   gcloud compute instance-groups list --uri
-  //
-  // You also must add the named port on the existing GKE clusters instance group that correspond to the `service_port` and `service_port_name` referenced in the module definition.
-  //   gcloud compute instance-groups set-named-ports INSTANCE_GROUP_NAME --named-ports=NAME:PORT
-  // replace `INSTANCE_GROUP_NAME` with the name of your GKE cluster's instance group and `NAME` and `PORT` with the values of `service_port_name` and `service_port` respectively.
   backends = {
     default = {
       description                     = null
@@ -119,7 +111,6 @@ module "gce_lb_https" {
 }
 
 resource "google_compute_url_map" "my_url_map" {
-  // note that this is the name of the load balancer
   name            = var.name
   default_service = module.gce_lb_https.backend_services["default"].self_link
 
@@ -158,12 +149,11 @@ resource "google_storage_bucket" "assets" {
   name     = random_id.assets_bucket.hex
   location = "US"
 
-  // delete bucket and contents on destroy.
   force_destroy = true
+
+  uniform_bucket_level_access = true
 }
 
-// The image object in Cloud Storage.
-// Note that the path in the bucket matches the paths in the url map path rule above.
 resource "google_storage_bucket_object" "image" {
   name         = "assets/gcp-logo.svg"
   content      = file("${path.module}/gcp-logo.svg")
@@ -171,9 +161,8 @@ resource "google_storage_bucket_object" "image" {
   bucket       = google_storage_bucket.assets.name
 }
 
-// Make object public readable.
-resource "google_storage_object_acl" "image_acl" {
-  bucket         = google_storage_bucket.assets.name
-  object         = google_storage_bucket_object.image.name
-  predefined_acl = "publicRead"
+resource "google_storage_bucket_iam_member" "public" {
+  bucket = google_storage_bucket.assets.name
+  role   = "roles/storage.viewer"
+  member = "allUsers"
 }

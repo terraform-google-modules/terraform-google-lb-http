@@ -15,7 +15,8 @@
  */
 
 output "load_balancer_ip" {
-  value = module.gce_lb_https.external_ip
+  value       = module.gce_lb_https.external_ip
+  description = "The external IPv4 address of the load balancer"
 }
 
 output "load_balancer_ipv6" {
