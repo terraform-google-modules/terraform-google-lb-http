@@ -33,7 +33,8 @@ resource "google_compute_ssl_policy" "main" {
 
 
 module "gce_lb_https" {
-  source = "../../"
+  source  = "terraform-google-modules/lb-http/google"
+  version = "~> 14.0"
 
   project                = var.project
   name                   = var.name

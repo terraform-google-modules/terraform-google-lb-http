@@ -17,7 +17,7 @@ The infrastructure includes:
 
 **Figure 1.** *diagram of Google Cloud resources*
 
-![architecture diagram](https://raw.githubusercontent.com/terraform-google-modules/terraform-google-lb-http/master/examples/pqc-https-gke/diagram.png)
+![architecture diagram](diagram.png)
 
 ## Change to the example directory
 
