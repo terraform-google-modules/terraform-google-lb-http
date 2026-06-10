@@ -38,12 +38,12 @@ data "google_container_engine_versions" "default" {
 }
 
 resource "google_container_cluster" "default" {
-  name                = var.network_name
-  location            = var.location
-  initial_node_count  = 3
-  min_master_version  = data.google_container_engine_versions.default.latest_master_version
-  network             = google_compute_subnetwork.default.name
-  subnetwork          = google_compute_subnetwork.default.name
+  name               = var.network_name
+  location           = var.location
+  initial_node_count = 3
+  min_master_version = data.google_container_engine_versions.default.latest_master_version
+  network            = google_compute_subnetwork.default.name
+  subnetwork         = google_compute_subnetwork.default.name
 
   // Use ABAC until official Kubernetes plugin supports RBAC.
   enable_legacy_abac = true

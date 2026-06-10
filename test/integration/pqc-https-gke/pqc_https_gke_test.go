@@ -50,7 +50,7 @@ func TestPqcHttpsGke(t *testing.T) {
 
 		var output []byte
 		var err error
-		
+
 		isPqcSuccess := func() (bool, error) {
 			dockerArgs := []string{"run", "--rm", "openquantumsafe/curl", "curl", "-v", "--tlsv1.3", "--tls-max", "1.3", "--curves", "X25519MLKEM768", "-k", "-I", fmt.Sprintf("https://%s.nip.io/assets/gcp-logo.svg", trimmedLoadBalancerIp)}
 			cmd := exec.Command("docker", dockerArgs...)
