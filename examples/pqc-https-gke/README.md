@@ -17,7 +17,7 @@ The infrastructure includes:
 
 **Figure 1.** *diagram of Google Cloud resources*
 
-![architecture diagram](diagram.png)
+![architecture diagram](./diagram.png)
 
 ## Change to the example directory
 
@@ -87,6 +87,29 @@ gcloud compute ssl-policies describe ${SSL_POLICY_NAME} --format="get(postQuantu
 ```
 
 Expected output: `ENABLED`
+
+### Deeper Client-Side Validation
+
+To perform a deeper client-side validation using modern `curl` and `openssl` (with PQC enabled), you can run the following commands:
+
+1. **Verify with `curl` using the `X25519MLKEM768` hybrid group:**
+
+```bash
+LOAD_BALANCER_IP=$(terraform output -raw load_balancer_ip)
+
+# Test the TLS handshake using the post-quantum curve via docker
+docker run --rm openquantumsafe/curl curl -v --tlsv1.3 --tls-max 1.3 --curves X25519MLKEM768 -k -I "https://${LOAD_BALANCER_IP}.nip.io/assets/gcp-logo.svg"
+```
+
+*(Note: `-k` is used since the certificates generated in this example are self-signed).*
+
+2. **Inspect the negotiated key exchange group using `openssl`:**
+
+```bash
+openssl s_client -tls1_3 -groups "${PQC_CURVE}" -connect "${LOAD_BALANCER_IP}:443" -brief </dev/null
+```
+
+This will output details of the brief handshake, highlighting that the negotiated key exchange group is indeed `X25519MLKEM768`.
 
 ## Cleanup
 

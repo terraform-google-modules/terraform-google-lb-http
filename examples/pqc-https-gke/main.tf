@@ -26,9 +26,9 @@ data "google_client_config" "current" {}
 
 resource "google_compute_ssl_policy" "main" {
   name                      = "${var.name}-pqc-policy"
-  profile                   = "MODERN"
+  profile                   = "RESTRICTED"
   post_quantum_key_exchange = "ENABLED"
-  min_tls_version           = "TLS_1_2"
+  min_tls_version           = "TLS_1_3"
 }
 
 
@@ -53,30 +53,16 @@ module "gce_lb_https" {
 
   backends = {
     default = {
-      description                     = null
-      protocol                        = "HTTP"
-      port                            = var.service_port
-      port_name                       = var.service_port_name
-      timeout_sec                     = 10
-      connection_draining_timeout_sec = null
-      enable_cdn                      = false
-      compression_mode                = null
-      edge_security_policy            = null
-      security_policy                 = null
-      session_affinity                = null
-      affinity_cookie_ttl_sec         = null
-      custom_request_headers          = null
-      custom_response_headers         = null
+      protocol    = "HTTP"
+      port        = var.service_port
+      port_name   = var.service_port_name
+      timeout_sec = 10
+      enable_cdn  = false
 
       health_check = {
-        check_interval_sec  = null
-        timeout_sec         = null
-        healthy_threshold   = null
-        unhealthy_threshold = null
-        request_path        = "/"
-        port                = var.service_port
-        host                = null
-        logging             = true
+        request_path = "/"
+        port         = var.service_port
+        logging      = true
       }
 
       log_config = {
@@ -86,26 +72,9 @@ module "gce_lb_https" {
 
       groups = [
         {
-          # Each node pool instance group should be added to the backend.
-          group                        = var.backend
-          balancing_mode               = null
-          capacity_scaler              = null
-          description                  = null
-          max_connections              = null
-          max_connections_per_instance = null
-          max_connections_per_endpoint = null
-          max_rate                     = null
-          max_rate_per_instance        = null
-          max_rate_per_endpoint        = null
-          max_utilization              = null
+          group = var.backend
         },
       ]
-
-      iap_config = {
-        enable               = false
-        oauth2_client_id     = ""
-        oauth2_client_secret = ""
-      }
     }
   }
 
@@ -116,6 +85,8 @@ resource "google_compute_url_map" "my_url_map" {
   default_service = module.gce_lb_https.backend_services["default"].self_link
 
   host_rule {
+    # Note: In production environments, using a wildcard "*" is discouraged.
+    # The exact domain/host (e.g., "pqc.example.com") should be explicitly defined here.
     hosts        = ["*"]
     path_matcher = "allpaths"
   }
@@ -164,6 +135,6 @@ resource "google_storage_bucket_object" "image" {
 
 resource "google_storage_bucket_iam_member" "public" {
   bucket = google_storage_bucket.assets.name
-  role   = "roles/storage.viewer"
+  role   = "roles/storage.objectViewer"
   member = "allUsers"
 }

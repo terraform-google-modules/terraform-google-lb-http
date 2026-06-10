@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Google LLC
+ * Copyright 2026 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,12 +38,12 @@ data "google_container_engine_versions" "default" {
 }
 
 resource "google_container_cluster" "default" {
-  name               = var.network_name
-  location           = var.location
-  initial_node_count = 3
-  min_master_version = data.google_container_engine_versions.default.latest_master_version
-  network            = google_compute_subnetwork.default.name
-  subnetwork         = google_compute_subnetwork.default.name
+  name                = var.network_name
+  location            = var.location
+  initial_node_count  = 3
+  min_master_version  = data.google_container_engine_versions.default.latest_master_version
+  network             = google_compute_subnetwork.default.name
+  subnetwork          = google_compute_subnetwork.default.name
 
   // Use ABAC until official Kubernetes plugin supports RBAC.
   enable_legacy_abac = true
@@ -54,7 +54,7 @@ resource "google_container_cluster" "default" {
 }
 
 provider "kubernetes" {
-  host                   = google_container_cluster.default.endpoint
+  host                   = "https://${google_container_cluster.default.endpoint}"
   token                  = data.google_client_config.current.access_token
   client_certificate     = base64decode(google_container_cluster.default.master_auth[0].client_certificate)
   client_key             = base64decode(google_container_cluster.default.master_auth[0].client_key)
@@ -64,7 +64,7 @@ provider "kubernetes" {
 resource "null_resource" "default" {
 
   provisioner "local-exec" {
-    command = "gcloud compute instance-groups set-named-ports ${google_container_cluster.default.node_pool[0].instance_group_urls[0]} --named-ports=${var.port_name}:${var.node_port} --format=json"
+    command = "gcloud compute instance-groups set-named-ports ${replace(google_container_cluster.default.node_pool[0].instance_group_urls[0], "instanceGroupManagers", "instanceGroups")} --named-ports=${var.port_name}:${var.node_port} --format=json"
   }
 }
 

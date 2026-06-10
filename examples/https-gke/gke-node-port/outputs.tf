@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Google LLC
+ * Copyright 2026 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ output "port_number" {
 }
 
 output "instance_group" {
-  value = google_container_cluster.default.node_pool[0].instance_group_urls[0]
+  value = replace(google_container_cluster.default.node_pool[0].instance_group_urls[0], "instanceGroupManagers", "instanceGroups")
 }
 
 output "node_tag" {
