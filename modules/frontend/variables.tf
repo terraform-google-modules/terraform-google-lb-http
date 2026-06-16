@@ -215,6 +215,18 @@ variable "internal_forwarding_rules_config" {
   default = []
 }
 
+variable "http_forwarding_rule_name" {
+  description = "Override the HTTP forwarding rule name for EXTERNAL load balancers. Defaults to `<name>` when null."
+  type        = string
+  default     = null
+}
+
+variable "https_forwarding_rule_name" {
+  description = "Override the HTTPS forwarding rule name for EXTERNAL load balancers. Defaults to `<name>-https` when null."
+  type        = string
+  default     = null
+}
+
 variable "target_http_proxy_name" {
   description = "Override the target HTTP proxy resource name. Defaults to `<name>-http-proxy` when null."
   type        = string

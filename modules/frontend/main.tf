@@ -48,7 +48,7 @@ resource "google_compute_global_forwarding_rule" "http" {
   provider              = google-beta
   project               = var.project_id
   count                 = local.create_http_forward && !local.is_internal_managed ? 1 : 0
-  name                  = var.name
+  name                  = coalesce(var.http_forwarding_rule_name, var.name)
   target                = google_compute_target_http_proxy.default[0].self_link
   ip_address            = local.address
   port_range            = var.http_port
@@ -78,7 +78,7 @@ resource "google_compute_global_forwarding_rule" "https" {
   provider              = google-beta
   project               = var.project_id
   count                 = var.ssl && !local.is_internal_managed ? 1 : 0
-  name                  = "${var.name}-https"
+  name                  = coalesce(var.https_forwarding_rule_name, "${var.name}-https")
   target                = google_compute_target_https_proxy.default[0].self_link
   ip_address            = local.address
   port_range            = var.https_port
