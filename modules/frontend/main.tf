@@ -55,6 +55,7 @@ resource "google_compute_global_forwarding_rule" "http" {
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
   network               = local.internal_network
+  ip_version            = var.ip_version
 }
 
 resource "google_compute_global_forwarding_rule" "internal_managed_http" {
@@ -85,6 +86,7 @@ resource "google_compute_global_forwarding_rule" "https" {
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
   network               = local.internal_network
+  ip_version            = var.ip_version
 }
 
 resource "google_compute_global_forwarding_rule" "internal_managed_https" {

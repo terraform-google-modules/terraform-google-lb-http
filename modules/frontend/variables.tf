@@ -250,3 +250,9 @@ variable "http_forwarding_rule_names" {
   type        = map(string)
   default     = {}
 }
+
+variable "ip_version" {
+  description = "IP version for EXTERNAL forwarding rules. Set to `IPV4` when importing a resource that was originally created with ip_version explicitly set (prevents forced replacement). Defaults to null (GCP default: IPV4)."
+  type        = string
+  default     = null
+}
