@@ -226,3 +226,9 @@ variable "forwarding_rule_names" {
   type        = map(string)
   default     = {}
 }
+
+variable "http_forwarding_rule_names" {
+  description = "Map of region to HTTP forwarding rule name override for INTERNAL_MANAGED. Defaults to `<name>-internal-managed-http-<region>` for any region not present in the map."
+  type        = map(string)
+  default     = {}
+}

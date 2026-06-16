@@ -64,7 +64,7 @@ resource "google_compute_global_forwarding_rule" "internal_managed_http" {
 
   provider              = google-beta
   project               = var.project_id
-  name                  = "${var.name}-internal-managed-http-${each.key}"
+  name                  = lookup(var.http_forwarding_rule_names, each.key, "${var.name}-internal-managed-http-${each.key}")
   target                = google_compute_target_http_proxy.default[0].self_link
   port_range            = var.http_port
   labels                = var.labels
