@@ -187,7 +187,7 @@ resource "google_compute_global_address" "default_ipv6" {
 resource "google_compute_target_http_proxy" "default" {
   project = var.project_id
   count   = local.create_http_forward ? 1 : 0
-  name    = "${var.name}-http-proxy"
+  name    = coalesce(var.target_http_proxy_name, "${var.name}-http-proxy")
   url_map = var.https_redirect == false ? local.url_map : join("", google_compute_url_map.https_redirect[*].self_link)
 }
 

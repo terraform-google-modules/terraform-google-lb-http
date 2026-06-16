@@ -215,6 +215,12 @@ variable "internal_forwarding_rules_config" {
   default = []
 }
 
+variable "target_http_proxy_name" {
+  description = "Override the target HTTP proxy resource name. Defaults to `<name>-http-proxy` when null."
+  type        = string
+  default     = null
+}
+
 variable "target_https_proxy_name" {
   description = "Override the target HTTPS proxy resource name. Defaults to `<name>-https-proxy` when null."
   type        = string
