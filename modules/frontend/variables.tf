@@ -214,3 +214,15 @@ variable "internal_forwarding_rules_config" {
   }))
   default = []
 }
+
+variable "target_https_proxy_name" {
+  description = "Override the target HTTPS proxy resource name. Defaults to `<name>-https-proxy` when null."
+  type        = string
+  default     = null
+}
+
+variable "forwarding_rule_names" {
+  description = "Map of region to forwarding rule name override for INTERNAL_MANAGED. Defaults to `<name>-internal-managed-https-<region>` for any region not present in the map."
+  type        = map(string)
+  default     = {}
+}

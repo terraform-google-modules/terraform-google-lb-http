@@ -336,3 +336,9 @@ variable "http_keep_alive_timeout_sec" {
   type        = number
   default     = null
 }
+
+variable "target_https_proxy_name" {
+  description = "Override the target HTTPS proxy resource name. Defaults to `<name>-https-proxy` when null."
+  type        = string
+  default     = null
+}

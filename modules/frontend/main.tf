@@ -94,7 +94,7 @@ resource "google_compute_global_forwarding_rule" "internal_managed_https" {
 
   provider              = google-beta
   project               = var.project_id
-  name                  = "${var.name}-internal-managed-https-${each.key}"
+  name                  = lookup(var.forwarding_rule_names, each.key, "${var.name}-internal-managed-https-${each.key}")
   target                = google_compute_target_https_proxy.default[0].self_link
   port_range            = var.https_port
   labels                = var.labels
@@ -195,7 +195,7 @@ resource "google_compute_target_http_proxy" "default" {
 resource "google_compute_target_https_proxy" "default" {
   project = var.project_id
   count   = var.ssl ? 1 : 0
-  name    = "${var.name}-https-proxy"
+  name    = coalesce(var.target_https_proxy_name, "${var.name}-https-proxy")
   url_map = local.url_map
 
   ssl_certificates                 = length(var.certificate_manager_certificates) > 0 ? null : compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default[*].self_link, google_compute_managed_ssl_certificate.default[*].self_link, ), )
