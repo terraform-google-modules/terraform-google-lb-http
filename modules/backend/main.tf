@@ -363,7 +363,8 @@ resource "google_compute_backend_bucket" "default" {
   enable_cdn       = var.enable_cdn
   compression_mode = var.compression_mode
 
-  description = var.description
+  description             = var.description
+  custom_response_headers = var.custom_response_headers
 
   # CDN policy configuration, if CDN is enabled
   dynamic "cdn_policy" {
