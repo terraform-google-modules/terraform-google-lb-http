@@ -274,12 +274,34 @@ variable "url_map_config" {
     path_matchers = optional(list(object({
       name            = string
       default_service = optional(string)
+      default_url_redirect = optional(object({
+        host_redirect          = optional(string)
+        path_redirect          = optional(string)
+        https_redirect         = optional(bool)
+        redirect_response_code = optional(string)
+        strip_query            = optional(bool)
+      }))
+      path_rules = optional(list(object({
+        paths   = list(string)
+        service = optional(string)
+        url_redirect = optional(object({
+          host_redirect          = optional(string)
+          path_redirect          = optional(string)
+          https_redirect         = optional(bool)
+          redirect_response_code = optional(string)
+          strip_query            = optional(bool)
+        }))
+      })), [])
       route_rules = optional(list(object({
         priority = number
         match_rules = optional(list(object({
           prefix_match    = optional(string)
           full_path_match = optional(string)
           regex_match     = optional(string)
+          header_matches = optional(list(object({
+            header_name = string
+            exact_match = optional(string)
+          })), [])
         })), [])
         url_redirect = optional(object({
           host_redirect          = optional(string)
@@ -287,6 +309,12 @@ variable "url_map_config" {
           https_redirect         = optional(bool)
           redirect_response_code = optional(string)
           strip_query            = optional(bool)
+        }))
+        route_action = optional(object({
+          weighted_backend_services = optional(list(object({
+            backend_service = string
+            weight          = number
+          })), [])
         }))
       })), [])
     })), [])

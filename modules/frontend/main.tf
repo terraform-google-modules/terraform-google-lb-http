@@ -268,6 +268,35 @@ resource "google_compute_url_map" "custom" {
       name            = path_matcher.value.name
       default_service = path_matcher.value.default_service
 
+      dynamic "default_url_redirect" {
+        for_each = path_matcher.value.default_url_redirect != null ? [1] : []
+        content {
+          host_redirect          = path_matcher.value.default_url_redirect.host_redirect
+          path_redirect          = path_matcher.value.default_url_redirect.path_redirect
+          https_redirect         = path_matcher.value.default_url_redirect.https_redirect
+          redirect_response_code = path_matcher.value.default_url_redirect.redirect_response_code
+          strip_query            = path_matcher.value.default_url_redirect.strip_query
+        }
+      }
+
+      dynamic "path_rule" {
+        for_each = path_matcher.value.path_rules
+        content {
+          paths   = path_rule.value.paths
+          service = path_rule.value.service
+          dynamic "url_redirect" {
+            for_each = path_rule.value.url_redirect != null ? [1] : []
+            content {
+              host_redirect          = path_rule.value.url_redirect.host_redirect
+              path_redirect          = path_rule.value.url_redirect.path_redirect
+              https_redirect         = path_rule.value.url_redirect.https_redirect
+              redirect_response_code = path_rule.value.url_redirect.redirect_response_code
+              strip_query            = path_rule.value.url_redirect.strip_query
+            }
+          }
+        }
+      }
+
       dynamic "route_rules" {
         for_each = path_matcher.value.route_rules
         content {
@@ -279,6 +308,13 @@ resource "google_compute_url_map" "custom" {
               prefix_match    = match_rules.value.prefix_match
               full_path_match = match_rules.value.full_path_match
               regex_match     = match_rules.value.regex_match
+              dynamic "header_matches" {
+                for_each = match_rules.value.header_matches
+                content {
+                  header_name = header_matches.value.header_name
+                  exact_match = header_matches.value.exact_match
+                }
+              }
             }
           }
 
@@ -290,6 +326,19 @@ resource "google_compute_url_map" "custom" {
               https_redirect         = route_rules.value.url_redirect.https_redirect
               redirect_response_code = route_rules.value.url_redirect.redirect_response_code
               strip_query            = route_rules.value.url_redirect.strip_query
+            }
+          }
+
+          dynamic "route_action" {
+            for_each = route_rules.value.route_action != null ? [1] : []
+            content {
+              dynamic "weighted_backend_services" {
+                for_each = route_rules.value.route_action.weighted_backend_services
+                content {
+                  backend_service = weighted_backend_services.value.backend_service
+                  weight          = weighted_backend_services.value.weight
+                }
+              }
             }
           }
         }
