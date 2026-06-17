@@ -48,34 +48,82 @@ gcloud config set project ${PROJECT}
 export GOOGLE_PROJECT=$(gcloud config get-value project)
 ```
 
-## Option 1 - Example using new cluster
+## Deployment Options
 
-1. Deploy a new GKE cluster with a named node port:
+This example provides two deployment options:
 
-```
-(
-    cd gke-node-port/
+- **Option 1:** Deploy a new GKE cluster and then create the load balancer.
+- **Option 2:** Use an existing GKE cluster and backend service.
+
+---
+
+### Option 1: Deploy a New GKE Cluster
+
+This option is ideal for a clean deployment, as it sets up a new GKE cluster for you.
+
+1.  **Deploy the GKE Cluster:**
+
+    Navigate to the `gke-node-port` directory and run Terraform to create the cluster.
+
+    ```bash
+    (
+        cd gke-node-port/
+        terraform init
+        terraform apply
+    )
+    ```
+
+2.  **Set Environment Variables:**
+
+    Export the outputs from the GKE deployment. These variables will be used to configure the load balancer.
+
+    ```bash
+    export TF_VAR_backend=$(terraform output -raw -state gke-node-port/terraform.tfstate instance_group)
+    export TF_VAR_target_tags=$(terraform output -raw -state gke-node-port/terraform.tfstate node_tag)
+    export TF_VAR_network_name=$(terraform output -raw -state gke-node-port/terraform.tfstate network_name)
+    export TF_VAR_project=$GOOGLE_PROJECT
+    ```
+
+3.  **Deploy the Load Balancer:**
+
+    Now, run Terraform from the root of the example directory to create the HTTPS load balancer.
+
+    ```bash
     terraform init
-    terraform plan -out terraform.tfplan
-    terraform apply terraform.tfplan
-)
-```
+    terraform apply
+    ```
 
-2. Export the instance group URI, node tag, network name and Project ID as Terraform environment variables:
+### Option 2: Use an Existing GKE Cluster
 
-```
-export TF_VAR_backend=$(terraform output -raw -state gke-node-port/terraform.tfstate instance_group)
-export TF_VAR_target_tags=$(terraform output -raw -state gke-node-port/terraform.tfstate node_tag)
-export TF_VAR_network_name=$(terraform output -raw -state gke-node-port/terraform.tfstate network_name)
-export TF_VAR_project=$GOOGLE_PROJECT
-```
+If you already have a GKE cluster with a service exposed via a node port, you can use this option.
 
-3. Run Terraform to create the load balancer:
+1.  **Set Environment Variables Manually:**
 
-```
-terraform init
-terraform apply
-```
+    You will need to define the following environment variables with the appropriate values from your existing infrastructure:
+
+    -   `TF_VAR_project`: The Google Cloud project ID.
+    -   `TF_VAR_network_name`: The name of the VPC network where your cluster resides.
+    -   `TF_VAR_backend`: The self-link of the unmanaged instance group for your GKE cluster nodes.
+    -   `TF_VAR_target_tags`: The network tags assigned to your GKE nodes (used for firewall rules).
+
+    Example:
+    ```bash
+    export TF_VAR_project="your-gcp-project-id"
+    export TF_VAR_network_name="your-vpc-network"
+    export TF_VAR_backend="https://www.googleapis.com/compute/v1/projects/your-gcp-project-id/zones/us-central1-c/instanceGroups/your-instance-group"
+    export TF_VAR_target_tags='["gke-my-cluster-node"]' # The value should be a JSON array string
+    ```
+    *Note: Ensure the `target_tags` value is a valid JSON array string, as it is passed directly to Terraform.*
+
+
+2.  **Deploy the Load Balancer:**
+
+    With the variables configured, run Terraform to create the load balancer.
+
+    ```bash
+    terraform init
+    terraform apply
+    ```
 
 ## Post-Quantum Cryptography Validation
 
@@ -113,18 +161,24 @@ This will output details of the brief handshake, highlighting that the negotiate
 
 ## Cleanup
 
-1. Delete the load balancing resources created by terraform:
+1.  **Delete the Load Balancer:**
 
-```
-terraform destroy
-```
+    Run `terraform destroy` from the root of the example directory to remove the load balancing resources.
 
-2. (Option 1 only) Delete the GKE cluster:
+    ```bash
+    terraform destroy
+    ```
 
-```
-cd gke-node-port/
-terraform destroy
-```
+2.  **Delete the GKE Cluster (If Deployed in Option 1):**
+
+    If you used Option 1 to create a new GKE cluster, navigate to the `gke-node-port` directory and destroy the resources.
+
+    ```bash
+    (
+        cd gke-node-port/
+        terraform destroy
+    )
+    ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Inputs
