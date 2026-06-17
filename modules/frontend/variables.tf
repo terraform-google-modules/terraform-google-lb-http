@@ -267,6 +267,13 @@ variable "url_map_config" {
   description = "Direct URL map configuration with full host_rule/path_matcher/route_rules support. Supports cross-project default_service self-links. Mutually exclusive with url_map_input — when set, url_map_input is ignored. Backward compatible: default null preserves existing url_map_input behaviour."
   type = object({
     default_service = optional(string)
+    default_url_redirect = optional(object({
+      host_redirect          = optional(string)
+      path_redirect          = optional(string)
+      https_redirect         = optional(bool)
+      redirect_response_code = optional(string)
+      strip_query            = optional(bool)
+    }))
     host_rules = optional(list(object({
       hosts        = list(string)
       path_matcher = string

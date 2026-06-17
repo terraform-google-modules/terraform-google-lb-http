@@ -254,6 +254,17 @@ resource "google_compute_url_map" "custom" {
 
   default_service = var.url_map_config != null ? var.url_map_config.default_service : null
 
+  dynamic "default_url_redirect" {
+    for_each = try(var.url_map_config.default_url_redirect, null) != null ? [var.url_map_config.default_url_redirect] : []
+    content {
+      host_redirect          = default_url_redirect.value.host_redirect
+      path_redirect          = default_url_redirect.value.path_redirect
+      https_redirect         = default_url_redirect.value.https_redirect
+      redirect_response_code = default_url_redirect.value.redirect_response_code
+      strip_query            = default_url_redirect.value.strip_query
+    }
+  }
+
   dynamic "host_rule" {
     for_each = var.url_map_config != null ? var.url_map_config.host_rules : []
     content {
