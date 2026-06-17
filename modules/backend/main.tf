@@ -82,13 +82,10 @@ resource "google_compute_backend_service" "default" {
     }
   }
 
-  dynamic "log_config" {
-    for_each = var.log_config.enable ? [1] : []
-    content {
-      enable        = var.log_config.enable
-      sample_rate   = var.log_config.sample_rate
-      optional_mode = var.log_config.optional_mode
-    }
+  log_config {
+    enable        = var.log_config.enable
+    sample_rate   = var.log_config.sample_rate
+    optional_mode = var.log_config.optional_mode
   }
 
   dynamic "iap" {
