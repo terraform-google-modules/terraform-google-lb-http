@@ -19,7 +19,7 @@ locals {
   address      = var.create_address ? join("", google_compute_global_address.default[*].address) : var.address
   ipv6_address = var.create_ipv6_address ? join("", google_compute_global_address.default_ipv6[*].address) : var.ipv6_address
 
-  url_map             = var.create_url_map ? join("", google_compute_url_map.default[*].self_link) : var.url_map_resource_uri
+  url_map             = var.create_url_map ? (var.url_map_config != null ? join("", google_compute_url_map.custom[*].self_link) : join("", google_compute_url_map.default[*].self_link)) : var.url_map_resource_uri
   create_http_forward = var.http_forward || var.https_redirect
 
 
@@ -246,6 +246,58 @@ resource "google_compute_managed_ssl_certificate" "default" {
   }
 }
 
+resource "google_compute_url_map" "custom" {
+  count    = var.create_url_map && var.url_map_config != null ? 1 : 0
+  provider = google-beta
+  project  = var.project_id
+  name     = coalesce(var.url_map_name, "${var.name}-url-map")
+
+  default_service = var.url_map_config != null ? var.url_map_config.default_service : null
+
+  dynamic "host_rule" {
+    for_each = var.url_map_config != null ? var.url_map_config.host_rules : []
+    content {
+      hosts        = host_rule.value.hosts
+      path_matcher = host_rule.value.path_matcher
+    }
+  }
+
+  dynamic "path_matcher" {
+    for_each = var.url_map_config != null ? var.url_map_config.path_matchers : []
+    content {
+      name            = path_matcher.value.name
+      default_service = path_matcher.value.default_service
+
+      dynamic "route_rules" {
+        for_each = path_matcher.value.route_rules
+        content {
+          priority = route_rules.value.priority
+
+          dynamic "match_rules" {
+            for_each = route_rules.value.match_rules
+            content {
+              prefix_match    = match_rules.value.prefix_match
+              full_path_match = match_rules.value.full_path_match
+              regex_match     = match_rules.value.regex_match
+            }
+          }
+
+          dynamic "url_redirect" {
+            for_each = route_rules.value.url_redirect != null ? [1] : []
+            content {
+              host_redirect          = route_rules.value.url_redirect.host_redirect
+              path_redirect          = route_rules.value.url_redirect.path_redirect
+              https_redirect         = route_rules.value.url_redirect.https_redirect
+              redirect_response_code = route_rules.value.url_redirect.redirect_response_code
+              strip_query            = route_rules.value.url_redirect.strip_query
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 resource "google_compute_url_map" "https_redirect" {
   project = var.project_id
   count   = var.https_redirect ? 1 : 0
@@ -258,10 +310,10 @@ resource "google_compute_url_map" "https_redirect" {
 }
 
 resource "google_compute_url_map" "default" {
-  count           = var.create_url_map && length(local.backend_services_by_host) > 0 ? 1 : 0
+  count           = var.create_url_map && var.url_map_config == null && length(local.backend_services_by_host) > 0 ? 1 : 0
   provider        = google-beta
   project         = var.project_id
-  name            = "${var.name}-url-map"
+  name            = coalesce(var.url_map_name, "${var.name}-url-map")
   default_service = lookup(lookup(local.backend_services_by_host, "*", {}), "/*", local.first_backend_service)
 
   dynamic "host_rule" {
