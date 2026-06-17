@@ -113,7 +113,7 @@ variable "log_config" {
   description = "This field denotes the logging options for the load balancer traffic served by this backend service. If logging is enabled, logs will be exported to Stackdriver."
   type = object({
     enable        = bool
-    sample_rate   = number
+    sample_rate   = optional(number)
     optional_mode = optional(string)
   })
   default = { enable = true, sample_rate = 1.0 }
