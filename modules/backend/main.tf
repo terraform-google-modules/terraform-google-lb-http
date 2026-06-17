@@ -235,7 +235,7 @@ resource "google_compute_health_check" "default" {
   provider = google-beta
   count    = var.health_check != null ? 1 : 0
   project  = var.project_id
-  name     = "${var.name}-hc"
+  name     = coalesce(var.health_check_name, "${var.name}-hc")
 
   check_interval_sec  = var.health_check.check_interval_sec
   timeout_sec         = var.health_check.timeout_sec

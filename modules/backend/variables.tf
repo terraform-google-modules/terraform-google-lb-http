@@ -307,6 +307,12 @@ variable "firewall_source_ranges" {
   default     = ["10.127.0.0/23"]
 }
 
+variable "health_check_name" {
+  description = "Override the health check resource name. Defaults to `<name>-hc` when null."
+  type        = string
+  default     = null
+}
+
 check "backend_neg_type_exclusive" {
   assert {
     condition     = length(var.serverless_neg_backends) == 0 || length(var.psc_neg_backends) == 0
