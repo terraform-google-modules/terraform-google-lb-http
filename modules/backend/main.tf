@@ -353,10 +353,11 @@ resource "google_compute_backend_bucket" "default" {
   provider = google-beta
   count    = local.is_backend_bucket ? 1 : 0
 
-  project     = var.project_id
-  name        = var.name
-  bucket_name = var.backend_bucket_name
-  enable_cdn  = var.enable_cdn
+  project          = var.project_id
+  name             = var.name
+  bucket_name      = var.backend_bucket_name
+  enable_cdn       = var.enable_cdn
+  compression_mode = var.compression_mode
 
   description = var.description
 
