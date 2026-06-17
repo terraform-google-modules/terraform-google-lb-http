@@ -19,7 +19,7 @@ locals {
   address      = var.create_address ? join("", google_compute_global_address.default[*].address) : var.address
   ipv6_address = var.create_ipv6_address ? join("", google_compute_global_address.default_ipv6[*].address) : var.ipv6_address
 
-  url_map             = var.create_url_map ? join("", google_compute_url_map.default[*].self_link) : var.url_map_resource_uri
+  url_map             = var.create_url_map ? (var.url_map_config != null ? join("", google_compute_url_map.custom[*].self_link) : join("", google_compute_url_map.default[*].self_link)) : var.url_map_resource_uri
   create_http_forward = var.http_forward || var.https_redirect
 
 
@@ -48,13 +48,14 @@ resource "google_compute_global_forwarding_rule" "http" {
   provider              = google-beta
   project               = var.project_id
   count                 = local.create_http_forward && !local.is_internal_managed ? 1 : 0
-  name                  = var.name
+  name                  = coalesce(var.http_forwarding_rule_name, var.name)
   target                = google_compute_target_http_proxy.default[0].self_link
   ip_address            = local.address
   port_range            = var.http_port
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
   network               = local.internal_network
+  ip_version            = var.ip_version
 }
 
 resource "google_compute_global_forwarding_rule" "internal_managed_http" {
@@ -64,7 +65,7 @@ resource "google_compute_global_forwarding_rule" "internal_managed_http" {
 
   provider              = google-beta
   project               = var.project_id
-  name                  = "${var.name}-internal-managed-http-${each.key}"
+  name                  = lookup(var.http_forwarding_rule_names, each.key, "${var.name}-internal-managed-http-${each.key}")
   target                = google_compute_target_http_proxy.default[0].self_link
   port_range            = var.http_port
   labels                = var.labels
@@ -78,13 +79,14 @@ resource "google_compute_global_forwarding_rule" "https" {
   provider              = google-beta
   project               = var.project_id
   count                 = var.ssl && !local.is_internal_managed ? 1 : 0
-  name                  = "${var.name}-https"
+  name                  = coalesce(var.https_forwarding_rule_name, "${var.name}-https")
   target                = google_compute_target_https_proxy.default[0].self_link
   ip_address            = local.address
   port_range            = var.https_port
   labels                = var.labels
   load_balancing_scheme = var.load_balancing_scheme
   network               = local.internal_network
+  ip_version            = var.ip_version
 }
 
 resource "google_compute_global_forwarding_rule" "internal_managed_https" {
@@ -94,7 +96,7 @@ resource "google_compute_global_forwarding_rule" "internal_managed_https" {
 
   provider              = google-beta
   project               = var.project_id
-  name                  = "${var.name}-internal-managed-https-${each.key}"
+  name                  = lookup(var.forwarding_rule_names, each.key, "${var.name}-internal-managed-https-${each.key}")
   target                = google_compute_target_https_proxy.default[0].self_link
   port_range            = var.https_port
   labels                = var.labels
@@ -187,7 +189,7 @@ resource "google_compute_global_address" "default_ipv6" {
 resource "google_compute_target_http_proxy" "default" {
   project = var.project_id
   count   = local.create_http_forward ? 1 : 0
-  name    = "${var.name}-http-proxy"
+  name    = coalesce(var.target_http_proxy_name, "${var.name}-http-proxy")
   url_map = var.https_redirect == false ? local.url_map : join("", google_compute_url_map.https_redirect[*].self_link)
 }
 
@@ -195,15 +197,16 @@ resource "google_compute_target_http_proxy" "default" {
 resource "google_compute_target_https_proxy" "default" {
   project = var.project_id
   count   = var.ssl ? 1 : 0
-  name    = "${var.name}-https-proxy"
+  name    = coalesce(var.target_https_proxy_name, "${var.name}-https-proxy")
   url_map = local.url_map
 
-  ssl_certificates            = compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default[*].self_link, google_compute_managed_ssl_certificate.default[*].self_link, ), )
-  certificate_map             = var.certificate_map != null ? "//certificatemanager.googleapis.com/${var.certificate_map}" : null
-  ssl_policy                  = var.ssl_policy
-  quic_override               = var.quic == null ? "NONE" : var.quic ? "ENABLE" : "DISABLE"
-  server_tls_policy           = var.server_tls_policy
-  http_keep_alive_timeout_sec = var.http_keep_alive_timeout_sec
+  ssl_certificates                 = length(var.certificate_manager_certificates) > 0 ? null : compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default[*].self_link, google_compute_managed_ssl_certificate.default[*].self_link, ), )
+  certificate_map                  = var.certificate_map != null ? "//certificatemanager.googleapis.com/${var.certificate_map}" : null
+  certificate_manager_certificates = length(var.certificate_manager_certificates) > 0 ? var.certificate_manager_certificates : null
+  ssl_policy                       = var.ssl_policy
+  quic_override                    = var.quic == null ? "NONE" : var.quic ? "ENABLE" : "DISABLE"
+  server_tls_policy                = var.server_tls_policy
+  http_keep_alive_timeout_sec      = var.http_keep_alive_timeout_sec
 }
 
 resource "google_compute_ssl_certificate" "default" {
@@ -243,6 +246,118 @@ resource "google_compute_managed_ssl_certificate" "default" {
   }
 }
 
+resource "google_compute_url_map" "custom" {
+  count    = var.create_url_map && var.url_map_config != null ? 1 : 0
+  provider = google-beta
+  project  = var.project_id
+  name     = coalesce(var.url_map_name, "${var.name}-url-map")
+
+  default_service = var.url_map_config != null ? var.url_map_config.default_service : null
+
+  dynamic "default_url_redirect" {
+    for_each = try(var.url_map_config.default_url_redirect, null) != null ? [var.url_map_config.default_url_redirect] : []
+    content {
+      host_redirect          = default_url_redirect.value.host_redirect
+      path_redirect          = default_url_redirect.value.path_redirect
+      https_redirect         = default_url_redirect.value.https_redirect
+      redirect_response_code = default_url_redirect.value.redirect_response_code
+      strip_query            = default_url_redirect.value.strip_query
+    }
+  }
+
+  dynamic "host_rule" {
+    for_each = var.url_map_config != null ? var.url_map_config.host_rules : []
+    content {
+      hosts        = host_rule.value.hosts
+      path_matcher = host_rule.value.path_matcher
+    }
+  }
+
+  dynamic "path_matcher" {
+    for_each = var.url_map_config != null ? var.url_map_config.path_matchers : []
+    content {
+      name            = path_matcher.value.name
+      default_service = path_matcher.value.default_service
+
+      dynamic "default_url_redirect" {
+        for_each = path_matcher.value.default_url_redirect != null ? [1] : []
+        content {
+          host_redirect          = path_matcher.value.default_url_redirect.host_redirect
+          path_redirect          = path_matcher.value.default_url_redirect.path_redirect
+          https_redirect         = path_matcher.value.default_url_redirect.https_redirect
+          redirect_response_code = path_matcher.value.default_url_redirect.redirect_response_code
+          strip_query            = path_matcher.value.default_url_redirect.strip_query
+        }
+      }
+
+      dynamic "path_rule" {
+        for_each = path_matcher.value.path_rules
+        content {
+          paths   = path_rule.value.paths
+          service = path_rule.value.service
+          dynamic "url_redirect" {
+            for_each = path_rule.value.url_redirect != null ? [1] : []
+            content {
+              host_redirect          = path_rule.value.url_redirect.host_redirect
+              path_redirect          = path_rule.value.url_redirect.path_redirect
+              https_redirect         = path_rule.value.url_redirect.https_redirect
+              redirect_response_code = path_rule.value.url_redirect.redirect_response_code
+              strip_query            = path_rule.value.url_redirect.strip_query
+            }
+          }
+        }
+      }
+
+      dynamic "route_rules" {
+        for_each = path_matcher.value.route_rules
+        content {
+          priority = route_rules.value.priority
+
+          dynamic "match_rules" {
+            for_each = route_rules.value.match_rules
+            content {
+              prefix_match    = match_rules.value.prefix_match
+              full_path_match = match_rules.value.full_path_match
+              regex_match     = match_rules.value.regex_match
+              dynamic "header_matches" {
+                for_each = match_rules.value.header_matches
+                content {
+                  header_name = header_matches.value.header_name
+                  exact_match = header_matches.value.exact_match
+                }
+              }
+            }
+          }
+
+          dynamic "url_redirect" {
+            for_each = route_rules.value.url_redirect != null ? [1] : []
+            content {
+              host_redirect          = route_rules.value.url_redirect.host_redirect
+              path_redirect          = route_rules.value.url_redirect.path_redirect
+              https_redirect         = route_rules.value.url_redirect.https_redirect
+              redirect_response_code = route_rules.value.url_redirect.redirect_response_code
+              strip_query            = route_rules.value.url_redirect.strip_query
+            }
+          }
+
+          dynamic "route_action" {
+            for_each = route_rules.value.route_action != null ? [1] : []
+            content {
+              dynamic "weighted_backend_services" {
+                for_each = route_rules.value.route_action.weighted_backend_services
+                content {
+                  backend_service = weighted_backend_services.value.backend_service
+                  weight          = weighted_backend_services.value.weight
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 resource "google_compute_url_map" "https_redirect" {
   project = var.project_id
   count   = var.https_redirect ? 1 : 0
@@ -255,10 +370,10 @@ resource "google_compute_url_map" "https_redirect" {
 }
 
 resource "google_compute_url_map" "default" {
-  count           = var.create_url_map && length(local.backend_services_by_host) > 0 ? 1 : 0
+  count           = var.create_url_map && var.url_map_config == null && length(local.backend_services_by_host) > 0 ? 1 : 0
   provider        = google-beta
   project         = var.project_id
-  name            = "${var.name}-url-map"
+  name            = coalesce(var.url_map_name, "${var.name}-url-map")
   default_service = lookup(lookup(local.backend_services_by_host, "*", {}), "/*", local.first_backend_service)
 
   dynamic "host_rule" {
