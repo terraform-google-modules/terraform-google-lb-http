@@ -186,6 +186,7 @@ variable "cdn_policy" {
     max_ttl                         = optional(number)
     client_ttl                      = optional(number)
     negative_caching                = optional(bool)
+    request_coalescing              = optional(bool)
     serve_while_stale               = optional(number)
     bypass_cache_on_request_headers = optional(list(string))
     negative_caching_policy = optional(object({

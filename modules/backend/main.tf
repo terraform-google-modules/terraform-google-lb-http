@@ -371,6 +371,7 @@ resource "google_compute_backend_bucket" "default" {
       max_ttl                      = var.cdn_policy.max_ttl
       client_ttl                   = var.cdn_policy.client_ttl
       negative_caching             = var.cdn_policy.negative_caching
+      request_coalescing           = var.cdn_policy.request_coalescing
       serve_while_stale            = var.cdn_policy.serve_while_stale
 
       dynamic "negative_caching_policy" {
