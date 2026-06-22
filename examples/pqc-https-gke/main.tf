@@ -48,7 +48,7 @@ module "gce_lb_https" {
   target_tags = [var.target_tags]
 
 
-  url_map        = google_compute_url_map.my_url_map.self_link
+  url_map        = google_compute_url_map.main.self_link
   create_url_map = false
 
   backends = {
@@ -77,10 +77,9 @@ module "gce_lb_https" {
       ]
     }
   }
-
 }
 
-resource "google_compute_url_map" "my_url_map" {
+resource "google_compute_url_map" "main" {
   name            = var.name
   default_service = module.gce_lb_https.backend_services["default"].self_link
 
@@ -106,24 +105,24 @@ resource "google_compute_url_map" "my_url_map" {
 }
 
 resource "random_id" "assets_bucket" {
-  prefix      = "${data.google_client_config.current.project}-lb-assets-"
+  prefix      = "${var.project}-lb-assets-"
   byte_length = 2
-}
-
-resource "google_compute_backend_bucket" "assets" {
-  name        = random_id.assets_bucket.hex
-  description = "Contains static resources for example app"
-  bucket_name = google_storage_bucket.assets.name
-  enable_cdn  = true
 }
 
 resource "google_storage_bucket" "assets" {
   name     = random_id.assets_bucket.hex
-  location = "US"
+  location = var.location
 
   force_destroy = true
 
   uniform_bucket_level_access = true
+}
+
+resource "google_compute_backend_bucket" "assets" {
+  name        = google_storage_bucket.assets.name
+  description = "Contains static resources for a quantum resistance HTTPS load balancer example app"
+  bucket_name = google_storage_bucket.assets.name
+  enable_cdn  = true
 }
 
 resource "google_storage_bucket_object" "image" {

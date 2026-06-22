@@ -27,7 +27,11 @@ The infrastructure includes:
 
 ## Install Terraform
 
-1. Install Terraform if it is not already installed (visit [terraform.io](https://terraform.io) for other distributions):
+1. Install Terraform if it is not already installed (visit [terraform.io](https://terraform.io) for other distributions). You can validate if terraform is installed by running:
+
+```bash
+terraform --version
+```
 
 ## Set up the environment
 
@@ -186,6 +190,7 @@ This will output details of the brief handshake, highlighting that the negotiate
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | backend | The instance group to add to the backend | `string` | n/a | yes |
+| location | Location for the storage bucket | `string` | `"US"` | no |
 | name | The name for the load balancer and associated resources | `string` | `"tf-lb-https-gke"` | no |
 | network\_name | The name of the network to create the load balancer in | `string` | `"default"` | no |
 | project | The project ID | `string` | n/a | yes |
@@ -198,7 +203,7 @@ This will output details of the brief handshake, highlighting that the negotiate
 | Name | Description |
 |------|-------------|
 | load\_balancer\_ip | The external IPv4 address of the load balancer |
-| load\_balancer\_ipv6 | The IPv6 address of the load-balancer, if enabled; else "undefined" |
+| load\_balancer\_ipv6 | The IPv6 address of the load-balancer, if enabled; else null |
 | project\_id | The project ID |
 | ssl\_policy\_name | The name of the SSL policy with PQC enabled |
 

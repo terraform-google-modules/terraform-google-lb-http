@@ -30,8 +30,9 @@ output "port_number" {
   value = var.node_port
 }
 
-output "instance_group" {
-  value = replace(google_container_cluster.default.node_pool[0].instance_group_urls[0], "instanceGroupManagers", "instanceGroups")
+output "instance_group_url" {
+  description = "The instance group URL."
+  value       = local.instance_group_url
 }
 
 output "node_tag" {

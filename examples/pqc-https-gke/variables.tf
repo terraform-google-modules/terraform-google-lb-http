@@ -53,3 +53,9 @@ variable "project" {
   description = "The project ID"
   type        = string
 }
+
+variable "location" {
+  description = "Location for the storage bucket"
+  type        = string
+  default     = "US"
+}

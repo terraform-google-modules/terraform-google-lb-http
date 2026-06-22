@@ -20,8 +20,8 @@ output "load_balancer_ip" {
 }
 
 output "load_balancer_ipv6" {
-  value       = module.gce_lb_https.ipv6_enabled ? module.gce_lb_https.external_ipv6_address : "undefined"
-  description = "The IPv6 address of the load-balancer, if enabled; else \"undefined\""
+  value       = module.gce_lb_https.ipv6_enabled ? module.gce_lb_https.external_ipv6_address : null
+  description = "The IPv6 address of the load-balancer, if enabled; else null"
 }
 
 output "ssl_policy_name" {

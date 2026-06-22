@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+
+locals {
+  instance_group_url = replace(google_container_cluster.default.node_pool[0].instance_group_urls[0], "instanceGroupManagers", "instanceGroups")
+}
+
 provider "google" {
   region = var.region
 }
@@ -64,7 +69,7 @@ provider "kubernetes" {
 resource "null_resource" "default" {
 
   provisioner "local-exec" {
-    command = "gcloud compute instance-groups set-named-ports ${replace(google_container_cluster.default.node_pool[0].instance_group_urls[0], "instanceGroupManagers", "instanceGroups")} --named-ports=${var.port_name}:${var.node_port} --format=json"
+    command = "gcloud compute instance-groups set-named-ports ${local.instance_group_url} --named-ports=${var.port_name}:${var.node_port} --format=json"
   }
 }
 
