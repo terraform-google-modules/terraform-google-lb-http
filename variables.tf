@@ -66,6 +66,14 @@ variable "firewall_projects" {
   default     = ["default"]
 }
 
+variable "firewall_log_config" {
+  description = "Firewall logging configuration for the health check firewall rule."
+  type = object({
+    metadata = optional(string)
+  })
+  default = null
+}
+
 variable "target_tags" {
   description = "List of target tags for health check firewall rule. Exactly one of target_tags or target_service_accounts should be specified."
   type        = list(string)

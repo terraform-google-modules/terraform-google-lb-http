@@ -451,4 +451,11 @@ resource "google_compute_firewall" "default-hc" {
       ports    = [allow.value["health_check"].port]
     }
   }
+
+  dynamic "log_config" {
+    for_each = var.firewall_log_config != null ? [var.firewall_log_config] : []
+    content {
+      metadata = log_config.value.metadata
+    }
+  }
 }
