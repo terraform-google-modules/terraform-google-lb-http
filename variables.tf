@@ -117,8 +117,10 @@ variable "backends" {
     }))
 
     log_config = object({
-      enable      = optional(bool)
-      sample_rate = optional(number)
+      enable          = optional(bool)
+      sample_rate     = optional(number)
+      optional_mode   = optional(string)
+      optional_fields = optional(list(string))
     })
 
     groups = list(object({

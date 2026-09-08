@@ -233,8 +233,10 @@ resource "google_compute_backend_service" "default" {
   dynamic "log_config" {
     for_each = lookup(lookup(each.value, "log_config", {}), "enable", true) ? [1] : []
     content {
-      enable      = lookup(lookup(each.value, "log_config", {}), "enable", true)
-      sample_rate = lookup(lookup(each.value, "log_config", {}), "sample_rate", "1.0")
+      enable          = lookup(lookup(each.value, "log_config", {}), "enable", true)
+      sample_rate     = lookup(lookup(each.value, "log_config", {}), "sample_rate", "1.0")
+      optional_mode   = lookup(lookup(each.value, "log_config", {}), "optional_mode", null)
+      optional_fields = lookup(lookup(each.value, "log_config", {}), "optional_fields", null)
     }
   }
 
