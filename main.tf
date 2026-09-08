@@ -114,15 +114,16 @@ resource "google_compute_target_http_proxy" "default" {
 resource "google_compute_target_https_proxy" "default" {
   project = var.project
   count   = var.ssl ? 1 : 0
-  name    = "${var.name}-https-proxy"
+  name    = coalesce(var.target_https_proxy_name, "${var.name}-https-proxy")
   url_map = local.url_map
 
-  ssl_certificates            = compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default[*].self_link, google_compute_managed_ssl_certificate.default[*].self_link, ), )
-  certificate_map             = var.certificate_map != null ? "//certificatemanager.googleapis.com/${var.certificate_map}" : null
-  ssl_policy                  = var.ssl_policy
-  quic_override               = var.quic == null ? "NONE" : var.quic ? "ENABLE" : "DISABLE"
-  server_tls_policy           = var.server_tls_policy
-  http_keep_alive_timeout_sec = var.http_keep_alive_timeout_sec
+  ssl_certificates                 = length(var.certificate_manager_certificates) > 0 ? null : compact(concat(var.ssl_certificates, google_compute_ssl_certificate.default[*].self_link, google_compute_managed_ssl_certificate.default[*].self_link, ), )
+  certificate_map                  = var.certificate_map != null ? "//certificatemanager.googleapis.com/${var.certificate_map}" : null
+  certificate_manager_certificates = length(var.certificate_manager_certificates) > 0 ? var.certificate_manager_certificates : null
+  ssl_policy                       = var.ssl_policy
+  quic_override                    = var.quic == null ? "NONE" : var.quic ? "ENABLE" : "DISABLE"
+  server_tls_policy                = var.server_tls_policy
+  http_keep_alive_timeout_sec      = var.http_keep_alive_timeout_sec
 }
 
 resource "google_compute_ssl_certificate" "default" {

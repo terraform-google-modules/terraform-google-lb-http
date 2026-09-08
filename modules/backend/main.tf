@@ -37,6 +37,7 @@ resource "google_compute_backend_service" "default" {
   connection_draining_timeout_sec = var.connection_draining_timeout_sec
   enable_cdn                      = var.enable_cdn
   compression_mode                = var.load_balancing_scheme == "INTERNAL_SELF_MANAGED" || var.load_balancing_scheme == "INTERNAL_MANAGED" ? null : var.compression_mode
+  ip_address_selection_policy     = var.ip_address_selection_policy
   custom_request_headers          = var.custom_request_headers
   custom_response_headers         = var.custom_response_headers
   session_affinity                = var.session_affinity
@@ -46,7 +47,7 @@ resource "google_compute_backend_service" "default" {
   security_policy                 = var.security_policy
   timeout_sec                     = var.timeout_sec
 
-  health_checks = var.health_check != null ? google_compute_health_check.default[*].self_link : null
+  health_checks = length(var.health_check_self_links) > 0 ? var.health_check_self_links : (var.health_check != null ? google_compute_health_check.default[*].self_link : null)
 
   dynamic "backend" {
     for_each = toset(var.groups)
@@ -63,6 +64,7 @@ resource "google_compute_backend_service" "default" {
       max_rate_per_instance        = backend.value["max_rate_per_instance"]
       max_rate_per_endpoint        = backend.value["max_rate_per_endpoint"]
       max_utilization              = backend.value["max_utilization"]
+      preference                   = lookup(backend.value, "preference", null)
     }
   }
 
@@ -81,10 +83,11 @@ resource "google_compute_backend_service" "default" {
   }
 
   dynamic "log_config" {
-    for_each = var.log_config.enable ? [1] : []
+    for_each = var.log_config.enable || var.log_config.optional_mode != null ? [1] : []
     content {
-      enable      = var.log_config.enable
-      sample_rate = var.log_config.sample_rate
+      enable        = var.log_config.enable
+      sample_rate   = var.log_config.sample_rate
+      optional_mode = var.log_config.optional_mode
     }
   }
 
@@ -106,6 +109,7 @@ resource "google_compute_backend_service" "default" {
       max_ttl                      = var.cdn_policy.max_ttl
       client_ttl                   = var.cdn_policy.client_ttl
       negative_caching             = var.cdn_policy.negative_caching
+      request_coalescing           = var.cdn_policy.request_coalescing
       serve_while_stale            = var.cdn_policy.serve_while_stale
 
       dynamic "negative_caching_policy" {
@@ -233,9 +237,9 @@ resource "google_compute_region_network_endpoint_group" "psc_negs" {
 
 resource "google_compute_health_check" "default" {
   provider = google-beta
-  count    = var.health_check != null ? 1 : 0
+  count    = var.health_check != null && length(var.health_check_self_links) == 0 ? 1 : 0
   project  = var.project_id
-  name     = "${var.name}-hc"
+  name     = coalesce(var.health_check_name, "${var.name}-hc")
 
   check_interval_sec  = var.health_check.check_interval_sec
   timeout_sec         = var.health_check.timeout_sec
@@ -353,12 +357,14 @@ resource "google_compute_backend_bucket" "default" {
   provider = google-beta
   count    = local.is_backend_bucket ? 1 : 0
 
-  project     = var.project_id
-  name        = var.name
-  bucket_name = var.backend_bucket_name
-  enable_cdn  = var.enable_cdn
+  project          = var.project_id
+  name             = var.name
+  bucket_name      = var.backend_bucket_name
+  enable_cdn       = var.enable_cdn
+  compression_mode = var.compression_mode
 
-  description = var.description
+  description             = var.description
+  custom_response_headers = var.custom_response_headers
 
   # CDN policy configuration, if CDN is enabled
   dynamic "cdn_policy" {
@@ -370,6 +376,7 @@ resource "google_compute_backend_bucket" "default" {
       max_ttl                      = var.cdn_policy.max_ttl
       client_ttl                   = var.cdn_policy.client_ttl
       negative_caching             = var.cdn_policy.negative_caching
+      request_coalescing           = var.cdn_policy.request_coalescing
       serve_while_stale            = var.cdn_policy.serve_while_stale
 
       dynamic "negative_caching_policy" {

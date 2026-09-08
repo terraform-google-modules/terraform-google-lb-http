@@ -125,6 +125,12 @@ variable "certificate_map" {
   default     = null
 }
 
+variable "certificate_manager_certificates" {
+  description = "Certificate Manager certificate self-links to associate with the HTTPS proxy. Requires `ssl` to be set to `true`. Cannot be combined with `certificate_map`."
+  type        = list(string)
+  default     = []
+}
+
 variable "ssl_policy" {
   type        = string
   description = "Selfink to SSL Policy"
@@ -207,4 +213,118 @@ variable "internal_forwarding_rules_config" {
     subnetwork = optional(string)
   }))
   default = []
+}
+
+variable "http_forwarding_rule_name" {
+  description = "Override the HTTP forwarding rule name for EXTERNAL load balancers. Defaults to `<name>` when null."
+  type        = string
+  default     = null
+}
+
+variable "https_forwarding_rule_name" {
+  description = "Override the HTTPS forwarding rule name for EXTERNAL load balancers. Defaults to `<name>-https` when null."
+  type        = string
+  default     = null
+}
+
+variable "target_http_proxy_name" {
+  description = "Override the target HTTP proxy resource name. Defaults to `<name>-http-proxy` when null."
+  type        = string
+  default     = null
+}
+
+variable "target_https_proxy_name" {
+  description = "Override the target HTTPS proxy resource name. Defaults to `<name>-https-proxy` when null."
+  type        = string
+  default     = null
+}
+
+variable "forwarding_rule_names" {
+  description = "Map of region to forwarding rule name override for INTERNAL_MANAGED. Defaults to `<name>-internal-managed-https-<region>` for any region not present in the map."
+  type        = map(string)
+  default     = {}
+}
+
+variable "http_forwarding_rule_names" {
+  description = "Map of region to HTTP forwarding rule name override for INTERNAL_MANAGED. Defaults to `<name>-internal-managed-http-<region>` for any region not present in the map."
+  type        = map(string)
+  default     = {}
+}
+
+variable "ip_version" {
+  description = "IP version for EXTERNAL forwarding rules. Set to `IPV4` when importing a resource that was originally created with ip_version explicitly set (prevents forced replacement). Defaults to null (GCP default: IPV4)."
+  type        = string
+  default     = null
+}
+
+variable "url_map_name" {
+  description = "Override the URL map resource name. Defaults to `<name>-url-map` when null."
+  type        = string
+  default     = null
+}
+
+variable "url_map_config" {
+  description = "Direct URL map configuration with full host_rule/path_matcher/route_rules support. Supports cross-project default_service self-links. Mutually exclusive with url_map_input — when set, url_map_input is ignored. Backward compatible: default null preserves existing url_map_input behaviour."
+  type = object({
+    default_service = optional(string)
+    default_url_redirect = optional(object({
+      host_redirect          = optional(string)
+      path_redirect          = optional(string)
+      https_redirect         = optional(bool)
+      redirect_response_code = optional(string)
+      strip_query            = optional(bool)
+    }))
+    host_rules = optional(list(object({
+      hosts        = list(string)
+      path_matcher = string
+    })), [])
+    path_matchers = optional(list(object({
+      name            = string
+      default_service = optional(string)
+      default_url_redirect = optional(object({
+        host_redirect          = optional(string)
+        path_redirect          = optional(string)
+        https_redirect         = optional(bool)
+        redirect_response_code = optional(string)
+        strip_query            = optional(bool)
+      }))
+      path_rules = optional(list(object({
+        paths   = list(string)
+        service = optional(string)
+        url_redirect = optional(object({
+          host_redirect          = optional(string)
+          path_redirect          = optional(string)
+          https_redirect         = optional(bool)
+          redirect_response_code = optional(string)
+          strip_query            = optional(bool)
+        }))
+      })), [])
+      route_rules = optional(list(object({
+        priority = number
+        match_rules = optional(list(object({
+          prefix_match    = optional(string)
+          full_path_match = optional(string)
+          regex_match     = optional(string)
+          header_matches = optional(list(object({
+            header_name = string
+            exact_match = optional(string)
+          })), [])
+        })), [])
+        url_redirect = optional(object({
+          host_redirect          = optional(string)
+          path_redirect          = optional(string)
+          https_redirect         = optional(bool)
+          redirect_response_code = optional(string)
+          strip_query            = optional(bool)
+        }))
+        route_action = optional(object({
+          weighted_backend_services = optional(list(object({
+            backend_service = string
+            weight          = number
+          })), [])
+        }))
+      })), [])
+    })), [])
+  })
+  default = null
 }

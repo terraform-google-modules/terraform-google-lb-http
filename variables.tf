@@ -245,6 +245,12 @@ variable "certificate_map" {
   default     = null
 }
 
+variable "certificate_manager_certificates" {
+  description = "Certificate Manager certificate self-links to associate with the HTTPS proxy. Requires `ssl` to be set to `true`. Cannot be combined with `certificate_map`."
+  type        = list(string)
+  default     = []
+}
+
 variable "ssl_policy" {
   type        = string
   description = "Selfink to SSL Policy"
@@ -328,5 +334,11 @@ variable "https_port" {
 variable "http_keep_alive_timeout_sec" {
   description = "Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds)."
   type        = number
+  default     = null
+}
+
+variable "target_https_proxy_name" {
+  description = "Override the target HTTPS proxy resource name. Defaults to `<name>-https-proxy` when null."
+  type        = string
   default     = null
 }

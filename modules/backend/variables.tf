@@ -103,11 +103,18 @@ variable "timeout_sec" {
   default     = null
 }
 
+variable "ip_address_selection_policy" {
+  description = "Specifies preference of traffic to the backend (among backends that each have adequate capacity). Accepted values: IPV4_ONLY, IPV6_ONLY, PREFER_IPV6."
+  type        = string
+  default     = null
+}
+
 variable "log_config" {
   description = "This field denotes the logging options for the load balancer traffic served by this backend service. If logging is enabled, logs will be exported to Stackdriver."
   type = object({
-    enable      = bool
-    sample_rate = number
+    enable        = bool
+    sample_rate   = optional(number)
+    optional_mode = optional(string)
   })
   default = { enable = true, sample_rate = 1.0 }
 }
@@ -127,6 +134,7 @@ variable "groups" {
     max_rate_per_instance        = optional(number)
     max_rate_per_endpoint        = optional(number)
     max_utilization              = optional(number)
+    preference                   = optional(string)
   }))
   default = []
 }
@@ -186,6 +194,7 @@ variable "cdn_policy" {
     max_ttl                         = optional(number)
     client_ttl                      = optional(number)
     negative_caching                = optional(bool)
+    request_coalescing              = optional(bool)
     serve_while_stale               = optional(number)
     bypass_cache_on_request_headers = optional(list(string))
     negative_caching_policy = optional(object({
@@ -256,6 +265,12 @@ variable "health_check" {
   default = null
 }
 
+variable "health_check_self_links" {
+  description = "Self links of pre-existing health checks to attach to the backend service directly. Mutually exclusive with health_check — when non-empty, no health check resource is created."
+  type        = list(string)
+  default     = []
+}
+
 variable "edge_security_policy" {
   description = "The resource URL for the edge security policy to associate with the backend service"
   type        = string
@@ -305,6 +320,12 @@ variable "firewall_source_ranges" {
   description = "Source ranges for the global Application Load Balancer's proxies. This list should contain the `ip_cidr_range` of each GLOBAL_MANAGED_PROXY subnet."
   type        = list(string)
   default     = ["10.127.0.0/23"]
+}
+
+variable "health_check_name" {
+  description = "Override the health check resource name. Defaults to `<name>-hc` when null."
+  type        = string
+  default     = null
 }
 
 check "backend_neg_type_exclusive" {
