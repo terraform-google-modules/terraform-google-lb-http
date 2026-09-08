@@ -83,7 +83,7 @@ module "mig" {
 
 module "gce-lb-http" {
   source  = "terraform-google-modules/lb-http/google"
-  version = "~> 12.0"
+  version = "~> 14.0"
 
   name              = "mig-http-lb"
   project           = var.project_id
