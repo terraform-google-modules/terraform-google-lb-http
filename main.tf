@@ -174,10 +174,29 @@ resource "google_compute_url_map" "https_redirect" {
   project = var.project
   count   = var.https_redirect ? 1 : 0
   name    = "${var.name}-https-redirect"
-  default_url_redirect {
-    https_redirect         = true
-    redirect_response_code = "MOVED_PERMANENTLY_DEFAULT"
-    strip_query            = false
+
+  host_rule {
+    hosts        = length(var.https_redirect_domains) > 0 ? var.https_redirect_domains : ["*"]
+    path_matcher = "https-redirect-matcher"
+  }
+  path_matcher {
+    name            = "https-redirect-matcher"
+    default_url_redirect {
+      https_redirect         = true
+      redirect_response_code = "MOVED_PERMANENTLY_DEFAULT"
+      strip_query            = false
+    }
+  }
+  default_route_action {
+    weighted_backend_services {
+      backend_service = google_compute_backend_service.default[keys(var.backends)[0]].self_link
+    }
+    fault_injection_policy {
+      abort {
+        http_status = 404
+        percentage  = 100
+      }
+    }
   }
 }
 
