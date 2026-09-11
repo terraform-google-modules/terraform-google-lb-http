@@ -68,7 +68,7 @@ module "internal-lb-subnet" {
 
 module "instance-template-region-a" {
   source  = "terraform-google-modules/vm/google//modules/instance_template"
-  version = "~> 13.0"
+  version = "~> 14.0"
 
   project_id           = var.project_id
   region               = "us-east1"
@@ -97,7 +97,7 @@ module "instance-template-region-a" {
 
 module "instance-template-region-b" {
   source  = "terraform-google-modules/vm/google//modules/instance_template"
-  version = "~> 13.0"
+  version = "~> 14.0"
 
   project_id           = var.project_id
   region               = "us-central1"
@@ -126,7 +126,7 @@ module "instance-template-region-b" {
 
 module "mig-region-a" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 13.0"
+  version           = "~> 14.0"
   instance_template = module.instance-template-region-a.self_link
   project_id        = var.project_id
   region            = "us-east1"
@@ -141,7 +141,7 @@ module "mig-region-a" {
 
 module "mig-region-b" {
   source            = "terraform-google-modules/vm/google//modules/mig"
-  version           = "~> 13.0"
+  version           = "~> 14.0"
   instance_template = module.instance-template-region-b.self_link
   project_id        = var.project_id
   region            = "us-central1"
