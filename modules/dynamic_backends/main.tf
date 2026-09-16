@@ -204,6 +204,30 @@ resource "google_compute_backend_service" "default" {
   affinity_cookie_ttl_sec         = lookup(each.value, "affinity_cookie_ttl_sec", null)
   locality_lb_policy              = lookup(each.value, "locality_lb_policy", null)
 
+  dynamic "strong_session_affinity_cookie" {
+    for_each = lookup(each.value, "strong_session_affinity_cookie", null) == null ? [] : [lookup(each.value, "strong_session_affinity_cookie", null)]
+    content {
+      name = lookup(strong_session_affinity_cookie.value, "name", null)
+      path = lookup(strong_session_affinity_cookie.value, "path", null)
+
+      dynamic "ttl" {
+        for_each = lookup(strong_session_affinity_cookie.value, "ttl", null) == null ? [] : [lookup(strong_session_affinity_cookie.value, "ttl", null)]
+        content {
+          seconds = ttl.value.seconds
+          nanos = ttl.value.nanos
+        }
+      }
+    }
+  }
+
+  dynamic "custom_metrics" {
+    for_each = lookup(each.value, "custom_metrics", [])
+    content {
+      dry_run = lookup(custom_metrics.value, "dry_run", null)
+      name    = lookup(custom_metrics.value, "name", null)
+    }
+  }
+
   health_checks = lookup(each.value, "health_check", null) == null ? null : [google_compute_health_check.default[each.key].self_link]
 
   # To achieve a null backend edge_security_policy, set each.value.edge_security_policy to "" (empty string), otherwise, it fallsback to var.edge_security_policy.

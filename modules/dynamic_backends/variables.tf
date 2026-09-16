@@ -99,6 +99,20 @@ variable "backends" {
     affinity_cookie_ttl_sec         = optional(number)
     locality_lb_policy              = optional(string)
 
+    strong_session_affinity_cookie = optional(object({
+      name = optional(string)
+      path = optional(string)
+      ttl = optional(object({
+        seconds = string
+        nanos   = optional(string)
+      }))
+    }))
+
+    custom_metrics = optional(list(object({
+      dry_run = optional(bool)
+      name    = optional(string)
+    })), [])
+
     health_check = optional(object({
       host                = optional(string)
       request_path        = optional(string)
