@@ -14,27 +14,13 @@
  * limitations under the License.
  */
 
-output "cluster_name" {
-  value = google_container_cluster.default.name
+variable "project_id" {
+  type        = string
+  description = "The project ID to deploy to"
 }
 
-output "network_name" {
-  value = var.network_name
-}
-
-output "port_name" {
-  value = "http"
-}
-
-output "port_number" {
-  value = var.node_port
-}
-
-output "instance_group_url" {
-  description = "The instance group URL."
-  value       = local.instance_group_url
-}
-
-output "node_tag" {
-  value = var.node_tag
+variable "region" {
+  type        = string
+  description = "The region to deploy to"
+  default     = "us-central1"
 }

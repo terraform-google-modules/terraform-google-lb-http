@@ -1,5 +1,5 @@
 /**
- * Copyright 2022 Google LLC
+ * Copyright 2026 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 terraform {
   required_version = ">= 1.3"
-  required_providers {
 
+  required_providers {
     google = {
       source  = "hashicorp/google"
       version = ">= 7.34, < 8"
@@ -31,13 +31,4 @@ terraform {
       version = ">= 2.1"
     }
   }
-
-  provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-lb-http/v14.2.0"
-  }
-
-  provider_meta "google-beta" {
-    module_name = "blueprints/terraform/terraform-google-lb-http/v14.2.0"
-  }
-
 }

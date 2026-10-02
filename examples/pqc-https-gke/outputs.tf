@@ -14,27 +14,22 @@
  * limitations under the License.
  */
 
-output "cluster_name" {
-  value = google_container_cluster.default.name
+output "load_balancer_ip" {
+  value       = module.gce_lb_https.external_ip
+  description = "The external IPv4 address of the load balancer"
 }
 
-output "network_name" {
-  value = var.network_name
+output "load_balancer_ipv6" {
+  value       = module.gce_lb_https.ipv6_enabled ? module.gce_lb_https.external_ipv6_address : null
+  description = "The IPv6 address of the load-balancer, if enabled; else null"
 }
 
-output "port_name" {
-  value = "http"
+output "ssl_policy_name" {
+  value       = google_compute_ssl_policy.main.name
+  description = "The name of the SSL policy with PQC enabled"
 }
 
-output "port_number" {
-  value = var.node_port
-}
-
-output "instance_group_url" {
-  description = "The instance group URL."
-  value       = local.instance_group_url
-}
-
-output "node_tag" {
-  value = var.node_tag
+output "project_id" {
+  value       = var.project
+  description = "The project ID"
 }

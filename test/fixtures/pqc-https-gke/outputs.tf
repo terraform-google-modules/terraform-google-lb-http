@@ -14,27 +14,14 @@
  * limitations under the License.
  */
 
-output "cluster_name" {
-  value = google_container_cluster.default.name
+output "load_balancer_ip" {
+  value = module.example.load_balancer_ip
 }
 
-output "network_name" {
-  value = var.network_name
+output "ssl_policy_name" {
+  value = module.example.ssl_policy_name
 }
 
-output "port_name" {
-  value = "http"
-}
-
-output "port_number" {
-  value = var.node_port
-}
-
-output "instance_group_url" {
-  description = "The instance group URL."
-  value       = local.instance_group_url
-}
-
-output "node_tag" {
-  value = var.node_tag
+output "project_id" {
+  value = var.project_id
 }

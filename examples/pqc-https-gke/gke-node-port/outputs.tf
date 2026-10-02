@@ -1,0 +1,1 @@
+../../https-gke/gke-node-port/outputs.tf
