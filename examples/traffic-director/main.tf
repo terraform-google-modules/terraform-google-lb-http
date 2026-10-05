@@ -29,7 +29,7 @@ resource "google_compute_network" "default" {
 
 module "load_balancer" {
   source  = "terraform-google-modules/lb-http/google"
-  version = "~> 12.0"
+  version = "~> 14.0"
 
   name           = "traffic-director-lb"
   project        = var.project_id

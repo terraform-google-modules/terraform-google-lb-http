@@ -16,7 +16,7 @@
 
 module "lb-frontend" {
   source  = "terraform-google-modules/lb-http/google//modules/frontend"
-  version = "~> 12.0"
+  version = "~> 14.0"
 
   project_id    = var.project_id
   name          = "global-lb-fe-bucket"
@@ -25,7 +25,7 @@ module "lb-frontend" {
 
 module "lb-backend" {
   source  = "terraform-google-modules/lb-http/google//modules/backend"
-  version = "~> 12.0"
+  version = "~> 14.0"
 
   project_id          = var.project_id
   name                = "global-lb-be-bucket"
