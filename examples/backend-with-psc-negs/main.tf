@@ -106,7 +106,7 @@ module "psc-neg-network" {
 
 module "psc-neg-subnet" {
   source  = "terraform-google-modules/network/google//modules/subnets"
-  version = "~> 16.1.0"
+  version = "~> 16.1"
 
   subnets = [
     {
