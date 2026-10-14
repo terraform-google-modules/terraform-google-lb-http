@@ -22,8 +22,6 @@ provider "google-beta" {
   project = var.project
 }
 
-data "google_client_config" "current" {}
-
 resource "google_compute_ssl_policy" "main" {
   name                      = "${var.name}-pqc-policy"
   profile                   = "RESTRICTED"

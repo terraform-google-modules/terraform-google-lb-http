@@ -25,7 +25,7 @@ provider "google-beta" {
 # [START cloudloadbalancing_ext_http_cloudrun]
 module "lb-http" {
   source  = "terraform-google-modules/lb-http/google//modules/serverless_negs"
-  version = "~> 12.0"
+  version = "~> 14.0"
 
   name    = var.lb_name
   project = var.project_id

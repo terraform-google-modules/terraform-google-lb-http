@@ -24,7 +24,7 @@ provider "google-beta" {
 
 module "internal-lb-network" {
   source                  = "terraform-google-modules/network/google//modules/vpc"
-  version                 = "~> 16.1.0"
+  version                 = "~> 16.1"
   project_id              = var.project_id
   network_name            = "int-lb-mig-network"
   auto_create_subnetworks = false
@@ -32,7 +32,7 @@ module "internal-lb-network" {
 
 module "internal-lb-subnet" {
   source  = "terraform-google-modules/network/google//modules/subnets"
-  version = "~> 16.1.0"
+  version = "~> 16.1"
 
   subnets = [
     {
@@ -156,7 +156,7 @@ module "mig-region-b" {
 
 module "internal-lb-http-backend" {
   source  = "terraform-google-modules/lb-http/google//modules/backend"
-  version = "~> 0.4.0"
+  version = "~> 14.0"
 
   project_id            = var.project_id
   name                  = "int-lb-mig-http-backend"
@@ -188,7 +188,7 @@ module "internal-lb-http-backend" {
 
 module "internal-lb-http-frontend" {
   source  = "terraform-google-modules/lb-http/google//modules/frontend"
-  version = "~> 12.0"
+  version = "~> 14.0"
 
   project_id            = var.project_id
   name                  = "int-lb-mig-http-frontend"

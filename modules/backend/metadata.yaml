@@ -25,7 +25,7 @@ spec:
       repo: https://github.com/terraform-google-modules/terraform-google-lb-http.git
       sourceType: git
       dir: /modules/backend
-    version: 14.2.0
+    version: 14.3.0
     actuationTool:
       flavor: Terraform
       version: ">= 1.5"
@@ -354,13 +354,13 @@ spec:
     roles:
       - level: Project
         roles:
-          - roles/compute.admin
-          - roles/storage.admin
           - roles/run.admin
           - roles/compute.networkAdmin
           - roles/iap.admin
           - roles/iam.serviceAccountUser
           - roles/iam.serviceAccountAdmin
+          - roles/compute.admin
+          - roles/storage.admin
     services:
       - cloudresourcemanager.googleapis.com
       - compute.googleapis.com
@@ -370,8 +370,8 @@ spec:
       - vpcaccess.googleapis.com
     providerVersions:
       - source: hashicorp/google
-        version: ">= 6.0, < 8"
+        version: ">= 6.0, < 9"
       - source: hashicorp/google-beta
-        version: ">= 6.0, < 8"
+        version: ">= 6.0, < 9"
       - source: hashicorp/random
         version: ">= 2.1"
