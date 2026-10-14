@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Google LLC
+ * Copyright 2026 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+
+locals {
+  instance_group_url = replace(google_container_cluster.default.node_pool[0].instance_group_urls[0], "instanceGroupManagers", "instanceGroups")
+}
 
 provider "google" {
   region = var.region
@@ -54,7 +59,7 @@ resource "google_container_cluster" "default" {
 }
 
 provider "kubernetes" {
-  host                   = google_container_cluster.default.endpoint
+  host                   = "https://${google_container_cluster.default.endpoint}"
   token                  = data.google_client_config.current.access_token
   client_certificate     = base64decode(google_container_cluster.default.master_auth[0].client_certificate)
   client_key             = base64decode(google_container_cluster.default.master_auth[0].client_key)
@@ -64,7 +69,7 @@ provider "kubernetes" {
 resource "null_resource" "default" {
 
   provisioner "local-exec" {
-    command = "gcloud compute instance-groups set-named-ports ${google_container_cluster.default.node_pool[0].instance_group_urls[0]} --named-ports=${var.port_name}:${var.node_port} --format=json"
+    command = "gcloud compute instance-groups set-named-ports ${local.instance_group_url} --named-ports=${var.port_name}:${var.node_port} --format=json"
   }
 }
 
