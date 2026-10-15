@@ -93,6 +93,7 @@ spec:
       - name: address
         description: Existing IPv4 address to use (the actual IP address value)
         varType: string
+        defaultValue: null
         connections:
           - source:
               source: github.com/terraform-google-modules/terraform-google-address
@@ -110,6 +111,7 @@ spec:
       - name: ipv6_address
         description: An existing IPv6 address to use (the actual IP address value)
         varType: string
+        defaultValue: null
       - name: create_url_map
         description: Set to `false` if url_map variable is provided.
         varType: bool
@@ -132,6 +134,7 @@ spec:
       - name: url_map_resource_uri
         description: The url_map resource to use. Default is to send all traffic to first backend.
         varType: string
+        defaultValue: null
       - name: http_forward
         description: Set to `false` to disable HTTP port 80 forward
         varType: bool
@@ -151,9 +154,11 @@ spec:
       - name: private_key
         description: Content of the private SSL key. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true`
         varType: string
+        defaultValue: null
       - name: certificate
         description: Content of the SSL certificate. Requires `ssl` to be set to `true` and `create_ssl_certificate` set to `true`
         varType: string
+        defaultValue: null
       - name: managed_ssl_certificate_domains
         description: Create Google-managed SSL certificates for specified domains. Requires `ssl` to be set to `true`
         varType: list(string)
@@ -161,12 +166,15 @@ spec:
       - name: certificate_map
         description: Certificate Map ID in format projects/{project}/locations/global/certificateMaps/{name}. Identifies a certificate map associated with the given target proxy.  Requires `ssl` to be set to `true`
         varType: string
+        defaultValue: null
       - name: ssl_policy
         description: Selfink to SSL Policy
         varType: string
+        defaultValue: null
       - name: quic
         description: Specifies the QUIC override policy for this resource. Set true to enable HTTP/3 and Google QUIC support, false to disable both. Defaults to null which enables support for HTTP/3 only.
         varType: bool
+        defaultValue: null
       - name: https_redirect
         description: Set to `true` to enable https redirect on the lb.
         varType: bool
@@ -190,6 +198,7 @@ spec:
       - name: server_tls_policy
         description: The resource URL for the server TLS policy to associate with the https proxy service
         varType: string
+        defaultValue: null
       - name: http_port
         description: The port for the HTTP load balancer
         varType: number
@@ -201,6 +210,7 @@ spec:
       - name: http_keep_alive_timeout_sec
         description: Specifies how long to keep a connection open, after completing a response, while there is no matching traffic (in seconds).
         varType: number
+        defaultValue: null
       - name: internal_forwarding_rules_config
         description: List of internal managed forwarding rules config. One of 'address' or 'subnetwork' is required for each. It is only applicable for internal load balancer
         varType: |-
