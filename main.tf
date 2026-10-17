@@ -245,7 +245,7 @@ resource "google_compute_backend_service" "default" {
   }
 
   dynamic "cdn_policy" {
-    for_each = each.value.enable_cdn ? [1] : []
+    for_each = each.value.enable_cdn == true ? [1] : []
     content {
       cache_mode                   = each.value.cdn_policy.cache_mode
       signed_url_cache_max_age_sec = each.value.cdn_policy.signed_url_cache_max_age_sec
