@@ -44,7 +44,7 @@ resource "google_compute_router" "group1" {
 
 module "cloud-nat-group1" {
   source     = "terraform-google-modules/cloud-nat/google"
-  version    = "~> 5.0"
+  version    = "~> 7.0"
   router     = google_compute_router.group1.name
   project_id = var.project
   region     = var.group1_region
@@ -68,7 +68,7 @@ resource "google_compute_router" "group2" {
 
 module "cloud-nat-group2" {
   source     = "terraform-google-modules/cloud-nat/google"
-  version    = "~> 5.0"
+  version    = "~> 7.0"
   router     = google_compute_router.group2.name
   project_id = var.project
   region     = var.group2_region
@@ -92,7 +92,7 @@ resource "google_compute_router" "group3" {
 
 module "cloud-nat-group3" {
   source     = "terraform-google-modules/cloud-nat/google"
-  version    = "~> 5.0"
+  version    = "~> 7.0"
   router     = google_compute_router.group3.name
   project_id = var.project
   region     = var.group3_region
@@ -114,7 +114,7 @@ locals {
 # [START cloudloadbalancing_ext_http_gce_plus_bucket]
 module "gce-lb-https" {
   source  = "terraform-google-modules/lb-http/google"
-  version = "~> 12.0"
+  version = "~> 14.0"
   name    = var.network_name
   project = var.project
   target_tags = [

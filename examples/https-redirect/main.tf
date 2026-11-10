@@ -43,7 +43,7 @@ resource "google_compute_router" "default" {
 
 module "cloud-nat" {
   source     = "terraform-google-modules/cloud-nat/google"
-  version    = "~> 5.0"
+  version    = "~> 7.0"
   router     = google_compute_router.default.name
   project_id = var.project
   region     = var.region
@@ -93,7 +93,7 @@ module "mig" {
 # [START cloudloadbalancing_ext_http_gce_http_redirect]
 module "gce-lb-http" {
   source            = "terraform-google-modules/lb-http/google"
-  version           = "~> 12.0"
+  version           = "~> 14.0"
   name              = "ci-https-redirect"
   project           = var.project
   target_tags       = [var.network_name]
